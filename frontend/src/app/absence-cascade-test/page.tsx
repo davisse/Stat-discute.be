@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getStartersWithSignificantAbsences, getTeammatePerformanceSplits } from '@/lib/queries'
 import { AppLayout } from '@/components/layout'
 import { AbsenceCascadeView, AbsencePlayerSelector } from '@/components/player-props'

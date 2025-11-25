@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { AppLayout } from '@/components/layout'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { PlayerCard } from '@/components/dashboard/player-card'

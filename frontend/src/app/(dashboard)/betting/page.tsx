@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { AppLayout } from '@/components/layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DollarSign, ChartLine, Target, TrendingUp, AlertCircle, Trophy, Calculator, Brain } from 'lucide-react'

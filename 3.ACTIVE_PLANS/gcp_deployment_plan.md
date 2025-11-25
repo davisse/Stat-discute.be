@@ -1,9 +1,10 @@
 # GCP Deployment Plan - Stat Discute
 
 **Created**: 2025-11-25
-**Status**: IMPLEMENTED
+**Status**: ✅ DEPLOYED AND LIVE
 **Estimated Budget**: $30-50/month
 **Architecture**: Single VM with Docker Compose
+**Live URL**: http://34.140.155.16:3000
 
 ---
 
@@ -621,29 +622,36 @@ sudo ufw enable
 - [ ] Configure firewall rules
 - [ ] SSH and verify Docker installed
 
-### Phase 3: Docker Configuration
-- [ ] Create `docker/` directory structure
-- [ ] Write `docker-compose.yml`
-- [ ] Write `Dockerfile.frontend`
-- [ ] Write `Dockerfile.etl`
-- [ ] Update `next.config.ts` for standalone output
-- [ ] Create `.env.production` with secure passwords
+### Phase 3: Docker Configuration ✅ COMPLETED (2025-11-25)
+- [x] Create `docker/` directory structure
+- [x] Write `docker-compose.yml`
+- [x] Write `docker-compose.dev.yml`
+- [x] Write `Dockerfile.frontend`
+- [x] Write `Dockerfile.etl`
+- [x] Write `etl-crontab`
+- [x] Update `next.config.ts` for standalone output
+- [x] Create `env.production.template`
+- [x] Create `deploy.sh`
+- [x] Create `backup-db.sh`
+- [x] Create `health-check.sh`
+- [x] Local Docker build tested successfully
+- [x] Local PostgreSQL container running with migrations
 
-### Phase 4: Initial Deployment
-- [ ] Push code to git
-- [ ] Clone on VM
-- [ ] Build and start containers
-- [ ] Run migrations
-- [ ] Verify frontend accessible at `http://IP:3000`
+### Phase 4: Initial Deployment ✅ COMPLETED (2025-11-25)
+- [x] Push code to git (local repo initialized, committed)
+- [x] Deploy to VM (via tarball + scp)
+- [x] Build and start containers
+- [x] Run migrations (auto-run via docker-entrypoint-initdb.d)
+- [x] Verify frontend accessible at http://34.140.155.16:3000
 
 ### Phase 5: Data & Backup
 - [ ] Run initial ETL to populate database
-- [ ] Setup backup script
-- [ ] Configure backup cron
+- [x] Setup backup script (created)
+- [ ] Configure backup cron on VM
 - [ ] Test backup restore
 
 ### Phase 6: Monitoring
-- [ ] Setup health check script
+- [x] Setup health check script (created)
 - [ ] Configure GCP uptime monitoring
 - [ ] Document runbook for common issues
 
@@ -694,6 +702,7 @@ gunzip -c /home/$USER/backups/nba_stats_YYYYMMDD.sql.gz | \
 
 ---
 
-**Plan Status**: Ready for approval
-**Estimated Implementation Time**: 2-3 hours
-**Risk Level**: Low (reversible, standard infrastructure)
+**Plan Status**: ✅ DEPLOYMENT COMPLETE
+**Deployed**: 2025-11-25
+**GCP Project**: calendarmcpclaude (reused existing project)
+**VM External IP**: 34.140.155.16
