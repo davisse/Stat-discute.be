@@ -1,0 +1,93 @@
+# =============================================================================
+# Stat Discute - Python ETL Dockerfile
+# =============================================================================
+# Runs scheduled ETL jobs for NBA data collection and analytics
+# Uses cron for scheduling, runs in foreground
+# =============================================================================
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# -----------------------------------------------------------------------------
+# Install system dependencies
+# -----------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # PostgreSQL client library
+    libpq-dev \
+    # Build tools for Python packages
+    gcc \
+    # Cron for scheduling
+    cron \
+    # Utilities
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# -----------------------------------------------------------------------------
+# Install Python dependencies
+# -----------------------------------------------------------------------------
+COPY 1.DATABASE/requirements.txt .
+
+# Install with pip, no cache to reduce image size
+RUN pip install --no-cache-dir -r requirements.txt
+
+# -----------------------------------------------------------------------------
+# Copy application code
+# -----------------------------------------------------------------------------
+# Copy ETL scripts
+COPY 1.DATABASE/etl/ ./etl/
+
+# Copy config directory
+COPY 1.DATABASE/config/ ./config/
+
+# -----------------------------------------------------------------------------
+# Setup cron scheduling
+# -----------------------------------------------------------------------------
+# Copy crontab file
+COPY docker/etl-crontab /etc/cron.d/etl-crontab
+
+# Set permissions
+RUN chmod 0644 /etc/cron.d/etl-crontab
+
+# Apply crontab
+RUN crontab /etc/cron.d/etl-crontab
+
+# -----------------------------------------------------------------------------
+# Create directories and set permissions
+# -----------------------------------------------------------------------------
+RUN mkdir -p /app/logs && chmod 755 /app/logs
+
+# -----------------------------------------------------------------------------
+# Environment setup
+# -----------------------------------------------------------------------------
+# Ensure Python output is sent straight to terminal
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# -----------------------------------------------------------------------------
+# Entrypoint
+# -----------------------------------------------------------------------------
+# Create entrypoint script that:
+# 1. Exports environment variables for cron
+# 2. Starts cron in foreground
+RUN echo '#!/bin/bash\n\
+# Export environment variables for cron jobs\n\
+printenv | grep -E "^(DB_|NBA_|ENVIRONMENT)" >> /etc/environment\n\
+\n\
+echo "Starting ETL service..."\n\
+echo "Cron jobs scheduled:"\n\
+crontab -l\n\
+echo ""\n\
+echo "Logs available at /app/logs/etl.log"\n\
+\n\
+# Start cron in foreground\n\
+cron -f\n\
+' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
+# Health check - verify cron is running
+HEALTHCHECK --interval=60s --timeout=10s --start-period=10s --retries=3 \
+  CMD pgrep cron > /dev/null || exit 1
+
+# Run entrypoint
+CMD ["/app/entrypoint.sh"]

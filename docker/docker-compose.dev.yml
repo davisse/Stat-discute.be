@@ -1,0 +1,56 @@
+# =============================================================================
+# Stat Discute - Local Development Docker Compose
+# =============================================================================
+# Usage:
+#   docker compose -f docker/docker-compose.dev.yml up -d
+#   docker compose -f docker/docker-compose.dev.yml down
+#
+# Then run frontend locally:
+#   cd frontend && npm run dev
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database (Development)
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: stat-discute-db-dev
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-chapirou}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-devpassword}
+      POSTGRES_DB: ${DB_NAME:-nba_stats}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # Allow connections without password for local dev (optional)
+      # POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      # Migrations mounted for manual access (not auto-run)
+      # Run manually: docker exec -i stat-discute-db-dev psql -U chapirou nba_stats < 1.DATABASE/migrations/001_poc_minimal.sql
+      - ../1.DATABASE/migrations:/migrations:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-chapirou} -d ${DB_NAME:-nba_stats}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # pgAdmin (Optional - Database GUI)
+  # ---------------------------------------------------------------------------
+  # Uncomment to enable pgAdmin at http://localhost:5050
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: stat-discute-pgadmin
+  #   ports:
+  #     - "5050:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@localhost
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   depends_on:
+  #     - postgres
+
+volumes:
+  postgres_dev_data:
+    name: stat-discute-postgres-dev-data

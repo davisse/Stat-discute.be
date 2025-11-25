@@ -1,0 +1,55 @@
+# =============================================================================
+# Stat Discute - ETL Cron Schedule
+# =============================================================================
+# Timezone: UTC (GCP default)
+# NBA games typically end by 2-3 AM UTC (10-11 PM ET)
+# Schedule ETL to run at 6 AM UTC to ensure all data is available
+# =============================================================================
+
+# Environment variables are loaded from /etc/environment by entrypoint.sh
+
+# -----------------------------------------------------------------------------
+# Daily NBA Data Collection (6:00 - 6:45 AM UTC)
+# -----------------------------------------------------------------------------
+
+# 6:00 AM - Sync games and scores for current season
+0 6 * * * cd /app && /usr/local/bin/python3 etl/sync_season_2025_26.py >> /app/logs/etl.log 2>&1
+
+# 6:15 AM - Fetch player box scores
+15 6 * * * cd /app && /usr/local/bin/python3 etl/fetch_player_stats_direct.py >> /app/logs/etl.log 2>&1
+
+# 6:30 AM - Calculate team statistics
+30 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_team_stats.py >> /app/logs/etl.log 2>&1
+
+# 6:35 AM - Calculate advanced stats (eFG%, TS%, etc.)
+35 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_advanced_stats.py >> /app/logs/etl.log 2>&1
+
+# 6:40 AM - Update standings
+40 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_standings.py >> /app/logs/etl.log 2>&1
+
+# 6:45 AM - Calculate betting trends (ATS, O/U)
+45 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_betting_trends.py >> /app/logs/etl.log 2>&1
+
+# -----------------------------------------------------------------------------
+# Hourly updates during game days (Optional - uncomment if needed)
+# -----------------------------------------------------------------------------
+# Update scores every hour from 11 PM to 3 AM UTC (game time)
+# 0 23,0,1,2,3 * * * cd /app && /usr/local/bin/python3 etl/sync_season_2025_26.py >> /app/logs/etl.log 2>&1
+
+# -----------------------------------------------------------------------------
+# Weekly maintenance
+# -----------------------------------------------------------------------------
+
+# Sunday 7:00 AM - Sync player info updates (new players, trades)
+0 7 * * 0 cd /app && /usr/local/bin/python3 etl/reference_data/sync_player_info.py >> /app/logs/etl.log 2>&1
+
+# -----------------------------------------------------------------------------
+# Log rotation (keep logs manageable)
+# -----------------------------------------------------------------------------
+
+# Daily at 5:00 AM - Rotate logs (keep last 7 days)
+0 5 * * * find /app/logs -name "*.log" -mtime +7 -delete 2>/dev/null
+
+# =============================================================================
+# IMPORTANT: Empty line required at end of crontab file
+# =============================================================================

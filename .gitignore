@@ -124,3 +124,17 @@ pinnacle_*.json
 # Project-specific
 # ===================================
 nba-schedule-api.zip
+
+# ===================================
+# Docker
+# ===================================
+# Production environment file (contains secrets)
+docker/.env.production
+docker/.env
+
+# Docker volumes (if stored locally)
+docker/volumes/
+
+# Backup files
+backups/
+*.sql.gz

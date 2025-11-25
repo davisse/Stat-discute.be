@@ -1,0 +1,112 @@
+# =============================================================================
+# Stat Discute - Production Docker Compose
+# =============================================================================
+# Usage:
+#   docker compose -f docker/docker-compose.yml up -d --build
+#   docker compose -f docker/docker-compose.yml logs -f
+#   docker compose -f docker/docker-compose.yml down
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: stat-discute-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-nba_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      POSTGRES_DB: ${DB_NAME:-nba_stats}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run migrations on first start (files run in alphabetical order)
+      - ../1.DATABASE/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-nba_admin} -d ${DB_NAME:-nba_stats}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - stat-discute-network
+    # No external port - only accessible within Docker network
+    # For debugging, temporarily add: ports: ["5432:5432"]
+
+  # ---------------------------------------------------------------------------
+  # Next.js Frontend
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: stat-discute-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-nba_stats}
+      DB_USER: ${DB_USER:-nba_admin}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - stat-discute-network
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ---------------------------------------------------------------------------
+  # ETL Service (Cron-based data collection)
+  # ---------------------------------------------------------------------------
+  etl:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.etl
+    container_name: stat-discute-etl
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-nba_stats}
+      DB_USER: ${DB_USER:-nba_admin}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      # NBA API settings
+      NBA_API_TIMEOUT: ${NBA_API_TIMEOUT:-30}
+      NBA_API_RETRY_COUNT: ${NBA_API_RETRY_COUNT:-3}
+      NBA_API_RATE_LIMIT_DELAY: ${NBA_API_RATE_LIMIT_DELAY:-1.0}
+    volumes:
+      - etl_logs:/app/logs
+      # Mount scripts for hot-reload during development (optional)
+      # - ../1.DATABASE/etl:/app/etl:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - stat-discute-network
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  postgres_data:
+    name: stat-discute-postgres-data
+  etl_logs:
+    name: stat-discute-etl-logs
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  stat-discute-network:
+    name: stat-discute-network
+    driver: bridge
