@@ -644,16 +644,46 @@ sudo ufw enable
 - [x] Run migrations (auto-run via docker-entrypoint-initdb.d)
 - [x] Verify frontend accessible at http://34.140.155.16:3000
 
-### Phase 5: Data & Backup
-- [ ] Run initial ETL to populate database
+### Phase 5: Data & Backup ✅ COMPLETED (2025-11-25)
+- [x] Run initial ETL to populate database
+  - 30 teams loaded
+  - 54 games (upcoming schedule) loaded
+  - 1 season (2025-26) configured
+  - ⚠️ NBA stats.nba.com API blocks GCP IPs (historical data needs local ETL)
 - [x] Setup backup script (created)
-- [ ] Configure backup cron on VM
+- [x] Configure backup cron on VM (daily 4 AM UTC)
 - [ ] Test backup restore
 
 ### Phase 6: Monitoring
 - [x] Setup health check script (created)
 - [ ] Configure GCP uptime monitoring
 - [ ] Document runbook for common issues
+
+---
+
+## Known Limitations
+
+### NBA API Access from GCP
+The NBA stats.nba.com API consistently times out from GCP Compute Engine IPs.
+This affects:
+- Historical game data fetching (LeagueGameFinder endpoint)
+- Player stats collection (nba_api library endpoints)
+
+**Working endpoints from GCP**:
+- Scoreboard API (cdn.nba.com) - used by fetch_schedule_direct.py
+- Team data endpoints
+
+**Workaround**: Run historical ETL from a local machine:
+```bash
+# From local machine (not GCP)
+cd 1.DATABASE/etl
+python3 sync_season_2025_26.py        # Fetch completed games
+python3 fetch_player_stats_direct.py  # Fetch player box scores
+
+# Then export and import to production:
+pg_dump -h localhost -U chapirou nba_stats > backup.sql
+# SCP to VM and import
+```
 
 ---
 
