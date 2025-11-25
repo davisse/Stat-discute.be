@@ -1,0 +1,144 @@
+# ==================== NBA Statistics Database Requirements ====================
+# Installation: pip install -r requirements.txt
+# For system-wide (macOS): pip install -r requirements.txt --break-system-packages
+
+# ==================== Core Dependencies ====================
+
+# NBA API - Official NBA statistics
+nba_api==1.4.1
+
+# Data processing and analysis
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database drivers and ORM
+psycopg2-binary>=2.9.0          # PostgreSQL driver
+SQLAlchemy>=2.0.0               # ORM (optional, for some ETL scripts)
+
+# Configuration management
+python-dotenv>=1.0.0            # Environment variables from .env
+
+# ==================== Caching ====================
+
+# Redis for query caching
+redis>=5.0.0
+
+# ==================== Data Validation ====================
+
+# Schema validation
+jsonschema>=4.17.0
+pydantic>=2.0.0
+
+# ==================== Scheduling & ETL ====================
+
+# Apache Airflow (optional, for production ETL orchestration)
+# apache-airflow>=2.7.0         # Uncomment if using Airflow
+
+# Task scheduling
+schedule>=1.2.0                 # Simple cron-like scheduler
+APScheduler>=3.10.0             # Advanced Python scheduler
+
+# ==================== API & Web ====================
+
+# REST API framework (if building API layer)
+flask>=3.0.0
+flask-cors>=4.0.0
+fastapi>=0.104.0               # Alternative to Flask
+uvicorn>=0.24.0                # ASGI server for FastAPI
+
+# HTTP client
+requests>=2.31.0
+
+# ==================== Monitoring & Logging ====================
+
+# Prometheus metrics
+prometheus-client>=0.18.0
+
+# Structured logging
+python-json-logger>=2.0.0
+
+# Error tracking (optional)
+# sentry-sdk>=1.38.0            # Uncomment if using Sentry
+
+# ==================== Testing ====================
+
+# Testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0               # Coverage reporting
+pytest-mock>=3.12.0             # Mocking support
+
+# Database testing
+pytest-postgresql>=5.0.0
+
+# ==================== Development Tools ====================
+
+# Code quality
+black>=23.11.0                  # Code formatter
+flake8>=6.1.0                   # Linter
+mypy>=1.7.0                     # Type checker
+isort>=5.12.0                   # Import sorter
+
+# Pre-commit hooks
+pre-commit>=3.5.0
+
+# ==================== Data Export ====================
+
+# Excel export
+openpyxl>=3.1.0                # For Excel files
+xlsxwriter>=3.1.0              # Alternative Excel writer
+
+# CSV enhancement
+csvkit>=1.1.0
+
+# ==================== Utilities ====================
+
+# Date/time handling
+python-dateutil>=2.8.0
+pytz>=2023.3
+
+# CLI tools
+click>=8.1.0                    # Command-line interface creation
+rich>=13.7.0                    # Rich terminal output
+tqdm>=4.66.0                    # Progress bars
+
+# ==================== Cloud & Storage (Optional) ====================
+
+# AWS S3 for backups
+# boto3>=1.29.0                 # Uncomment if using AWS
+
+# Google Cloud Storage
+# google-cloud-storage>=2.10.0  # Uncomment if using GCP
+
+# ==================== Betting Data Integration (Optional) ====================
+
+# If integrating with betting APIs
+# beautifulsoup4>=4.12.0        # HTML parsing
+# selenium>=4.15.0              # Browser automation
+# playwright>=1.40.0            # Modern browser automation
+
+# ==================== Machine Learning (Phase 5) ====================
+
+# Prediction models (optional, for advanced features)
+# scikit-learn>=1.3.0
+# lightgbm>=4.1.0
+# xgboost>=2.0.0
+
+# ==================== Documentation ====================
+
+# Documentation generation
+# mkdocs>=1.5.0                 # Uncomment if generating docs
+# mkdocs-material>=9.4.0
+
+# ==================== Dependencies Note ====================
+# Some dependencies may conflict with system packages.
+# Use a virtual environment:
+#   python3 -m venv venv
+#   source venv/bin/activate  # macOS/Linux
+#   pip install -r requirements.txt
+
+# ==================== Known Issues ====================
+# nba_api requires certifi<2024.0.0 which may conflict with:
+# - selenium>=4.36.0 (requires certifi>=2025.6.15)
+# - opencv-python (requires numpy>=2.0)
+#
+# Resolution: Use virtual environment, conflicts won't affect NBA API functionality

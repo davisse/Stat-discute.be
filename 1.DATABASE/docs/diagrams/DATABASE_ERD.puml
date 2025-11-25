@@ -1,0 +1,822 @@
+@startuml NBA_Betting_Database_Complete_ERD
+!define CORE_COLOR #E3F2FD
+!define GAME_COLOR #E8F5E9
+!define STATS_COLOR #F3E5F5
+!define ROSTER_COLOR #FFE0B2
+!define BETTING_COLOR #FFF9C4
+!define ANALYTICS_COLOR #FCE4EC
+!define SYSTEM_COLOR #ECEFF1
+
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+' Spacing and Padding
+skinparam padding 20
+skinparam nodesep 80
+skinparam ranksep 100
+skinparam packagePadding 30
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+' Arrow spacing
+skinparam arrowThickness 1.5
+skinparam minClassWidth 200
+
+title NBA Sports Betting Database - Complete Entity Relationship Diagram\nPostgreSQL 18 | 42 Tables + 5 Materialized Views
+
+' ===============================================
+' CATEGORY 1: CORE REFERENCE DATA (8 tables)
+' ===============================================
+package "Core Reference Data" <<Rectangle>> CORE_COLOR {
+
+    entity "teams" as teams {
+        * team_id : BIGINT <<PK>>
+        --
+        full_name : VARCHAR(100)
+        abbreviation : VARCHAR(3) <<UNIQUE>>
+        nickname : VARCHAR(50)
+        city : VARCHAR(50)
+        state : VARCHAR(50)
+        year_founded : INTEGER
+        conference : VARCHAR(10)
+        division : VARCHAR(20)
+        is_active : BOOLEAN
+    }
+
+    entity "players" as players {
+        * player_id : BIGINT <<PK>>
+        --
+        first_name : VARCHAR(50)
+        last_name : VARCHAR(50)
+        full_name : VARCHAR(100)
+        is_active : BOOLEAN
+        birthdate : DATE
+        country : VARCHAR(50)
+        height : VARCHAR(10)
+        weight : INTEGER
+        position : VARCHAR(20)
+        jersey_number : VARCHAR(3)
+        draft_year : INTEGER
+    }
+
+    entity "seasons" as seasons {
+        * season_id : VARCHAR(10) <<PK>>
+        --
+        season_year : VARCHAR(10)
+        season_type : VARCHAR(20)
+        start_date : DATE
+        end_date : DATE
+        is_current : BOOLEAN
+    }
+
+    entity "venues" as venues {
+        * venue_id : INTEGER <<PK>>
+        --
+        venue_name : VARCHAR(100)
+        city : VARCHAR(50)
+        state : VARCHAR(50)
+        capacity : INTEGER
+        year_opened : INTEGER
+    }
+
+    entity "coaches" as coaches {
+        * coach_id : BIGINT <<PK>>
+        --
+        first_name : VARCHAR(50)
+        last_name : VARCHAR(50)
+        is_active : BOOLEAN
+    }
+
+    entity "team_coaches" as team_coaches {
+        * coach_assignment_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * coach_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        coach_type : VARCHAR(20)
+        start_date : DATE
+        end_date : DATE
+    }
+
+    entity "trades_transactions" as trades {
+        * transaction_id : SERIAL <<PK>>
+        --
+        player_id : BIGINT <<FK>>
+        from_team_id : BIGINT <<FK>>
+        to_team_id : BIGINT <<FK>>
+        transaction_date : DATE
+        transaction_type : VARCHAR(50)
+    }
+
+    entity "official_stats" as officials {
+        * official_id : INTEGER <<PK>>
+        --
+        official_name : VARCHAR(100)
+        jersey_number : VARCHAR(5)
+        avg_fouls_per_game : DECIMAL(4,2)
+        avg_techs_per_game : DECIMAL(4,2)
+    }
+}
+
+' ===============================================
+' CATEGORY 2: GAME & SCHEDULE DATA (5 tables)
+' ===============================================
+package "Game & Schedule" <<Rectangle>> GAME_COLOR {
+
+    entity "games" as games {
+        * game_id : VARCHAR(20) <<PK>>
+        --
+        * season_id : VARCHAR(10) <<FK>>
+        * game_date : DATE
+        game_time : TIME
+        * home_team_id : BIGINT <<FK>>
+        * away_team_id : BIGINT <<FK>>
+        venue_id : INTEGER <<FK>>
+        game_status : VARCHAR(20)
+        home_team_score : INTEGER
+        away_team_score : INTEGER
+        attendance : INTEGER
+        game_duration_minutes : INTEGER
+        is_playoff : BOOLEAN
+    }
+
+    entity "playoff_series" as playoffs {
+        * series_id : SERIAL <<PK>>
+        --
+        * season_id : VARCHAR(10) <<FK>>
+        * team1_id : BIGINT <<FK>>
+        * team2_id : BIGINT <<FK>>
+        playoff_round : VARCHAR(50)
+        series_winner_id : BIGINT <<FK>>
+        team1_wins : INTEGER
+        team2_wins : INTEGER
+    }
+
+    entity "game_lineups" as lineups {
+        * lineup_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        player_id : BIGINT <<FK>>
+        starting_position : VARCHAR(2)
+        lineup_type : VARCHAR(20)
+    }
+
+    entity "schedule_metadata" as schedule_meta {
+        * schedule_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * home_team_id : BIGINT <<FK>>
+        * away_team_id : BIGINT <<FK>>
+        days_rest_home : INTEGER
+        days_rest_away : INTEGER
+        is_back_to_back_home : BOOLEAN
+        is_back_to_back_away : BOOLEAN
+        home_team_travel_distance : INTEGER
+        away_team_travel_distance : INTEGER
+    }
+
+    entity "team_travel_schedule" as travel {
+        * travel_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * game_id : VARCHAR(20) <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        departure_city : VARCHAR(50)
+        arrival_city : VARCHAR(50)
+        travel_distance_miles : INTEGER
+        travel_date : DATE
+        games_in_trip : INTEGER
+    }
+}
+
+' ===============================================
+' CATEGORY 3: PERFORMANCE STATISTICS (9 tables)
+' ===============================================
+package "Performance Statistics" <<Rectangle>> STATS_COLOR {
+
+    entity "team_game_stats" as team_stats {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        points : INTEGER
+        field_goals_made : INTEGER
+        field_goals_attempted : INTEGER
+        field_goal_pct : DECIMAL(5,3)
+        three_pointers_made : INTEGER
+        assists : INTEGER
+        rebounds : INTEGER
+        steals : INTEGER
+        blocks : INTEGER
+        turnovers : INTEGER
+        fouls : INTEGER
+        won : BOOLEAN
+    }
+
+    entity "player_game_stats" as player_stats {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        minutes_played : VARCHAR(10)
+        points : INTEGER
+        field_goals_made : INTEGER
+        field_goals_attempted : INTEGER
+        three_pointers_made : INTEGER
+        assists : INTEGER
+        rebounds : INTEGER
+        plus_minus : INTEGER
+    }
+
+    entity "team_game_advanced_stats" as team_adv {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        offensive_rating : DECIMAL(6,2)
+        defensive_rating : DECIMAL(6,2)
+        net_rating : DECIMAL(6,2)
+        pace : DECIMAL(5,2)
+        assist_pct : DECIMAL(5,2)
+        true_shooting_pct : DECIMAL(5,3)
+    }
+
+    entity "player_game_advanced_stats" as player_adv {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        offensive_rating : DECIMAL(6,2)
+        defensive_rating : DECIMAL(6,2)
+        net_rating : DECIMAL(6,2)
+        true_shooting_pct : DECIMAL(5,3)
+        usage_rate : DECIMAL(5,2)
+        player_efficiency_rating : DECIMAL(6,2)
+        extended_metrics : JSONB
+    }
+
+    entity "team_game_four_factors" as four_factors {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        effective_fg_pct : DECIMAL(5,3)
+        turnover_pct : DECIMAL(5,3)
+        offensive_rebound_pct : DECIMAL(5,3)
+        free_throw_rate : DECIMAL(5,3)
+        opp_effective_fg_pct : DECIMAL(5,3)
+    }
+
+    entity "lineup_combinations" as lineup_combos {
+        * lineup_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        player1_id : BIGINT <<FK>>
+        player2_id : BIGINT <<FK>>
+        player3_id : BIGINT <<FK>>
+        player4_id : BIGINT <<FK>>
+        player5_id : BIGINT <<FK>>
+        minutes_played : DECIMAL(5,2)
+        plus_minus : INTEGER
+        points_scored : INTEGER
+    }
+
+    entity "shot_charts" as shots {
+        * shot_chart_id : BIGSERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * game_date : DATE
+        * player_id : BIGINT <<FK>>
+        shot_made : BOOLEAN
+        shot_distance : DECIMAL(5,2)
+        loc_x : INTEGER
+        loc_y : INTEGER
+        shot_type : VARCHAR(50)
+        shot_zone : VARCHAR(50)
+    }
+
+    entity "play_by_play" as pbp {
+        * event_id : BIGSERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * game_date : DATE
+        event_num : INTEGER
+        event_type : VARCHAR(50)
+        event_details : JSONB
+        period : INTEGER
+        time_remaining : INTERVAL
+        score_home : INTEGER
+        score_away : INTEGER
+    }
+
+    entity "referee_assignments" as refs {
+        * assignment_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * official_id : INTEGER <<FK>>
+        referee_position : VARCHAR(20)
+    }
+}
+
+' ===============================================
+' CATEGORY 4: ROSTER & AVAILABILITY (3 tables)
+' ===============================================
+package "Roster & Availability" <<Rectangle>> ROSTER_COLOR {
+
+    entity "team_rosters" as rosters {
+        * roster_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * player_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        roster_start_date : DATE
+        roster_end_date : DATE
+        is_active : BOOLEAN
+    }
+
+    entity "player_injury_reports" as injuries {
+        * injury_id : SERIAL <<PK>>
+        --
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        game_id : VARCHAR(20) <<FK>>
+        injury_status : VARCHAR(50)
+        injury_description : TEXT
+        report_date : DATE
+        return_date : DATE
+        source_details : JSONB
+    }
+
+    entity "key_matchup_ratings" as matchups {
+        * matchup_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        position : VARCHAR(2)
+        home_player_id : BIGINT <<FK>>
+        away_player_id : BIGINT <<FK>>
+        matchup_advantage_score : DECIMAL(5,2)
+        matchup_analysis : TEXT
+    }
+}
+
+' ===============================================
+' CATEGORY 5: BETTING INTELLIGENCE (10 tables)
+' ===============================================
+package "Betting Intelligence" <<Rectangle>> BETTING_COLOR {
+
+    entity "team_performance_trends" as trends {
+        * trend_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        date_range_start : DATE
+        date_range_end : DATE
+        games_played : INTEGER
+        wins : INTEGER
+        avg_points_scored : DECIMAL(5,2)
+        avg_points_allowed : DECIMAL(5,2)
+        trend_type : VARCHAR(50)
+    }
+
+    entity "head_to_head_history" as h2h {
+        * h2h_id : SERIAL <<PK>>
+        --
+        * team1_id : BIGINT <<FK>>
+        * team2_id : BIGINT <<FK>>
+        season_id : VARCHAR(10) <<FK>>
+        total_games : INTEGER
+        team1_wins : INTEGER
+        team2_wins : INTEGER
+        avg_point_diff : DECIMAL(6,2)
+        last_game_date : DATE
+        last_game_winner : BIGINT <<FK>>
+    }
+
+    entity "betting_lines" as lines {
+        * line_id : BIGSERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * created_at : TIMESTAMPTZ
+        market_type : VARCHAR(50)
+        closed_at : TIMESTAMPTZ
+        spread : DECIMAL(5,2)
+        over_under : DECIMAL(5,1)
+        moneyline_home : INTEGER
+        moneyline_away : INTEGER
+        sportsbook : VARCHAR(50)
+        sportsbook_metadata : JSONB
+    }
+
+    entity "betting_market_odds" as market_odds {
+        * odds_id : SERIAL <<PK>>
+        --
+        * line_id : BIGINT <<FK>>
+        * game_id : VARCHAR(20) <<FK>>
+        market_name : VARCHAR(100)
+        selection : VARCHAR(100)
+        odds_decimal : DECIMAL(8,4)
+        odds_american : INTEGER
+        implied_probability : DECIMAL(5,4)
+        line_movement_direction : VARCHAR(10)
+        sharp_money_indicator : BOOLEAN
+        public_betting_pct : DECIMAL(5,2)
+        sportsbook_metadata : JSONB
+    }
+
+    entity "game_predictions" as predictions {
+        * prediction_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        model_name : VARCHAR(100)
+        predicted_winner : BIGINT <<FK>>
+        predicted_spread : DECIMAL(5,2)
+        predicted_total : DECIMAL(5,1)
+        win_probability_home : DECIMAL(5,4)
+        win_probability_away : DECIMAL(5,4)
+        confidence_score : DECIMAL(5,4)
+        prediction_timestamp : TIMESTAMPTZ
+    }
+
+    entity "situational_stats" as situations {
+        * stat_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        situation_type : VARCHAR(100)
+        games_played : INTEGER
+        wins : INTEGER
+        avg_points_scored : DECIMAL(5,2)
+        avg_points_allowed : DECIMAL(5,2)
+        win_pct : DECIMAL(5,4)
+    }
+
+    entity "clutch_performance" as clutch {
+        * clutch_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        clutch_games_played : INTEGER
+        clutch_wins : INTEGER
+        clutch_win_pct : DECIMAL(5,4)
+        avg_clutch_margin : DECIMAL(5,2)
+    }
+
+    entity "rest_advantage_analysis" as rest {
+        * rest_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        days_rest : INTEGER
+        games_played : INTEGER
+        wins : INTEGER
+        win_pct : DECIMAL(5,4)
+        avg_point_diff : DECIMAL(5,2)
+    }
+
+    entity "home_away_splits" as splits {
+        * split_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        location : VARCHAR(10)
+        games_played : INTEGER
+        wins : INTEGER
+        win_pct : DECIMAL(5,4)
+        avg_points_scored : DECIMAL(5,2)
+        avg_points_allowed : DECIMAL(5,2)
+    }
+
+    entity "pace_matchup_analysis" as pace {
+        * pace_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        avg_pace : DECIMAL(5,2)
+        vs_fast_pace_record : VARCHAR(10)
+        vs_slow_pace_record : VARCHAR(10)
+    }
+}
+
+' ===============================================
+' CATEGORY 6: BETTING ANALYTICS (4 tables)
+' ===============================================
+package "Betting Analytics" <<Rectangle>> ANALYTICS_COLOR {
+
+    entity "streak_analysis" as streaks {
+        * streak_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        streak_type : VARCHAR(20)
+        current_streak : INTEGER
+        longest_streak : INTEGER
+        performance_during_streak : DECIMAL(5,4)
+    }
+
+    entity "player_impact_on_outcomes" as impact {
+        * impact_id : SERIAL <<PK>>
+        --
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        games_played : INTEGER
+        games_missed : INTEGER
+        team_win_pct_with : DECIMAL(5,4)
+        team_win_pct_without : DECIMAL(5,4)
+        impact_score : DECIMAL(6,2)
+    }
+
+    entity "over_under_trends" as ou_trends {
+        * trend_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        games_analyzed : INTEGER
+        overs : INTEGER
+        unders : INTEGER
+        pushes : INTEGER
+        over_pct : DECIMAL(5,4)
+        avg_total : DECIMAL(5,1)
+    }
+
+    entity "ats_performance" as ats {
+        * ats_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        situation_type : VARCHAR(100)
+        games_covered : INTEGER
+        games_not_covered : INTEGER
+        pushes : INTEGER
+        ats_win_pct : DECIMAL(5,4)
+        avg_margin_vs_spread : DECIMAL(6,2)
+    }
+}
+
+' ===============================================
+' CATEGORY 7: SYSTEM OPERATIONS (3 tables)
+' ===============================================
+package "System Operations" <<Rectangle>> SYSTEM_COLOR {
+
+    entity "standings" as standings {
+        * standing_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        conference_rank : INTEGER
+        division_rank : INTEGER
+        wins : INTEGER
+        losses : INTEGER
+        win_pct : DECIMAL(5,3)
+        games_behind : DECIMAL(4,1)
+        streak : VARCHAR(10)
+    }
+
+    entity "data_refresh_log" as etl_log {
+        * log_id : SERIAL <<PK>>
+        --
+        table_name : VARCHAR(100)
+        refresh_type : VARCHAR(50)
+        start_time : TIMESTAMPTZ
+        end_time : TIMESTAMPTZ
+        records_affected : INTEGER
+        status : VARCHAR(20)
+        error_message : TEXT
+    }
+
+    entity "api_rate_limits" as rate_limits {
+        * rate_limit_id : SERIAL <<PK>>
+        --
+        api_endpoint : VARCHAR(255)
+        request_timestamp : TIMESTAMPTZ
+        requests_made : INTEGER
+        requests_remaining : INTEGER
+        reset_time : TIMESTAMPTZ
+    }
+}
+
+' ===============================================
+' MATERIALIZED VIEWS (5 views)
+' ===============================================
+package "Materialized Views" <<Rectangle>> #E1F5FE {
+
+    entity "mv_team_current_form" as mv_form {
+        * team_id : BIGINT
+        * season_id : VARCHAR(10)
+        --
+        games_played : INTEGER
+        wins : INTEGER
+        avg_points : DECIMAL(5,2)
+        refreshed_at : TIMESTAMP
+    }
+
+    entity "mv_matchup_probabilities" as mv_matchup {
+        * team1_id : BIGINT
+        * team2_id : BIGINT
+        --
+        win_probability_team1 : DECIMAL(5,4)
+        avg_point_diff : DECIMAL(6,2)
+    }
+
+    entity "mv_rest_advantage_impact" as mv_rest {
+        * days_rest : INTEGER
+        --
+        avg_win_pct : DECIMAL(5,4)
+        avg_point_diff : DECIMAL(5,2)
+    }
+
+    entity "mv_injury_impact_summary" as mv_injury {
+        * player_id : BIGINT
+        * season_id : VARCHAR(10)
+        --
+        games_missed : INTEGER
+        team_impact_score : DECIMAL(6,2)
+    }
+
+    entity "mv_betting_edge_signals" as mv_edge {
+        * game_id : VARCHAR(20)
+        --
+        edge_score : DECIMAL(6,2)
+        confidence_level : VARCHAR(20)
+        recommended_bet : VARCHAR(100)
+    }
+}
+
+' ===============================================
+' RELATIONSHIPS - CORE REFERENCE
+' ===============================================
+teams ||--o{ team_coaches : "has"
+coaches ||--o{ team_coaches : "assigned to"
+seasons ||--o{ team_coaches : "during"
+
+teams ||--o{ trades : "from/to"
+players ||--o{ trades : "involves"
+
+' ===============================================
+' RELATIONSHIPS - GAME & SCHEDULE
+' ===============================================
+seasons ||--o{ games : "contains"
+teams ||--o{ games : "home team"
+teams ||--o{ games : "away team"
+venues ||--o{ games : "hosted at"
+
+games ||--o{ game_lineups : "has"
+teams ||--o{ game_lineups : "fielded by"
+players ||--o{ game_lineups : "includes"
+
+games ||--o{ schedule_meta : "has metadata"
+teams ||--o{ schedule_meta : "home team"
+teams ||--o{ schedule_meta : "away team"
+
+teams ||--o{ travel : "travels"
+games ||--o{ travel : "for"
+seasons ||--o{ travel : "during"
+
+seasons ||--o{ playoffs : "part of"
+teams ||--o{ playoffs : "participates"
+
+' ===============================================
+' RELATIONSHIPS - PERFORMANCE STATISTICS
+' ===============================================
+games ||--o{ team_stats : "generates"
+teams ||--o{ team_stats : "played by"
+seasons ||--o{ team_stats : "in"
+
+games ||--o{ player_stats : "generates"
+players ||--o{ player_stats : "played by"
+teams ||--o{ player_stats : "for team"
+seasons ||--o{ player_stats : "in"
+
+games ||--o{ team_adv : "generates"
+teams ||--o{ team_adv : "for"
+
+games ||--o{ player_adv : "generates"
+players ||--o{ player_adv : "for"
+teams ||--o{ player_adv : "on"
+
+games ||--o{ four_factors : "analyzed in"
+teams ||--o{ four_factors : "for"
+
+games ||--o{ lineup_combos : "features"
+teams ||--o{ lineup_combos : "used by"
+players ||--o{ lineup_combos : "player1"
+players ||--o{ lineup_combos : "player2"
+players ||--o{ lineup_combos : "player3"
+players ||--o{ lineup_combos : "player4"
+players ||--o{ lineup_combos : "player5"
+
+games ||--o{ shots : "contains"
+players ||--o{ shots : "taken by"
+
+games ||--o{ pbp : "detailed in"
+
+games ||--o{ refs : "officiated by"
+officials ||--o{ refs : "assigned to"
+
+' ===============================================
+' RELATIONSHIPS - ROSTER & AVAILABILITY
+' ===============================================
+teams ||--o{ rosters : "has"
+players ||--o{ rosters : "on"
+seasons ||--o{ rosters : "during"
+
+players ||--o{ injuries : "reported for"
+teams ||--o{ injuries : "affects"
+games ||--o{ injuries : "related to"
+
+games ||--o{ matchups : "features"
+players ||--o{ matchups : "home player"
+players ||--o{ matchups : "away player"
+
+' ===============================================
+' RELATIONSHIPS - BETTING INTELLIGENCE
+' ===============================================
+teams ||--o{ trends : "has"
+seasons ||--o{ trends : "in"
+
+teams ||--o{ h2h : "team1"
+teams ||--o{ h2h : "team2"
+seasons ||--o{ h2h : "in"
+teams ||--o{ h2h : "last winner"
+
+games ||--o{ lines : "has"
+
+lines ||--o{ market_odds : "contains"
+games ||--o{ market_odds : "for"
+
+games ||--o{ predictions : "predicted"
+teams ||--o{ predictions : "winner"
+
+teams ||--o{ situations : "analyzed"
+seasons ||--o{ situations : "in"
+
+teams ||--o{ clutch : "analyzed"
+seasons ||--o{ clutch : "in"
+
+teams ||--o{ rest : "analyzed"
+seasons ||--o{ rest : "in"
+
+teams ||--o{ splits : "has"
+seasons ||--o{ splits : "in"
+
+teams ||--o{ pace : "analyzed"
+seasons ||--o{ pace : "in"
+
+' ===============================================
+' RELATIONSHIPS - BETTING ANALYTICS
+' ===============================================
+teams ||--o{ streaks : "has"
+seasons ||--o{ streaks : "in"
+
+players ||--o{ impact : "analyzed"
+teams ||--o{ impact : "for"
+seasons ||--o{ impact : "in"
+
+teams ||--o{ ou_trends : "has"
+seasons ||--o{ ou_trends : "in"
+
+teams ||--o{ ats : "has"
+seasons ||--o{ ats : "in"
+
+' ===============================================
+' RELATIONSHIPS - SYSTEM OPERATIONS
+' ===============================================
+teams ||--o{ standings : "ranked in"
+seasons ||--o{ standings : "for"
+
+' ===============================================
+' MATERIALIZED VIEW RELATIONSHIPS
+' ===============================================
+teams ||--o{ mv_form : "current form"
+seasons ||--o{ mv_form : "in"
+
+teams ||--o{ mv_matchup : "team1"
+teams ||--o{ mv_matchup : "team2"
+
+players ||--o{ mv_injury : "impact"
+seasons ||--o{ mv_injury : "in"
+
+games ||--o{ mv_edge : "betting edge"
+
+legend right
+    |= Color Code |
+    | <back:CORE_COLOR>Core Reference</back> | Teams, Players, Seasons |
+    | <back:GAME_COLOR>Game & Schedule</back> | Games, Playoffs, Travel |
+    | <back:STATS_COLOR>Performance Stats</back> | Traditional & Advanced |
+    | <back:ROSTER_COLOR>Roster & Injuries</back> | Availability Data |
+    | <back:BETTING_COLOR>Betting Intelligence</back> | Lines, Predictions, Trends |
+    | <back:ANALYTICS_COLOR>Betting Analytics</back> | ATS, O/U, Streaks |
+    | <back:SYSTEM_COLOR>System Operations</back> | ETL, Monitoring |
+    | <back:#E1F5FE>Materialized Views</back> | Pre-computed Analytics |
+end legend
+
+@enduml

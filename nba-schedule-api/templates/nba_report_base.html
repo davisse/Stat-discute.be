@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{meta_description}}">
+    <title>{{report_title}} | Stat Discute</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* ==================== CSS Variables - Lakers Branding ==================== */
+        :root {
+            --lakers-purple: #552583;
+            --lakers-gold: #FDB927;
+            --lakers-black: #000000;
+            --lakers-white: #FFFFFF;
+
+            --primary: var(--lakers-purple);
+            --secondary: var(--lakers-gold);
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F9FAFB;
+            --bg-tertiary: #F3F4F6;
+
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --text-tertiary: #9CA3AF;
+
+            --border: #E5E7EB;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #111827;
+                --bg-secondary: #1F2937;
+                --bg-tertiary: #374151;
+                --text-primary: #F9FAFB;
+                --text-secondary: #D1D5DB;
+                --text-tertiary: #9CA3AF;
+                --border: #374151;
+            }
+        }
+
+        /* ==================== Base Styles ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==================== Typography ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+        }
+
+        h1 { font-size: 2.25rem; }
+        h2 { font-size: 1.875rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+        h5 { font-size: 1.125rem; }
+        h6 { font-size: 1rem; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.875rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.25rem; }
+        }
+
+        /* ==================== Layout ==================== */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+        }
+
+        .container-fluid {
+            width: 100%;
+            padding: var(--spacing-md);
+        }
+
+        /* ==================== Header ==================== */
+        .report-header {
+            background: linear-gradient(135deg, var(--lakers-purple) 0%, #3d1a5f 100%);
+            color: var(--lakers-white);
+            padding: var(--spacing-2xl) var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .report-header__title {
+            color: var(--lakers-white);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .report-header__subtitle {
+            color: var(--lakers-gold);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .report-header__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .meta-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--radius-md);
+        }
+
+        /* ==================== Summary Cards ==================== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card__label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-card__value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-card__change {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-card__change--positive {
+            color: var(--success);
+        }
+
+        .stat-card__change--negative {
+            color: var(--danger);
+        }
+
+        /* ==================== Chart Containers ==================== */
+        .chart-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow);
+        }
+
+        .chart-section__header {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .chart-section__title {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .chart-section__description {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==================== Tables ==================== */
+        .table-container {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9375rem;
+        }
+
+        thead {
+            background: var(--bg-tertiary);
+        }
+
+        th {
+            padding: var(--spacing-md);
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .table-numeric {
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .table-highlight--win {
+            background: rgba(16, 185, 129, 0.1);
+            font-weight: 600;
+        }
+
+        .table-highlight--loss {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* ==================== Utilities ==================== */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-muted { color: var(--text-secondary); }
+        .text-small { font-size: 0.875rem; }
+
+        .mb-sm { margin-bottom: var(--spacing-sm); }
+        .mb-md { margin-bottom: var(--spacing-md); }
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .mb-xl { margin-bottom: var(--spacing-xl); }
+
+        .mt-sm { margin-top: var(--spacing-sm); }
+        .mt-md { margin-top: var(--spacing-md); }
+        .mt-lg { margin-top: var(--spacing-lg); }
+        .mt-xl { margin-top: var(--spacing-xl); }
+
+        /* ==================== Print Styles ==================== */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .chart-section, .table-container {
+                page-break-inside: avoid;
+                box-shadow: none;
+            }
+
+            .report-header {
+                background: var(--lakers-purple) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* ==================== Accessibility ==================== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--lakers-gold);
+            outline-offset: 2px;
+        }
+
+        /* ==================== Loading State ==================== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+
+    {{additional_styles}}
+</head>
+<body>
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="sr-only">Passer au contenu principal</a>
+
+    <!-- Report Header -->
+    <header class="report-header">
+        <div class="container">
+            <h1 class="report-header__title">{{report_title}}</h1>
+            <p class="report-header__subtitle">{{report_subtitle}}</p>
+            <div class="report-header__meta">
+                <span class="meta-badge">📊 {{report_type}}</span>
+                <span class="meta-badge">📅 {{date_range}}</span>
+                <span class="meta-badge">🏀 {{league}}</span>
+                {{meta_badges}}
+            </div>
+        </div>
+    </header>
+
+    <!-- Chart.js Configuration - Must be before chart creation -->
+    <script>
+        // Detect dark mode
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        // Global Chart.js defaults for Lakers branding
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        Chart.defaults.color = isDarkMode ? '#D1D5DB' : '#6B7280';
+
+        // Lakers color palette
+        const COLORS = {
+            purple: '#552583',
+            gold: '#FDB927',
+            black: '#000000',
+            white: '#FFFFFF',
+            success: '#10B981',
+            danger: '#EF4444',
+            warning: '#F59E0B',
+            info: '#3B82F6'
+        };
+
+        // Dark mode aware colors
+        const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+        const textColor = isDarkMode ? '#D1D5DB' : '#6B7280';
+
+        // Helper function to create gradient
+        function createGradient(ctx, color1, color2) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        }
+
+        // Responsive chart options
+        const RESPONSIVE_OPTIONS = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        color: textColor,
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="container">
+            <!-- Summary Statistics -->
+            <section aria-labelledby="summary-title">
+                <h2 id="summary-title" class="sr-only">Statistiques Résumées</h2>
+                <div class="summary-grid">
+                    {{summary_cards}}
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section aria-labelledby="charts-title">
+                <h2 id="charts-title" class="sr-only">Graphiques d'Analyse</h2>
+                {{charts_content}}
+            </section>
+
+            <!-- Detailed Tables -->
+            <section aria-labelledby="tables-title">
+                <h2 id="tables-title" class="sr-only">Données Détaillées</h2>
+                {{tables_content}}
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted mt-xl mb-xl">
+        <div class="container">
+            <p class="text-small">
+                Généré par <strong>Stat Discute</strong> |
+                Données: NBA.com via nba_api |
+                <a href="https://github.com/swar/nba_api" target="_blank" rel="noopener">Source</a>
+            </p>
+            <p class="text-small mt-sm">
+                {{generation_timestamp}}
+            </p>
+        </div>
+    </footer>
+
+    {{additional_scripts}}
+</body>
+</html>

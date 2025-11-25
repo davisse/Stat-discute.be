@@ -1,0 +1,463 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+**Stat Discute** is an NBA statistics and betting analytics platform built with PostgreSQL, Next.js, and Python ETL pipelines.
+
+### Architecture Components
+1. **PostgreSQL 18 Database** (`1.DATABASE/`) - 28 normalized tables with 155+ indexes
+2. **Next.js 16 Frontend** (`frontend/`) - React 19 dashboard with Server Components and Tailwind v4
+3. **Python ETL Pipeline** (`1.DATABASE/etl/`) - NBA.com data collection and analytics
+4. **Legacy Flask API** (`nba-schedule-api/`) - Being phased out, not for new development
+
+**Current Season**: 2025-26 (auto-detected from database)
+
+## Common Commands
+
+### Frontend Development
+```bash
+cd frontend
+npm run dev        # Dev server at http://localhost:3000
+npm run build      # Production build (checks TypeScript types)
+npm run start      # Production server
+npm run lint       # ESLint with Next.js config
+```
+
+### Database Operations
+```bash
+# Connect to database
+psql nba_stats
+
+# Run all migrations (execute in order)
+cd 1.DATABASE
+psql nba_stats < migrations/001_poc_minimal.sql
+psql nba_stats < migrations/002_fix_integer_types.sql
+psql nba_stats < migrations/003_advanced_reference_tables.sql
+psql nba_stats < migrations/004_advanced_game_stats.sql
+psql nba_stats < migrations/005_betting_intelligence.sql
+psql nba_stats < migrations/006_analytics_system_operations.sql
+psql nba_stats < migrations/007_indexes_constraints.sql
+psql nba_stats < migrations/008_sync_logs.sql
+
+# Quick health checks
+psql nba_stats -c "SELECT season_id, is_current FROM seasons WHERE is_current=true"
+psql nba_stats -c "SELECT COUNT(*) FROM games WHERE season='2025-26'"
+psql nba_stats -c "SELECT COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season='2025-26'"
+```
+
+### ETL Pipeline (Data Collection)
+```bash
+# Set current season (run once per season)
+python3 1.DATABASE/etl/reference_data/sync_seasons_2025_26.py
+
+# Daily data collection workflow
+python3 1.DATABASE/etl/sync_season_2025_26.py              # Fetch games for current season
+python3 1.DATABASE/etl/fetch_player_stats_direct.py       # Fetch player box scores
+python3 1.DATABASE/etl/analytics/run_all_analytics.py     # Calculate derived stats
+
+# Individual analytics (if needed separately)
+python3 1.DATABASE/etl/analytics/calculate_team_stats.py
+python3 1.DATABASE/etl/analytics/calculate_advanced_stats.py
+python3 1.DATABASE/etl/analytics/calculate_standings.py
+```
+
+### NBA API Headers (Critical)
+When creating new ETL scripts that fetch from NBA.com Stats API, these headers are **required**:
+```python
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0',
+    'Referer': 'https://www.nba.com/',
+    'Origin': 'https://www.nba.com',
+    'Accept': '*/*'
+}
+```
+Without these headers, NBA API returns 403 Forbidden. See `1.DATABASE/etl/fetch_player_stats_direct.py:35-47` for reference.
+
+## Architecture
+
+### Database Schema (PostgreSQL 18)
+
+**Core Tables** (28 total):
+```
+teams              - 30 NBA franchises (team_id BIGINT)
+players            - Active/historical players (player_id BIGINT)
+games              - Game schedule and scores (game_id VARCHAR(10), season VARCHAR(7))
+player_game_stats  - Box scores per player per game
+team_game_stats    - Team-level box scores
+seasons            - Season management (is_current flag)
+```
+
+**Betting Intelligence Tables**:
+```
+betting_events     - Game betting markets
+betting_lines      - Spread/moneyline/totals
+betting_odds       - Odds history and movements
+betting_trends     - ATS/Over-Under trends
+```
+
+**Analytics Tables**:
+```
+player_advanced_stats - eFG%, TS%, Usage%, etc.
+team_standings        - Win/loss records, streaks
+ats_performance       - Against the spread stats
+game_predictions      - ML model predictions
+```
+
+**Critical Database Rules**:
+1. **Season Filtering**: ALL queries joining `games` must filter by `season` column
+2. **Type Casting**: PostgreSQL `ROUND()` returns `numeric` type → node-postgres sees it as string → use `parseFloat()` before `.toFixed()` in TypeScript
+3. **ID Types**: `team_id` and `player_id` are BIGINT, `game_id` is VARCHAR(10)
+4. **Indexes**: 155+ indexes optimize common query patterns (see migration 007)
+
+### Frontend Stack (Next.js 16 + React 19 + Tailwind v4)
+
+**Data Flow**:
+```
+PostgreSQL → lib/db.ts (pg pool) → lib/queries.ts → Server Components → Client UI
+```
+
+**Directory Structure**:
+```
+frontend/src/
+├── app/
+│   ├── (dashboard)/        # Dashboard layout group
+│   │   ├── players/        # Player stats pages
+│   │   ├── teams/          # Team standings pages
+│   │   └── betting/        # Betting analytics pages
+│   ├── admin/              # Admin dashboard (Server Component)
+│   ├── api/                # API route handlers
+│   ├── player-props/       # Player props analysis
+│   ├── prototype/          # Prototype pages
+│   ├── design-tokens-test/ # Design system test page
+│   ├── ui-components-test/ # UI components test page
+│   ├── stats-components-test/ # Stats components test
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Homepage
+│   └── globals.css         # Tailwind v4 imports
+├── components/
+│   ├── layout/             # Layout components
+│   │   ├── AppLayout.tsx   # Main app layout wrapper
+│   │   └── index.ts        # Layout exports
+│   └── ui/                 # UI component library
+└── lib/
+    ├── db.ts              # PostgreSQL connection pool
+    ├── queries.ts         # All database query functions
+    ├── design-tokens.ts   # Design system tokens
+    └── utils.ts           # Utility functions
+```
+
+**Key Patterns**:
+- **Server Components by default**: Use React Server Components for data fetching
+- **AppLayout Wrapper**: All pages use `<AppLayout>` for consistent header, navigation, and background
+- **Client/Server Composition**: Client Component (AppLayout) can wrap Server Component content via children prop
+- **Environment Variables**: Database config in `.env.local` (not committed)
+- **Query Pattern**: All queries use parameterized statements for security
+- **Season Filtering**: Every query joining `games` must filter by current season
+
+**AppLayout Component Usage**:
+```tsx
+// Server Component (async with data fetching)
+export default async function MyPage() {
+  const data = await fetchData() // Server-side async
+
+  return (
+    <AppLayout>
+      <div>{/* Your page content */}</div>
+    </AppLayout>
+  )
+}
+
+// Client Component
+'use client'
+export default function MyClientPage() {
+  return (
+    <AppLayout>
+      <div>{/* Your interactive content */}</div>
+    </AppLayout>
+  )
+}
+```
+
+**Tailwind v4 Breaking Changes**:
+- Import: `@import "tailwindcss"` (not `@tailwind base/components/utilities`)
+- PostCSS: Uses `@tailwindcss/postcss` v4 plugin
+- CSS Variables: Don't auto-generate utility classes → use inline styles for dynamic colors
+- Example: `style={{backgroundColor: 'oklch(96% 0 0)'}}` instead of custom utility class
+
+### Design System
+
+**Brand Identity**:
+- **Background**: Pure black (#000000) with 15% opacity white dots (30px grid)
+- **Logo**: Fixed at top center (256px width, 64px height)
+- **Navigation**: Horizontal nav with white/gray states
+- **Typography**: Inter for UI, JetBrains Mono for data/stats
+- **Spacing**: 8px grid system
+- **Border Radius**: 8px, 12px, 16px, 24px scale
+
+**Design Token Files**:
+- `frontend/src/lib/design-tokens.ts` - TypeScript design tokens
+- `frontend/src/app/globals.css` - CSS custom properties
+
+**Chart Components**:
+- Y-axis positioning: Use absolute positioning with percentage-based `bottom` values calculated from data scale
+- Gridlines: Position at exact Y-axis label values, not evenly spaced
+- Bar heights: Calculate as `((value - minValue) / range) * 100` for proportional alignment with Y-axis
+
+### Season-Aware Query Pattern (Required)
+**Every query must filter by current season** to avoid mixing data from multiple years:
+
+```typescript
+// CORRECT: Season-aware query
+export async function getPlayersWithStats() {
+  const currentSeason = await getCurrentSeason()  // Gets '2025-26' from seasons table
+  const result = await query(`
+    SELECT p.player_id, p.full_name, AVG(pgs.points) as points_avg
+    FROM players p
+    JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+    JOIN games g ON pgs.game_id = g.game_id
+    WHERE g.season = $1  -- CRITICAL: Filter by season
+    GROUP BY p.player_id, p.full_name
+  `, [currentSeason])
+  return result.rows
+}
+
+// WRONG: Missing season filter (returns mixed multi-year data)
+export async function getBadQuery() {
+  const result = await query(`
+    SELECT * FROM player_game_stats pgs
+    JOIN games g ON pgs.game_id = g.game_id  -- Missing WHERE g.season = ?
+  `)
+  return result.rows  // ❌ Returns data from ALL seasons
+}
+```
+
+**Why This Matters**:
+- Database contains historical data from multiple seasons
+- Without season filtering, averages mix current and past seasons
+- Frontend assumes all data is from current season
+
+## Basketball Analytics
+
+### Four Factors (Dean Oliver)
+1. **Shooting (40%)**: eFG% = (FGM + 0.5 * 3PM) / FGA
+2. **Turnovers (25%)**: TOV% = TOV / (FGA + 0.44 * FTA + TOV)
+3. **Rebounding (20%)**: OREB% = OREB / (OREB + Opp DREB)
+4. **Free Throws (15%)**: FT Rate = FT / FGA
+
+### Advanced Metrics
+- **True Shooting %**: TS% = PTS / (2 * (FGA + 0.44 * FTA))
+- **Possessions**: FGA + 0.44 * FTA - OREB + TOV
+- **Pace**: (Possessions / Minutes) * 48
+- **Offensive Rating**: (Points / Possessions) * 100
+
+## Betting Data Integration (ps3838.com)
+
+Betting odds are scraped from ps3838.com (Pinnacle) and stored in `betting_*` tables.
+
+**Critical JSON Structure** (documented in `4.BETTING/json_structure_mapping.md`):
+```javascript
+// Correct team order (was incorrectly documented before)
+e[3][1] = Home Team Name
+e[3][2] = Away Team Name
+
+// Markets by period
+e[3][8]["0"]    = Full Game markets (ML, HDP, O/U)
+e[3][8]["1"]    = First Half markets
+e[3][8]["3"]    = Quarter markets
+e[3][8]["4"]    = Other period markets
+
+// Player props for each period
+e[3][8][period][1] = Player props array
+```
+
+**ETL Scripts**:
+- `1.DATABASE/etl/betting/fetch_pinnacle_odds.py` - Fetch odds from Pinnacle
+- `1.DATABASE/etl/betting/parsers.py` - Parse JSON structure
+- `1.DATABASE/etl/betting/utils.py` - Helper functions
+
+## Development Workflows
+
+### Adding a New Dashboard Page
+1. **Create migration** (if new tables needed): `1.DATABASE/migrations/009_your_feature.sql`
+2. **Add query function**: `frontend/src/lib/queries.ts` with season filtering
+3. **Create page**: `frontend/src/app/your-feature/page.tsx` wrapped with `<AppLayout>`
+4. **Add to navigation**: Update `navItems` in `components/layout/AppLayout.tsx` if needed
+
+Example:
+```bash
+# 1. Create migration
+psql nba_stats < 1.DATABASE/migrations/009_new_feature.sql
+
+# 2. Add query to queries.ts with season filtering
+# 3. Create page component with AppLayout wrapper
+# 4. Test
+cd frontend && npm run dev
+```
+
+### Daily Data Collection (Automated)
+```bash
+#!/bin/bash
+# Typical daily ETL workflow
+cd 1.DATABASE/etl
+
+# 1. Fetch new games and scores
+python3 sync_season_2025_26.py
+
+# 2. Fetch player box scores
+python3 fetch_player_stats_direct.py
+
+# 3. Calculate analytics
+python3 analytics/run_all_analytics.py
+
+# 4. (Optional) Fetch betting odds
+python3 betting/fetch_pinnacle_odds.py
+```
+
+### Common Issues and Solutions
+
+**ETL Pipeline**:
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| **403 Forbidden from NBA API** | Missing required headers | Use headers from `fetch_player_stats_direct.py:35-47` |
+| **Empty player stats** | Wrong season or no games | Check `seasons.is_current` flag and verify games exist |
+| **Duplicate key errors** | Re-running script without ON CONFLICT | Add `ON CONFLICT (key) DO UPDATE SET ...` to INSERT statements |
+| **Analytics show zero** | Analytics ran before data collection | Run data collection scripts before analytics scripts |
+| **Mixed season data** | Missing season filter in query | Add `WHERE g.season = $1` to all queries joining games |
+
+**Frontend Charts**:
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| **Bars don't align with Y-axis** | Y-axis labels evenly spaced with flexbox | Use absolute positioning: `bottom: ${((value - minValue) / range) * 100}%` |
+| **Missing bars (height: 0%)** | Value equals minValue in calculation | Add padding to scale range (e.g., `minValue - 10`) instead of forcing minimum bar height |
+| **Type errors with numeric values** | PostgreSQL ROUND() returns numeric type | Use `parseFloat()` before `.toFixed()` in TypeScript |
+
+### Database Query Best Practices
+```sql
+-- ✅ GOOD: Season-filtered, parameterized, limited
+SELECT p.full_name, AVG(pgs.points) as ppg
+FROM players p
+JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+JOIN games g ON pgs.game_id = g.game_id
+JOIN teams t ON pgs.team_id = t.team_id  -- For abbreviations
+WHERE g.season = $1
+GROUP BY p.player_id, p.full_name
+HAVING COUNT(pgs.game_id) >= 5  -- Minimum games threshold
+ORDER BY ppg DESC
+LIMIT 100;  -- Prevent huge result sets
+
+-- ❌ BAD: No season filter, no minimum games, unlimited results
+SELECT p.full_name, AVG(pgs.points) as ppg
+FROM players p
+JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+GROUP BY p.player_id, p.full_name;
+```
+
+## Project Structure
+
+### Key Directories
+```
+stat-discute.be/
+├── 1.DATABASE/                  # Database migrations and ETL pipeline
+│   ├── migrations/              # SQL migrations (001-008)
+│   ├── etl/                     # Python ETL scripts
+│   │   ├── reference_data/      # Season, venue sync scripts
+│   │   ├── analytics/           # Stats calculation scripts
+│   │   └── betting/             # Betting odds collection
+│   └── config/                  # Database configuration
+│
+├── frontend/                    # Next.js 16 application
+│   ├── src/
+│   │   ├── app/                 # Next.js 13+ App Router
+│   │   ├── components/          # React components
+│   │   │   ├── layout/          # AppLayout and layout components
+│   │   │   └── ui/              # UI component library
+│   │   └── lib/                 # Database and utilities
+│   ├── public/                  # Static assets (logo-v5.png)
+│   └── .env.local               # Database credentials (not committed)
+│
+├── 3.ACTIVE_PLANS/              # Current implementation plans
+│   └── 2025_26_season_setup.md  # Current season setup status
+│
+├── 4.BETTING/                   # Betting documentation
+│   └── json_structure_mapping.md # Pinnacle JSON structure reference
+│
+├── claudedocs/                  # Implementation reports
+│   └── session-applayout-integration-2025-11-19.md
+│
+├── nba-schedule-api/            # ⚠️ LEGACY Flask API (being phased out)
+│   └── (do not use for new development)
+│
+└── README.md                    # Project overview (French)
+```
+
+### Critical Files Reference
+
+| File | Purpose | Notes |
+|------|---------|-------|
+| `frontend/src/lib/queries.ts` | All database query functions | Every query must filter by season |
+| `frontend/src/lib/db.ts` | PostgreSQL connection pool | Configured via `.env.local` |
+| `frontend/src/components/layout/AppLayout.tsx` | Main app layout wrapper | Logo, nav, dotted background |
+| `1.DATABASE/etl/fetch_player_stats_direct.py` | Player box score fetcher | Working NBA API implementation with headers |
+| `1.DATABASE/etl/sync_season_2025_26.py` | Games and scores fetcher | Current season data collection |
+| `1.DATABASE/etl/analytics/run_all_analytics.py` | Analytics orchestrator | Runs all analytics scripts in order |
+| `1.DATABASE/IMPLEMENTATION_PLAN.md` | Database schema guide | Complete 42-table plan with examples |
+| `4.BETTING/json_structure_mapping.md` | Betting data structure | Corrected Pinnacle JSON mapping v2.0 |
+| `3.ACTIVE_PLANS/2025_26_season_setup.md` | Season setup status | Current season implementation log |
+
+## Environment Configuration
+
+### Frontend (.env.local)
+```bash
+# PostgreSQL connection
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nba_stats
+DB_USER=chapirou
+DB_PASSWORD=
+
+# Next.js
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+### ETL (1.DATABASE/config/.env)
+```bash
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nba_stats
+DB_USER=postgres
+DB_PASSWORD=
+```
+
+**Note**: `.env.local` files are git-ignored. Copy from `.env.example` if it exists.
+
+## Current Status
+
+**Season**: 2025-26 (set as current, auto-detected by frontend)
+
+**Database State**:
+- 28 tables with 155+ indexes
+- 8 migrations applied (001-008)
+- Current season games and player stats loaded
+- Analytics and standings calculated
+
+**Frontend State**:
+- Next.js 16 + React 19 + Tailwind v4
+- Server Components for data fetching
+- AppLayout applied across all pages (homepage, admin, test pages)
+- Dashboard pages: players, teams, betting
+- Full season-aware query integration
+
+**ETL Pipeline**:
+- Working NBA API integration with proper headers
+- Daily data collection scripts ready
+- Analytics scripts operational
+- Betting odds collection ready (Pinnacle)
+
+**Known Limitations**:
+- Legacy Flask API (`nba-schedule-api/`) not maintained - do not use for new features
+- Tailwind v4 CSS variables require inline styles for dynamic colors
+- PostgreSQL ROUND() type casting needed in TypeScript (numeric → string)

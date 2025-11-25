@@ -1,0 +1,393 @@
+{
+  "exemple_structure_donnees": {
+    "description": "Exemples de structures de données retournées par l'API NBA",
+    "date_creation": "2024-10-23"
+  },
+  
+  "equipes": {
+    "description": "Liste de toutes les équipes NBA",
+    "endpoint": "GET /api/nba/teams",
+    "exemple": [
+      {
+        "id": 1610612738,
+        "full_name": "Boston Celtics",
+        "abbreviation": "BOS",
+        "nickname": "Celtics",
+        "city": "Boston",
+        "state": "Massachusetts",
+        "year_founded": 1946
+      },
+      {
+        "id": 1610612747,
+        "full_name": "Los Angeles Lakers",
+        "abbreviation": "LAL",
+        "nickname": "Lakers",
+        "city": "Los Angeles",
+        "state": "California",
+        "year_founded": 1947
+      },
+      {
+        "id": 1610612744,
+        "full_name": "Golden State Warriors",
+        "abbreviation": "GSW",
+        "nickname": "Warriors",
+        "city": "Golden State",
+        "state": "California",
+        "year_founded": 1946
+      }
+    ]
+  },
+  
+  "match_du_jour": {
+    "description": "Matchs en cours ou terminés aujourd'hui",
+    "endpoint": "GET /api/nba/schedule/today",
+    "exemple": {
+      "success": true,
+      "date": "2024-10-23",
+      "count": 3,
+      "data": [
+        {
+          "GAME_ID": "0022400010",
+          "GAME_DATE_EST": "2024-10-23",
+          "GAME_STATUS_TEXT": "Final",
+          "HOME_TEAM_ID": 1610612738,
+          "VISITOR_TEAM_ID": 1610612752,
+          "PTS_HOME": 108,
+          "PTS_AWAY": 105,
+          "home_team_name": "Boston Celtics",
+          "visitor_team_name": "New York Knicks"
+        },
+        {
+          "GAME_ID": "0022400011",
+          "GAME_DATE_EST": "2024-10-23",
+          "GAME_STATUS_TEXT": "3rd Qtr 5:23",
+          "HOME_TEAM_ID": 1610612747,
+          "VISITOR_TEAM_ID": 1610612744,
+          "PTS_HOME": 78,
+          "PTS_AWAY": 82,
+          "home_team_name": "Los Angeles Lakers",
+          "visitor_team_name": "Golden State Warriors"
+        }
+      ]
+    }
+  },
+  
+  "calendrier_equipe": {
+    "description": "Calendrier complet d'une équipe pour la saison",
+    "endpoint": "GET /api/nba/schedule/team/LAL",
+    "exemple": {
+      "success": true,
+      "team": {
+        "id": 1610612747,
+        "full_name": "Los Angeles Lakers",
+        "abbreviation": "LAL"
+      },
+      "season": "2024-25",
+      "count": 82,
+      "data": [
+        {
+          "SEASON_ID": "22024",
+          "TEAM_ID": 1610612747,
+          "TEAM_ABBREVIATION": "LAL",
+          "TEAM_NAME": "Los Angeles Lakers",
+          "GAME_ID": "0022400001",
+          "GAME_DATE": "2024-10-22",
+          "MATCHUP": "LAL vs. GSW",
+          "WL": "W",
+          "MIN": 240,
+          "PTS": 110,
+          "FGM": 42,
+          "FGA": 87,
+          "FG_PCT": 0.483,
+          "FG3M": 12,
+          "FG3A": 32,
+          "FG3_PCT": 0.375,
+          "FTM": 14,
+          "FTA": 18,
+          "FT_PCT": 0.778,
+          "OREB": 10,
+          "DREB": 35,
+          "REB": 45,
+          "AST": 25,
+          "STL": 8,
+          "BLK": 5,
+          "TOV": 12,
+          "PF": 20,
+          "PLUS_MINUS": 8
+        },
+        {
+          "SEASON_ID": "22024",
+          "TEAM_ID": 1610612747,
+          "TEAM_ABBREVIATION": "LAL",
+          "TEAM_NAME": "Los Angeles Lakers",
+          "GAME_ID": "0022400015",
+          "GAME_DATE": "2024-10-24",
+          "MATCHUP": "LAL @ PHX",
+          "WL": "L",
+          "MIN": 240,
+          "PTS": 102,
+          "FGM": 38,
+          "FGA": 85,
+          "FG_PCT": 0.447,
+          "FG3M": 10,
+          "FG3A": 30,
+          "FG3_PCT": 0.333,
+          "FTM": 16,
+          "FTA": 20,
+          "FT_PCT": 0.800,
+          "OREB": 8,
+          "DREB": 32,
+          "REB": 40,
+          "AST": 22,
+          "STL": 6,
+          "BLK": 4,
+          "TOV": 15,
+          "PF": 18,
+          "PLUS_MINUS": -6
+        }
+      ]
+    }
+  },
+  
+  "statistiques_equipe": {
+    "description": "Statistiques moyennes d'une équipe pour la saison",
+    "endpoint": "GET /api/nba/stats/team/LAL",
+    "exemple": {
+      "success": true,
+      "team": {
+        "id": 1610612747,
+        "full_name": "Los Angeles Lakers",
+        "abbreviation": "LAL"
+      },
+      "season": "2024-25",
+      "stats": {
+        "games_played": 5,
+        "wins": 3,
+        "losses": 2,
+        "win_pct": 0.600,
+        "avg_points": 112.4,
+        "avg_rebounds": 44.2,
+        "avg_assists": 24.6,
+        "avg_steals": 7.8,
+        "avg_blocks": 5.2,
+        "avg_turnovers": 13.4,
+        "fg_pct": 0.478,
+        "fg3_pct": 0.365,
+        "ft_pct": 0.812,
+        "plus_minus": 5.6
+      }
+    }
+  },
+  
+  "details_match": {
+    "description": "Détails complets d'un match (données des deux équipes)",
+    "endpoint": "GET /api/nba/game/0022400001",
+    "exemple": {
+      "success": true,
+      "game_id": "0022400001",
+      "data": [
+        {
+          "SEASON_ID": "22024",
+          "TEAM_ID": 1610612747,
+          "TEAM_ABBREVIATION": "LAL",
+          "TEAM_NAME": "Los Angeles Lakers",
+          "GAME_ID": "0022400001",
+          "GAME_DATE": "2024-10-22",
+          "MATCHUP": "LAL vs. GSW",
+          "WL": "W",
+          "MIN": 240,
+          "PTS": 110,
+          "FGM": 42,
+          "FGA": 87,
+          "FG_PCT": 0.483,
+          "FG3M": 12,
+          "FG3A": 32,
+          "FG3_PCT": 0.375,
+          "FTM": 14,
+          "FTA": 18,
+          "FT_PCT": 0.778,
+          "OREB": 10,
+          "DREB": 35,
+          "REB": 45,
+          "AST": 25,
+          "STL": 8,
+          "BLK": 5,
+          "TOV": 12,
+          "PF": 20,
+          "PLUS_MINUS": 8,
+          "VIDEO_AVAILABLE": 1
+        },
+        {
+          "SEASON_ID": "22024",
+          "TEAM_ID": 1610612744,
+          "TEAM_ABBREVIATION": "GSW",
+          "TEAM_NAME": "Golden State Warriors",
+          "GAME_ID": "0022400001",
+          "GAME_DATE": "2024-10-22",
+          "MATCHUP": "GSW @ LAL",
+          "WL": "L",
+          "MIN": 240,
+          "PTS": 102,
+          "FGM": 39,
+          "FGA": 88,
+          "FG_PCT": 0.443,
+          "FG3M": 14,
+          "FG3A": 40,
+          "FG3_PCT": 0.350,
+          "FTM": 10,
+          "FTA": 14,
+          "FT_PCT": 0.714,
+          "OREB": 9,
+          "DREB": 30,
+          "REB": 39,
+          "AST": 21,
+          "STL": 7,
+          "BLK": 3,
+          "TOV": 14,
+          "PF": 18,
+          "PLUS_MINUS": -8,
+          "VIDEO_AVAILABLE": 1
+        }
+      ]
+    }
+  },
+  
+  "calendrier_periode": {
+    "description": "Tous les matchs dans une période donnée",
+    "endpoint": "GET /api/nba/schedule/range?start=2024-10-01&end=2024-10-31",
+    "exemple": {
+      "success": true,
+      "start_date": "2024-10-01",
+      "end_date": "2024-10-31",
+      "season": "2024-25",
+      "count": 127,
+      "data": [
+        {
+          "game_id": "0022400001",
+          "game_date": "2024-10-22",
+          "matchup": "LAL vs. GSW",
+          "team_id": 1610612747,
+          "team_name": "Los Angeles Lakers",
+          "points": 110,
+          "result": "W",
+          "plus_minus": 8
+        }
+      ]
+    }
+  },
+  
+  "codes_statistiques": {
+    "description": "Légende des codes utilisés dans les statistiques",
+    "codes": {
+      "WL": "Win/Loss (W = victoire, L = défaite)",
+      "PTS": "Points",
+      "MIN": "Minutes jouées",
+      "FGM": "Field Goals Made (tirs réussis)",
+      "FGA": "Field Goals Attempted (tirs tentés)",
+      "FG_PCT": "Field Goal Percentage (pourcentage de réussite)",
+      "FG3M": "3-Point Field Goals Made (3 points réussis)",
+      "FG3A": "3-Point Field Goals Attempted (3 points tentés)",
+      "FG3_PCT": "3-Point Field Goal Percentage",
+      "FTM": "Free Throws Made (lancers francs réussis)",
+      "FTA": "Free Throws Attempted (lancers francs tentés)",
+      "FT_PCT": "Free Throw Percentage",
+      "OREB": "Offensive Rebounds (rebonds offensifs)",
+      "DREB": "Defensive Rebounds (rebonds défensifs)",
+      "REB": "Total Rebounds (rebonds totaux)",
+      "AST": "Assists (passes décisives)",
+      "STL": "Steals (interceptions)",
+      "BLK": "Blocks (contres)",
+      "TOV": "Turnovers (pertes de balle)",
+      "PF": "Personal Fouls (fautes personnelles)",
+      "PLUS_MINUS": "+/- (différence de points quand le joueur est sur le terrain)"
+    }
+  },
+  
+  "use_cases_paris_sportifs": {
+    "description": "Exemples d'utilisation pour les paris sportifs",
+    "exemples": [
+      {
+        "cas": "Analyse des performances à domicile vs extérieur",
+        "donnees_necessaires": [
+          "Calendrier de l'équipe",
+          "Résultats (WL)",
+          "MATCHUP (contient @ pour extérieur, vs. pour domicile)"
+        ],
+        "calcul": "Comparer les statistiques moyennes à domicile vs à l'extérieur"
+      },
+      {
+        "cas": "Tendance des points marqués",
+        "donnees_necessaires": [
+          "Historique des matchs",
+          "PTS par match"
+        ],
+        "calcul": "Moyenne mobile sur les 5 derniers matchs"
+      },
+      {
+        "cas": "Performance face-à-face",
+        "donnees_necessaires": [
+          "Matchs entre deux équipes spécifiques",
+          "Historique de plusieurs saisons"
+        ],
+        "calcul": "Win rate, moyenne de points, spread moyen"
+      },
+      {
+        "cas": "Prédiction Over/Under",
+        "donnees_necessaires": [
+          "Moyenne de points des deux équipes",
+          "Tendance récente (5 derniers matchs)",
+          "Performance domicile/extérieur"
+        ],
+        "calcul": "Somme des moyennes + ajustement domicile/extérieur"
+      },
+      {
+        "cas": "Analyse du rythme de jeu",
+        "donnees_necessaires": [
+          "Nombre de possessions (calculé)",
+          "Points par possession",
+          "Tempo de l'équipe"
+        ],
+        "calcul": "PTS / possessions estimées"
+      }
+    ]
+  },
+  
+  "formules_calculs_utiles": {
+    "description": "Formules pour calculer des métriques avancées",
+    "formules": {
+      "possessions_estimees": "((FGA - OREB) + TOV + 0.4 * FTA)",
+      "efficacite_offensive": "PTS / possessions * 100",
+      "efficacite_defensive": "PTS_adversaire / possessions * 100",
+      "true_shooting_percentage": "PTS / (2 * (FGA + 0.44 * FTA))",
+      "effective_fg_percentage": "(FGM + 0.5 * FG3M) / FGA",
+      "turnover_percentage": "TOV / (FGA + 0.44 * FTA + TOV) * 100",
+      "rebound_percentage": "REB / (REB + REB_adversaire) * 100"
+    }
+  },
+  
+  "endpoints_supplementaires_suggeres": {
+    "description": "Endpoints supplémentaires que vous pourriez ajouter",
+    "suggestions": [
+      {
+        "endpoint": "GET /api/nba/stats/head-to-head/:team1/:team2",
+        "description": "Historique des confrontations entre deux équipes"
+      },
+      {
+        "endpoint": "GET /api/nba/stats/trends/:team",
+        "description": "Tendances sur les 5, 10, 20 derniers matchs"
+      },
+      {
+        "endpoint": "GET /api/nba/stats/home-away/:team",
+        "description": "Comparaison domicile vs extérieur"
+      },
+      {
+        "endpoint": "GET /api/nba/predictions/over-under/:game_id",
+        "description": "Prédiction basée sur les moyennes"
+      },
+      {
+        "endpoint": "GET /api/nba/betting/odds/:game_id",
+        "description": "Cotes de paris (nécessite intégration API externe)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+# Pinnacle NBA Odds Scraper Dependencies
+
+# HTTP requests
+requests>=2.31.0
+
+# PostgreSQL database adapter
+psycopg2-binary>=2.9.9
+
+# Date/time utilities (if not using standard library)
+python-dateutil>=2.8.2
+
+# For testing
+pytest>=7.4.0
+pytest-mock>=3.11.1
+
+# Logging enhancements (optional)
+colorlog>=6.7.0
+
+# Environment variables management (optional)
+python-dotenv>=1.0.0
+
+# JSON processing with comments support (optional)
+jsonc-parser>=1.1.5

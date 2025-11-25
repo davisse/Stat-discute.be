@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skeleton UI Design System - Style Guide</title>
+    <style>
+        /* ============================================
+           DESIGN TOKENS
+           ============================================ */
+        :root {
+            /* Colors */
+            --bg-primary: #F5F5F5;
+            --bg-card: #FFFFFF;
+            --border-light: #E5E7EB;
+            --text-dark: #6B7280;
+            --text-medium: #9CA3AF;
+            --text-light: #D1D5DB;
+
+            /* Spacing - 8px grid system */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-lg: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* ============================================
+           BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: #1F2937;
+            line-height: 1.6;
+            padding: 0;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-xl) var(--space-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+            color: #111827;
+        }
+
+        .header p {
+            color: var(--text-dark);
+            font-size: 1.125rem;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav-container {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-sm) var(--space-lg);
+            position: sticky;
+            top: 112px;
+            z-index: 99;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .nav-menu a {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: var(--bg-primary);
+            color: #111827;
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+        }
+
+        /* ============================================
+           SECTION STYLES
+           ============================================ */
+        .section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: var(--space-lg);
+            color: #111827;
+            border-bottom: 3px solid var(--text-dark);
+            padding-bottom: var(--space-sm);
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: var(--space-xl) 0 var(--space-md);
+            color: #374151;
+        }
+
+        /* ============================================
+           SHOWCASE COMPONENT
+           ============================================ */
+        .showcase {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .showcase-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border-light);
+            background: #FAFAFA;
+        }
+
+        .showcase-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: var(--space-xs);
+        }
+
+        .showcase-header p {
+            color: var(--text-dark);
+            font-size: 0.9375rem;
+        }
+
+        .showcase-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 200px;
+        }
+
+        .showcase-visual {
+            padding: var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border-light);
+        }
+
+        .showcase-code {
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .showcase-code pre {
+            background: #1F2937;
+            color: #F9FAFB;
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .showcase-specs {
+            font-size: 0.875rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .showcase-specs strong {
+            color: #111827;
+        }
+
+        /* ============================================
+           COLOR SWATCHES
+           ============================================ */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .color-swatch {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .color-sample {
+            height: 120px;
+        }
+
+        .color-info {
+            padding: var(--space-md);
+            background: var(--bg-card);
+        }
+
+        .color-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: var(--space-xs);
+        }
+
+        .color-value {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+        }
+
+        /* ============================================
+           SPACING SCALE
+           ============================================ */
+        .spacing-demo {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .spacing-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .spacing-bar {
+            background: var(--text-dark);
+            height: 24px;
+        }
+
+        .spacing-label {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+            min-width: 180px;
+        }
+
+        /* ============================================
+           SKELETON BAR COMPONENTS
+           ============================================ */
+        .skeleton-bar {
+            background: var(--text-dark);
+            border-radius: 4px;
+        }
+
+        /* Sizes */
+        .skeleton-bar--xl {
+            height: 12px;
+            border-radius: 6px;
+        }
+
+        .skeleton-bar--lg {
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        .skeleton-bar--md {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .skeleton-bar--sm {
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        /* Colors */
+        .skeleton-bar--dark {
+            background: var(--text-dark);
+        }
+
+        .skeleton-bar--medium {
+            background: var(--text-medium);
+        }
+
+        .skeleton-bar--light {
+            background: var(--text-light);
+        }
+
+        /* ============================================
+           ICON COMPONENTS
+           ============================================ */
+        .diamond-icon {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--text-medium);
+            transform: rotate(45deg);
+            background: transparent;
+        }
+
+        .circle-bullet {
+            border-radius: 50%;
+            background: var(--text-medium);
+        }
+
+        .circle-bullet--sm {
+            width: 8px;
+            height: 8px;
+        }
+
+        .circle-bullet--md {
+            width: 12px;
+            height: 12px;
+        }
+
+        .circle-bullet--lg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .avatar-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--text-medium);
+        }
+
+        /* ============================================
+           NAV ITEM COMPONENT
+           ============================================ */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 48px;
+        }
+
+        .nav-item__icon {
+            flex-shrink: 0;
+        }
+
+        .nav-item__text {
+            width: 120px;
+        }
+
+        /* ============================================
+           CARD COMPONENTS
+           ============================================ */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-progress {
+            width: 240px;
+            height: 180px;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            justify-content: center;
+        }
+
+        .card-profile {
+            width: 240px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .card-chart {
+            width: 500px;
+            height: 320px;
+            padding: var(--space-lg);
+            position: relative;
+        }
+
+        .chart-controls {
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .chart-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--text-medium);
+            background: transparent;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: var(--space-lg);
+            left: var(--space-lg);
+            right: var(--space-lg);
+            height: 180px;
+        }
+
+        .chart-line svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ============================================
+           TABLE ROW COMPONENT
+           ============================================ */
+        .table-row {
+            display: grid;
+            grid-template-columns: 12px 180px repeat(5, 80px);
+            column-gap: var(--space-md);
+            align-items: center;
+            height: 56px;
+            padding: 0 var(--space-md);
+        }
+
+        .table-row-bullet {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-medium);
+        }
+
+        /* ============================================
+           ORGANISM - DASHBOARD LAYOUT
+           ============================================ */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: var(--space-md);
+            background: var(--bg-primary);
+            padding: var(--space-md);
+            border-radius: var(--radius-lg);
+            min-height: 600px;
+        }
+
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .dashboard-main {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .dashboard-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-sm) 0;
+        }
+
+        /* ============================================
+           RADIUS & SHADOW DEMOS
+           ============================================ */
+        .radius-demo, .shadow-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .radius-sample, .shadow-sample {
+            height: 100px;
+            background: var(--text-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           GRID DEMO COMPONENTS
+           ============================================ */
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .variant-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+
+        .variant-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            align-items: center;
+        }
+
+        .variant-label {
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            text-align: center;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 968px) {
+            .showcase-body {
+                grid-template-columns: 1fr;
+            }
+
+            .showcase-visual {
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .nav-container {
+                position: static;
+            }
+
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Skeleton UI Design System</h1>
+        <p>Component Library & Style Guide</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav class="nav-menu">
+            <a href="#foundation">Foundation</a>
+            <a href="#atoms">Atoms</a>
+            <a href="#molecules">Molecules</a>
+            <a href="#organisms">Organisms</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- ============================================
+             FOUNDATION SECTION
+             ============================================ -->
+        <section id="foundation" class="section">
+            <h2 class="section-title">1. Design Foundation</h2>
+
+            <!-- Color System -->
+            <h3 class="section-subtitle">Color System</h3>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #F5F5F5;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background Primary</div>
+                        <div class="color-value">--bg-primary: #F5F5F5</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #FFFFFF; border: 1px solid #E5E7EB;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Card Background</div>
+                        <div class="color-value">--bg-card: #FFFFFF</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #E5E7EB;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Border Light</div>
+                        <div class="color-value">--border-light: #E5E7EB</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #6B7280;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Dark</div>
+                        <div class="color-value">--text-dark: #6B7280</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #9CA3AF;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Medium</div>
+                        <div class="color-value">--text-medium: #9CA3AF</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-sample" style="background: #D1D5DB;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Light</div>
+                        <div class="color-value">--text-light: #D1D5DB</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spacing Scale -->
+            <h3 class="section-subtitle">Spacing Scale (8px Grid System)</h3>
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Spacing Tokens</h3>
+                    <p>Consistent spacing system based on 8px increments</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="spacing-demo">
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-xs: 8px</div>
+                                <div class="spacing-bar" style="width: 8px;"></div>
+                            </div>
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-sm: 16px</div>
+                                <div class="spacing-bar" style="width: 16px;"></div>
+                            </div>
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-md: 24px</div>
+                                <div class="spacing-bar" style="width: 24px;"></div>
+                            </div>
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-lg: 32px</div>
+                                <div class="spacing-bar" style="width: 32px;"></div>
+                            </div>
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-xl: 48px</div>
+                                <div class="spacing-bar" style="width: 48px;"></div>
+                            </div>
+                            <div class="spacing-item">
+                                <div class="spacing-label">--space-2xl: 64px</div>
+                                <div class="spacing-bar" style="width: 64px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>/* Spacing Variables */
+--space-xs: 8px;
+--space-sm: 16px;
+--space-md: 24px;
+--space-lg: 32px;
+--space-xl: 48px;
+--space-2xl: 64px;</pre>
+                        <div class="showcase-specs">
+                            <strong>System:</strong> 8px base grid<br>
+                            <strong>Usage:</strong> Padding, margins, gaps
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Border Radius -->
+            <h3 class="section-subtitle">Border Radius</h3>
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Border Radius Options</h3>
+                    <p>Rounded corner variations for different component types</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="radius-demo">
+                            <div class="radius-sample" style="border-radius: 8px;">8px</div>
+                            <div class="radius-sample" style="border-radius: 12px;">12px</div>
+                            <div class="radius-sample" style="border-radius: 16px;">16px</div>
+                            <div class="radius-sample" style="border-radius: 24px;">24px</div>
+                            <div class="radius-sample" style="border-radius: 9999px;">Full</div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>/* Border Radius */
+--radius-sm: 8px;
+--radius-md: 12px;
+--radius-lg: 16px;
+--radius-xl: 24px;
+--radius-full: 9999px;</pre>
+                        <div class="showcase-specs">
+                            <strong>Usage:</strong> Cards (lg), buttons (md), badges (full)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shadows -->
+            <h3 class="section-subtitle">Shadow Levels</h3>
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Shadow System</h3>
+                    <p>Subtle elevation effects for depth and hierarchy</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="shadow-demo">
+                            <div class="shadow-sample" style="box-shadow: 0 1px 2px rgba(0,0,0,0.03);">Small</div>
+                            <div class="shadow-sample" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04);">Medium</div>
+                            <div class="shadow-sample" style="box-shadow: 0 2px 8px rgba(0,0,0,0.05);">Large</div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>/* Shadows */
+--shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+--shadow-md: 0 1px 3px rgba(0,0,0,0.04);
+--shadow-lg: 0 2px 8px rgba(0,0,0,0.05);</pre>
+                        <div class="showcase-specs">
+                            <strong>Usage:</strong> Cards (md), modals (lg), badges (sm)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================
+             ATOMS SECTION
+             ============================================ -->
+        <section id="atoms" class="section">
+            <h2 class="section-title">2. Atomic Components</h2>
+
+            <!-- Skeleton Bars -->
+            <h3 class="section-subtitle">Skeleton Bars</h3>
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Skeleton Bar - Size Variants</h3>
+                    <p>Text placeholder bars in 4 sizes (XL, L, M, S)</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 300px;">
+                            <div class="skeleton-bar skeleton-bar--xl skeleton-bar--dark" style="width: 100%;"></div>
+                            <div class="skeleton-bar skeleton-bar--lg skeleton-bar--dark" style="width: 100%;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 100%;"></div>
+                            <div class="skeleton-bar skeleton-bar--sm skeleton-bar--dark" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>/* Size Modifiers */
+.skeleton-bar--xl {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-bar--lg {
+  height: 10px;
+  border-radius: 5px;
+}
+
+.skeleton-bar--md {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.skeleton-bar--sm {
+  height: 6px;
+  border-radius: 3px;
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Sizes:</strong> XL (12px), L (10px), M (8px), S (6px)<br>
+                            <strong>Usage:</strong> Headers (XL), body text (M/L), captions (S)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Skeleton Bar - Color Variants</h3>
+                    <p>Three intensity levels for visual hierarchy</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 300px;">
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 100%;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--medium" style="width: 100%;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>/* Color Modifiers */
+.skeleton-bar--dark {
+  background: var(--text-dark);
+  /* #6B7280 */
+}
+
+.skeleton-bar--medium {
+  background: var(--text-medium);
+  /* #9CA3AF */
+}
+
+.skeleton-bar--light {
+  background: var(--text-light);
+  /* #D1D5DB */
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Dark:</strong> Primary content<br>
+                            <strong>Medium:</strong> Secondary content<br>
+                            <strong>Light:</strong> Tertiary content
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Icons -->
+            <h3 class="section-subtitle">Icon Components</h3>
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Diamond Icon</h3>
+                    <p>Navigation bullet created from rotated square</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="diamond-icon"></div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.diamond-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--text-medium);
+  transform: rotate(45deg);
+  background: transparent;
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Dimensions:</strong> 16×16px<br>
+                            <strong>Usage:</strong> Navigation items, list markers
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Circle Bullets</h3>
+                    <p>Round markers in three sizes</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div style="display: flex; gap: 24px; align-items: center;">
+                            <div class="variant-item">
+                                <div class="circle-bullet circle-bullet--sm"></div>
+                                <div class="variant-label">Small (8px)</div>
+                            </div>
+                            <div class="variant-item">
+                                <div class="circle-bullet circle-bullet--md"></div>
+                                <div class="variant-label">Medium (12px)</div>
+                            </div>
+                            <div class="variant-item">
+                                <div class="circle-bullet circle-bullet--lg"></div>
+                                <div class="variant-label">Large (16px)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.circle-bullet {
+  border-radius: 50%;
+  background: var(--text-medium);
+}
+
+.circle-bullet--sm {
+  width: 8px; height: 8px;
+}
+.circle-bullet--md {
+  width: 12px; height: 12px;
+}
+.circle-bullet--lg {
+  width: 16px; height: 16px;
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Sizes:</strong> 8px, 12px, 16px<br>
+                            <strong>Usage:</strong> Lists, status indicators, table rows
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Avatar Circle</h3>
+                    <p>Large circular placeholder for profile images</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="avatar-circle"></div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.avatar-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--text-medium);
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Dimensions:</strong> 72×72px<br>
+                            <strong>Usage:</strong> Profile cards, user avatars
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================
+             MOLECULES SECTION
+             ============================================ -->
+        <section id="molecules" class="section">
+            <h2 class="section-title">3. Molecular Components</h2>
+
+            <!-- Nav Item -->
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Navigation Item</h3>
+                    <p>Composite: Diamond icon + skeleton text</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="nav-item">
+                            <div class="nav-item__icon">
+                                <div class="diamond-icon"></div>
+                            </div>
+                            <div class="nav-item__text skeleton-bar skeleton-bar--md skeleton-bar--dark"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+}
+
+.nav-item__icon {
+  flex-shrink: 0;
+}
+
+.nav-item__text {
+  width: 120px;
+  /* skeleton-bar--md */
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Height:</strong> 48px<br>
+                            <strong>Icon:</strong> 16px diamond<br>
+                            <strong>Text:</strong> 120px × 8px bar
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Progress Bar Card</h3>
+                    <p>Card displaying loading or progress state</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="card card-progress">
+                            <div class="skeleton-bar skeleton-bar--sm skeleton-bar--light" style="width: 120px;"></div>
+                            <div class="skeleton-bar skeleton-bar--dark" style="width: 180px; height: 32px; border-radius: 16px;"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.card-progress {
+  width: 240px;
+  height: 180px;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* Contents */
+/* Thin bar: 120px × 6px */
+/* Thick bar: 180px × 32px */</pre>
+                        <div class="showcase-specs">
+                            <strong>Dimensions:</strong> 240×180px<br>
+                            <strong>Padding:</strong> 32px<br>
+                            <strong>Usage:</strong> Loading states, progress indicators
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Profile Card</h3>
+                    <p>User profile skeleton with avatar and text</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="card card-profile">
+                            <div class="avatar-circle"></div>
+                            <div class="skeleton-bar skeleton-bar--xl skeleton-bar--dark" style="width: 120px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 180px;"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.card-profile {
+  width: 240px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+/* Contents */
+/* Avatar: 72px circle */
+/* Title: 120px × 12px */
+/* Subtitle: 180px × 8px */</pre>
+                        <div class="showcase-specs">
+                            <strong>Dimensions:</strong> 240×180px<br>
+                            <strong>Centered layout</strong><br>
+                            <strong>Usage:</strong> User profiles, team cards
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Card -->
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Chart Card</h3>
+                    <p>Data visualization skeleton with line chart</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="card card-chart">
+                            <div class="chart-controls">
+                                <div class="chart-dot"></div>
+                                <div class="chart-dot"></div>
+                            </div>
+                            <div class="chart-line">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <path d="M 0,80 Q 25,20 50,40 T 100,10"
+                                          fill="none"
+                                          stroke="#9CA3AF"
+                                          stroke-width="2"
+                                          vector-effect="non-scaling-stroke"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.card-chart {
+  width: 500px;
+  height: 320px;
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.chart-controls {
+  position: absolute;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.chart-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--text-medium);
+}</pre>
+                        <div class="showcase-specs">
+                            <strong>Dimensions:</strong> 500×320px<br>
+                            <strong>Controls:</strong> 2× 24px dots<br>
+                            <strong>Usage:</strong> Analytics, charts, graphs
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Row -->
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Table Row</h3>
+                    <p>Tabular data skeleton with grid layout</p>
+                </div>
+                <div class="showcase-body">
+                    <div class="showcase-visual">
+                        <div class="table-row">
+                            <div class="table-row-bullet"></div>
+                            <div class="skeleton-bar skeleton-bar--lg skeleton-bar--dark" style="width: 180px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                            <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                        </div>
+                    </div>
+                    <div class="showcase-code">
+                        <pre>.table-row {
+  display: grid;
+  grid-template-columns:
+    12px 180px repeat(5, 80px);
+  column-gap: var(--space-md);
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--space-md);
+}
+
+/* Structure */
+/* Bullet: 12px circle */
+/* Primary: 180px × 10px */
+/* Secondary: 80px × 8px (×5) */</pre>
+                        <div class="showcase-specs">
+                            <strong>Height:</strong> 56px<br>
+                            <strong>Columns:</strong> 7 (bullet + 6 cells)<br>
+                            <strong>Usage:</strong> Data tables, lists
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================
+             ORGANISMS SECTION
+             ============================================ -->
+        <section id="organisms" class="section">
+            <h2 class="section-title">4. Organism - Dashboard Layout</h2>
+
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Complete Dashboard</h3>
+                    <p>Full page layout combining all components</p>
+                </div>
+                <div class="showcase-body" style="grid-template-columns: 1fr;">
+                    <div class="showcase-visual" style="border: none;">
+                        <div class="dashboard-layout">
+                            <!-- Sidebar -->
+                            <div class="dashboard-sidebar">
+                                <div class="nav-item">
+                                    <div class="diamond-icon"></div>
+                                    <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 120px;"></div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="diamond-icon"></div>
+                                    <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 120px;"></div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="diamond-icon"></div>
+                                    <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 120px;"></div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="diamond-icon"></div>
+                                    <div class="skeleton-bar skeleton-bar--md skeleton-bar--dark" style="width: 120px;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="dashboard-main">
+                                <!-- Cards Grid -->
+                                <div class="dashboard-cards">
+                                    <div class="card card-progress">
+                                        <div class="skeleton-bar skeleton-bar--sm skeleton-bar--light" style="width: 120px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--dark" style="width: 180px; height: 32px; border-radius: 16px;"></div>
+                                    </div>
+                                    <div class="card card-profile">
+                                        <div class="avatar-circle"></div>
+                                        <div class="skeleton-bar skeleton-bar--xl skeleton-bar--dark" style="width: 120px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 180px;"></div>
+                                    </div>
+                                    <div class="card card-progress">
+                                        <div class="skeleton-bar skeleton-bar--sm skeleton-bar--light" style="width: 120px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--dark" style="width: 180px; height: 32px; border-radius: 16px;"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="dashboard-table">
+                                    <div class="table-row">
+                                        <div class="table-row-bullet"></div>
+                                        <div class="skeleton-bar skeleton-bar--lg skeleton-bar--dark" style="width: 180px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div class="table-row-bullet"></div>
+                                        <div class="skeleton-bar skeleton-bar--lg skeleton-bar--dark" style="width: 180px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div class="table-row-bullet"></div>
+                                        <div class="skeleton-bar skeleton-bar--lg skeleton-bar--dark" style="width: 180px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                        <div class="skeleton-bar skeleton-bar--md skeleton-bar--light" style="width: 80px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-code">
+                    <pre>.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+.dashboard-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+}</pre>
+                    <div class="showcase-specs">
+                        <strong>Layout:</strong> Sidebar (240px) + Main content (flex)<br>
+                        <strong>Cards:</strong> Responsive grid with auto-fit<br>
+                        <strong>Table:</strong> Full width below cards<br>
+                        <strong>Usage:</strong> Dashboard, admin panels, analytics
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============================================
+             USAGE SECTION
+             ============================================ -->
+        <section class="section">
+            <h2 class="section-title">5. Usage Guidelines</h2>
+
+            <div class="showcase">
+                <div class="showcase-header">
+                    <h3>Implementation Notes</h3>
+                    <p>Best practices for using this design system</p>
+                </div>
+                <div class="showcase-body" style="grid-template-columns: 1fr;">
+                    <div class="showcase-code">
+                        <div class="showcase-specs" style="font-size: 1rem; line-height: 1.8;">
+                            <strong>Token-Based System:</strong><br>
+                            Always use CSS custom properties (--variable) for colors, spacing, and dimensions.
+                            This ensures consistency and makes theme changes easy.
+                            <br><br>
+                            <strong>Component Composition:</strong><br>
+                            Build complex layouts by combining atomic components.
+                            Molecules are made from atoms, organisms from molecules.
+                            <br><br>
+                            <strong>Responsive Design:</strong><br>
+                            All components use relative units and flexible layouts.
+                            Grid systems automatically adapt to container width.
+                            <br><br>
+                            <strong>Skeleton States:</strong><br>
+                            Use these components for loading states while content fetches.
+                            Match skeleton dimensions to actual content for smooth transitions.
+                            <br><br>
+                            <strong>Accessibility:</strong><br>
+                            Add aria-busy="true" and aria-label descriptions to skeleton containers.
+                            Announce loading completion to screen readers.
+                            <br><br>
+                            <strong>Performance:</strong><br>
+                            All components use pure CSS - no JavaScript required.
+                            Minimal DOM elements and efficient rendering.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="background: var(--bg-card); border-top: 1px solid var(--border-light); padding: var(--space-xl); text-align: center; color: var(--text-dark);">
+        <p><strong>Skeleton UI Design System</strong></p>
+        <p style="margin-top: 8px; font-size: 0.875rem;">Component library for loading states and placeholders</p>
+        <p style="margin-top: 16px; font-size: 0.75rem;">All components are production-ready and framework-agnostic</p>
+    </div>
+
+</body>
+</html>

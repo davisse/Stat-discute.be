@@ -1,0 +1,35 @@
+# Fichiers Créés - Admin Dashboard Implementation
+# Date: 2025-11-19
+
+## Database (1 fichier)
+1.DATABASE/migrations/008_sync_logs.sql
+
+## Backend (1 fichier modifié)
+frontend/src/lib/queries.ts (+ 5 fonctions: getAdminStats, getGamesWithStats, getTopPlayers, getSyncLogs, insertSyncLog)
+
+## API Routes (7 fichiers)
+frontend/src/app/api/admin/stats/route.ts
+frontend/src/app/api/admin/games/route.ts
+frontend/src/app/api/admin/players/route.ts
+frontend/src/app/api/admin/standings/route.ts
+frontend/src/app/api/admin/sync-games/route.ts
+frontend/src/app/api/admin/fetch-player-stats/route.ts
+frontend/src/app/api/admin/calculate-analytics/route.ts
+
+## UI Components (4 fichiers)
+frontend/src/app/admin/components/StatsCard.tsx
+frontend/src/app/admin/components/DataTable.tsx
+frontend/src/app/admin/components/SyncButton.tsx
+frontend/src/app/admin/components/Tabs.tsx
+
+## Pages (2 fichiers)
+frontend/src/app/admin/layout.tsx
+frontend/src/app/admin/page.tsx
+
+## Documentation (4 fichiers)
+claudedocs/admin_dashboard_implementation.md
+claudedocs/admin_dashboard_summary.md
+frontend/src/app/admin/README.md
+CHANGELOG.md
+
+## Total: 19 fichiers (15 nouveaux + 4 modifiés/docs)

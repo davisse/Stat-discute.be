@@ -1,0 +1,308 @@
+@startuml NBA_Betting_MVP_Database
+!define PHASE1_COLOR #E3F2FD
+!define PHASE2_COLOR #E8F5E9
+!define PHASE3_COLOR #FFF9C4
+!define MV_COLOR #E1F5FE
+
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+' Enhanced spacing for readability
+skinparam padding 25
+skinparam nodesep 100
+skinparam ranksep 120
+skinparam packagePadding 40
+skinparam classFontSize 13
+skinparam classAttributeFontSize 12
+skinparam arrowThickness 2
+skinparam minClassWidth 220
+
+title NBA Sports Betting Database - MVP (3-Phase Approach)\n12 Tables + 1 Materialized View | 6-Week Implementation
+
+' ===============================================
+' PHASE 1: DATA FOUNDATION (Week 1-2)
+' ===============================================
+package "Phase 1: Data Foundation (Week 1-2)" <<Rectangle>> PHASE1_COLOR {
+
+    note as phase1_note
+        **Delivers:** NBA games with scores and basic stats
+        **Storage:** ~5GB per season
+        **ETL:** 3 NBA API endpoints, daily batch
+        **Value:** "See today's games and player performance"
+    end note
+
+    entity "teams" as teams {
+        * team_id : BIGINT <<PK>>
+        --
+        full_name : VARCHAR(100)
+        abbreviation : VARCHAR(3)
+        city : VARCHAR(50)
+        conference : VARCHAR(10)
+        division : VARCHAR(20)
+        is_active : BOOLEAN
+    }
+
+    entity "players" as players {
+        * player_id : BIGINT <<PK>>
+        --
+        first_name : VARCHAR(50)
+        last_name : VARCHAR(50)
+        is_active : BOOLEAN
+        position : VARCHAR(20)
+        jersey_number : VARCHAR(3)
+        draft_year : INTEGER
+    }
+
+    entity "seasons" as seasons {
+        * season_id : VARCHAR(10) <<PK>>
+        --
+        season_year : VARCHAR(10)
+        season_type : VARCHAR(20)
+        start_date : DATE
+        end_date : DATE
+        is_current : BOOLEAN
+    }
+
+    entity "games" as games {
+        * game_id : VARCHAR(20) <<PK>>
+        --
+        * season_id : VARCHAR(10) <<FK>>
+        * game_date : DATE
+        * home_team_id : BIGINT <<FK>>
+        * away_team_id : BIGINT <<FK>>
+        game_status : VARCHAR(20)
+        home_team_score : INTEGER
+        away_team_score : INTEGER
+        attendance : INTEGER
+    }
+
+    entity "team_game_stats" as team_stats {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        points : INTEGER
+        field_goals_made : INTEGER
+        field_goals_attempted : INTEGER
+        three_pointers_made : INTEGER
+        assists : INTEGER
+        rebounds : INTEGER
+        turnovers : INTEGER
+        won : BOOLEAN
+    }
+
+    entity "player_game_stats" as player_stats {
+        * stat_id : SERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        minutes_played : VARCHAR(10)
+        points : INTEGER
+        field_goals_made : INTEGER
+        assists : INTEGER
+        rebounds : INTEGER
+        plus_minus : INTEGER
+    }
+}
+
+' ===============================================
+' PHASE 2: BETTING LAYER (Week 3-4)
+' ===============================================
+package "Phase 2: Betting Layer (Week 3-4)" <<Rectangle>> PHASE2_COLOR {
+
+    note as phase2_note
+        **Delivers:** Betting lines and ATS performance
+        **Storage:** +500MB per season
+        **ETL:** Add Odds API, real-time updates (5-15 min)
+        **Value:** "Get current odds and team ATS records"
+    end note
+
+    entity "betting_lines" as lines {
+        * line_id : BIGSERIAL <<PK>>
+        --
+        * game_id : VARCHAR(20) <<FK>>
+        * created_at : TIMESTAMPTZ
+        market_type : VARCHAR(50)
+        spread : DECIMAL(5,2)
+        over_under : DECIMAL(5,1)
+        moneyline_home : INTEGER
+        moneyline_away : INTEGER
+        sportsbook : VARCHAR(50)
+        closed_at : TIMESTAMPTZ
+    }
+
+    entity "ats_performance" as ats {
+        * ats_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        situation_type : VARCHAR(100)
+        games_covered : INTEGER
+        games_not_covered : INTEGER
+        ats_win_pct : DECIMAL(5,4)
+        avg_margin_vs_spread : DECIMAL(6,2)
+    }
+
+    entity "standings" as standings {
+        * standing_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        conference_rank : INTEGER
+        division_rank : INTEGER
+        wins : INTEGER
+        losses : INTEGER
+        win_pct : DECIMAL(5,3)
+        games_behind : DECIMAL(4,1)
+        streak : VARCHAR(10)
+    }
+}
+
+' ===============================================
+' PHASE 3: INTELLIGENCE LAYER (Week 5-6)
+' ===============================================
+package "Phase 3: Intelligence Layer (Week 5-6)" <<Rectangle>> PHASE3_COLOR {
+
+    note as phase3_note
+        **Delivers:** Injury data, team trends, H2H history
+        **Storage:** +500MB per season
+        **ETL:** Injury tracking (hourly), trend calculations (daily)
+        **Value:** "Make informed bets with full context"
+    end note
+
+    entity "player_injury_reports" as injuries {
+        * injury_id : SERIAL <<PK>>
+        --
+        * player_id : BIGINT <<FK>>
+        * team_id : BIGINT <<FK>>
+        game_id : VARCHAR(20) <<FK>>
+        injury_status : VARCHAR(50)
+        injury_description : TEXT
+        report_date : DATE
+        return_date : DATE
+    }
+
+    entity "team_performance_trends" as trends {
+        * trend_id : SERIAL <<PK>>
+        --
+        * team_id : BIGINT <<FK>>
+        * season_id : VARCHAR(10) <<FK>>
+        date_range_start : DATE
+        date_range_end : DATE
+        games_played : INTEGER
+        wins : INTEGER
+        avg_points_scored : DECIMAL(5,2)
+        avg_points_allowed : DECIMAL(5,2)
+        trend_type : VARCHAR(50)
+    }
+
+    entity "head_to_head_history" as h2h {
+        * h2h_id : SERIAL <<PK>>
+        --
+        * team1_id : BIGINT <<FK>>
+        * team2_id : BIGINT <<FK>>
+        season_id : VARCHAR(10) <<FK>>
+        total_games : INTEGER
+        team1_wins : INTEGER
+        team2_wins : INTEGER
+        avg_point_diff : DECIMAL(6,2)
+        last_game_date : DATE
+    }
+}
+
+' ===============================================
+' MATERIALIZED VIEW (Phase 3)
+' ===============================================
+package "Pre-Computed Analytics" <<Rectangle>> MV_COLOR {
+    entity "mv_team_current_form" as mv_form {
+        * team_id : BIGINT
+        * season_id : VARCHAR(10)
+        --
+        games_played : INTEGER
+        wins : INTEGER
+        losses : INTEGER
+        avg_points_scored : DECIMAL(5,2)
+        avg_points_allowed : DECIMAL(5,2)
+        last_10_record : VARCHAR(10)
+        refreshed_at : TIMESTAMP
+    }
+
+    note right of mv_form
+        Refreshed daily at 2:30 AM
+        Pre-computes last 10 games form
+        Used in betting queries
+    end note
+}
+
+' ===============================================
+' RELATIONSHIPS - PHASE 1
+' ===============================================
+seasons ||--o{ games : "contains"
+teams ||--o{ games : "home team"
+teams ||--o{ games : "away team"
+
+games ||--o{ team_stats : "generates"
+teams ||--o{ team_stats : "played by"
+seasons ||--o{ team_stats : "in season"
+
+games ||--o{ player_stats : "generates"
+players ||--o{ player_stats : "played by"
+teams ||--o{ player_stats : "for team"
+
+' ===============================================
+' RELATIONSHIPS - PHASE 2
+' ===============================================
+games ||--o{ lines : "has odds"
+
+teams ||--o{ ats : "performance"
+seasons ||--o{ ats : "in season"
+
+teams ||--o{ standings : "ranked in"
+seasons ||--o{ standings : "for season"
+
+' ===============================================
+' RELATIONSHIPS - PHASE 3
+' ===============================================
+players ||--o{ injuries : "reported for"
+teams ||--o{ injuries : "affects"
+games ||--o{ injuries : "related to"
+
+teams ||--o{ trends : "has trends"
+seasons ||--o{ trends : "in season"
+
+teams ||--o{ h2h : "team1"
+teams ||--o{ h2h : "team2"
+seasons ||--o{ h2h : "in season"
+
+' ===============================================
+' MATERIALIZED VIEW RELATIONSHIPS
+' ===============================================
+teams ||--o{ mv_form : "current form"
+seasons ||--o{ mv_form : "in season"
+
+' ===============================================
+' IMPLEMENTATION NOTES
+' ===============================================
+legend bottom
+    |= **MVP Implementation Timeline** |
+    | **Phase 1** (Week 1-2) | 6 tables | Foundation |
+    | **Phase 2** (Week 3-4) | +3 tables | Betting |
+    | **Phase 3** (Week 5-6) | +3 tables + 1 MV | Intelligence |
+    | **Total** | 12 tables + 1 MV | 71% fewer than full design |
+    |= **Excluded from MVP** (Future Phases) |
+    | Advanced Stats | Four Factors, advanced metrics |
+    | Detailed Data | Shot charts, play-by-play |
+    | Complex Analytics | Lineup combos, pace analysis |
+    | Supporting Data | Venues, coaches, officials |
+    |= **Storage & Performance** |
+    | Storage | ~6GB per season (vs 100GB full) |
+    | Query Speed | <80ms for 95% of queries |
+    | ETL Complexity | 6-8 jobs (vs 20+ full) |
+end legend
+
+@enduml

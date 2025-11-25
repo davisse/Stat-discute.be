@@ -1,0 +1,30 @@
+# RotoWire NBA Daily Lineups - Automated Collection Schedule
+#
+# This cron configuration runs the lineup scraper 4 times per day to capture:
+# - Morning lineups (initial projections)
+# - Afternoon updates (injury news)
+# - Pre-game confirmations (final lineups)
+# - Evening updates (late games)
+#
+# Installation:
+#   1. Edit this file and replace /path/to/project with actual path
+#   2. Add to crontab: crontab -e
+#   3. Paste the lines below (excluding comments if desired)
+#   4. Verify: crontab -l
+#
+# Log rotation recommended: logrotate or manual cleanup of /tmp/rotowire_*.log
+
+# Morning lineups - 8:00 AM ET (1:00 PM UTC)
+0 13 * * * cd /Users/chapirou/dev/perso/stat-discute.be && /usr/bin/python3 1.DATABASE/etl/scrape_rotowire_lineups.py >> /tmp/rotowire_scraper.log 2>&1
+
+# Afternoon updates - 2:00 PM ET (7:00 PM UTC)
+0 19 * * * cd /Users/chapirou/dev/perso/stat-discute.be && /usr/bin/python3 1.DATABASE/etl/scrape_rotowire_lineups.py >> /tmp/rotowire_scraper.log 2>&1
+
+# Pre-game confirmations - 5:00 PM ET (10:00 PM UTC)
+0 22 * * * cd /Users/chapirou/dev/perso/stat-discute.be && /usr/bin/python3 1.DATABASE/etl/scrape_rotowire_lineups.py >> /tmp/rotowire_scraper.log 2>&1
+
+# Evening updates for late games - 8:00 PM ET (1:00 AM UTC next day)
+0 1 * * * cd /Users/chapirou/dev/perso/stat-discute.be && /usr/bin/python3 1.DATABASE/etl/scrape_rotowire_lineups.py >> /tmp/rotowire_scraper.log 2>&1
+
+# Alternative: Scrape tomorrow's lineups at 11:00 PM ET (4:00 AM UTC next day)
+# 0 4 * * * cd /Users/chapirou/dev/perso/stat-discute.be && /usr/bin/python3 1.DATABASE/etl/scrape_rotowire_lineups.py --date tomorrow >> /tmp/rotowire_scraper_tomorrow.log 2>&1
