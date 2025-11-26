@@ -53,7 +53,8 @@ services:
       DB_NAME: ${DB_NAME:-nba_stats}
       DB_USER: ${DB_USER:-nba_admin}
       DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY:-}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-}
     depends_on:
       postgres:
         condition: service_healthy
