@@ -681,8 +681,22 @@ python3 sync_season_2025_26.py        # Fetch completed games
 python3 fetch_player_stats_direct.py  # Fetch player box scores
 
 # Then export and import to production:
-pg_dump -h localhost -U chapirou nba_stats > backup.sql
-# SCP to VM and import
+pg_dump -h localhost -U chapirou nba_stats --data-only --inserts --no-owner --no-acl > /tmp/nba_stats_data.sql
+gcloud compute scp /tmp/nba_stats_data.sql stat-discute-vm:/tmp/ --zone=europe-west1-b --project=calendarmcpclaude
+gcloud compute ssh stat-discute-vm --zone=europe-west1-b --project=calendarmcpclaude --command="docker cp /tmp/nba_stats_data.sql stat-discute-db:/tmp/ && docker exec stat-discute-db psql -U nba_admin -d nba_stats -f /tmp/nba_stats_data.sql"
+```
+
+**Data Import Status (2025-11-26)**:
+- ✅ 1947 games imported
+- ✅ 37939 player game stats imported
+- ✅ 647 players imported
+- ✅ 30 teams imported
+- ✅ All betting data and analytics imported
+
+**Schema Sync Notes**: Before importing data, ensure production has all migrations applied:
+```bash
+# If schema mismatch errors occur, apply missing migrations first
+gcloud compute ssh stat-discute-vm --zone=europe-west1-b --project=calendarmcpclaude --command="docker exec stat-discute-db psql -U nba_admin -d nba_stats -f /tmp/migration.sql"
 ```
 
 ---
