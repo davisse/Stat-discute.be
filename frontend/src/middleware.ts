@@ -26,6 +26,13 @@ const PROTECTED_ROUTES = [
   '/player-props'
 ]
 
+// Public routes that are exceptions to protected routes
+// These pages show aggregate statistics, no user-specific data
+const PUBLIC_ROUTES = [
+  '/player-props/tonight',
+  '/betting/totals'
+]
+
 const ADMIN_ROUTES = [
   '/admin'
 ]
@@ -49,6 +56,16 @@ const ADMIN_ROUTES = [
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // Check if current path is a public exception (before checking protection)
+  const isPublicRoute = PUBLIC_ROUTES.some(route =>
+    pathname.startsWith(route)
+  )
+
+  // Public routes are allowed without authentication
+  if (isPublicRoute) {
+    return NextResponse.next()
+  }
 
   // Check if current path is a protected route
   const isProtectedRoute = PROTECTED_ROUTES.some(route =>

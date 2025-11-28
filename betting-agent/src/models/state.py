@@ -13,6 +13,11 @@ class AgentState(TypedDict, total=False):
     game_id: str
     query: str
 
+    # Supervisor analysis (populated by Supervisor)
+    query_type: Literal["game_analysis", "player_prop", "spread_bet", "general"]
+    query_complexity: Literal["low", "medium", "high"]
+    next_action: Literal["fetch_data", "analyze", "debate", "output"]
+
     # Data collection (populated by DataScout)
     game_data: dict | None
     odds_data: dict | None
@@ -22,6 +27,7 @@ class AgentState(TypedDict, total=False):
     hypotheses: list[dict]
     quant_result: dict | None
     debate_transcript: str
+    debate_result: dict | None  # Bull/Bear structured debate output
 
     # Control flow
     confidence: float
@@ -46,6 +52,7 @@ def create_initial_state(query: str, depth: str = "standard") -> AgentState:
         hypotheses=[],
         quant_result=None,
         debate_transcript="",
+        debate_result=None,
         confidence=0.0,
         missing_info=[],
         critique_count=0,

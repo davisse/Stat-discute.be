@@ -385,6 +385,10 @@ class PinnacleOddsFetcher:
 
         Args:
             full_run: If True, fetch all games (not just today)
+
+        Note: Player props require a fresh authenticated session.
+        If session is expired, only main lines (spread/total/moneyline) will be fetched.
+        To refresh session, manually log into ps3838.com and update pinnacle_session.json.
         """
         logger.info(f"{'='*60}")
         logger.info(f"🏀 Pinnacle NBA Odds Scraper - {get_timestamp()}")

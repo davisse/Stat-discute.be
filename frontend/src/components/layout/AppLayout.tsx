@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import BurgerMenu from '@/components/mobile/BurgerMenu'
 import { allNavItems } from '@/lib/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 /**
  * AppLayout Component
@@ -25,6 +26,7 @@ import { allNavItems } from '@/lib/navigation'
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const { user, isLoading, isAuthenticated, logout } = useAuth()
 
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#000000' }}>
@@ -69,28 +71,65 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Navigation horizontale - Desktop only */}
         <nav
-          className="hidden lg:flex justify-center items-center gap-1 py-4"
+          className="hidden lg:flex justify-between items-center py-4 px-6"
           aria-label="Navigation principale"
         >
-          {allNavItems.map((item) => {
-            const isActive = pathname === item.href
+          {/* Spacer gauche pour centrer la nav */}
+          <div className="w-48" />
 
-            return (
+          {/* Navigation centrale */}
+          <div className="flex items-center gap-1">
+            {allNavItems.map((item) => {
+              const isActive = pathname === item.href
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'px-6 py-2 text-sm font-medium rounded-md transition-all duration-200',
+                    isActive
+                      ? 'bg-white text-black'
+                      : 'text-gray-400 hover:text-white hover:bg-white/10'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Auth Status - Right side */}
+          <div className="w-48 flex items-center justify-end gap-3">
+            {isLoading ? (
+              <div className="h-8 w-24 bg-white/10 animate-pulse rounded-md" />
+            ) : isAuthenticated && user ? (
+              <>
+                <span className="text-sm text-gray-400 truncate max-w-[120px]">
+                  {user.fullName}
+                </span>
+                <button
+                  onClick={() => logout()}
+                  className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 rounded-md transition-all duration-200"
+                >
+                  Déconnexion
+                </button>
+              </>
+            ) : (
               <Link
-                key={item.href}
-                href={item.href}
+                href="/login"
                 className={cn(
-                  'px-6 py-2 text-sm font-medium rounded-md transition-all duration-200',
-                  isActive
+                  'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200',
+                  pathname === '/login'
                     ? 'bg-white text-black'
                     : 'text-gray-400 hover:text-white hover:bg-white/10'
                 )}
-                aria-current={isActive ? 'page' : undefined}
               >
-                {item.label}
+                Se connecter
               </Link>
-            )
-          })}
+            )}
+          </div>
         </nav>
       </header>
 

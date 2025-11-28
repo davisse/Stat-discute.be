@@ -337,19 +337,20 @@ class PinnacleSession:
             logger.debug(f"Response structure: {list(response.keys())}")
             return []
 
-    def get_event_markets(self, event_id: str) -> Optional[Dict[str, Any]]:
+    def get_event_markets(self, event_id: str, include_props: bool = True) -> Optional[Dict[str, Any]]:
         """
         Fetch detailed markets for specific event.
 
         Args:
             event_id: Pinnacle event ID
+            include_props: If True, fetch all markets including player props (default: True)
 
         Returns:
             Markets data dictionary or None
         """
+        # Base parameters for all markets
         params = {
             'btg': '1',
-            'c': 'Others',
             'cl': '3',
             'hle': 'true',
             'ic': 'false',
@@ -357,7 +358,6 @@ class PinnacleSession:
             'inl': 'false',
             'l': '2',
             'me': str(event_id),
-            'mk': '3',
             'more': 'true',
             'o': '0',
             'ot': '1',
@@ -370,7 +370,16 @@ class PinnacleSession:
             'withCredentials': 'true',
         }
 
-        logger.info(f"📈 Fetching markets for event {event_id}")
+        if include_props:
+            # Fetch ALL market categories including player props
+            # mk=0 gets all market types, c parameter removed to get all categories
+            params['mk'] = '0'
+        else:
+            # Just main lines
+            params['mk'] = '3'
+            params['c'] = 'Others'
+
+        logger.info(f"📈 Fetching {'ALL' if include_props else 'main'} markets for event {event_id}")
         response = self._make_request(self.API_BASE, params)
 
         if not response:

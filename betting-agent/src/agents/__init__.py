@@ -1,16 +1,10 @@
 """Agent nodes for the Council of Experts architecture"""
-from .supervisor import SupervisorNode
-from .data_scout import DataScoutNode
-from .quant_analyst import QuantAnalystNode
-from .narrative import NarrativeNode
-from .debate_room import DebateRoomNode
-from .judge import JudgeNode
+from .supervisor import SupervisorNode, supervisor_node
+from .data_scout import DataScoutNode, data_scout_node
 
 __all__ = [
     "SupervisorNode",
+    "supervisor_node",
     "DataScoutNode",
-    "QuantAnalystNode",
-    "NarrativeNode",
-    "DebateRoomNode",
-    "JudgeNode",
+    "data_scout_node",
 ]

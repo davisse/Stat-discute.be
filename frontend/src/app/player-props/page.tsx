@@ -125,6 +125,21 @@ export default function PlayerPropsPage() {
           transition: 'opacity 1.5s ease-in-out'
         }}
       >
+        {/* Tonight's Props Link */}
+        <Link
+          href="/player-props/tonight"
+          className="mb-8 px-6 py-3 bg-transparent border border-gray-800 rounded-full text-gray-400
+                   hover:border-white hover:text-white transition-all duration-300 flex items-center gap-2"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(-20px)',
+            transition: 'all 1.5s ease-out 0.3s'
+          }}
+        >
+          <span>Tonight&apos;s Props Analysis</span>
+          <span className="text-green-400">NEW</span>
+        </Link>
+
         {/* Search Form with Results */}
         <div
           className="w-full max-w-md relative search-container"

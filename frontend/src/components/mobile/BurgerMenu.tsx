@@ -3,12 +3,19 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { mainNavItems, analyticsNavItems, accountNavItems } from '@/lib/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
+  const { user, isLoading, isAuthenticated, logout } = useAuth()
 
   const toggleMenu = () => setIsOpen(!isOpen)
   const closeMenu = () => setIsOpen(false)
+
+  const handleLogout = () => {
+    closeMenu()
+    logout()
+  }
 
   // ESC key to close menu
   useEffect(() => {
@@ -96,7 +103,74 @@ export default function BurgerMenu() {
           />
 
           {/* Account Section */}
-          <MenuSection title="Compte" items={accountNavItems} onItemClick={closeMenu} />
+          <div className="mb-4">
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 px-2">
+              Compte
+            </h3>
+            <nav className="space-y-0.5">
+              {/* Auth-protected items */}
+              {isAuthenticated && accountNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMenu}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white hover:bg-white/10 transition-colors group"
+                >
+                  {item.icon && <span className="text-lg">{item.icon}</span>}
+                  <span className="font-medium">{item.label}</span>
+                  <span className="ml-auto text-gray-500 group-hover:text-white transition-colors text-xs">
+                    →
+                  </span>
+                </Link>
+              ))}
+
+              {/* Auth Status */}
+              {isLoading ? (
+                <div className="px-3 py-2">
+                  <div className="h-6 w-32 bg-white/10 animate-pulse rounded" />
+                </div>
+              ) : isAuthenticated && user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2 text-sm text-gray-400">
+                    <span className="text-lg">👤</span>
+                    <span className="font-medium truncate">{user.fullName}</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors group"
+                  >
+                    <span className="text-lg">🚪</span>
+                    <span className="font-medium">Déconnexion</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={closeMenu}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white hover:bg-white/10 transition-colors group"
+                  >
+                    <span className="text-lg">🔑</span>
+                    <span className="font-medium">Se connecter</span>
+                    <span className="ml-auto text-gray-500 group-hover:text-white transition-colors text-xs">
+                      →
+                    </span>
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={closeMenu}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white hover:bg-white/10 transition-colors group"
+                  >
+                    <span className="text-lg">✨</span>
+                    <span className="font-medium">Créer un compte</span>
+                    <span className="ml-auto text-gray-500 group-hover:text-white transition-colors text-xs">
+                      →
+                    </span>
+                  </Link>
+                </>
+              )}
+            </nav>
+          </div>
         </div>
       </div>
     </>

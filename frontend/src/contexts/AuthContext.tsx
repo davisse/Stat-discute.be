@@ -74,20 +74,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // CHECK SESSION ON MOUNT
   // ============================================
 
-  const checkSession = useCallback(async () => {
+  const checkSession = useCallback(async (attemptRefresh = true) => {
     try {
       const response = await fetch('/api/auth/session', {
         method: 'GET',
         credentials: 'include',
       })
 
+      const data: SessionResponse = await response.json()
+
+      // If token expired and we should try to refresh
+      if (!response.ok && data.requiresRefresh && attemptRefresh) {
+        // Try to refresh the token
+        const refreshResponse = await fetch('/api/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        })
+
+        if (refreshResponse.ok) {
+          // Token refreshed successfully, check session again (without refresh attempt to avoid loop)
+          return checkSession(false)
+        }
+      }
+
       if (!response.ok) {
         setUser(null)
         setIsLoading(false)
         return
       }
-
-      const data: SessionResponse = await response.json()
 
       if (data.authenticated && data.user) {
         setUser(data.user)
