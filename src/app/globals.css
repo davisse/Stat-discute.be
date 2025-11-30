@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 31, 41, 55;
+  --background-start-rgb: 255, 251, 235;
+  --background-end-rgb: 254, 243, 199;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Citation highlight animation */
+.citation-highlight {
+  animation: highlight-pulse 2s ease-in-out;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(217, 119, 6, 0.3);
+  }
+}
+
+/* Document viewer highlight */
+.doc-highlight {
+  background-color: rgba(217, 119, 6, 0.25);
+  border-left: 3px solid #D97706;
+  padding-left: 8px;
+  margin-left: -11px;
+}
+
+/* Uncertainty indicator */
+.uncertainty-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+}
+
+.uncertainty-low {
+  @apply bg-green-100 text-green-800;
+}
+
+.uncertainty-medium {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.uncertainty-high {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Chat message styles */
+.prose-claude {
+  @apply text-sm leading-relaxed;
+}
+
+.prose-claude p {
+  @apply mb-2;
+}
+
+.prose-claude ul, .prose-claude ol {
+  @apply mb-2 ml-4 list-disc;
+}
+
+.prose-claude ol {
+  @apply list-decimal;
+}
+
+.prose-claude li {
+  @apply mb-1;
+}
+
+.prose-claude code {
+  @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.prose-claude pre {
+  @apply bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto my-2;
+}
+
+.prose-claude pre code {
+  @apply bg-transparent p-0;
+}
+
+.prose-claude strong {
+  @apply font-semibold;
+}
+
+.prose-claude h1, .prose-claude h2, .prose-claude h3 {
+  @apply font-semibold mt-4 mb-2;
+}
+
+.prose-claude a {
+  @apply text-blue-600 hover:underline;
+}
+
+.prose-claude blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2;
+}
