@@ -17,7 +17,7 @@ async function getTodaysGames() {
   const currentSeason = await getCurrentSeason()
 
   const result = await query(`
-    SELECT
+    SELECT DISTINCT ON (g.game_id)
       g.game_id,
       g.game_date,
       ht.team_id as home_team_id,
@@ -33,7 +33,7 @@ async function getTodaysGames() {
     LEFT JOIN betting_events be ON be.game_id = g.game_id
     WHERE g.game_date = CURRENT_DATE
       AND g.season = $1
-    ORDER BY g.game_date, g.game_id
+    ORDER BY g.game_id, g.game_date
   `, [currentSeason])
 
   return result.rows

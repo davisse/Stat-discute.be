@@ -30,12 +30,62 @@ const PROTECTED_ROUTES = [
 // These pages show aggregate statistics, no user-specific data
 const PUBLIC_ROUTES = [
   '/player-props/tonight',
-  '/betting/totals'
+  '/betting/totals',
+  '/betting/odds-movement',
+  '/betting/odds-terminal'
 ]
 
 const ADMIN_ROUTES = [
   '/admin'
 ]
+
+/**
+ * Attempt to refresh access token by calling the refresh API endpoint
+ * This works in Edge Runtime since it uses fetch
+ */
+async function attemptTokenRefresh(
+  request: NextRequest,
+  refreshToken: string
+): Promise<{
+  accessToken: string
+  payload: { userId: number; email: string; role: 'user' | 'premium' | 'admin' }
+} | null> {
+  try {
+    // Build the refresh API URL from the request
+    const baseUrl = request.nextUrl.origin
+    const refreshUrl = `${baseUrl}/api/auth/refresh`
+
+    // Call the refresh endpoint with the refresh token cookie
+    const response = await fetch(refreshUrl, {
+      method: 'POST',
+      headers: {
+        'Cookie': `refreshToken=${refreshToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    const data = await response.json()
+
+    if (!data.success || !data.accessToken || !data.user) {
+      return null
+    }
+
+    return {
+      accessToken: data.accessToken,
+      payload: {
+        userId: data.user.id,
+        email: data.user.email,
+        role: data.user.role
+      }
+    }
+  } catch (error) {
+    console.error('Token refresh in middleware failed:', error)
+    return null
+  }
+}
 
 /**
  * Next.js Middleware Handler
@@ -81,11 +131,46 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Extract access token from cookies
+  // Extract tokens from cookies
   const accessToken = request.cookies.get('accessToken')?.value
+  const refreshToken = request.cookies.get('refreshToken')?.value
 
-  // No token: redirect to login
+  // No access token: try to refresh if refresh token exists
   if (!accessToken) {
+    if (refreshToken) {
+      const refreshResult = await attemptTokenRefresh(request, refreshToken)
+
+      if (refreshResult) {
+        // Refresh successful: continue with new token
+        const response = NextResponse.next()
+
+        // Set new access token cookie
+        response.cookies.set('accessToken', refreshResult.accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 15 * 60, // 15 minutes
+          path: '/'
+        })
+
+        // Check admin route access with refreshed payload
+        if (isAdminRoute && refreshResult.payload.role !== 'admin') {
+          const redirectUrl = request.nextUrl.clone()
+          redirectUrl.pathname = '/dashboard'
+          redirectUrl.searchParams.set('error', 'admin_required')
+          return NextResponse.redirect(redirectUrl)
+        }
+
+        // Add user context to response headers
+        response.headers.set('x-user-id', refreshResult.payload.userId.toString())
+        response.headers.set('x-user-email', refreshResult.payload.email)
+        response.headers.set('x-user-role', refreshResult.payload.role)
+
+        return response
+      }
+    }
+
+    // No refresh token or refresh failed: redirect to login
     return redirectToLogin(request)
   }
 
@@ -115,12 +200,44 @@ export async function middleware(request: NextRequest) {
     return response
 
   } catch (error) {
-    // Token verification failed: redirect to login
+    // Token verification failed
 
     if (error instanceof TokenExpiredError) {
-      // Token expired: redirect to login with expired flag
-      // Frontend can use this to show "Session expired" message
-      // and potentially attempt refresh token flow
+      // Access token expired: attempt to refresh using refresh token
+      if (refreshToken) {
+        const refreshResult = await attemptTokenRefresh(request, refreshToken)
+
+        if (refreshResult) {
+          // Refresh successful: continue with new token
+          const response = NextResponse.next()
+
+          // Set new access token cookie
+          response.cookies.set('accessToken', refreshResult.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 15 * 60, // 15 minutes
+            path: '/'
+          })
+
+          // Check admin route access with refreshed payload
+          if (isAdminRoute && refreshResult.payload.role !== 'admin') {
+            const redirectUrl = request.nextUrl.clone()
+            redirectUrl.pathname = '/dashboard'
+            redirectUrl.searchParams.set('error', 'admin_required')
+            return NextResponse.redirect(redirectUrl)
+          }
+
+          // Add user context to response headers
+          response.headers.set('x-user-id', refreshResult.payload.userId.toString())
+          response.headers.set('x-user-email', refreshResult.payload.email)
+          response.headers.set('x-user-role', refreshResult.payload.role)
+
+          return response
+        }
+      }
+
+      // Refresh failed or no refresh token: redirect to login
       return redirectToLogin(request, 'expired')
     }
 

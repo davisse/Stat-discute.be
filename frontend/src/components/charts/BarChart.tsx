@@ -407,8 +407,9 @@ export function BarChart({
       <svg
         ref={svgRef}
         width="100%"
-        height={height}
+        height="100%"
         viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="xMidYMid meet"
         className="bg-transparent"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

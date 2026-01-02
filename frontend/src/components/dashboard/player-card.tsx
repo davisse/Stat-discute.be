@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Trophy } from 'lucide-react'
 
 interface PlayerCardProps {
@@ -9,27 +8,41 @@ interface PlayerCardProps {
     value: number
     games_played: number
   }
+  unit?: string
 }
 
-export function PlayerCard({ title, player }: PlayerCardProps) {
+export function PlayerCard({ title, player, unit }: PlayerCardProps) {
   return (
-    <Card className="border-2 hover:border-primary transition-colors">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Trophy className="h-4 w-4 text-yellow-500" />
+    <div
+      className="border border-zinc-800 rounded-lg p-6 hover:border-zinc-600 transition-all duration-300"
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)' }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-4">
+        <Trophy className="h-4 w-4 text-yellow-500" />
+        <span className="text-sm font-medium uppercase tracking-wider text-zinc-500">
           {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <p className="text-2xl font-bold">{player.full_name}</p>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{player.team_abbreviation}</span>
-            <span className="font-semibold text-primary">{player.value.toFixed(1)}</span>
-          </div>
-          <p className="text-xs text-muted-foreground">{player.games_played} games played</p>
+        </span>
+      </div>
+
+      {/* Player Name */}
+      <p className="text-2xl font-bold text-white mb-3">{player.full_name}</p>
+
+      {/* Team & Value */}
+      <div className="flex items-baseline justify-between mb-2">
+        <span className="text-sm font-mono text-zinc-400">{player.team_abbreviation}</span>
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-black text-white font-mono">
+            {player.value.toFixed(1)}
+          </span>
+          {unit && (
+            <span className="text-sm font-medium text-zinc-500 uppercase">{unit}</span>
+          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Games Played */}
+      <p className="text-xs text-zinc-500">{player.games_played} matchs joués</p>
+    </div>
   )
 }

@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "chart_type": "opponent_scoring",
+    "team_abbreviation": "ATL",
+    "betting_line": null,
+    "generated_at": "2025-11-28T14:42:04.182682",
+    "season": "2025-26"
+  },
+  "statistics": {
+    "total_games": 18,
+    "average_opponent_ppg": 115.8,
+    "below_avg_count": 9,
+    "above_avg_count": 9,
+    "below_avg_percentage": 50.0,
+    "min_score": 98,
+    "max_score": 138
+  },
+  "games": [
+    {
+      "game_id": "0022500082",
+      "game_date": "2025-10-22",
+      "opponent_abbr": "TOR",
+      "location": "HOME",
+      "opponent_score": 138,
+      "team_score": 118,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500101",
+      "game_date": "2025-10-25",
+      "opponent_abbr": "OKC",
+      "location": "HOME",
+      "opponent_score": 117,
+      "team_score": 100,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500115",
+      "game_date": "2025-10-27",
+      "opponent_abbr": "CHI",
+      "location": "AWAY",
+      "opponent_score": 128,
+      "team_score": 123,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500130",
+      "game_date": "2025-10-29",
+      "opponent_abbr": "BKN",
+      "location": "AWAY",
+      "opponent_score": 112,
+      "team_score": 117,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500020",
+      "game_date": "2025-10-31",
+      "opponent_abbr": "IND",
+      "location": "AWAY",
+      "opponent_score": 108,
+      "team_score": 128,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500151",
+      "game_date": "2025-11-02",
+      "opponent_abbr": "CLE",
+      "location": "AWAY",
+      "opponent_score": 117,
+      "team_score": 109,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500166",
+      "game_date": "2025-11-04",
+      "opponent_abbr": "ORL",
+      "location": "HOME",
+      "opponent_score": 112,
+      "team_score": 127,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500030",
+      "game_date": "2025-11-07",
+      "opponent_abbr": "TOR",
+      "location": "HOME",
+      "opponent_score": 109,
+      "team_score": 97,
+      "vs_avg": "BELOW",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500185",
+      "game_date": "2025-11-08",
+      "opponent_abbr": "LAL",
+      "location": "HOME",
+      "opponent_score": 102,
+      "team_score": 122,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500206",
+      "game_date": "2025-11-10",
+      "opponent_abbr": "LAC",
+      "location": "AWAY",
+      "opponent_score": 102,
+      "team_score": 105,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500223",
+      "game_date": "2025-11-12",
+      "opponent_abbr": "SAC",
+      "location": "AWAY",
+      "opponent_score": 100,
+      "team_score": 133,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500227",
+      "game_date": "2025-11-13",
+      "opponent_abbr": "UTA",
+      "location": "AWAY",
+      "opponent_score": 122,
+      "team_score": 132,
+      "vs_avg": "ABOVE",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500239",
+      "game_date": "2025-11-16",
+      "opponent_abbr": "PHX",
+      "location": "AWAY",
+      "opponent_score": 122,
+      "team_score": 124,
+      "vs_avg": "ABOVE",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500251",
+      "game_date": "2025-11-18",
+      "opponent_abbr": "DET",
+      "location": "HOME",
+      "opponent_score": 120,
+      "team_score": 112,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500267",
+      "game_date": "2025-11-20",
+      "opponent_abbr": "SAS",
+      "location": "AWAY",
+      "opponent_score": 135,
+      "team_score": 126,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    },
+    {
+      "game_id": "0022500270",
+      "game_date": "2025-11-22",
+      "opponent_abbr": "NOP",
+      "location": "AWAY",
+      "opponent_score": 98,
+      "team_score": 115,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500276",
+      "game_date": "2025-11-23",
+      "opponent_abbr": "CHA",
+      "location": "HOME",
+      "opponent_score": 110,
+      "team_score": 113,
+      "vs_avg": "BELOW",
+      "result": "W"
+    },
+    {
+      "game_id": "0022500057",
+      "game_date": "2025-11-25",
+      "opponent_abbr": "WAS",
+      "location": "AWAY",
+      "opponent_score": 132,
+      "team_score": 113,
+      "vs_avg": "ABOVE",
+      "result": "L"
+    }
+  ]
+}

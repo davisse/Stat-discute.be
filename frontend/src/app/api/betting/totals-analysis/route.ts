@@ -57,10 +57,40 @@ async function getTeamStats() {
   return result.rows
 }
 
-// Get tonight's games with totals lines
+// Get tonight's games with totals lines from betting_events/markets/odds tables
+// Uses the main market line (closest to 1.90/1.90 odds) - same logic as ML model
 async function getTonightTotals() {
   const result = await query(`
-    SELECT DISTINCT ON (g.game_id)
+    WITH all_lines AS (
+      SELECT
+        be.game_id,
+        bm.market_id,
+        SUBSTRING(bm.market_name FROM 'Game Total ([0-9.]+)')::NUMERIC as line,
+        MAX(CASE WHEN bo.selection LIKE 'Over%' THEN bo.odds_decimal END) as over_odds,
+        MAX(CASE WHEN bo.selection LIKE 'Under%' THEN bo.odds_decimal END) as under_odds
+      FROM betting_events be
+      JOIN betting_markets bm ON be.event_id = bm.event_id
+      JOIN betting_odds bo ON bm.market_id = bo.market_id
+      JOIN games g ON be.game_id = g.game_id
+      WHERE g.game_date = CURRENT_DATE
+        AND bm.market_name LIKE '%Game Total%'
+      GROUP BY be.game_id, bm.market_id, bm.market_name
+    ),
+    ranked_lines AS (
+      SELECT *,
+        ROW_NUMBER() OVER (
+          PARTITION BY game_id
+          ORDER BY ABS(over_odds - 1.90) + ABS(under_odds - 1.90)
+        ) as rn
+      FROM all_lines
+      WHERE over_odds IS NOT NULL AND under_odds IS NOT NULL
+    ),
+    main_lines AS (
+      SELECT game_id, line, over_odds, under_odds
+      FROM ranked_lines
+      WHERE rn = 1
+    )
+    SELECT
       g.game_id,
       g.game_date,
       g.home_team_id,
@@ -69,16 +99,16 @@ async function getTonightTotals() {
       ht.full_name as home_team,
       at.abbreviation as away_abbr,
       at.full_name as away_team,
-      bl.total as line,
-      bl.over_odds,
-      bl.under_odds,
-      bl.bookmaker
+      ml.line,
+      ml.over_odds,
+      ml.under_odds,
+      'Pinnacle' as bookmaker
     FROM games g
     JOIN teams ht ON g.home_team_id = ht.team_id
     JOIN teams at ON g.away_team_id = at.team_id
-    LEFT JOIN betting_lines bl ON bl.game_id = g.game_id AND bl.total IS NOT NULL
+    LEFT JOIN main_lines ml ON ml.game_id = g.game_id
     WHERE g.game_date = CURRENT_DATE
-    ORDER BY g.game_id, bl.recorded_at DESC
+    ORDER BY g.game_date
   `)
 
   return result.rows
@@ -161,6 +191,8 @@ export async function GET(request: Request) {
       const awayPpg = parseFloat(awayStats.ppg)
       const awayOppPpg = parseFloat(awayStats.opp_ppg)
       const line = game.line ? parseFloat(game.line) : null
+      const overOdds = game.over_odds ? parseFloat(game.over_odds) : null
+      const underOdds = game.under_odds ? parseFloat(game.under_odds) : null
 
       // Projection: Average of both teams' offensive and defensive tendencies
       const projected = (homePpg + awayPpg + homeOppPpg + awayOppPpg) / 2
@@ -197,8 +229,8 @@ export async function GET(request: Request) {
         away_games: parseInt(awayStats.games),
         // Totals analysis
         line,
-        over_odds: game.over_odds,
-        under_odds: game.under_odds,
+        over_odds: overOdds,
+        under_odds: underOdds,
         projected: parseFloat(projected.toFixed(1)),
         edge: edge !== null ? parseFloat(edge.toFixed(1)) : null,
         avg_pace: parseFloat(avgPace.toFixed(1)),

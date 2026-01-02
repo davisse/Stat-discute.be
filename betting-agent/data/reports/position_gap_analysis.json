@@ -1,0 +1,5256 @@
+{
+  "generated_at": "2025-11-28T15:29:48.149174",
+  "season": "2025-26",
+  "summary": {
+    "total_gaps": 155,
+    "total_games_analyzed": 542,
+    "gaps_by_position": {
+      "PG": 45,
+      "SG": 5,
+      "SF": 27,
+      "PF": 68,
+      "C": 10
+    },
+    "teams_with_most_gaps": [
+      {
+        "team": "PHI",
+        "total_gaps": 10
+      },
+      {
+        "team": "SAS",
+        "total_gaps": 9
+      },
+      {
+        "team": "ATL",
+        "total_gaps": 8
+      },
+      {
+        "team": "DAL",
+        "total_gaps": 8
+      },
+      {
+        "team": "BKN",
+        "total_gaps": 7
+      },
+      {
+        "team": "BOS",
+        "total_gaps": 7
+      },
+      {
+        "team": "CHA",
+        "total_gaps": 7
+      },
+      {
+        "team": "OKC",
+        "total_gaps": 7
+      },
+      {
+        "team": "GSW",
+        "total_gaps": 6
+      },
+      {
+        "team": "MIN",
+        "total_gaps": 6
+      }
+    ]
+  },
+  "teams": {
+    "ATL": {
+      "full_name": "Atlanta Hawks",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-29",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [
+          {
+            "date": "2025-11-25",
+            "opponent": "WAS"
+          }
+        ],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-12",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-16",
+            "opponent": "PHX"
+          },
+          {
+            "date": "2025-11-18",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-25",
+            "opponent": "WAS"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-02",
+            "opponent": "CLE"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500082",
+          "date": "2025-10-22",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500101",
+          "date": "2025-10-25",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500115",
+          "date": "2025-10-27",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500130",
+          "date": "2025-10-29",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500020",
+          "date": "2025-10-31",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500151",
+          "date": "2025-11-02",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500166",
+          "date": "2025-11-04",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500030",
+          "date": "2025-11-07",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500185",
+          "date": "2025-11-08",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500206",
+          "date": "2025-11-10",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500223",
+          "date": "2025-11-12",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500227",
+          "date": "2025-11-13",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500239",
+          "date": "2025-11-16",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500251",
+          "date": "2025-11-18",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500267",
+          "date": "2025-11-20",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500270",
+          "date": "2025-11-22",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500276",
+          "date": "2025-11-23",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500057",
+          "date": "2025-11-25",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": [
+            "SG",
+            "PF"
+          ]
+        }
+      ]
+    },
+    "BKN": {
+      "full_name": "Brooklyn Nets",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-05",
+            "opponent": "IND"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-10-24",
+            "opponent": "CLE"
+          },
+          {
+            "date": "2025-11-21",
+            "opponent": "BOS"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-07",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-16",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-24",
+            "opponent": "NYK"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-23",
+            "opponent": "TOR"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500080",
+          "date": "2025-10-22",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500091",
+          "date": "2025-10-24",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500105",
+          "date": "2025-10-26",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500116",
+          "date": "2025-10-27",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500130",
+          "date": "2025-10-29",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500149",
+          "date": "2025-11-02",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500156",
+          "date": "2025-11-03",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500173",
+          "date": "2025-11-05",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500031",
+          "date": "2025-11-07",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500192",
+          "date": "2025-11-09",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500207",
+          "date": "2025-11-11",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500040",
+          "date": "2025-11-14",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500235",
+          "date": "2025-11-16",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500250",
+          "date": "2025-11-18",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500049",
+          "date": "2025-11-21",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500279",
+          "date": "2025-11-23",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500285",
+          "date": "2025-11-24",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        }
+      ]
+    },
+    "BOS": {
+      "full_name": "Boston Celtics",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-03",
+            "opponent": "UTA"
+          },
+          {
+            "date": "2025-11-12",
+            "opponent": "MEM"
+          },
+          {
+            "date": "2025-11-18",
+            "opponent": "BKN"
+          },
+          {
+            "date": "2025-11-21",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-10-27",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-05",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-23",
+            "opponent": "ORL"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500083",
+          "date": "2025-10-22",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500018",
+          "date": "2025-10-24",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500106",
+          "date": "2025-10-26",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500117",
+          "date": "2025-10-27",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500128",
+          "date": "2025-10-29",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500021",
+          "date": "2025-10-31",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500146",
+          "date": "2025-11-01",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500158",
+          "date": "2025-11-03",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500174",
+          "date": "2025-11-05",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500028",
+          "date": "2025-11-07",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500193",
+          "date": "2025-11-09",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500209",
+          "date": "2025-11-11",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500216",
+          "date": "2025-11-12",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500233",
+          "date": "2025-11-16",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500250",
+          "date": "2025-11-18",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500049",
+          "date": "2025-11-21",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500277",
+          "date": "2025-11-23",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500060",
+          "date": "2025-11-26",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "CHA": {
+      "full_name": "Charlotte Hornets",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-22",
+            "opponent": "BKN"
+          },
+          {
+            "date": "2025-11-02",
+            "opponent": "UTA"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-14",
+            "opponent": "MIL"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "LAC"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-04",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-15",
+            "opponent": "OKC"
+          },
+          {
+            "date": "2025-11-26",
+            "opponent": "NYK"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500080",
+          "date": "2025-10-22",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500102",
+          "date": "2025-10-25",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500109",
+          "date": "2025-10-26",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500124",
+          "date": "2025-10-28",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500138",
+          "date": "2025-10-30",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500143",
+          "date": "2025-11-01",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500150",
+          "date": "2025-11-02",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500168",
+          "date": "2025-11-04",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500033",
+          "date": "2025-11-07",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500198",
+          "date": "2025-11-10",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500213",
+          "date": "2025-11-12",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500043",
+          "date": "2025-11-14",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500229",
+          "date": "2025-11-15",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500245",
+          "date": "2025-11-17",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500256",
+          "date": "2025-11-19",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500268",
+          "date": "2025-11-22",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500276",
+          "date": "2025-11-23",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500061",
+          "date": "2025-11-26",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        }
+      ]
+    },
+    "CHI": {
+      "full_name": "Chicago Bulls",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-19",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [
+          {
+            "date": "2025-10-22",
+            "opponent": "DET"
+          }
+        ],
+        "SF": [
+          {
+            "date": "2025-11-07",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-21",
+            "opponent": "MIA"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "WAS"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500084",
+          "date": "2025-10-22",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": [
+            "SG"
+          ]
+        },
+        {
+          "game_id": "0022500100",
+          "date": "2025-10-25",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500115",
+          "date": "2025-10-27",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500132",
+          "date": "2025-10-29",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500023",
+          "date": "2025-10-31",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500153",
+          "date": "2025-11-02",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500167",
+          "date": "2025-11-04",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500035",
+          "date": "2025-11-07",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500186",
+          "date": "2025-11-08",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500202",
+          "date": "2025-11-10",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500214",
+          "date": "2025-11-12",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500240",
+          "date": "2025-11-16",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500248",
+          "date": "2025-11-17",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500263",
+          "date": "2025-11-19",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500051",
+          "date": "2025-11-21",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500271",
+          "date": "2025-11-22",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500289",
+          "date": "2025-11-24",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "CLE": {
+      "full_name": "Cleveland Cavaliers",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-24",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [
+          {
+            "date": "2025-11-19",
+            "opponent": "HOU"
+          }
+        ],
+        "SF": [
+          {
+            "date": "2025-11-17",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [],
+        "C": [
+          {
+            "date": "2025-10-31",
+            "opponent": "TOR"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500003",
+          "date": "2025-10-22",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500091",
+          "date": "2025-10-24",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500107",
+          "date": "2025-10-26",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500007",
+          "date": "2025-10-27",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500128",
+          "date": "2025-10-29",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500022",
+          "date": "2025-10-31",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500151",
+          "date": "2025-11-02",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500171",
+          "date": "2025-11-05",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500029",
+          "date": "2025-11-07",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500186",
+          "date": "2025-11-08",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500201",
+          "date": "2025-11-10",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500217",
+          "date": "2025-11-12",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500225",
+          "date": "2025-11-13",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500228",
+          "date": "2025-11-15",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500241",
+          "date": "2025-11-17",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500255",
+          "date": "2025-11-19",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": [
+            "SG"
+          ]
+        },
+        {
+          "game_id": "0022500048",
+          "date": "2025-11-21",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500278",
+          "date": "2025-11-23",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500284",
+          "date": "2025-11-24",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "DAL": {
+      "full_name": "Dallas Mavericks",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-16",
+            "opponent": "POR"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "MEM"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-10",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-10-24",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-05",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-08",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-19",
+            "opponent": "NYK"
+          },
+          {
+            "date": "2025-11-24",
+            "opponent": "MIA"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500004",
+          "date": "2025-10-22",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500096",
+          "date": "2025-10-24",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500111",
+          "date": "2025-10-26",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500119",
+          "date": "2025-10-27",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500133",
+          "date": "2025-10-29",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500147",
+          "date": "2025-11-01",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500160",
+          "date": "2025-11-03",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500177",
+          "date": "2025-11-05",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500034",
+          "date": "2025-11-07",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500183",
+          "date": "2025-11-08",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500203",
+          "date": "2025-11-10",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500221",
+          "date": "2025-11-12",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500046",
+          "date": "2025-11-14",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500238",
+          "date": "2025-11-16",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500246",
+          "date": "2025-11-17",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500262",
+          "date": "2025-11-19",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500052",
+          "date": "2025-11-21",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500273",
+          "date": "2025-11-22",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500286",
+          "date": "2025-11-24",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        }
+      ]
+    },
+    "DEN": {
+      "full_name": "Denver Nuggets",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-24",
+            "opponent": "MEM"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-03",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-11",
+            "opponent": "SAC"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500006",
+          "date": "2025-10-23",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500104",
+          "date": "2025-10-25",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500008",
+          "date": "2025-10-27",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500134",
+          "date": "2025-10-29",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500026",
+          "date": "2025-10-31",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500162",
+          "date": "2025-11-03",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500178",
+          "date": "2025-11-05",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500037",
+          "date": "2025-11-07",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500189",
+          "date": "2025-11-08",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500212",
+          "date": "2025-11-11",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500224",
+          "date": "2025-11-12",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500232",
+          "date": "2025-11-15",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500248",
+          "date": "2025-11-17",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500260",
+          "date": "2025-11-19",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500054",
+          "date": "2025-11-21",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500274",
+          "date": "2025-11-22",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500287",
+          "date": "2025-11-24",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        }
+      ]
+    },
+    "DET": {
+      "full_name": "Detroit Pistons",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-05",
+            "opponent": "UTA"
+          },
+          {
+            "date": "2025-11-07",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-10",
+            "opponent": "WAS"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-26",
+            "opponent": "BOS"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500084",
+          "date": "2025-10-22",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500093",
+          "date": "2025-10-24",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500106",
+          "date": "2025-10-26",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500007",
+          "date": "2025-10-27",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500129",
+          "date": "2025-10-29",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500147",
+          "date": "2025-11-01",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500161",
+          "date": "2025-11-03",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500172",
+          "date": "2025-11-05",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500031",
+          "date": "2025-11-07",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500195",
+          "date": "2025-11-09",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500199",
+          "date": "2025-11-10",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500214",
+          "date": "2025-11-12",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500041",
+          "date": "2025-11-14",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500242",
+          "date": "2025-11-17",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500251",
+          "date": "2025-11-18",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500272",
+          "date": "2025-11-22",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500283",
+          "date": "2025-11-24",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500060",
+          "date": "2025-11-26",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        }
+      ]
+    },
+    "GSW": {
+      "full_name": "Golden State Warriors",
+      "total_games": 20,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-21",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-10-21",
+            "opponent": "LAL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-05",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-16",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-18",
+            "opponent": "ORL"
+          },
+          {
+            "date": "2025-11-19",
+            "opponent": "MIA"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500002",
+          "date": "2025-10-21",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500006",
+          "date": "2025-10-23",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500097",
+          "date": "2025-10-24",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500121",
+          "date": "2025-10-27",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500127",
+          "date": "2025-10-28",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500139",
+          "date": "2025-10-30",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500144",
+          "date": "2025-11-01",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500169",
+          "date": "2025-11-04",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500181",
+          "date": "2025-11-05",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500037",
+          "date": "2025-11-07",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500196",
+          "date": "2025-11-09",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500210",
+          "date": "2025-11-11",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500220",
+          "date": "2025-11-12",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500047",
+          "date": "2025-11-14",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500237",
+          "date": "2025-11-16",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500249",
+          "date": "2025-11-18",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500257",
+          "date": "2025-11-19",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500056",
+          "date": "2025-11-21",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500291",
+          "date": "2025-11-24",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500066",
+          "date": "2025-11-26",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "HOU": {
+      "full_name": "Houston Rockets",
+      "total_games": 16,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-27",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-09",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-12",
+            "opponent": "WAS"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-10-29",
+            "opponent": "TOR"
+          },
+          {
+            "date": "2025-11-26",
+            "opponent": "GSW"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500001",
+          "date": "2025-10-21",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500093",
+          "date": "2025-10-24",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500116",
+          "date": "2025-10-27",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500131",
+          "date": "2025-10-29",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500146",
+          "date": "2025-11-01",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500160",
+          "date": "2025-11-03",
+          "opponent": "DAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500176",
+          "date": "2025-11-05",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500032",
+          "date": "2025-11-07",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500191",
+          "date": "2025-11-09",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500218",
+          "date": "2025-11-12",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500042",
+          "date": "2025-11-14",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500236",
+          "date": "2025-11-16",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500255",
+          "date": "2025-11-19",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500054",
+          "date": "2025-11-21",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500290",
+          "date": "2025-11-24",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500066",
+          "date": "2025-11-26",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        }
+      ]
+    },
+    "IND": {
+      "full_name": "Indiana Pacers",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-05",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [],
+        "C": [
+          {
+            "date": "2025-11-21",
+            "opponent": "CLE"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500005",
+          "date": "2025-10-23",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500103",
+          "date": "2025-10-25",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500110",
+          "date": "2025-10-26",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500133",
+          "date": "2025-10-29",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500020",
+          "date": "2025-10-31",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500144",
+          "date": "2025-11-01",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500157",
+          "date": "2025-11-03",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500173",
+          "date": "2025-11-05",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500189",
+          "date": "2025-11-08",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500196",
+          "date": "2025-11-09",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500211",
+          "date": "2025-11-11",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500226",
+          "date": "2025-11-13",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500230",
+          "date": "2025-11-15",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500242",
+          "date": "2025-11-17",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500256",
+          "date": "2025-11-19",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500048",
+          "date": "2025-11-21",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500283",
+          "date": "2025-11-24",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500063",
+          "date": "2025-11-26",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "LAC": {
+      "full_name": "Los Angeles Clippers",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-22",
+            "opponent": "UTA"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-16",
+            "opponent": "BOS"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-06",
+            "opponent": "PHX"
+          },
+          {
+            "date": "2025-11-08",
+            "opponent": "PHX"
+          },
+          {
+            "date": "2025-11-14",
+            "opponent": "DAL"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500087",
+          "date": "2025-10-22",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500099",
+          "date": "2025-10-24",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500112",
+          "date": "2025-10-26",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500127",
+          "date": "2025-10-28",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500027",
+          "date": "2025-10-31",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500164",
+          "date": "2025-11-03",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500170",
+          "date": "2025-11-04",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500182",
+          "date": "2025-11-06",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500190",
+          "date": "2025-11-08",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500206",
+          "date": "2025-11-10",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500224",
+          "date": "2025-11-12",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500046",
+          "date": "2025-11-14",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500233",
+          "date": "2025-11-16",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500243",
+          "date": "2025-11-17",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500264",
+          "date": "2025-11-20",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500268",
+          "date": "2025-11-22",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500278",
+          "date": "2025-11-23",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500059",
+          "date": "2025-11-25",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "LAL": {
+      "full_name": "Los Angeles Lakers",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-15",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-10-26",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-14",
+            "opponent": "NOP"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500002",
+          "date": "2025-10-21",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500019",
+          "date": "2025-10-24",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500113",
+          "date": "2025-10-26",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500122",
+          "date": "2025-10-27",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500136",
+          "date": "2025-10-29",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500024",
+          "date": "2025-10-31",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500155",
+          "date": "2025-11-02",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500163",
+          "date": "2025-11-03",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500179",
+          "date": "2025-11-05",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500185",
+          "date": "2025-11-08",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500198",
+          "date": "2025-11-10",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500222",
+          "date": "2025-11-12",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500045",
+          "date": "2025-11-14",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500231",
+          "date": "2025-11-15",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500253",
+          "date": "2025-11-18",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500282",
+          "date": "2025-11-23",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500059",
+          "date": "2025-11-25",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "MEM": {
+      "full_name": "Memphis Grizzlies",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-22",
+            "opponent": "NOP"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-09",
+            "opponent": "OKC"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-03",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-09",
+            "opponent": "OKC"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-02",
+            "opponent": "TOR"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500085",
+          "date": "2025-10-22",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500094",
+          "date": "2025-10-24",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500103",
+          "date": "2025-10-25",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500121",
+          "date": "2025-10-27",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500137",
+          "date": "2025-10-29",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500024",
+          "date": "2025-10-31",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500152",
+          "date": "2025-11-02",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500161",
+          "date": "2025-11-03",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500176",
+          "date": "2025-11-05",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500034",
+          "date": "2025-11-07",
+          "opponent": "DAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500194",
+          "date": "2025-11-09",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": [
+            "SF",
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500208",
+          "date": "2025-11-11",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500216",
+          "date": "2025-11-12",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500228",
+          "date": "2025-11-15",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500252",
+          "date": "2025-11-18",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500265",
+          "date": "2025-11-20",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500273",
+          "date": "2025-11-22",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500287",
+          "date": "2025-11-24",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500065",
+          "date": "2025-11-26",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "MIA": {
+      "full_name": "Miami Heat",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-14",
+            "opponent": "NYK"
+          },
+          {
+            "date": "2025-11-17",
+            "opponent": "NYK"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-19",
+            "opponent": "GSW"
+          },
+          {
+            "date": "2025-11-26",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-17",
+            "opponent": "NYK"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500081",
+          "date": "2025-10-22",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500094",
+          "date": "2025-10-24",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500108",
+          "date": "2025-10-26",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500124",
+          "date": "2025-10-28",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500141",
+          "date": "2025-10-30",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500155",
+          "date": "2025-11-02",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500164",
+          "date": "2025-11-03",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500178",
+          "date": "2025-11-05",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500033",
+          "date": "2025-11-07",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500187",
+          "date": "2025-11-08",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500201",
+          "date": "2025-11-10",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500217",
+          "date": "2025-11-12",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500039",
+          "date": "2025-11-14",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500244",
+          "date": "2025-11-17",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": [
+            "PG",
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500257",
+          "date": "2025-11-19",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500051",
+          "date": "2025-11-21",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500275",
+          "date": "2025-11-23",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500286",
+          "date": "2025-11-24",
+          "opponent": "DAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500062",
+          "date": "2025-11-26",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        }
+      ]
+    },
+    "MIL": {
+      "full_name": "Milwaukee Bucks",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-24",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [
+          {
+            "date": "2025-11-09",
+            "opponent": "HOU"
+          }
+        ],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-01",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-26",
+            "opponent": "MIA"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500086",
+          "date": "2025-10-22",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500092",
+          "date": "2025-10-24",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500107",
+          "date": "2025-10-26",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500125",
+          "date": "2025-10-28",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500139",
+          "date": "2025-10-30",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500142",
+          "date": "2025-11-01",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500157",
+          "date": "2025-11-03",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500165",
+          "date": "2025-11-04",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500035",
+          "date": "2025-11-07",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500191",
+          "date": "2025-11-09",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": [
+            "SG"
+          ]
+        },
+        {
+          "game_id": "0022500203",
+          "date": "2025-11-10",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500213",
+          "date": "2025-11-12",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500043",
+          "date": "2025-11-14",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500231",
+          "date": "2025-11-15",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500241",
+          "date": "2025-11-17",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500266",
+          "date": "2025-11-20",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500272",
+          "date": "2025-11-22",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500288",
+          "date": "2025-11-24",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500062",
+          "date": "2025-11-26",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        }
+      ]
+    },
+    "MIN": {
+      "full_name": "Minnesota Timberwolves",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-29",
+            "opponent": "LAL"
+          },
+          {
+            "date": "2025-11-03",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-10-24",
+            "opponent": "LAL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-09",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-14",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-19",
+            "opponent": "WAS"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500089",
+          "date": "2025-10-22",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500019",
+          "date": "2025-10-24",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500110",
+          "date": "2025-10-26",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500008",
+          "date": "2025-10-27",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500136",
+          "date": "2025-10-29",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500143",
+          "date": "2025-11-01",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500156",
+          "date": "2025-11-03",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500175",
+          "date": "2025-11-05",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500036",
+          "date": "2025-11-07",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500197",
+          "date": "2025-11-09",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500205",
+          "date": "2025-11-10",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500044",
+          "date": "2025-11-14",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500232",
+          "date": "2025-11-15",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500246",
+          "date": "2025-11-17",
+          "opponent": "DAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500259",
+          "date": "2025-11-19",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500053",
+          "date": "2025-11-21",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500292",
+          "date": "2025-11-24",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500064",
+          "date": "2025-11-26",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "NOP": {
+      "full_name": "New Orleans Pelicans",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-26",
+            "opponent": "MEM"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-17",
+            "opponent": "OKC"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500085",
+          "date": "2025-10-22",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500095",
+          "date": "2025-10-24",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500117",
+          "date": "2025-10-27",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500134",
+          "date": "2025-10-29",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500027",
+          "date": "2025-10-31",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500148",
+          "date": "2025-11-02",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500168",
+          "date": "2025-11-04",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500177",
+          "date": "2025-11-05",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500188",
+          "date": "2025-11-08",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500204",
+          "date": "2025-11-10",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500219",
+          "date": "2025-11-12",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500045",
+          "date": "2025-11-14",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500237",
+          "date": "2025-11-16",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500247",
+          "date": "2025-11-17",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500260",
+          "date": "2025-11-19",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500052",
+          "date": "2025-11-21",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500270",
+          "date": "2025-11-22",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500289",
+          "date": "2025-11-24",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500065",
+          "date": "2025-11-26",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        }
+      ]
+    },
+    "NYK": {
+      "full_name": "New York Knicks",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-09",
+            "opponent": "BKN"
+          },
+          {
+            "date": "2025-11-24",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-10-22",
+            "opponent": "CLE"
+          },
+          {
+            "date": "2025-10-24",
+            "opponent": "BOS"
+          }
+        ],
+        "PF": [],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500003",
+          "date": "2025-10-22",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500018",
+          "date": "2025-10-24",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500108",
+          "date": "2025-10-26",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500125",
+          "date": "2025-10-28",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500023",
+          "date": "2025-10-31",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500153",
+          "date": "2025-11-02",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500159",
+          "date": "2025-11-03",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500175",
+          "date": "2025-11-05",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500192",
+          "date": "2025-11-09",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500208",
+          "date": "2025-11-11",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500215",
+          "date": "2025-11-12",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500039",
+          "date": "2025-11-14",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500244",
+          "date": "2025-11-17",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500262",
+          "date": "2025-11-19",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500269",
+          "date": "2025-11-22",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500285",
+          "date": "2025-11-24",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500061",
+          "date": "2025-11-26",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "OKC": {
+      "full_name": "Oklahoma City Thunder",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-23",
+            "opponent": "IND"
+          },
+          {
+            "date": "2025-11-23",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-10-28",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-10-30",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-07",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-17",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-19",
+            "opponent": "SAC"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500001",
+          "date": "2025-10-21",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500005",
+          "date": "2025-10-23",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500101",
+          "date": "2025-10-25",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500119",
+          "date": "2025-10-27",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500126",
+          "date": "2025-10-28",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500140",
+          "date": "2025-10-30",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500148",
+          "date": "2025-11-02",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500170",
+          "date": "2025-11-04",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500180",
+          "date": "2025-11-05",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500038",
+          "date": "2025-11-07",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500194",
+          "date": "2025-11-09",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500210",
+          "date": "2025-11-11",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500222",
+          "date": "2025-11-12",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500229",
+          "date": "2025-11-15",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500247",
+          "date": "2025-11-17",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500261",
+          "date": "2025-11-19",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500055",
+          "date": "2025-11-21",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500280",
+          "date": "2025-11-23",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500064",
+          "date": "2025-11-26",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "ORL": {
+      "full_name": "Orlando Magic",
+      "total_games": 18,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-14",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-09",
+            "opponent": "BOS"
+          },
+          {
+            "date": "2025-11-20",
+            "opponent": "LAC"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-01",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "NYK"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500081",
+          "date": "2025-10-22",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500100",
+          "date": "2025-10-25",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500114",
+          "date": "2025-10-27",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500129",
+          "date": "2025-10-29",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500138",
+          "date": "2025-10-30",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500145",
+          "date": "2025-11-01",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500166",
+          "date": "2025-11-04",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500028",
+          "date": "2025-11-07",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500193",
+          "date": "2025-11-09",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500200",
+          "date": "2025-11-10",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500215",
+          "date": "2025-11-12",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500040",
+          "date": "2025-11-14",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500236",
+          "date": "2025-11-16",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500249",
+          "date": "2025-11-18",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500264",
+          "date": "2025-11-20",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500269",
+          "date": "2025-11-22",
+          "opponent": "NYK",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500277",
+          "date": "2025-11-23",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500058",
+          "date": "2025-11-25",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "PHI": {
+      "full_name": "Philadelphia 76ers",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-02",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-05",
+            "opponent": "CLE"
+          },
+          {
+            "date": "2025-11-17",
+            "opponent": "LAC"
+          },
+          {
+            "date": "2025-11-20",
+            "opponent": "MIL"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-10-28",
+            "opponent": "WAS"
+          },
+          {
+            "date": "2025-11-09",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-14",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-23",
+            "opponent": "MIA"
+          },
+          {
+            "date": "2025-11-25",
+            "opponent": "ORL"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-08",
+            "opponent": "TOR"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500083",
+          "date": "2025-10-22",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500102",
+          "date": "2025-10-25",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500114",
+          "date": "2025-10-27",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500123",
+          "date": "2025-10-28",
+          "opponent": "WAS",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500021",
+          "date": "2025-10-31",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500149",
+          "date": "2025-11-02",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500167",
+          "date": "2025-11-04",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500171",
+          "date": "2025-11-05",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500184",
+          "date": "2025-11-08",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500195",
+          "date": "2025-11-09",
+          "opponent": "DET",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500209",
+          "date": "2025-11-11",
+          "opponent": "BOS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500041",
+          "date": "2025-11-14",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500243",
+          "date": "2025-11-17",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500258",
+          "date": "2025-11-19",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500266",
+          "date": "2025-11-20",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500275",
+          "date": "2025-11-23",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500058",
+          "date": "2025-11-25",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        }
+      ]
+    },
+    "PHX": {
+      "full_name": "Phoenix Suns",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-27",
+            "opponent": "UTA"
+          },
+          {
+            "date": "2025-10-31",
+            "opponent": "UTA"
+          },
+          {
+            "date": "2025-11-18",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-10-22",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-10",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-16",
+            "opponent": "ATL"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500088",
+          "date": "2025-10-22",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500099",
+          "date": "2025-10-24",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500104",
+          "date": "2025-10-25",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500120",
+          "date": "2025-10-27",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500137",
+          "date": "2025-10-29",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500025",
+          "date": "2025-10-31",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500154",
+          "date": "2025-11-02",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500169",
+          "date": "2025-11-04",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500182",
+          "date": "2025-11-06",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500190",
+          "date": "2025-11-08",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500204",
+          "date": "2025-11-10",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500221",
+          "date": "2025-11-12",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500226",
+          "date": "2025-11-13",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500239",
+          "date": "2025-11-16",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500254",
+          "date": "2025-11-18",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500053",
+          "date": "2025-11-21",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500281",
+          "date": "2025-11-23",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500290",
+          "date": "2025-11-24",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500068",
+          "date": "2025-11-26",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "POR": {
+      "full_name": "Portland Trail Blazers",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-27",
+            "opponent": "LAL"
+          },
+          {
+            "date": "2025-10-29",
+            "opponent": "UTA"
+          }
+        ],
+        "SG": [
+          {
+            "date": "2025-10-26",
+            "opponent": "LAC"
+          }
+        ],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-12",
+            "opponent": "NOP"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500089",
+          "date": "2025-10-22",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500097",
+          "date": "2025-10-24",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500112",
+          "date": "2025-10-26",
+          "opponent": "LAC",
+          "location": "AWAY",
+          "missing_positions": [
+            "SG"
+          ]
+        },
+        {
+          "game_id": "0022500122",
+          "date": "2025-10-27",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500135",
+          "date": "2025-10-29",
+          "opponent": "UTA",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500026",
+          "date": "2025-10-31",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500163",
+          "date": "2025-11-03",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500180",
+          "date": "2025-11-05",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500187",
+          "date": "2025-11-08",
+          "opponent": "MIA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500200",
+          "date": "2025-11-10",
+          "opponent": "ORL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500219",
+          "date": "2025-11-12",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500042",
+          "date": "2025-11-14",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500238",
+          "date": "2025-11-16",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500254",
+          "date": "2025-11-18",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500263",
+          "date": "2025-11-19",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500056",
+          "date": "2025-11-21",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500280",
+          "date": "2025-11-23",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500288",
+          "date": "2025-11-24",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500067",
+          "date": "2025-11-26",
+          "opponent": "SAS",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "SAC": {
+      "full_name": "Sacramento Kings",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-24",
+            "opponent": "UTA"
+          },
+          {
+            "date": "2025-11-20",
+            "opponent": "MEM"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-03",
+            "opponent": "DEN"
+          },
+          {
+            "date": "2025-11-11",
+            "opponent": "DEN"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-05",
+            "opponent": "GSW"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500088",
+          "date": "2025-10-22",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500098",
+          "date": "2025-10-24",
+          "opponent": "UTA",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500113",
+          "date": "2025-10-26",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500126",
+          "date": "2025-10-28",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500132",
+          "date": "2025-10-29",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500142",
+          "date": "2025-11-01",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500162",
+          "date": "2025-11-03",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500181",
+          "date": "2025-11-05",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500038",
+          "date": "2025-11-07",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500197",
+          "date": "2025-11-09",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500212",
+          "date": "2025-11-11",
+          "opponent": "DEN",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500223",
+          "date": "2025-11-12",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500044",
+          "date": "2025-11-14",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500234",
+          "date": "2025-11-16",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500261",
+          "date": "2025-11-19",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500265",
+          "date": "2025-11-20",
+          "opponent": "MEM",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500274",
+          "date": "2025-11-22",
+          "opponent": "DEN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500292",
+          "date": "2025-11-24",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500068",
+          "date": "2025-11-26",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "SAS": {
+      "full_name": "San Antonio Spurs",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-10-24",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-10-26",
+            "opponent": "BKN"
+          },
+          {
+            "date": "2025-11-18",
+            "opponent": "MEM"
+          },
+          {
+            "date": "2025-11-26",
+            "opponent": "POR"
+          }
+        ],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-10-30",
+            "opponent": "MIA"
+          },
+          {
+            "date": "2025-11-08",
+            "opponent": "NOP"
+          },
+          {
+            "date": "2025-11-16",
+            "opponent": "SAC"
+          },
+          {
+            "date": "2025-11-20",
+            "opponent": "ATL"
+          }
+        ],
+        "C": [
+          {
+            "date": "2025-11-14",
+            "opponent": "GSW"
+          }
+        ]
+      },
+      "games": [
+        {
+          "game_id": "0022500004",
+          "date": "2025-10-22",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500095",
+          "date": "2025-10-24",
+          "opponent": "NOP",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500105",
+          "date": "2025-10-26",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500118",
+          "date": "2025-10-27",
+          "opponent": "TOR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500141",
+          "date": "2025-10-30",
+          "opponent": "MIA",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500154",
+          "date": "2025-11-02",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500179",
+          "date": "2025-11-05",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500032",
+          "date": "2025-11-07",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500188",
+          "date": "2025-11-08",
+          "opponent": "NOP",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500202",
+          "date": "2025-11-10",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500220",
+          "date": "2025-11-12",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500047",
+          "date": "2025-11-14",
+          "opponent": "GSW",
+          "location": "HOME",
+          "missing_positions": [
+            "C"
+          ]
+        },
+        {
+          "game_id": "0022500234",
+          "date": "2025-11-16",
+          "opponent": "SAC",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500252",
+          "date": "2025-11-18",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500267",
+          "date": "2025-11-20",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500281",
+          "date": "2025-11-23",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500067",
+          "date": "2025-11-26",
+          "opponent": "POR",
+          "location": "AWAY",
+          "missing_positions": [
+            "PG"
+          ]
+        }
+      ]
+    },
+    "TOR": {
+      "full_name": "Toronto Raptors",
+      "total_games": 19,
+      "position_gaps": {
+        "PG": [
+          {
+            "date": "2025-11-02",
+            "opponent": "MEM"
+          },
+          {
+            "date": "2025-11-23",
+            "opponent": "BKN"
+          }
+        ],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-04",
+            "opponent": "MIL"
+          },
+          {
+            "date": "2025-11-15",
+            "opponent": "IND"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-10-22",
+            "opponent": "ATL"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500082",
+          "date": "2025-10-22",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500092",
+          "date": "2025-10-24",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500111",
+          "date": "2025-10-26",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500118",
+          "date": "2025-10-27",
+          "opponent": "SAS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500131",
+          "date": "2025-10-29",
+          "opponent": "HOU",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500022",
+          "date": "2025-10-31",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500152",
+          "date": "2025-11-02",
+          "opponent": "MEM",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500165",
+          "date": "2025-11-04",
+          "opponent": "MIL",
+          "location": "HOME",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500030",
+          "date": "2025-11-07",
+          "opponent": "ATL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500184",
+          "date": "2025-11-08",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500207",
+          "date": "2025-11-11",
+          "opponent": "BKN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500225",
+          "date": "2025-11-13",
+          "opponent": "CLE",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500230",
+          "date": "2025-11-15",
+          "opponent": "IND",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500245",
+          "date": "2025-11-17",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500258",
+          "date": "2025-11-19",
+          "opponent": "PHI",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500050",
+          "date": "2025-11-21",
+          "opponent": "WAS",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500279",
+          "date": "2025-11-23",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": [
+            "PG"
+          ]
+        },
+        {
+          "game_id": "0022500284",
+          "date": "2025-11-24",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500063",
+          "date": "2025-11-26",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    },
+    "UTA": {
+      "full_name": "Utah Jazz",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [],
+        "SG": [],
+        "SF": [],
+        "PF": [
+          {
+            "date": "2025-11-05",
+            "opponent": "DET"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500087",
+          "date": "2025-10-22",
+          "opponent": "LAC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500098",
+          "date": "2025-10-24",
+          "opponent": "SAC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500120",
+          "date": "2025-10-27",
+          "opponent": "PHX",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500135",
+          "date": "2025-10-29",
+          "opponent": "POR",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500025",
+          "date": "2025-10-31",
+          "opponent": "PHX",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500150",
+          "date": "2025-11-02",
+          "opponent": "CHA",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500158",
+          "date": "2025-11-03",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500172",
+          "date": "2025-11-05",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500036",
+          "date": "2025-11-07",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500205",
+          "date": "2025-11-10",
+          "opponent": "MIN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500211",
+          "date": "2025-11-11",
+          "opponent": "IND",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500227",
+          "date": "2025-11-13",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500240",
+          "date": "2025-11-16",
+          "opponent": "CHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500253",
+          "date": "2025-11-18",
+          "opponent": "LAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500055",
+          "date": "2025-11-21",
+          "opponent": "OKC",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500282",
+          "date": "2025-11-23",
+          "opponent": "LAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500291",
+          "date": "2025-11-24",
+          "opponent": "GSW",
+          "location": "AWAY",
+          "missing_positions": []
+        }
+      ]
+    },
+    "WAS": {
+      "full_name": "Washington Wizards",
+      "total_games": 17,
+      "position_gaps": {
+        "PG": [],
+        "SG": [],
+        "SF": [
+          {
+            "date": "2025-11-19",
+            "opponent": "MIN"
+          }
+        ],
+        "PF": [
+          {
+            "date": "2025-11-10",
+            "opponent": "DET"
+          },
+          {
+            "date": "2025-11-22",
+            "opponent": "CHI"
+          }
+        ],
+        "C": []
+      },
+      "games": [
+        {
+          "game_id": "0022500086",
+          "date": "2025-10-22",
+          "opponent": "MIL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500096",
+          "date": "2025-10-24",
+          "opponent": "DAL",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500109",
+          "date": "2025-10-26",
+          "opponent": "CHA",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500123",
+          "date": "2025-10-28",
+          "opponent": "PHI",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500140",
+          "date": "2025-10-30",
+          "opponent": "OKC",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500145",
+          "date": "2025-11-01",
+          "opponent": "ORL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500159",
+          "date": "2025-11-03",
+          "opponent": "NYK",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500174",
+          "date": "2025-11-05",
+          "opponent": "BOS",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500029",
+          "date": "2025-11-07",
+          "opponent": "CLE",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500183",
+          "date": "2025-11-08",
+          "opponent": "DAL",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500199",
+          "date": "2025-11-10",
+          "opponent": "DET",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500218",
+          "date": "2025-11-12",
+          "opponent": "HOU",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500235",
+          "date": "2025-11-16",
+          "opponent": "BKN",
+          "location": "HOME",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500259",
+          "date": "2025-11-19",
+          "opponent": "MIN",
+          "location": "AWAY",
+          "missing_positions": [
+            "SF"
+          ]
+        },
+        {
+          "game_id": "0022500050",
+          "date": "2025-11-21",
+          "opponent": "TOR",
+          "location": "AWAY",
+          "missing_positions": []
+        },
+        {
+          "game_id": "0022500271",
+          "date": "2025-11-22",
+          "opponent": "CHI",
+          "location": "AWAY",
+          "missing_positions": [
+            "PF"
+          ]
+        },
+        {
+          "game_id": "0022500057",
+          "date": "2025-11-25",
+          "opponent": "ATL",
+          "location": "HOME",
+          "missing_positions": []
+        }
+      ]
+    }
+  }
+}

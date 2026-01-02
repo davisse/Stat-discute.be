@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ChevronUp, ChevronDown, BarChart3, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 export interface PlayerProp {
@@ -90,6 +90,13 @@ export function PropsAnalysisTable({ players, onSelectPlayer, selectedPlayerId }
     return ['points', 'pra', 'rebounds', 'assists', '3pm', 'steals', 'blocks'].filter(t => types.has(t))
   }, [players])
 
+  // Sync propTypeFilter with available prop types (fix for 0 players bug)
+  useEffect(() => {
+    if (propTypes.length > 0 && !propTypes.includes(propTypeFilter)) {
+      setPropTypeFilter(propTypes[0])
+    }
+  }, [propTypes, propTypeFilter])
+
   const sortedPlayers = useMemo(() => {
     // Map players with selected prop type
     let filtered = players.map(p => {
@@ -170,41 +177,56 @@ export function PropsAnalysisTable({ players, onSelectPlayer, selectedPlayerId }
     return <Minus className="w-4 h-4" />
   }
 
+  // Helper to get prop type display name
+  const getPropTypeLabel = (type: string) => {
+    switch (type) {
+      case 'points': return 'PTS'
+      case 'pra': return 'PRA'
+      case 'rebounds': return 'REB'
+      case 'assists': return 'AST'
+      case '3pm': return '3PM'
+      case 'steals': return 'STL'
+      case 'blocks': return 'BLK'
+      default: return type.toUpperCase()
+    }
+  }
+
   return (
     <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
       {/* Header */}
-      <div className="bg-gray-950 px-4 py-3 border-b border-gray-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          <BarChart3 className="w-5 h-5" />
-          Props Edge Analysis
-          <span className="text-sm text-gray-500 font-normal">({sortedPlayers.length} players)</span>
-        </h2>
+      <div className="bg-gray-950 px-4 py-3 border-b border-gray-800">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+            <BarChart3 className="w-5 h-5" />
+            <span className="hidden sm:inline">Props Edge Analysis</span>
+            <span className="sm:hidden">Props</span>
+            <span className="text-sm text-gray-500 font-normal">({sortedPlayers.length})</span>
+          </h2>
+        </div>
 
-        {/* Filters */}
-        <div className="flex gap-3 flex-wrap">
-          <select
-            value={propTypeFilter}
-            onChange={(e) => setPropTypeFilter(e.target.value)}
-            className="px-3 py-1.5 bg-transparent border border-gray-700 rounded text-sm text-white
-                     focus:border-white focus:outline-none cursor-pointer"
-          >
-            {propTypes.map(type => (
-              <option key={type} value={type}>
-                {type === 'points' ? 'Points' :
-                 type === 'pra' ? 'PRA' :
-                 type === 'rebounds' ? 'Rebounds' :
-                 type === 'assists' ? 'Assists' :
-                 type === '3pm' ? '3-Pointers' :
-                 type === 'steals' ? 'Steals' :
-                 type === 'blocks' ? 'Blocks' : type.toUpperCase()}
-              </option>
-            ))}
-          </select>
+        {/* Prop Type Pills - Horizontal scroll on mobile */}
+        <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
+          {propTypes.map(type => (
+            <button
+              key={type}
+              onClick={() => setPropTypeFilter(type)}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                propTypeFilter === type
+                  ? 'bg-white text-black'
+                  : 'bg-gray-800 text-gray-400 hover:text-white'
+              }`}
+            >
+              {getPropTypeLabel(type)}
+            </button>
+          ))}
+        </div>
 
+        {/* Position and Verdict Filters - Stack on mobile */}
+        <div className="flex flex-col sm:flex-row gap-2 mt-3">
           <select
             value={positionFilter}
             onChange={(e) => setPositionFilter(e.target.value)}
-            className="px-3 py-1.5 bg-transparent border border-gray-700 rounded text-sm text-white
+            className="flex-1 sm:flex-initial px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white
                      focus:border-white focus:outline-none cursor-pointer"
           >
             {positions.map(pos => (
@@ -215,7 +237,7 @@ export function PropsAnalysisTable({ players, onSelectPlayer, selectedPlayerId }
           <select
             value={verdictFilter}
             onChange={(e) => setVerdictFilter(e.target.value)}
-            className="px-3 py-1.5 bg-transparent border border-gray-700 rounded text-sm text-white
+            className="flex-1 sm:flex-initial px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white
                      focus:border-white focus:outline-none cursor-pointer"
           >
             <option value="ALL">All Verdicts</option>
@@ -226,8 +248,76 @@ export function PropsAnalysisTable({ players, onSelectPlayer, selectedPlayerId }
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Mobile Card View */}
+      <div className="md:hidden divide-y divide-gray-800">
+        {sortedPlayers.map((player) => (
+          <div
+            key={player.player_id}
+            onClick={() => onSelectPlayer(player)}
+            className={`p-4 cursor-pointer active:bg-gray-800/50 transition-colors ${
+              selectedPlayerId === player.player_id ? 'bg-gray-800/50' : ''
+            }`}
+          >
+            {/* Top Row: Player Name + Verdict */}
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <div className="font-medium text-white">{player.player_name}</div>
+                <div className="text-xs text-gray-500">
+                  {player.team_abbr} • {player.position} • {player.is_home ? 'vs' : '@'} {player.opponent_abbr}
+                </div>
+              </div>
+              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${verdictColors[player.edge_verdict]}`}>
+                <EdgeIcon verdict={player.edge_verdict} />
+                {player.edge_verdict.includes('STRONG') ? 'STRONG' : player.edge_verdict.includes('OVER') ? 'OVER' : player.edge_verdict.includes('UNDER') ? 'UNDER' : 'NEUTRAL'}
+              </span>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-4 gap-2 text-center">
+              <div>
+                <div className="text-xs text-gray-500">Avg</div>
+                <div className="text-sm font-mono text-white">{player.ppg}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Line</div>
+                <div className="text-sm font-mono text-yellow-400 font-semibold">
+                  {player.prop_line || '-'}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Allows</div>
+                <div className="text-sm font-mono text-white">
+                  {player.defense_starter_ppg_allowed.toFixed(1)}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Edge</div>
+                <div className={`text-sm font-mono font-semibold ${
+                  player.edge_points > 0 ? 'text-green-400' : player.edge_points < 0 ? 'text-red-400' : 'text-gray-400'
+                }`}>
+                  {player.edge_points > 0 ? '+' : ''}{player.edge_points.toFixed(1)}
+                </div>
+              </div>
+            </div>
+
+            {/* Odds Row */}
+            {player.prop_over_odds && player.prop_under_odds && (
+              <div className="mt-2 text-xs text-gray-500 text-center">
+                O {player.prop_over_odds.toFixed(2)} / U {player.prop_under_odds.toFixed(2)}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {sortedPlayers.length === 0 && (
+          <div className="px-4 py-12 text-center text-gray-500">
+            No players match your filters
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View - Hidden on mobile */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="text-xs text-gray-500 uppercase border-b border-gray-800">

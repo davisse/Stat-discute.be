@@ -372,20 +372,22 @@ export async function POST(request: NextRequest) {
     })
 
     // Set access token cookie (httpOnly, secure in production)
+    // DEV: Extended to 30 days for development convenience
     response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 15 * 60, // 15 minutes
+      maxAge: 30 * 24 * 60 * 60, // DEV: 30 days instead of 15 minutes
       path: '/'
     })
 
     // Set refresh token cookie (httpOnly, secure in production)
+    // DEV: Extended to 90 days for development convenience
     response.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 90 * 24 * 60 * 60, // DEV: 90 days instead of 7 days
       path: '/'
     })
 

@@ -13,7 +13,8 @@ This module fetches NBA betting odds from ps3838.com (Pinnacle Sports) and store
 
 ## 📁 Files
 
-- `fetch_pinnacle_odds.py` - Main scraper script that fetches and stores odds
+- `fetch_pinnacle_odds.py` - Main scraper script that fetches and stores odds (enhanced with closing line tracking)
+- `capture_closing_lines.py` - **NEW** Dedicated closing line capture script (Phase 4 - 2025-12-18)
 - `parsers.py` - JSON parser for Pinnacle's compressed data format (~120 markets per game)
 - `pinnacle_config.py` - Configuration settings, API endpoints, and team mappings
 - `utils.py` - Helper functions for odds conversion, validation, and formatting
@@ -57,11 +58,28 @@ python3 fetch_pinnacle_odds.py
 python3 fetch_pinnacle_odds.py --full-run
 ```
 
-### 5. Set Up Automation (Optional)
+### 5. Capture Closing Lines (NEW - Phase 4)
+
+```bash
+# Capture closing lines for games starting within 2 hours
+python3 capture_closing_lines.py
+
+# Test in dry-run mode
+python3 capture_closing_lines.py --dry-run
+
+# Custom time window (e.g., 1.5 hours)
+python3 capture_closing_lines.py --hours-window 1.5
+```
+
+### 6. Set Up Automation (Optional)
 
 ```bash
 # Set up cron job to run every 15 minutes
 ./setup_cron.sh
+
+# Add closing line capture (every 30 minutes during game hours)
+# Add to crontab: crontab -e
+*/30 16-23 * * * cd /path/to/etl/betting && python3 capture_closing_lines.py >> /var/log/closing_lines.log 2>&1
 ```
 
 ## 📊 Data Structure
@@ -80,6 +98,8 @@ Total: ~120-130 markets per NBA game
 1. **betting_events** - Stores Pinnacle event ID linked to our game_id
 2. **betting_markets** - Market types (moneyline, spread, total, props)
 3. **betting_odds** - Individual odds with timestamps for tracking movement
+4. **game_closing_lines** - **NEW** Closing line snapshots before game start (Phase 4)
+5. **game_ou_results** - **NEW** Actual O/U results vs betting lines (Phase 3 - pending)
 
 ## 🔧 Configuration
 
@@ -246,7 +266,7 @@ betting_events (1 per game)
 
 ## 📝 Development Status
 
-### ✅ Completed (Phase A, B & C)
+### ✅ Completed (Phase A, B, C & Phase 4)
 - Core scraper with rate limiting
 - JSON parser for 133+ markets per game
 - Odds conversion utilities
@@ -256,6 +276,11 @@ betting_events (1 per game)
 - Dry-run mode for testing
 - Authentication with cookies
 - Cron automation setup
+- **Phase 4 (2025-12-18)**: Closing lines capture functionality
+  - `hours_to_game` and `is_closing_line` tracking in `betting_odds` table
+  - `game_closing_lines` table for closing line snapshots
+  - `capture_closing_lines.py` script for automated capture
+  - See: `claudedocs/closing_lines_implementation_2025-12-18.md`
 
 ### ⏳ Known Issues
 - Cookie expiration needs manual refresh

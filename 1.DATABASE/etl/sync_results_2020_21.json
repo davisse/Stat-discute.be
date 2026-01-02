@@ -1,0 +1,33 @@
+{
+  "season": "2020-21",
+  "completed_at": "2025-12-19T02:29:20.880750",
+  "duration_seconds": 20557.230544,
+  "games": {
+    "season": "2020-21",
+    "games_found": 1080,
+    "games_inserted": 1080,
+    "games_updated": 0,
+    "games_skipped": 0,
+    "errors": []
+  },
+  "box_scores": {
+    "season": "2020-21",
+    "games_needing_stats": 1080,
+    "games_processed": 1080,
+    "games_successful": 0,
+    "games_failed": 1080,
+    "total_player_stats": 0,
+    "errors": [
+      "0022000001: column \"updated_at\" of relation \"player_game_stats",
+      "0022000002: column \"updated_at\" of relation \"player_game_stats",
+      "0022000003: column \"updated_at\" of relation \"player_game_stats",
+      "0022000004: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000010: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000011: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000012: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000013: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000014: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022000015: HTTPSConnectionPool(host='stats.nba.com', port=443"
+    ]
+  }
+}

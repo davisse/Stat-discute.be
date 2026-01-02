@@ -41,6 +41,11 @@ export default function TonightPropsPage() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Dedupe games by game_id (API can return duplicates from LEFT JOIN)
+  const uniqueGames = data?.games
+    ? [...new Map(data.games.map(g => [g.game_id, g])).values()]
+    : []
+
   const fetchData = async () => {
     setLoading(true)
     setError(null)
@@ -135,7 +140,7 @@ export default function TonightPropsPage() {
         )}
 
         {/* No Games State */}
-        {!loading && !error && data?.games.length === 0 && (
+        {!loading && !error && uniqueGames.length === 0 && (
           <div className="text-center py-20">
             <Calendar className="w-16 h-16 text-gray-600 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-white mb-2">No Games Tonight</h2>
@@ -144,11 +149,11 @@ export default function TonightPropsPage() {
         )}
 
         {/* Main Content */}
-        {!loading && !error && data && data.games.length > 0 && (
+        {!loading && !error && data && uniqueGames.length > 0 && (
           <>
             {/* Games Selector */}
             <GameCardsSelector
-              games={data.games}
+              games={uniqueGames}
               selectedGameId={selectedGameId}
               onSelectGame={setSelectedGameId}
             />

@@ -48,6 +48,7 @@ def main():
         'calculate_team_stats.py',
         'calculate_advanced_stats.py',
         'calculate_standings.py',
+        'calculate_period_stats.py',  # Quarter & half averages
         'refresh_materialized_views.py'
     ]
 

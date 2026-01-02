@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Totals Analysis - December 18, 2024</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nba-blue': '#1D428A',
+                        'nba-red': '#C8102E',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .over { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .under { background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); }
+        .push { background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%); }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-nba-blue to-nba-red py-6 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <h1 class="text-3xl font-bold text-center">NBA Totals Analysis Report</h1>
+            <p class="text-center text-gray-200 mt-2">December 18, 2024 - 10 Games</p>
+        </div>
+    </header>
+
+    <!-- Summary Section -->
+    <section class="max-w-7xl mx-auto px-4 py-8">
+        <div class="bg-gray-800 rounded-xl p-6 mb-8 shadow-xl">
+            <h2 class="text-2xl font-bold mb-4 text-emerald-400">Executive Summary</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <p class="text-3xl font-bold text-emerald-400">6</p>
+                    <p class="text-gray-400">Strong Edges</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <p class="text-3xl font-bold text-yellow-400">3</p>
+                    <p class="text-gray-400">Moderate Edges</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <p class="text-3xl font-bold text-gray-400">1</p>
+                    <p class="text-gray-400">Push/No Play</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <p class="text-3xl font-bold text-white">10</p>
+                    <p class="text-gray-400">Total Games</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Methodology -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-8 shadow-xl">
+            <h2 class="text-xl font-bold mb-4 text-blue-400">5-Method Analysis Framework</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-sm">
+                <div class="bg-gray-700 rounded-lg p-3">
+                    <p class="font-semibold text-blue-300">M1: Season PPG</p>
+                    <p class="text-gray-400">Full season average</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-3">
+                    <p class="font-semibold text-blue-300">M2: Location</p>
+                    <p class="text-gray-400">Home/Away splits</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-3">
+                    <p class="font-semibold text-blue-300">M3: vs Defense</p>
+                    <p class="text-gray-400">Opponent DRtg adjusted</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-3">
+                    <p class="font-semibold text-blue-300">M4: Last 5</p>
+                    <p class="text-gray-400">Recent form</p>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-3">
+                    <p class="font-semibold text-blue-300">M5: ORtg/DRtg</p>
+                    <p class="text-gray-400">Efficiency matchup</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 1: CHA vs ATL -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-red-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 1: Charlotte Hornets vs Atlanta Hawks</h3>
+                    <p class="text-gray-400">7:10 PM ET - Spectrum Center</p>
+                </div>
+                <div class="under text-white px-4 py-2 rounded-lg font-bold">
+                    UNDER
+                </div>
+            </div>
+
+            <!-- Team Stats -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-teal-400 mb-2">CHA (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 113.0</div>
+                        <div><span class="text-gray-400">ORtg:</span> 113.8</div>
+                        <div><span class="text-gray-400">DRtg:</span> 119.6</div>
+                        <div><span class="text-gray-400">Pace:</span> 99.4</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 110.6</div>
+                        <div><span class="text-gray-400">Last 5:</span> 108.4</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-400 mb-2">ATL (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 118.3</div>
+                        <div><span class="text-gray-400">ORtg:</span> 118.6</div>
+                        <div><span class="text-gray-400">DRtg:</span> 117.0</div>
+                        <div><span class="text-gray-400">Pace:</span> 99.9</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 121.1</div>
+                        <div><span class="text-gray-400">Last 5:</span> 119.2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Tables -->
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">238.0</td>
+                            <td class="px-4 py-2 text-center">231.3</td>
+                            <td class="px-4 py-2 text-center">231.7</td>
+                            <td class="px-4 py-2 text-center">231.0</td>
+                            <td class="px-4 py-2 text-center">227.6</td>
+                            <td class="px-4 py-2 text-center">230.5</td>
+                            <td class="px-4 py-2 text-center font-bold">230.4</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-7.6</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">CHA Team Total</td>
+                            <td class="px-4 py-2 text-center">116.5</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center">110.6</td>
+                            <td class="px-4 py-2 text-center">111.5</td>
+                            <td class="px-4 py-2 text-center">108.4</td>
+                            <td class="px-4 py-2 text-center">111.0</td>
+                            <td class="px-4 py-2 text-center font-bold">110.9</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-5.6</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">ATL Team Total</td>
+                            <td class="px-4 py-2 text-center">121.5</td>
+                            <td class="px-4 py-2 text-center">118.3</td>
+                            <td class="px-4 py-2 text-center">121.1</td>
+                            <td class="px-4 py-2 text-center">119.5</td>
+                            <td class="px-4 py-2 text-center">119.2</td>
+                            <td class="px-4 py-2 text-center">119.5</td>
+                            <td class="px-4 py-2 text-center font-bold">119.5</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-2.0</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 2: IND vs NYK -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 2: Indiana Pacers vs New York Knicks</h3>
+                    <p class="text-gray-400">7:10 PM ET - Gainbridge Fieldhouse</p>
+                </div>
+                <div class="over text-white px-4 py-2 rounded-lg font-bold">
+                    OVER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-yellow-400 mb-2">IND (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 111.3</div>
+                        <div><span class="text-gray-400">ORtg:</span> 110.0</div>
+                        <div><span class="text-gray-400">DRtg:</span> 117.1</div>
+                        <div><span class="text-gray-400">Pace:</span> 101.5</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 115.9</div>
+                        <div><span class="text-gray-400">Last 5:</span> 115.6</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-blue-400 mb-2">NYK (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 120.5</div>
+                        <div><span class="text-gray-400">ORtg:</span> 121.8</div>
+                        <div><span class="text-gray-400">DRtg:</span> 113.0</div>
+                        <div><span class="text-gray-400">Pace:</span> 99.1</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 116.6</div>
+                        <div><span class="text-gray-400">Last 5:</span> 121.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">224.5</td>
+                            <td class="px-4 py-2 text-center">231.8</td>
+                            <td class="px-4 py-2 text-center">232.5</td>
+                            <td class="px-4 py-2 text-center">231.0</td>
+                            <td class="px-4 py-2 text-center">236.6</td>
+                            <td class="px-4 py-2 text-center">228.0</td>
+                            <td class="px-4 py-2 text-center font-bold">232.0</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+7.5</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">IND Team Total</td>
+                            <td class="px-4 py-2 text-center">110.5</td>
+                            <td class="px-4 py-2 text-center">111.3</td>
+                            <td class="px-4 py-2 text-center">115.9</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center">115.6</td>
+                            <td class="px-4 py-2 text-center">112.0</td>
+                            <td class="px-4 py-2 text-center font-bold">113.6</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+3.1</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">NYK Team Total</td>
+                            <td class="px-4 py-2 text-center">114.5</td>
+                            <td class="px-4 py-2 text-center">120.5</td>
+                            <td class="px-4 py-2 text-center">116.6</td>
+                            <td class="px-4 py-2 text-center">118.0</td>
+                            <td class="px-4 py-2 text-center">121.0</td>
+                            <td class="px-4 py-2 text-center">118.5</td>
+                            <td class="px-4 py-2 text-center font-bold">118.9</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+4.4</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 3: BKN vs MIA -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 3: Brooklyn Nets vs Miami Heat</h3>
+                    <p class="text-gray-400">7:40 PM ET - Barclays Center</p>
+                </div>
+                <div class="over text-white px-4 py-2 rounded-lg font-bold">
+                    OVER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-gray-300 mb-2">BKN (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 109.4</div>
+                        <div><span class="text-gray-400">ORtg:</span> 111.5</div>
+                        <div><span class="text-gray-400">DRtg:</span> 119.2</div>
+                        <div><span class="text-gray-400">Pace:</span> 98.3</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 109.4</div>
+                        <div><span class="text-gray-400">Last 5:</span> 111.4</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-400 mb-2">MIA (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 121.7</div>
+                        <div><span class="text-gray-400">ORtg:</span> 117.9</div>
+                        <div><span class="text-gray-400">DRtg:</span> 114.8</div>
+                        <div><span class="text-gray-400">Pace:</span> 103.1</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 120.3</div>
+                        <div><span class="text-gray-400">Last 5:</span> 114.4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">227.0</td>
+                            <td class="px-4 py-2 text-center">231.1</td>
+                            <td class="px-4 py-2 text-center">229.7</td>
+                            <td class="px-4 py-2 text-center">230.0</td>
+                            <td class="px-4 py-2 text-center">225.8</td>
+                            <td class="px-4 py-2 text-center">228.5</td>
+                            <td class="px-4 py-2 text-center font-bold">229.0</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+2.0</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">BKN Team Total</td>
+                            <td class="px-4 py-2 text-center">110.5</td>
+                            <td class="px-4 py-2 text-center">109.4</td>
+                            <td class="px-4 py-2 text-center">109.4</td>
+                            <td class="px-4 py-2 text-center">111.0</td>
+                            <td class="px-4 py-2 text-center">111.4</td>
+                            <td class="px-4 py-2 text-center">111.5</td>
+                            <td class="px-4 py-2 text-center font-bold">110.5</td>
+                            <td class="px-4 py-2 text-center text-gray-400 font-bold">0.0</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">PUSH</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">MIA Team Total</td>
+                            <td class="px-4 py-2 text-center">117.5</td>
+                            <td class="px-4 py-2 text-center">121.7</td>
+                            <td class="px-4 py-2 text-center">120.3</td>
+                            <td class="px-4 py-2 text-center">119.0</td>
+                            <td class="px-4 py-2 text-center">114.4</td>
+                            <td class="px-4 py-2 text-center">117.0</td>
+                            <td class="px-4 py-2 text-center font-bold">118.5</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+1.0</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">LEAN O</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 4: MIL vs TOR -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-gray-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 4: Milwaukee Bucks vs Toronto Raptors</h3>
+                    <p class="text-gray-400">8:10 PM ET - Fiserv Forum</p>
+                </div>
+                <div class="push text-white px-4 py-2 rounded-lg font-bold">
+                    PUSH
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-green-400 mb-2">MIL (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 115.1</div>
+                        <div><span class="text-gray-400">ORtg:</span> 118.9</div>
+                        <div><span class="text-gray-400">DRtg:</span> 122.0</div>
+                        <div><span class="text-gray-400">Pace:</span> 96.9</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 118.1</div>
+                        <div><span class="text-gray-400">Last 5:</span> 113.6</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-400 mb-2">TOR (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 115.8</div>
+                        <div><span class="text-gray-400">ORtg:</span> 116.4</div>
+                        <div><span class="text-gray-400">DRtg:</span> 114.3</div>
+                        <div><span class="text-gray-400">Pace:</span> 99.6</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 117.6</div>
+                        <div><span class="text-gray-400">Last 5:</span> 108.2</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">220.0</td>
+                            <td class="px-4 py-2 text-center">230.9</td>
+                            <td class="px-4 py-2 text-center">235.7</td>
+                            <td class="px-4 py-2 text-center">228.0</td>
+                            <td class="px-4 py-2 text-center">221.8</td>
+                            <td class="px-4 py-2 text-center">226.0</td>
+                            <td class="px-4 py-2 text-center font-bold">228.5</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+8.5</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">MIL Team Total</td>
+                            <td class="px-4 py-2 text-center">107.5</td>
+                            <td class="px-4 py-2 text-center">115.1</td>
+                            <td class="px-4 py-2 text-center">118.1</td>
+                            <td class="px-4 py-2 text-center">116.0</td>
+                            <td class="px-4 py-2 text-center">113.6</td>
+                            <td class="px-4 py-2 text-center">115.5</td>
+                            <td class="px-4 py-2 text-center font-bold">115.7</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+8.2</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">TOR Team Total</td>
+                            <td class="px-4 py-2 text-center">111.5</td>
+                            <td class="px-4 py-2 text-center">115.8</td>
+                            <td class="px-4 py-2 text-center">117.6</td>
+                            <td class="px-4 py-2 text-center">112.0</td>
+                            <td class="px-4 py-2 text-center">108.2</td>
+                            <td class="px-4 py-2 text-center">112.5</td>
+                            <td class="px-4 py-2 text-center font-bold">113.2</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+1.7</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">LEAN O</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 5: NOP vs HOU -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 5: New Orleans Pelicans vs Houston Rockets</h3>
+                    <p class="text-gray-400">8:10 PM ET - Smoothie King Center</p>
+                </div>
+                <div class="over text-white px-4 py-2 rounded-lg font-bold">
+                    OVER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-yellow-500 mb-2">NOP (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 113.0</div>
+                        <div><span class="text-gray-400">ORtg:</span> 111.5</div>
+                        <div><span class="text-gray-400">DRtg:</span> 122.2</div>
+                        <div><span class="text-gray-400">Pace:</span> 101.3</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 116.8</div>
+                        <div><span class="text-gray-400">Last 5:</span> 122.4</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-500 mb-2">HOU (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 120.1</div>
+                        <div><span class="text-gray-400">ORtg:</span> 120.2</div>
+                        <div><span class="text-gray-400">DRtg:</span> 110.0</div>
+                        <div><span class="text-gray-400">Pace:</span> 100.5</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 118.8</div>
+                        <div><span class="text-gray-400">Last 5:</span> 120.2</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">233.0</td>
+                            <td class="px-4 py-2 text-center">233.1</td>
+                            <td class="px-4 py-2 text-center">235.6</td>
+                            <td class="px-4 py-2 text-center">237.0</td>
+                            <td class="px-4 py-2 text-center">242.6</td>
+                            <td class="px-4 py-2 text-center">238.0</td>
+                            <td class="px-4 py-2 text-center font-bold">237.3</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+4.3</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">NOP Team Total</td>
+                            <td class="px-4 py-2 text-center">111.5</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center">116.8</td>
+                            <td class="px-4 py-2 text-center">112.0</td>
+                            <td class="px-4 py-2 text-center">122.4</td>
+                            <td class="px-4 py-2 text-center">115.0</td>
+                            <td class="px-4 py-2 text-center font-bold">115.8</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+4.3</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">HOU Team Total</td>
+                            <td class="px-4 py-2 text-center">121.5</td>
+                            <td class="px-4 py-2 text-center">120.1</td>
+                            <td class="px-4 py-2 text-center">118.8</td>
+                            <td class="px-4 py-2 text-center">125.0</td>
+                            <td class="px-4 py-2 text-center">120.2</td>
+                            <td class="px-4 py-2 text-center">121.0</td>
+                            <td class="px-4 py-2 text-center font-bold">121.0</td>
+                            <td class="px-4 py-2 text-center text-gray-400 font-bold">-0.5</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">PUSH</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 6: DAL vs DET -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 6: Dallas Mavericks vs Detroit Pistons</h3>
+                    <p class="text-gray-400">8:40 PM ET - American Airlines Center</p>
+                </div>
+                <div class="over text-white px-4 py-2 rounded-lg font-bold">
+                    OVER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-blue-400 mb-2">DAL (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 111.8</div>
+                        <div><span class="text-gray-400">ORtg:</span> 111.6</div>
+                        <div><span class="text-gray-400">DRtg:</span> 115.9</div>
+                        <div><span class="text-gray-400">Pace:</span> 100.4</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 112.9</div>
+                        <div><span class="text-gray-400">Last 5:</span> 119.2</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-400 mb-2">DET (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 118.7</div>
+                        <div><span class="text-gray-400">ORtg:</span> 116.6</div>
+                        <div><span class="text-gray-400">DRtg:</span> 111.0</div>
+                        <div><span class="text-gray-400">Pace:</span> 102.1</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 119.2</div>
+                        <div><span class="text-gray-400">Last 5:</span> 118.4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">230.0</td>
+                            <td class="px-4 py-2 text-center">230.5</td>
+                            <td class="px-4 py-2 text-center">232.1</td>
+                            <td class="px-4 py-2 text-center">234.0</td>
+                            <td class="px-4 py-2 text-center">237.6</td>
+                            <td class="px-4 py-2 text-center">233.0</td>
+                            <td class="px-4 py-2 text-center font-bold">233.4</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+3.4</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">DAL Team Total</td>
+                            <td class="px-4 py-2 text-center">111.5</td>
+                            <td class="px-4 py-2 text-center">111.8</td>
+                            <td class="px-4 py-2 text-center">112.9</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center">119.2</td>
+                            <td class="px-4 py-2 text-center">114.0</td>
+                            <td class="px-4 py-2 text-center font-bold">114.2</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+2.7</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">DET Team Total</td>
+                            <td class="px-4 py-2 text-center">117.5</td>
+                            <td class="px-4 py-2 text-center">118.7</td>
+                            <td class="px-4 py-2 text-center">119.2</td>
+                            <td class="px-4 py-2 text-center">121.0</td>
+                            <td class="px-4 py-2 text-center">118.4</td>
+                            <td class="px-4 py-2 text-center">119.0</td>
+                            <td class="px-4 py-2 text-center font-bold">119.3</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+1.8</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">LEAN O</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 7: DEN vs ORL -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 7: Denver Nuggets vs Orlando Magic</h3>
+                    <p class="text-gray-400">9:10 PM ET - Ball Arena</p>
+                </div>
+                <div class="over text-white px-4 py-2 rounded-lg font-bold">
+                    OVER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-yellow-400 mb-2">DEN (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 125.0</div>
+                        <div><span class="text-gray-400">ORtg:</span> 128.5</div>
+                        <div><span class="text-gray-400">DRtg:</span> 119.3</div>
+                        <div><span class="text-gray-400">Pace:</span> 97.6</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 126.0</div>
+                        <div><span class="text-gray-400">Last 5:</span> 127.0</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-blue-400 mb-2">ORL (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 118.3</div>
+                        <div><span class="text-gray-400">ORtg:</span> 117.5</div>
+                        <div><span class="text-gray-400">DRtg:</span> 112.8</div>
+                        <div><span class="text-gray-400">Pace:</span> 100.7</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 120.2</div>
+                        <div><span class="text-gray-400">Last 5:</span> 112.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">235.5</td>
+                            <td class="px-4 py-2 text-center">243.3</td>
+                            <td class="px-4 py-2 text-center">246.2</td>
+                            <td class="px-4 py-2 text-center">242.0</td>
+                            <td class="px-4 py-2 text-center">239.0</td>
+                            <td class="px-4 py-2 text-center">240.0</td>
+                            <td class="px-4 py-2 text-center font-bold">242.1</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+6.6</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">DEN Team Total</td>
+                            <td class="px-4 py-2 text-center">121.5</td>
+                            <td class="px-4 py-2 text-center">125.0</td>
+                            <td class="px-4 py-2 text-center">126.0</td>
+                            <td class="px-4 py-2 text-center">123.0</td>
+                            <td class="px-4 py-2 text-center">127.0</td>
+                            <td class="px-4 py-2 text-center">122.0</td>
+                            <td class="px-4 py-2 text-center font-bold">124.6</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+3.1</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">ORL Team Total</td>
+                            <td class="px-4 py-2 text-center">114.5</td>
+                            <td class="px-4 py-2 text-center">118.3</td>
+                            <td class="px-4 py-2 text-center">120.2</td>
+                            <td class="px-4 py-2 text-center">119.0</td>
+                            <td class="px-4 py-2 text-center">112.0</td>
+                            <td class="px-4 py-2 text-center">118.0</td>
+                            <td class="px-4 py-2 text-center font-bold">117.5</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+3.0</td>
+                            <td class="px-4 py-2 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 8: PHX vs GSW -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-red-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 8: Phoenix Suns vs Golden State Warriors</h3>
+                    <p class="text-gray-400">9:10 PM ET - Footprint Center</p>
+                </div>
+                <div class="under text-white px-4 py-2 rounded-lg font-bold">
+                    UNDER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-400 mb-2">PHX (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 114.8</div>
+                        <div><span class="text-gray-400">ORtg:</span> 114.1</div>
+                        <div><span class="text-gray-400">DRtg:</span> 113.4</div>
+                        <div><span class="text-gray-400">Pace:</span> 100.9</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 116.8</div>
+                        <div><span class="text-gray-400">Last 5:</span> 106.4</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-yellow-400 mb-2">GSW (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 113.5</div>
+                        <div><span class="text-gray-400">ORtg:</span> 114.3</div>
+                        <div><span class="text-gray-400">DRtg:</span> 112.3</div>
+                        <div><span class="text-gray-400">Pace:</span> 99.3</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 111.1</div>
+                        <div><span class="text-gray-400">Last 5:</span> 107.2</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">231.5</td>
+                            <td class="px-4 py-2 text-center">228.3</td>
+                            <td class="px-4 py-2 text-center">227.9</td>
+                            <td class="px-4 py-2 text-center">226.5</td>
+                            <td class="px-4 py-2 text-center">213.6</td>
+                            <td class="px-4 py-2 text-center">227.0</td>
+                            <td class="px-4 py-2 text-center font-bold">224.7</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-6.8</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">PHX Team Total</td>
+                            <td class="px-4 py-2 text-center">114.5</td>
+                            <td class="px-4 py-2 text-center">114.8</td>
+                            <td class="px-4 py-2 text-center">116.8</td>
+                            <td class="px-4 py-2 text-center">114.0</td>
+                            <td class="px-4 py-2 text-center">106.4</td>
+                            <td class="px-4 py-2 text-center">114.0</td>
+                            <td class="px-4 py-2 text-center font-bold">113.2</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-1.3</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">LEAN U</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">GSW Team Total</td>
+                            <td class="px-4 py-2 text-center">116.5</td>
+                            <td class="px-4 py-2 text-center">113.5</td>
+                            <td class="px-4 py-2 text-center">111.1</td>
+                            <td class="px-4 py-2 text-center">112.5</td>
+                            <td class="px-4 py-2 text-center">107.2</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center font-bold">111.5</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-5.0</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 9: UTA vs LAL -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-red-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 9: Utah Jazz vs Los Angeles Lakers</h3>
+                    <p class="text-gray-400">9:10 PM ET - Delta Center</p>
+                </div>
+                <div class="under text-white px-4 py-2 rounded-lg font-bold">
+                    UNDER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-blue-400 mb-2">UTA (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 117.6</div>
+                        <div><span class="text-gray-400">ORtg:</span> 113.4</div>
+                        <div><span class="text-gray-400">DRtg:</span> 121.3</div>
+                        <div><span class="text-gray-400">Pace:</span> 103.7</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 124.5</div>
+                        <div><span class="text-gray-400">Last 5:</span> 114.0</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-400 mb-2">LAL (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 118.3</div>
+                        <div><span class="text-gray-400">ORtg:</span> 122.4</div>
+                        <div><span class="text-gray-400">DRtg:</span> 120.8</div>
+                        <div><span class="text-gray-400">Pace:</span> 96.8</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 114.1</div>
+                        <div><span class="text-gray-400">Last 5:</span> 113.4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">242.0</td>
+                            <td class="px-4 py-2 text-center">235.9</td>
+                            <td class="px-4 py-2 text-center">238.6</td>
+                            <td class="px-4 py-2 text-center">236.0</td>
+                            <td class="px-4 py-2 text-center">227.4</td>
+                            <td class="px-4 py-2 text-center">235.0</td>
+                            <td class="px-4 py-2 text-center font-bold">234.6</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-7.4</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">UTA Team Total</td>
+                            <td class="px-4 py-2 text-center">117.5</td>
+                            <td class="px-4 py-2 text-center">117.6</td>
+                            <td class="px-4 py-2 text-center">124.5</td>
+                            <td class="px-4 py-2 text-center">118.0</td>
+                            <td class="px-4 py-2 text-center">114.0</td>
+                            <td class="px-4 py-2 text-center">116.5</td>
+                            <td class="px-4 py-2 text-center font-bold">118.1</td>
+                            <td class="px-4 py-2 text-center text-emerald-400 font-bold">+0.6</td>
+                            <td class="px-4 py-2 text-center"><span class="push px-2 py-1 rounded text-xs">PUSH</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">LAL Team Total</td>
+                            <td class="px-4 py-2 text-center">125.5</td>
+                            <td class="px-4 py-2 text-center">118.3</td>
+                            <td class="px-4 py-2 text-center">114.1</td>
+                            <td class="px-4 py-2 text-center">118.0</td>
+                            <td class="px-4 py-2 text-center">113.4</td>
+                            <td class="px-4 py-2 text-center">118.5</td>
+                            <td class="px-4 py-2 text-center font-bold">116.5</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-9.0</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Game 10: POR vs SAC -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-xl border-l-4 border-red-500">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="text-xl font-bold">Game 10: Portland Trail Blazers vs Sacramento Kings</h3>
+                    <p class="text-gray-400">10:10 PM ET - Moda Center</p>
+                </div>
+                <div class="under text-white px-4 py-2 rounded-lg font-bold">
+                    UNDER
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-red-400 mb-2">POR (Home)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 117.4</div>
+                        <div><span class="text-gray-400">ORtg:</span> 111.6</div>
+                        <div><span class="text-gray-400">DRtg:</span> 114.5</div>
+                        <div><span class="text-gray-400">Pace:</span> 105.5</div>
+                        <div><span class="text-gray-400">Home PPG:</span> 116.2</div>
+                        <div><span class="text-gray-400">Last 5:</span> 113.4</div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-400 mb-2">SAC (Away)</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div><span class="text-gray-400">PPG:</span> 111.4</div>
+                        <div><span class="text-gray-400">ORtg:</span> 111.2</div>
+                        <div><span class="text-gray-400">DRtg:</span> 121.8</div>
+                        <div><span class="text-gray-400">Pace:</span> 100.3</div>
+                        <div><span class="text-gray-400">Away PPG:</span> 112.7</div>
+                        <div><span class="text-gray-400">Last 5:</span> 110.6</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Bet Type</th>
+                            <th class="px-4 py-2">Line</th>
+                            <th class="px-4 py-2">M1</th>
+                            <th class="px-4 py-2">M2</th>
+                            <th class="px-4 py-2">M3</th>
+                            <th class="px-4 py-2">M4</th>
+                            <th class="px-4 py-2">M5</th>
+                            <th class="px-4 py-2">Expected</th>
+                            <th class="px-4 py-2">Edge</th>
+                            <th class="px-4 py-2">Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2 font-semibold">Game Total</td>
+                            <td class="px-4 py-2 text-center">235.5</td>
+                            <td class="px-4 py-2 text-center">228.8</td>
+                            <td class="px-4 py-2 text-center">228.9</td>
+                            <td class="px-4 py-2 text-center">230.0</td>
+                            <td class="px-4 py-2 text-center">224.0</td>
+                            <td class="px-4 py-2 text-center">229.0</td>
+                            <td class="px-4 py-2 text-center font-bold">228.1</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-7.4</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-2">POR Team Total</td>
+                            <td class="px-4 py-2 text-center">123.5</td>
+                            <td class="px-4 py-2 text-center">117.4</td>
+                            <td class="px-4 py-2 text-center">116.2</td>
+                            <td class="px-4 py-2 text-center">120.0</td>
+                            <td class="px-4 py-2 text-center">113.4</td>
+                            <td class="px-4 py-2 text-center">116.0</td>
+                            <td class="px-4 py-2 text-center font-bold">116.6</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-6.9</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2">SAC Team Total</td>
+                            <td class="px-4 py-2 text-center">114.5</td>
+                            <td class="px-4 py-2 text-center">111.4</td>
+                            <td class="px-4 py-2 text-center">112.7</td>
+                            <td class="px-4 py-2 text-center">110.0</td>
+                            <td class="px-4 py-2 text-center">110.6</td>
+                            <td class="px-4 py-2 text-center">113.0</td>
+                            <td class="px-4 py-2 text-center font-bold">111.5</td>
+                            <td class="px-4 py-2 text-center text-red-400 font-bold">-3.0</td>
+                            <td class="px-4 py-2 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Best Plays Summary -->
+        <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl p-6 mb-8 shadow-xl border border-emerald-500">
+            <h2 class="text-2xl font-bold mb-4 text-emerald-400">Top Plays Summary</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Game</th>
+                            <th class="px-4 py-3 text-left">Bet</th>
+                            <th class="px-4 py-3 text-center">Line</th>
+                            <th class="px-4 py-3 text-center">Expected</th>
+                            <th class="px-4 py-3 text-center">Edge</th>
+                            <th class="px-4 py-3 text-center">Signal</th>
+                            <th class="px-4 py-3 text-center">Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700 bg-gray-800">
+                            <td class="px-4 py-3 font-semibold">LAL @ UTA</td>
+                            <td class="px-4 py-3">LAL Team Total</td>
+                            <td class="px-4 py-3 text-center">125.5</td>
+                            <td class="px-4 py-3 text-center">116.5</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-9.0</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-3 font-semibold">MIL vs TOR</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">220.0</td>
+                            <td class="px-4 py-3 text-center">228.5</td>
+                            <td class="px-4 py-3 text-center text-emerald-400 font-bold">+8.5</td>
+                            <td class="px-4 py-3 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 bg-gray-800">
+                            <td class="px-4 py-3 font-semibold">MIL vs TOR</td>
+                            <td class="px-4 py-3">MIL Team Total</td>
+                            <td class="px-4 py-3 text-center">107.5</td>
+                            <td class="px-4 py-3 text-center">115.7</td>
+                            <td class="px-4 py-3 text-center text-emerald-400 font-bold">+8.2</td>
+                            <td class="px-4 py-3 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-3 font-semibold">CHA vs ATL</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">238.0</td>
+                            <td class="px-4 py-3 text-center">230.4</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-7.6</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 bg-gray-800">
+                            <td class="px-4 py-3 font-semibold">IND vs NYK</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">224.5</td>
+                            <td class="px-4 py-3 text-center">232.0</td>
+                            <td class="px-4 py-3 text-center text-emerald-400 font-bold">+7.5</td>
+                            <td class="px-4 py-3 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-3 font-semibold">LAL @ UTA</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">242.0</td>
+                            <td class="px-4 py-3 text-center">234.6</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-7.4</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 bg-gray-800">
+                            <td class="px-4 py-3 font-semibold">POR vs SAC</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">235.5</td>
+                            <td class="px-4 py-3 text-center">228.1</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-7.4</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="px-4 py-3 font-semibold">POR vs SAC</td>
+                            <td class="px-4 py-3">POR Team Total</td>
+                            <td class="px-4 py-3 text-center">123.5</td>
+                            <td class="px-4 py-3 text-center">116.6</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-6.9</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr class="border-b border-gray-700 bg-gray-800">
+                            <td class="px-4 py-3 font-semibold">PHX vs GSW</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">231.5</td>
+                            <td class="px-4 py-3 text-center">224.7</td>
+                            <td class="px-4 py-3 text-center text-red-400 font-bold">-6.8</td>
+                            <td class="px-4 py-3 text-center"><span class="under px-2 py-1 rounded text-xs">UNDER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-semibold">DEN vs ORL</td>
+                            <td class="px-4 py-3">Game Total</td>
+                            <td class="px-4 py-3 text-center">235.5</td>
+                            <td class="px-4 py-3 text-center">242.1</td>
+                            <td class="px-4 py-3 text-center text-emerald-400 font-bold">+6.6</td>
+                            <td class="px-4 py-3 text-center"><span class="over px-2 py-1 rounded text-xs">OVER</span></td>
+                            <td class="px-4 py-3 text-center">5/5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 py-4">
+            <p>Generated by Stat Discute Analytics Engine</p>
+            <p class="text-sm mt-1">Data sourced from NBA Stats API and Pinnacle</p>
+            <p class="text-xs mt-2">Report generated: December 18, 2024</p>
+        </footer>
+    </section>
+</body>
+</html>

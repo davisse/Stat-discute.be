@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "chart_type": "position_pg",
+    "position": "PG",
+    "team_abbreviation": "LAL",
+    "generated_at": "2025-11-28T15:15:50.732567",
+    "season": "2025-26"
+  },
+  "statistics": {
+    "total_games": 17,
+    "average_points": 18.8,
+    "max_points": 52.0,
+    "min_points": 8.0,
+    "games_with_points": 17
+  },
+  "games": [
+    {
+      "game_id": "0022500002",
+      "game_date": "2025-10-21",
+      "opponent_abbr": "GSW",
+      "location": "HOME",
+      "points": 23.0
+    },
+    {
+      "game_id": "0022500019",
+      "game_date": "2025-10-24",
+      "opponent_abbr": "MIN",
+      "location": "HOME",
+      "points": 9.0
+    },
+    {
+      "game_id": "0022500113",
+      "game_date": "2025-10-26",
+      "opponent_abbr": "SAC",
+      "location": "AWAY",
+      "points": 36.0
+    },
+    {
+      "game_id": "0022500122",
+      "game_date": "2025-10-27",
+      "opponent_abbr": "POR",
+      "location": "HOME",
+      "points": 24.0
+    },
+    {
+      "game_id": "0022500136",
+      "game_date": "2025-10-29",
+      "opponent_abbr": "MIN",
+      "location": "AWAY",
+      "points": 24.0
+    },
+    {
+      "game_id": "0022500024",
+      "game_date": "2025-10-31",
+      "opponent_abbr": "MEM",
+      "location": "AWAY",
+      "points": 8.0
+    },
+    {
+      "game_id": "0022500155",
+      "game_date": "2025-11-02",
+      "opponent_abbr": "MIA",
+      "location": "HOME",
+      "points": 8.0
+    },
+    {
+      "game_id": "0022500163",
+      "game_date": "2025-11-03",
+      "opponent_abbr": "POR",
+      "location": "AWAY",
+      "points": 8.0
+    },
+    {
+      "game_id": "0022500179",
+      "game_date": "2025-11-05",
+      "opponent_abbr": "SAS",
+      "location": "HOME",
+      "points": 16.0
+    },
+    {
+      "game_id": "0022500185",
+      "game_date": "2025-11-08",
+      "opponent_abbr": "ATL",
+      "location": "AWAY",
+      "points": 31.0
+    },
+    {
+      "game_id": "0022500198",
+      "game_date": "2025-11-10",
+      "opponent_abbr": "CHA",
+      "location": "AWAY",
+      "points": 14.0
+    },
+    {
+      "game_id": "0022500222",
+      "game_date": "2025-11-12",
+      "opponent_abbr": "OKC",
+      "location": "AWAY",
+      "points": 30.0
+    },
+    {
+      "game_id": "0022500045",
+      "game_date": "2025-11-14",
+      "opponent_abbr": "NOP",
+      "location": "AWAY",
+      "points": 8.0
+    },
+    {
+      "game_id": "0022500231",
+      "game_date": "2025-11-15",
+      "opponent_abbr": "MIL",
+      "location": "AWAY",
+      "points": 10.0
+    },
+    {
+      "game_id": "0022500253",
+      "game_date": "2025-11-18",
+      "opponent_abbr": "UTA",
+      "location": "HOME",
+      "points": 9.0
+    },
+    {
+      "game_id": "0022500282",
+      "game_date": "2025-11-23",
+      "opponent_abbr": "UTA",
+      "location": "AWAY",
+      "points": 10.0
+    },
+    {
+      "game_id": "0022500059",
+      "game_date": "2025-11-25",
+      "opponent_abbr": "LAC",
+      "location": "HOME",
+      "points": 52.0
+    }
+  ]
+}

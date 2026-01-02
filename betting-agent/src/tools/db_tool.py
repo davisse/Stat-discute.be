@@ -199,14 +199,59 @@ class DatabaseTool:
         return result.data[0] if result.data else {}
 
     async def get_player_by_name(self, name: str) -> dict | None:
-        """Find player by name"""
+        """Find player by name with accent-insensitive matching.
+
+        Uses PostgreSQL unaccent() to handle Jokic = Jokić, etc.
+        Priority:
+        1. Exact full name match (unaccent, case-insensitive)
+        2. Last name / partial match (if multi-word name)
+        3. General LIKE search
+        """
+        # Try exact match first with unaccent (Jokic = Jokić)
         result = await self.execute("""
             SELECT p.player_id, p.full_name, p.first_name, p.last_name,
                    t.abbreviation as team_abbreviation, t.full_name as team_name
             FROM players p
             LEFT JOIN player_game_stats pgs ON p.player_id = pgs.player_id
             LEFT JOIN teams t ON pgs.team_id = t.team_id
-            WHERE LOWER(p.full_name) LIKE LOWER($1)
+            WHERE LOWER(unaccent(p.full_name)) = LOWER(unaccent($1))
+            GROUP BY p.player_id, p.full_name, p.first_name, p.last_name,
+                     t.abbreviation, t.full_name
+            ORDER BY COUNT(pgs.game_id) DESC
+            LIMIT 1
+        """, [name])
+
+        if result.data:
+            return result.data[0]
+
+        # Try matching last name if multi-word name provided
+        name_parts = name.strip().split()
+        if len(name_parts) >= 2:
+            last_name = name_parts[-1]  # e.g., "Jokic" from "Nikola Jokic"
+            result = await self.execute("""
+                SELECT p.player_id, p.full_name, p.first_name, p.last_name,
+                       t.abbreviation as team_abbreviation, t.full_name as team_name
+                FROM players p
+                LEFT JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+                LEFT JOIN teams t ON pgs.team_id = t.team_id
+                WHERE unaccent(p.full_name) ILIKE unaccent($1)
+                GROUP BY p.player_id, p.full_name, p.first_name, p.last_name,
+                         t.abbreviation, t.full_name
+                ORDER BY COUNT(pgs.game_id) DESC
+                LIMIT 1
+            """, [f"%{last_name}%"])
+
+            if result.data:
+                return result.data[0]
+
+        # Fall back to general LIKE search with unaccent
+        result = await self.execute("""
+            SELECT p.player_id, p.full_name, p.first_name, p.last_name,
+                   t.abbreviation as team_abbreviation, t.full_name as team_name
+            FROM players p
+            LEFT JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+            LEFT JOIN teams t ON pgs.team_id = t.team_id
+            WHERE unaccent(p.full_name) ILIKE unaccent($1)
             GROUP BY p.player_id, p.full_name, p.first_name, p.last_name,
                      t.abbreviation, t.full_name
             ORDER BY COUNT(pgs.game_id) DESC
@@ -269,6 +314,7 @@ class DatabaseTool:
                     ROUND(AVG(steals), 1) as steals_avg,
                     ROUND(AVG(blocks), 1) as blocks_avg,
                     ROUND(AVG(turnovers), 1) as turnovers_avg,
+                    ROUND(AVG(fg3_made), 1) as fg3_made_avg,
                     ROUND(AVG(fg_pct), 3) as fg_pct,
                     ROUND(AVG(fg3_pct), 3) as fg3_pct,
                     ROUND(AVG(ft_pct), 3) as ft_pct,
@@ -286,6 +332,7 @@ class DatabaseTool:
                     ROUND(AVG(pgs.steals), 1) as steals_avg,
                     ROUND(AVG(pgs.blocks), 1) as blocks_avg,
                     ROUND(AVG(pgs.turnovers), 1) as turnovers_avg,
+                    ROUND(AVG(pgs.fg3_made), 1) as fg3_made_avg,
                     ROUND(AVG(pgs.fg_pct), 3) as fg_pct,
                     ROUND(AVG(pgs.fg3_pct), 3) as fg3_pct,
                     ROUND(AVG(pgs.ft_pct), 3) as ft_pct,
@@ -1133,6 +1180,625 @@ class DatabaseTool:
             "matchup_pace": matchup_pace,
             "pace_diff_from_avg": pace_diff,
             "pace_adjustment": round(pace_adjustment, 1),
+        }
+
+
+    # ============================================================
+    # PLAYER PROP METHODS
+    # ============================================================
+
+    async def get_player_prop_odds(self, player_name: str, prop_type: str, game_id: str = None) -> dict | None:
+        """
+        Get current prop odds for a player from betting_markets/betting_odds.
+
+        Args:
+            player_name: Player's name (partial match supported)
+            prop_type: 'points', 'rebounds', 'assists', '3pm', 'pra', etc.
+            game_id: Optional game_id to filter by specific game
+
+        Returns:
+            {line, over_odds, under_odds, market_id, player_name_matched}
+        """
+        # Map prop_type to market name patterns
+        prop_patterns = {
+            "points": "Points)",
+            "rebounds": "Rebounds)",
+            "assists": "Assists)",
+            "3pm": "3 Point FG)",
+            "threes": "3 Point FG)",
+            "steals": "Steals)",
+            "blocks": "Blocks)",
+            "turnovers": "Turnovers)",
+            "pra": "Pts+Rebs+Asts)",
+            "points_rebounds": "Pts+Rebs)",
+            "points_assists": "Pts+Asts)",
+            "rebounds_assists": "Rebs+Asts)",
+        }
+
+        pattern = prop_patterns.get(prop_type.lower(), f"{prop_type})")
+
+        if game_id:
+            result = await self.execute("""
+                SELECT DISTINCT ON (bm.market_id)
+                       bm.market_id, bm.market_name,
+                       bo_over.handicap as line,
+                       bo_over.odds_decimal as over_odds,
+                       bo_under.odds_decimal as under_odds
+                FROM betting_events be
+                JOIN betting_markets bm ON be.event_id = bm.event_id
+                JOIN betting_odds bo_over ON bm.market_id = bo_over.market_id AND bo_over.selection = 'Over'
+                JOIN betting_odds bo_under ON bm.market_id = bo_under.market_id AND bo_under.selection = 'Under'
+                    AND bo_over.handicap = bo_under.handicap
+                WHERE be.game_id = $1
+                  AND bm.market_type = 'player_prop'
+                  AND LOWER(bm.market_name) LIKE LOWER($2)
+                  AND bm.market_name LIKE $3
+                  AND bo_over.is_available = true
+                ORDER BY bm.market_id, bo_over.recorded_at DESC
+                LIMIT 1
+            """, [game_id, f"%{player_name}%", f"%{pattern}"])
+        else:
+            # Get from most recent event
+            result = await self.execute("""
+                SELECT DISTINCT ON (bm.market_id)
+                       bm.market_id, bm.market_name, be.game_id,
+                       bo_over.handicap as line,
+                       bo_over.odds_decimal as over_odds,
+                       bo_under.odds_decimal as under_odds
+                FROM betting_events be
+                JOIN betting_markets bm ON be.event_id = bm.event_id
+                JOIN betting_odds bo_over ON bm.market_id = bo_over.market_id AND bo_over.selection = 'Over'
+                JOIN betting_odds bo_under ON bm.market_id = bo_under.market_id AND bo_under.selection = 'Under'
+                    AND bo_over.handicap = bo_under.handicap
+                JOIN games g ON be.game_id = g.game_id
+                WHERE bm.market_type = 'player_prop'
+                  AND LOWER(bm.market_name) LIKE LOWER($1)
+                  AND bm.market_name LIKE $2
+                  AND bo_over.is_available = true
+                  AND g.home_team_score IS NULL
+                ORDER BY bm.market_id, g.game_date, bo_over.recorded_at DESC
+                LIMIT 1
+            """, [f"%{player_name}%", f"%{pattern}"])
+
+        if not result.data:
+            return None
+
+        row = result.data[0]
+        return {
+            "market_id": row.get("market_id"),
+            "market_name": row.get("market_name"),
+            "game_id": row.get("game_id"),
+            "line": float(row.get("line")) if row.get("line") else None,
+            "over_odds": float(row.get("over_odds")) if row.get("over_odds") else None,
+            "under_odds": float(row.get("under_odds")) if row.get("under_odds") else None,
+        }
+
+    async def get_player_stat_std_dev(self, player_id: int, stat: str, last_n_games: int = 10) -> dict:
+        """
+        Calculate standard deviation for a player stat over recent games.
+
+        Args:
+            player_id: Player ID
+            stat: 'points', 'rebounds', 'assists', 'fg3_made', 'steals', 'blocks', 'turnovers'
+            last_n_games: Number of games to analyze
+
+        Returns:
+            {avg, std_dev, min, max, games, values}
+        """
+        season = await self.get_current_season()
+
+        # Map stat names to column names
+        stat_columns = {
+            "points": "points",
+            "rebounds": "rebounds",
+            "assists": "assists",
+            "3pm": "fg3_made",
+            "threes": "fg3_made",
+            "fg3_made": "fg3_made",
+            "steals": "steals",
+            "blocks": "blocks",
+            "turnovers": "turnovers",
+            "minutes": "minutes",
+        }
+
+        col = stat_columns.get(stat.lower(), "points")
+
+        result = await self.execute(f"""
+            WITH recent_games AS (
+                SELECT pgs.{col} as stat_value, pgs.minutes, g.game_date
+                FROM player_game_stats pgs
+                JOIN games g ON pgs.game_id = g.game_id
+                WHERE pgs.player_id = $1
+                  AND g.season = $2
+                  AND pgs.minutes > 0
+                ORDER BY g.game_date DESC
+                LIMIT $3
+            )
+            SELECT
+                COUNT(*) as games,
+                ROUND(AVG(stat_value)::numeric, 1) as avg,
+                ROUND(STDDEV(stat_value)::numeric, 1) as std_dev,
+                MIN(stat_value) as min_val,
+                MAX(stat_value) as max_val,
+                ROUND(AVG(minutes)::numeric, 1) as avg_minutes,
+                ROUND(STDDEV(minutes)::numeric, 1) as minutes_std,
+                ARRAY_AGG(stat_value ORDER BY game_date DESC) as values
+            FROM recent_games
+        """, [player_id, season, last_n_games])
+
+        if not result.data or not result.data[0].get("games"):
+            return {
+                "games": 0,
+                "avg": 0,
+                "std_dev": 5.0,  # Default
+                "min_val": 0,
+                "max_val": 0,
+                "avg_minutes": 0,
+                "minutes_std": 5.0,
+                "values": [],
+            }
+
+        row = result.data[0]
+        return {
+            "games": row.get("games", 0),
+            "avg": float(row.get("avg") or 0),
+            "std_dev": float(row.get("std_dev") or 5.0),
+            "min_val": row.get("min_val", 0),
+            "max_val": row.get("max_val", 0),
+            "avg_minutes": float(row.get("avg_minutes") or 0),
+            "minutes_std": float(row.get("minutes_std") or 5.0),
+            "values": row.get("values", []),
+        }
+
+    async def get_player_vs_opponent(self, player_id: int, opponent_team_id: int, limit: int = 10) -> dict:
+        """
+        Get player's historical performance vs a specific opponent.
+
+        Returns stats from all games against the opponent team.
+        """
+        result = await self.execute("""
+            SELECT
+                COUNT(*) as games,
+                ROUND(AVG(pgs.points)::numeric, 1) as avg_points,
+                ROUND(AVG(pgs.rebounds)::numeric, 1) as avg_rebounds,
+                ROUND(AVG(pgs.assists)::numeric, 1) as avg_assists,
+                ROUND(AVG(pgs.fg3_made)::numeric, 1) as avg_3pm,
+                ROUND(AVG(pgs.steals)::numeric, 1) as avg_steals,
+                ROUND(AVG(pgs.blocks)::numeric, 1) as avg_blocks,
+                ROUND(AVG(pgs.minutes)::numeric, 1) as avg_minutes,
+                ROUND(AVG(pgs.points + pgs.rebounds + pgs.assists)::numeric, 1) as avg_pra
+            FROM player_game_stats pgs
+            JOIN games g ON pgs.game_id = g.game_id
+            WHERE pgs.player_id = $1
+              AND (
+                  (g.home_team_id = $2 AND g.away_team_id = pgs.team_id)
+                  OR (g.away_team_id = $2 AND g.home_team_id = pgs.team_id)
+              )
+              AND g.home_team_score IS NOT NULL
+            ORDER BY g.game_date DESC
+            LIMIT $3
+        """, [player_id, opponent_team_id, limit])
+
+        if not result.data or not result.data[0].get("games"):
+            return {"games": 0}
+
+        return result.data[0]
+
+    async def get_team_defensive_vs_position(self, team_id: int, last_n_games: int = 15) -> dict:
+        """
+        Get team's defensive stats - how many points they allow per game
+        and to specific positions (if defensive_stats_by_position exists).
+
+        Returns:
+            {ppg_allowed, opp_fg_pct, opp_3p_pct, pace, defensive_rating}
+        """
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            WITH team_games AS (
+                SELECT
+                    CASE WHEN g.home_team_id = $2 THEN g.away_team_score ELSE g.home_team_score END as opp_score,
+                    tgs.defensive_rating,
+                    tgs.pace,
+                    ROW_NUMBER() OVER (ORDER BY g.game_date DESC) as game_num
+                FROM games g
+                JOIN team_game_stats tgs ON g.game_id = tgs.game_id AND tgs.team_id = $2
+                WHERE g.season = $1
+                  AND (g.home_team_id = $2 OR g.away_team_id = $2)
+                  AND g.home_team_score IS NOT NULL
+            )
+            SELECT
+                COUNT(*) as games,
+                ROUND(AVG(opp_score)::numeric, 1) as ppg_allowed,
+                ROUND(AVG(defensive_rating)::numeric, 1) as def_rating,
+                ROUND(AVG(pace)::numeric, 1) as pace,
+                -- Defensive ranking proxy (lower = better defense)
+                RANK() OVER (ORDER BY AVG(opp_score)) as def_rank_approx
+            FROM team_games
+            WHERE game_num <= $3
+            GROUP BY 1=1
+        """, [season, team_id, last_n_games])
+
+        if not result.data or not result.data[0]:
+            return {
+                "games": 0,
+                "ppg_allowed": 115.0,  # League average approx
+                "def_rating": 115.0,
+                "pace": 100.0,
+                "defensive_quality": "average",
+            }
+
+        row = result.data[0]
+        ppg_allowed = float(row.get("ppg_allowed") or 115.0)
+        def_rating = float(row.get("def_rating") or 115.0)
+
+        # Classify defensive quality
+        if def_rating < 108:
+            quality = "elite"
+        elif def_rating < 112:
+            quality = "good"
+        elif def_rating < 116:
+            quality = "average"
+        elif def_rating < 120:
+            quality = "poor"
+        else:
+            quality = "bad"
+
+        return {
+            "games": row.get("games"),
+            "ppg_allowed": ppg_allowed,
+            "def_rating": def_rating,
+            "pace": float(row.get("pace") or 100.0),
+            "defensive_quality": quality,
+            # Factor for adjusting player projections
+            # > 1.0 means bad defense (boost projections)
+            # < 1.0 means good defense (reduce projections)
+            "projection_factor": round(ppg_allowed / 115.0, 3),
+        }
+
+    async def get_player_team_id(self, player_id: int) -> int | None:
+        """Get the current team ID for a player based on most recent game."""
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            SELECT pgs.team_id
+            FROM player_game_stats pgs
+            JOIN games g ON pgs.game_id = g.game_id
+            WHERE pgs.player_id = $1
+              AND g.season = $2
+            ORDER BY g.game_date DESC
+            LIMIT 1
+        """, [player_id, season])
+
+        return result.data[0]["team_id"] if result.data else None
+
+    async def get_player_upcoming_game(self, player_id: int) -> dict | None:
+        """Get the next upcoming game for a player's team."""
+        team_id = await self.get_player_team_id(player_id)
+        if not team_id:
+            return None
+
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            SELECT g.game_id, g.game_date,
+                   ht.full_name as home_team, ht.abbreviation as home_abbr, ht.team_id as home_team_id,
+                   at.full_name as away_team, at.abbreviation as away_abbr, at.team_id as away_team_id,
+                   CASE WHEN g.home_team_id = $2 THEN 'HOME' ELSE 'AWAY' END as location,
+                   CASE WHEN g.home_team_id = $2 THEN at.team_id ELSE ht.team_id END as opponent_id,
+                   CASE WHEN g.home_team_id = $2 THEN at.abbreviation ELSE ht.abbreviation END as opponent_abbr
+            FROM games g
+            JOIN teams ht ON g.home_team_id = ht.team_id
+            JOIN teams at ON g.away_team_id = at.team_id
+            WHERE g.season = $1
+              AND g.home_team_score IS NULL
+              AND (g.home_team_id = $2 OR g.away_team_id = $2)
+            ORDER BY g.game_date
+            LIMIT 1
+        """, [season, team_id])
+
+        return result.data[0] if result.data else None
+
+    # ============================================================
+    # QUARTER/PERIOD ANALYSIS METHODS
+    # ============================================================
+
+    async def get_team_quarter_stats(
+        self,
+        team_id: int,
+        period: int = 1,
+        location: str = "ALL"
+    ) -> dict:
+        """
+        Get team's quarter statistics for betting analysis.
+
+        Args:
+            team_id: Team ID
+            period: Period number (1=Q1, 2=Q2, 3=Q3, 4=Q4)
+            location: 'HOME', 'AWAY', or 'ALL'
+
+        Returns:
+            {avg_points, avg_allowed, period_win_pct, games_played, differential}
+        """
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            SELECT
+                tpa.avg_points,
+                tpa.avg_allowed,
+                tpa.period_win_pct,
+                tpa.games_played,
+                ROUND(tpa.avg_points - tpa.avg_allowed, 2) as differential
+            FROM team_period_averages tpa
+            WHERE tpa.team_id = $1
+              AND tpa.season = $2
+              AND tpa.period_number = $3
+              AND tpa.period_type = 'Q'
+              AND tpa.location = $4
+        """, [team_id, season, period, location.upper()])
+
+        if not result.data or not result.data[0]:
+            return {
+                "avg_points": 0,
+                "avg_allowed": 0,
+                "period_win_pct": 0.5,
+                "games_played": 0,
+                "differential": 0,
+                "data_available": False
+            }
+
+        row = result.data[0]
+        return {
+            "avg_points": float(row.get("avg_points") or 0),
+            "avg_allowed": float(row.get("avg_allowed") or 0),
+            "period_win_pct": float(row.get("period_win_pct") or 0.5),
+            "games_played": row.get("games_played", 0),
+            "differential": float(row.get("differential") or 0),
+            "data_available": True
+        }
+
+    async def get_team_first_half_stats(
+        self,
+        team_id: int,
+        location: str = "ALL"
+    ) -> dict:
+        """
+        Get team's first half (1H) statistics for betting analysis.
+
+        Args:
+            team_id: Team ID
+            location: 'HOME', 'AWAY', or 'ALL'
+
+        Returns:
+            {avg_points, avg_total, avg_margin, games_played}
+        """
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            SELECT
+                tha.avg_points,
+                tha.avg_total,
+                tha.avg_margin,
+                tha.games_played
+            FROM team_half_averages tha
+            WHERE tha.team_id = $1
+              AND tha.season = $2
+              AND tha.half = 1
+              AND tha.location = $3
+        """, [team_id, season, location.upper()])
+
+        if not result.data or not result.data[0]:
+            return {
+                "avg_points": 0,
+                "avg_total": 0,
+                "avg_margin": 0,
+                "games_played": 0,
+                "data_available": False
+            }
+
+        row = result.data[0]
+        return {
+            "avg_points": float(row.get("avg_points") or 0),
+            "avg_total": float(row.get("avg_total") or 0),
+            "avg_margin": float(row.get("avg_margin") or 0),
+            "games_played": row.get("games_played", 0),
+            "data_available": True
+        }
+
+    async def get_game_quarter_scores(self, game_id: str) -> dict | None:
+        """
+        Get quarter-by-quarter scores for a specific game.
+
+        Returns all period scores plus game advanced stats
+        (paint points, fastbreak, lead changes, etc.)
+        """
+        # Get period scores
+        result = await self.execute("""
+            SELECT
+                ps.team_id,
+                t.abbreviation,
+                ps.period_number,
+                ps.period_type,
+                ps.points
+            FROM period_scores ps
+            JOIN teams t ON ps.team_id = t.team_id
+            WHERE ps.game_id = $1
+            ORDER BY ps.team_id, ps.period_number
+        """, [game_id])
+
+        if not result.data:
+            return None
+
+        # Organize by team
+        teams_data: dict = {}
+        for row in result.data:
+            team_id = row["team_id"]
+            if team_id not in teams_data:
+                teams_data[team_id] = {
+                    "team_id": team_id,
+                    "abbreviation": row["abbreviation"],
+                    "quarters": {},
+                    "overtime": {}
+                }
+
+            period_num = row["period_number"]
+            period_type = row["period_type"]
+            points = row["points"]
+
+            if period_type == "Q":
+                teams_data[team_id]["quarters"][f"Q{period_num}"] = points
+            else:
+                teams_data[team_id]["overtime"][f"OT{period_num}"] = points
+
+        # Get game advanced stats
+        adv_result = await self.execute("""
+            SELECT
+                home_pts_paint, home_pts_2nd_chance, home_pts_fastbreak,
+                home_pts_off_turnovers, home_largest_lead,
+                away_pts_paint, away_pts_2nd_chance, away_pts_fastbreak,
+                away_pts_off_turnovers, away_largest_lead,
+                lead_changes, times_tied
+            FROM game_advanced_stats
+            WHERE game_id = $1
+        """, [game_id])
+
+        advanced_stats = adv_result.data[0] if adv_result.data else None
+
+        return {
+            "game_id": game_id,
+            "teams": list(teams_data.values()),
+            "advanced_stats": advanced_stats
+        }
+
+    async def get_q1_matchup_projection(
+        self,
+        home_team_id: int,
+        away_team_id: int
+    ) -> dict:
+        """
+        Project Q1 total for a matchup based on both teams' Q1 averages.
+
+        Uses team Q1 scoring at home/away and Q1 allowed at home/away
+        to calculate projected Q1 total.
+        """
+        # Get home team Q1 stats at home
+        home_q1 = await self.get_team_quarter_stats(home_team_id, period=1, location="HOME")
+        # Get away team Q1 stats on road
+        away_q1 = await self.get_team_quarter_stats(away_team_id, period=1, location="AWAY")
+
+        if not home_q1.get("data_available") or not away_q1.get("data_available"):
+            # Fall back to ALL location stats
+            home_q1 = await self.get_team_quarter_stats(home_team_id, period=1, location="ALL")
+            away_q1 = await self.get_team_quarter_stats(away_team_id, period=1, location="ALL")
+
+        # Calculate projected Q1 scores
+        # Home team projection: avg of their scoring and what away allows
+        home_proj = (home_q1["avg_points"] + away_q1["avg_allowed"]) / 2
+        # Away team projection: avg of their scoring and what home allows
+        away_proj = (away_q1["avg_points"] + home_q1["avg_allowed"]) / 2
+
+        projected_total = home_proj + away_proj
+
+        return {
+            "home_team_id": home_team_id,
+            "away_team_id": away_team_id,
+            "home_projected_q1": round(home_proj, 1),
+            "away_projected_q1": round(away_proj, 1),
+            "projected_q1_total": round(projected_total, 1),
+            "home_q1_stats": home_q1,
+            "away_q1_stats": away_q1,
+            "data_quality": "full" if home_q1.get("data_available") and away_q1.get("data_available") else "partial"
+        }
+
+    async def get_1h_matchup_projection(
+        self,
+        home_team_id: int,
+        away_team_id: int
+    ) -> dict:
+        """
+        Project first half (1H) total for a matchup.
+
+        Uses team 1H totals at home/away to calculate projected 1H total.
+        """
+        # Get home team 1H stats at home
+        home_1h = await self.get_team_first_half_stats(home_team_id, location="HOME")
+        # Get away team 1H stats on road
+        away_1h = await self.get_team_first_half_stats(away_team_id, location="AWAY")
+
+        if not home_1h.get("data_available") or not away_1h.get("data_available"):
+            # Fall back to ALL location stats
+            home_1h = await self.get_team_first_half_stats(home_team_id, location="ALL")
+            away_1h = await self.get_team_first_half_stats(away_team_id, location="ALL")
+
+        # Calculate projected 1H total
+        # Average of both teams' avg_total (which is combined score at half)
+        projected_total = (home_1h["avg_total"] + away_1h["avg_total"]) / 2
+
+        return {
+            "home_team_id": home_team_id,
+            "away_team_id": away_team_id,
+            "home_1h_avg_points": home_1h["avg_points"],
+            "away_1h_avg_points": away_1h["avg_points"],
+            "projected_1h_total": round(projected_total, 1),
+            "home_1h_stats": home_1h,
+            "away_1h_stats": away_1h,
+            "data_quality": "full" if home_1h.get("data_available") and away_1h.get("data_available") else "partial"
+        }
+
+    async def get_team_all_quarter_trends(
+        self,
+        team_id: int,
+        location: str = "ALL"
+    ) -> dict:
+        """
+        Get all quarter trends for a team (Q1, Q2, Q3, Q4).
+
+        Returns comprehensive period analysis for betting decisions.
+        """
+        season = await self.get_current_season()
+
+        result = await self.execute("""
+            SELECT
+                tpa.period_number,
+                tpa.avg_points,
+                tpa.avg_allowed,
+                tpa.period_win_pct,
+                tpa.games_played,
+                ROUND(tpa.avg_points - tpa.avg_allowed, 2) as differential
+            FROM team_period_averages tpa
+            WHERE tpa.team_id = $1
+              AND tpa.season = $2
+              AND tpa.period_type = 'Q'
+              AND tpa.location = $3
+            ORDER BY tpa.period_number
+        """, [team_id, season, location.upper()])
+
+        if not result.data:
+            return {"quarters": {}, "data_available": False}
+
+        quarters = {}
+        for row in result.data:
+            period_num = row["period_number"]
+            quarters[f"Q{period_num}"] = {
+                "avg_points": float(row.get("avg_points") or 0),
+                "avg_allowed": float(row.get("avg_allowed") or 0),
+                "period_win_pct": float(row.get("period_win_pct") or 0.5),
+                "games_played": row.get("games_played", 0),
+                "differential": float(row.get("differential") or 0)
+            }
+
+        # Calculate strongest/weakest quarters
+        if quarters:
+            best_q = max(quarters.keys(), key=lambda q: quarters[q]["differential"])
+            worst_q = min(quarters.keys(), key=lambda q: quarters[q]["differential"])
+        else:
+            best_q = worst_q = None
+
+        return {
+            "quarters": quarters,
+            "best_quarter": best_q,
+            "worst_quarter": worst_q,
+            "data_available": True
         }
 
 

@@ -7,6 +7,10 @@ from src.tools.monte_carlo import (
     scenario_analysis,
     sensitivity_analysis,
     calculate_ev_metrics,
+    # Player prop functions
+    monte_carlo_player_prop,
+    calculate_player_prop_ev,
+    full_player_prop_analysis,
 )
 
 
@@ -51,6 +55,8 @@ class QuantAnalystNode:
 
         if bet_type == "total":
             quant_result = await self._calculate_totals_edge(game_data, state.get("odds_data"))
+        elif bet_type == "player_prop":
+            quant_result = await self._calculate_player_prop_edge(game_data, state.get("odds_data"))
         else:
             quant_result = await self._calculate_edge(game_data, state.get("odds_data"))
 
@@ -489,8 +495,12 @@ class QuantAnalystNode:
         # ============================================================
         # FINAL PROJECTION (with bias correction)
         # ============================================================
-        # Bias correction: backtest showed model under-projects by ~4 points
-        BIAS_CORRECTION = 4.0
+        # Bias correction: empirical analysis shows model systematically under-projects
+        # - Original bias: 4.0 points (insufficient)
+        # - Nov 2025 backtest: games running 10-15 points higher than projections
+        # - OVER picks: 16.7% win rate, UNDER picks: 62.5% win rate
+        # This indicates a ~12 point systematic under-projection
+        BIAS_CORRECTION = 12.0  # Increased from 4.0 based on Nov 2025 backtest
 
         projected_total = (
             base_total
@@ -505,7 +515,7 @@ class QuantAnalystNode:
         )
         result["projected_total"] = round(projected_total, 1)
         result["projection_breakdown"]["bias_correction"] = BIAS_CORRECTION
-        result["confidence_factors"].append("comprehensive_v4_projection")
+        result["confidence_factors"].append("comprehensive_v5_projection")
 
         # ============================================================
         # VARIANCE & PROBABILITY CALCULATION
@@ -550,6 +560,8 @@ class QuantAnalystNode:
             t2_expected = result["projection_breakdown"].get("t2_expected", projected_total / 2)
 
             # Run Monte Carlo simulation (10,000 runs)
+            # Use empirical correlation of 0.19 (not 0.5!) based on 2024-25 NBA data
+            # Higher correlation leads to overconfident probabilities
             mc_result = monte_carlo_totals_simulation(
                 t1_projection=t1_expected,
                 t2_projection=t2_expected,
@@ -557,7 +569,7 @@ class QuantAnalystNode:
                 t2_std_dev=t2_std,
                 total_line=total_line,
                 n_sims=10000,
-                correlation=0.5,
+                correlation=0.19,  # Empirical NBA home/away score correlation
             )
 
             result["monte_carlo"] = mc_result
@@ -602,7 +614,10 @@ class QuantAnalystNode:
             )
             result["ev_metrics"] = ev_metrics
 
-            # Use EV-based edge
+            # Use EV-based edge with direction adjustments
+            # Historical backtest (Nov 2025):
+            # - OVER picks: 16.7% win rate (disaster)
+            # - UNDER picks: 62.5% win rate (profitable)
             if direction == "under":
                 edge = ev_metrics["edge_under"]
                 implied_prob = ev_metrics["implied_under"]
@@ -611,6 +626,12 @@ class QuantAnalystNode:
                 edge = ev_metrics["edge_over"]
                 implied_prob = ev_metrics["implied_over"]
                 kelly = ev_metrics["kelly_over_fractional"]
+                # WARNING: OVER picks have been historically unprofitable
+                # Apply 50% penalty to edge for OVER bets
+                edge = edge * 0.5
+                kelly = kelly * 0.5
+                result["confidence_factors"].append("over_historical_penalty")
+                result["warning"] = "OVER picks have 16.7% historical win rate - use extreme caution"
 
             result["implied_probability"] = round(implied_prob, 4)
             result["edge"] = round(edge, 4)
@@ -665,6 +686,360 @@ class QuantAnalystNode:
             result["confidence_factors"].append("no_total_line_provided")
 
         return result
+
+    async def _calculate_player_prop_edge(self, game_data: dict, odds_data: dict | None) -> dict:
+        """
+        Calculate edge for player prop betting.
+
+        Process:
+        1. Get player's L5/L10/Season averages (weighted blend)
+        2. Get player's standard deviation for this stat
+        3. Adjust for opponent defensive matchup
+        4. Run Monte Carlo simulation
+        5. Compare to market odds
+        6. Calculate edge and Kelly
+
+        Expected game_data structure:
+        {
+            "bet_type": "player_prop",
+            "player": {
+                "player_id": int,
+                "full_name": str,
+                "team_id": int,
+                "team_abbreviation": str,
+            },
+            "prop": {
+                "stat_type": str,  # "points", "rebounds", "assists", "3pm", "pra", etc.
+                "line": float,
+                "direction": str,  # "over" or "under"
+            },
+            "stats": {
+                "season_averages": dict,
+                "last_5_averages": dict,
+                "last_10_averages": dict,
+                "stat_std_dev": float,
+                "avg_minutes": float,
+                "minutes_std": float,
+            },
+            "opponent": {
+                "team_id": int,
+                "abbreviation": str,
+                "defensive_factor": float,  # >1.0 = weak defense, <1.0 = strong
+            },
+            "prop_odds": {
+                "over_odds": float,  # decimal odds
+                "under_odds": float,
+            }
+        }
+        """
+        result = {
+            "edge": 0.0,
+            "projection": None,
+            "line": None,
+            "direction": None,
+            "stat_type": None,
+            "our_probability": None,
+            "implied_probability": None,
+            "kelly_fraction": 0.0,
+            "recommendation": "NO_BET",
+            "confidence_factors": [],
+            "calculation_method": "player_prop_monte_carlo_v1",
+            "inputs_used": [],
+            "projection_breakdown": {},
+        }
+
+        # Extract data
+        player = game_data.get("player", {})
+        prop = game_data.get("prop", {})
+        stats = game_data.get("stats", {})
+        opponent = game_data.get("opponent", {})
+        prop_odds = game_data.get("prop_odds") or {}
+
+        player_name = player.get("full_name", "Unknown")
+        stat_type = prop.get("stat_type", "points")
+        line = prop.get("line")
+        direction = prop.get("direction", "over")
+
+        result["player_name"] = player_name
+        result["stat_type"] = stat_type
+        result["line"] = line
+        result["direction"] = direction
+
+        if line is None:
+            result["confidence_factors"].append("no_line_provided")
+            result["recommendation"] = "NEED_LINE"
+            return result
+
+        line = float(line)
+
+        # ============================================================
+        # STEP 1: Calculate Weighted Projection
+        # ============================================================
+        # Weights: L5 (40%), L10 (35%), Season (25%)
+        # More recent games weighted more heavily
+
+        season_avg = stats.get("season_averages", {})
+        l5_avg = stats.get("last_5_averages", {})
+        l10_avg = stats.get("last_10_averages", {})
+
+        # Map stat type to the correct key
+        stat_key = self._get_stat_key(stat_type)
+
+        # Data scout returns keys with '_avg' suffix (e.g., 'points_avg'), so try both
+        def get_stat_val(avg_dict: dict, key: str) -> float:
+            """Try to get stat value with or without _avg suffix."""
+            # Try direct key first (e.g., 'points')
+            val = self._safe_float(avg_dict.get(key, 0))
+            if val > 0:
+                return val
+            # Try with _avg suffix (e.g., 'points_avg')
+            return self._safe_float(avg_dict.get(f"{key}_avg", 0))
+
+        season_val = get_stat_val(season_avg, stat_key)
+        l5_val = get_stat_val(l5_avg, stat_key)
+        l10_val = get_stat_val(l10_avg, stat_key)
+
+        # For combo stats like PRA, we need to sum components
+        if stat_type.lower() in ("pra", "pts+rebs+asts", "points_rebounds_assists"):
+            season_val = (
+                get_stat_val(season_avg, "points") +
+                get_stat_val(season_avg, "rebounds") +
+                get_stat_val(season_avg, "assists")
+            )
+            l5_val = (
+                get_stat_val(l5_avg, "points") +
+                get_stat_val(l5_avg, "rebounds") +
+                get_stat_val(l5_avg, "assists")
+            )
+            l10_val = (
+                get_stat_val(l10_avg, "points") +
+                get_stat_val(l10_avg, "rebounds") +
+                get_stat_val(l10_avg, "assists")
+            )
+        elif stat_type.lower() in ("pr", "pts+rebs", "points_rebounds"):
+            season_val = get_stat_val(season_avg, "points") + get_stat_val(season_avg, "rebounds")
+            l5_val = get_stat_val(l5_avg, "points") + get_stat_val(l5_avg, "rebounds")
+            l10_val = get_stat_val(l10_avg, "points") + get_stat_val(l10_avg, "rebounds")
+        elif stat_type.lower() in ("pa", "pts+asts", "points_assists"):
+            season_val = get_stat_val(season_avg, "points") + get_stat_val(season_avg, "assists")
+            l5_val = get_stat_val(l5_avg, "points") + get_stat_val(l5_avg, "assists")
+            l10_val = get_stat_val(l10_avg, "points") + get_stat_val(l10_avg, "assists")
+        elif stat_type.lower() in ("ra", "rebs+asts", "rebounds_assists"):
+            season_val = get_stat_val(season_avg, "rebounds") + get_stat_val(season_avg, "assists")
+            l5_val = get_stat_val(l5_avg, "rebounds") + get_stat_val(l5_avg, "assists")
+            l10_val = get_stat_val(l10_avg, "rebounds") + get_stat_val(l10_avg, "assists")
+
+        # Check if we have valid data
+        if l5_val == 0 and l10_val == 0 and season_val == 0:
+            result["confidence_factors"].append("no_stat_data")
+            return result
+
+        # Weighted average (handle missing timeframes)
+        weights = []
+        values = []
+
+        if l5_val > 0:
+            weights.append(0.40)
+            values.append(l5_val)
+            result["inputs_used"].append("l5_averages")
+        if l10_val > 0:
+            weights.append(0.35)
+            values.append(l10_val)
+            result["inputs_used"].append("l10_averages")
+        if season_val > 0:
+            weights.append(0.25)
+            values.append(season_val)
+            result["inputs_used"].append("season_averages")
+
+        # Normalize weights if some are missing
+        total_weight = sum(weights)
+        if total_weight > 0:
+            weights = [w / total_weight for w in weights]
+
+        base_projection = sum(w * v for w, v in zip(weights, values))
+
+        result["projection_breakdown"]["base_projection"] = round(base_projection, 2)
+        result["projection_breakdown"]["l5_avg"] = round(l5_val, 2)
+        result["projection_breakdown"]["l10_avg"] = round(l10_val, 2)
+        result["projection_breakdown"]["season_avg"] = round(season_val, 2)
+
+        # ============================================================
+        # STEP 2: Get Standard Deviation
+        # ============================================================
+        std_dev = self._safe_float(stats.get("stat_std_dev", 0))
+        if std_dev <= 0:
+            # Estimate std_dev as 25% of projection
+            std_dev = base_projection * 0.25
+            result["confidence_factors"].append("estimated_std_dev")
+        else:
+            result["inputs_used"].append("actual_std_dev")
+
+        result["std_dev"] = round(std_dev, 2)
+
+        # ============================================================
+        # STEP 3: Opponent Defensive Adjustment
+        # ============================================================
+        defensive_factor = self._safe_float(opponent.get("defensive_factor", 1.0))
+        if defensive_factor <= 0:
+            defensive_factor = 1.0
+
+        # Apply defensive adjustment (factor > 1.0 = weak defense, boost projection)
+        adjusted_projection = base_projection * defensive_factor
+
+        result["projection_breakdown"]["defensive_factor"] = round(defensive_factor, 3)
+        result["projection_breakdown"]["defensive_adjustment"] = round(adjusted_projection - base_projection, 2)
+
+        if defensive_factor > 1.05:
+            result["confidence_factors"].append("weak_opponent_defense")
+            result["inputs_used"].append("opponent_adjustment")
+        elif defensive_factor < 0.95:
+            result["confidence_factors"].append("strong_opponent_defense")
+            result["inputs_used"].append("opponent_adjustment")
+
+        result["projection"] = round(adjusted_projection, 2)
+        result["projection_vs_line"] = round(adjusted_projection - line, 2)
+        result["projection_vs_line_pct"] = round((adjusted_projection - line) / line * 100, 1) if line > 0 else 0
+
+        # ============================================================
+        # STEP 4: Get Minutes Data
+        # ============================================================
+        avg_minutes = self._safe_float(stats.get("avg_minutes", 32.0))
+        minutes_std = self._safe_float(stats.get("minutes_std", 5.0))
+
+        if avg_minutes <= 0:
+            avg_minutes = 32.0
+            result["confidence_factors"].append("estimated_minutes")
+        else:
+            result["inputs_used"].append("actual_minutes")
+
+        result["avg_minutes"] = round(avg_minutes, 1)
+        result["minutes_std"] = round(minutes_std, 1)
+
+        # ============================================================
+        # STEP 5: Monte Carlo Simulation
+        # ============================================================
+        mc_result = monte_carlo_player_prop(
+            projection=adjusted_projection,
+            std_dev=std_dev,
+            line=line,
+            stat_type=stat_type,
+            n_sims=10000,
+            minutes_mean=avg_minutes,
+            minutes_std=minutes_std,
+        )
+
+        result["monte_carlo"] = mc_result
+        result["inputs_used"].append("monte_carlo_simulation")
+
+        # ============================================================
+        # STEP 6: Get Odds and Calculate Edge
+        # ============================================================
+        over_odds = self._safe_float(prop_odds.get("over_odds", 1.87))
+        under_odds = self._safe_float(prop_odds.get("under_odds", 1.87))
+
+        if over_odds <= 1:
+            over_odds = 1.87
+        if under_odds <= 1:
+            under_odds = 1.87
+
+        # Calculate EV metrics
+        ev_metrics = calculate_player_prop_ev(
+            p_over=mc_result["p_over"],
+            p_under=mc_result["p_under"],
+            over_odds=over_odds,
+            under_odds=under_odds,
+        )
+
+        result["ev_metrics"] = ev_metrics
+
+        # Get values for the specified direction
+        direction_lower = direction.lower()
+        if direction_lower == "under":
+            our_prob = mc_result["p_under"]
+            implied_prob = 1 / under_odds
+            edge = ev_metrics["edge_under"]
+            kelly = ev_metrics["kelly_under_fractional"]
+        else:
+            our_prob = mc_result["p_over"]
+            implied_prob = 1 / over_odds
+            edge = ev_metrics["edge_over"]
+            kelly = ev_metrics["kelly_over_fractional"]
+
+        result["our_probability"] = round(our_prob, 4)
+        result["implied_probability"] = round(implied_prob, 4)
+        result["edge"] = round(edge, 4)
+        result["kelly_fraction"] = round(kelly, 4)
+
+        # ============================================================
+        # STEP 7: Apply Contrarian Calibration
+        # ============================================================
+        # From totals learnings: favor UNDER picks, cap confidence
+        # Player props have similar dynamics
+
+        # Apply UNDER boost (historically performs better)
+        if direction_lower == "under" and edge > 0:
+            edge = edge * 1.1  # 10% boost
+            result["confidence_factors"].append("under_direction_boost")
+        elif direction_lower == "over" and edge > 0:
+            edge = edge * 0.9  # 10% penalty
+            result["confidence_factors"].append("over_direction_penalty")
+
+        result["adjusted_edge"] = round(edge, 4)
+
+        # ============================================================
+        # STEP 8: Determine Recommendation
+        # ============================================================
+        # Higher threshold for player props (more variance)
+        if edge > 0.05:
+            result["recommendation"] = "BET"
+            result["confidence_factors"].append("strong_edge")
+        elif edge > 0.03:
+            result["recommendation"] = "LEAN_BET"
+            result["confidence_factors"].append("marginal_edge")
+        elif edge > 0:
+            result["recommendation"] = "SMALL_LEAN"
+            result["confidence_factors"].append("slight_edge")
+        else:
+            result["recommendation"] = "NO_BET"
+            result["confidence_factors"].append("no_edge")
+
+        # Confidence level based on inputs
+        inputs_count = len(result["inputs_used"])
+        if inputs_count >= 6:
+            result["confidence_level"] = "HIGH"
+        elif inputs_count >= 4:
+            result["confidence_level"] = "MEDIUM"
+        else:
+            result["confidence_level"] = "LOW"
+
+        return result
+
+    def _get_stat_key(self, stat_type: str) -> str:
+        """Map stat_type to database column name."""
+        mapping = {
+            "points": "points",
+            "pts": "points",
+            "rebounds": "rebounds",
+            "rebs": "rebounds",
+            "assists": "assists",
+            "asts": "assists",
+            "3pm": "fg3_made",
+            "threes": "fg3_made",
+            "fg3_made": "fg3_made",
+            "steals": "steals",
+            "blocks": "blocks",
+            "turnovers": "turnovers",
+            "pra": "pra",  # Computed
+            "pts+rebs+asts": "pra",
+            "points_rebounds_assists": "pra",
+            "pr": "points_rebounds",  # Computed
+            "pts+rebs": "points_rebounds",
+            "pa": "points_assists",  # Computed
+            "pts+asts": "points_assists",
+            "ra": "rebounds_assists",  # Computed
+            "rebs+asts": "rebounds_assists",
+        }
+        return mapping.get(stat_type.lower(), stat_type.lower())
 
     async def _analyze_four_factors(self, game_data: dict) -> dict:
         """

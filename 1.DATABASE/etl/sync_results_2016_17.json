@@ -1,0 +1,33 @@
+{
+  "season": "2016-17",
+  "completed_at": "2025-12-19T02:43:16.429673",
+  "duration_seconds": 21405.826279,
+  "games": {
+    "season": "2016-17",
+    "games_found": 1230,
+    "games_inserted": 1230,
+    "games_updated": 0,
+    "games_skipped": 0,
+    "errors": []
+  },
+  "box_scores": {
+    "season": "2016-17",
+    "games_needing_stats": 1230,
+    "games_processed": 1230,
+    "games_successful": 0,
+    "games_failed": 1230,
+    "total_player_stats": 0,
+    "errors": [
+      "0021600001: column \"updated_at\" of relation \"player_game_stats",
+      "0021600002: column \"updated_at\" of relation \"player_game_stats",
+      "0021600003: column \"updated_at\" of relation \"player_game_stats",
+      "0021600004: column \"updated_at\" of relation \"player_game_stats",
+      "0021600005: column \"updated_at\" of relation \"player_game_stats",
+      "0021600006: column \"updated_at\" of relation \"player_game_stats",
+      "0021600007: column \"updated_at\" of relation \"player_game_stats",
+      "0021600008: column \"updated_at\" of relation \"player_game_stats",
+      "0021600009: column \"updated_at\" of relation \"player_game_stats",
+      "0021600010: column \"updated_at\" of relation \"player_game_stats"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "season": "2019-20",
+  "completed_at": "2025-12-19T01:50:35.532334",
+  "duration_seconds": 18233.025737,
+  "games": {
+    "season": "2019-20",
+    "games_found": 1059,
+    "games_inserted": 1059,
+    "games_updated": 0,
+    "games_skipped": 0,
+    "errors": []
+  },
+  "box_scores": {
+    "season": "2019-20",
+    "games_needing_stats": 1059,
+    "games_processed": 1059,
+    "games_successful": 0,
+    "games_failed": 1059,
+    "total_player_stats": 0,
+    "errors": [
+      "0021900001: column \"updated_at\" of relation \"player_game_stats",
+      "0021900002: column \"updated_at\" of relation \"player_game_stats",
+      "0021900003: column \"updated_at\" of relation \"player_game_stats",
+      "0021900004: column \"updated_at\" of relation \"player_game_stats",
+      "0021900005: column \"updated_at\" of relation \"player_game_stats",
+      "0021900006: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0021900007: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0021900008: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0021900009: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0021900010: HTTPSConnectionPool(host='stats.nba.com', port=443"
+    ]
+  }
+}

@@ -26,18 +26,19 @@ export function GameCardsSelector({ games, selectedGameId, onSelectGame }: GameC
         <span className="text-sm text-gray-500 font-normal">({games.length} games)</span>
       </h2>
 
-      <div className="flex gap-3 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+      {/* Mobile-first responsive grid: 2 cols → 3 cols → 4 cols → flex wrap */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:flex lg:flex-wrap gap-3">
         {/* All Games Option */}
         <button
           onClick={() => onSelectGame(null)}
-          className={`flex-shrink-0 px-6 py-4 rounded-lg border-2 transition-all duration-300 min-w-[140px] ${
+          className={`px-4 py-3 sm:px-6 sm:py-4 rounded-lg border-2 transition-all duration-300 ${
             selectedGameId === null
               ? 'border-white bg-white text-black'
               : 'border-gray-800 bg-transparent text-gray-400 hover:border-gray-600 hover:text-white'
           }`}
         >
           <div className="text-center">
-            <div className="text-lg font-bold">ALL</div>
+            <div className="text-base sm:text-lg font-bold">ALL</div>
             <div className="text-xs mt-1 opacity-70">All Games</div>
           </div>
         </button>
@@ -49,21 +50,21 @@ export function GameCardsSelector({ games, selectedGameId, onSelectGame }: GameC
             <button
               key={game.game_id}
               onClick={() => onSelectGame(game.game_id)}
-              className={`flex-shrink-0 px-5 py-4 rounded-lg border-2 transition-all duration-300 min-w-[140px] ${
+              className={`px-3 py-3 sm:px-5 sm:py-4 rounded-lg border-2 transition-all duration-300 ${
                 isSelected
                   ? 'border-white bg-white text-black'
                   : 'border-gray-800 bg-transparent text-gray-400 hover:border-gray-600 hover:text-white'
               }`}
             >
               <div className="text-center">
-                <div className="flex items-center justify-center gap-2 text-lg font-bold">
+                <div className="flex items-center justify-center gap-1 sm:gap-2 text-base sm:text-lg font-bold">
                   <span>{game.away_abbr}</span>
                   <span className={`text-xs ${isSelected ? 'text-gray-600' : 'text-gray-600'}`}>@</span>
                   <span>{game.home_abbr}</span>
                 </div>
                 {game.event_id ? (
                   <div className={`text-xs mt-1 ${isSelected ? 'text-green-700' : 'text-green-500'}`}>
-                    Props Available
+                    Props
                   </div>
                 ) : (
                   <div className={`text-xs mt-1 ${isSelected ? 'text-gray-600' : 'text-gray-600'}`}>

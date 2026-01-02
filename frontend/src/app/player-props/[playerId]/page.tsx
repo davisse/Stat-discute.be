@@ -3,12 +3,7 @@
 import { AppLayout } from '@/components/layout'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, Loader2 } from 'lucide-react'
-import { PlayerHeader } from '@/components/player-props/PlayerHeader'
-import { NextGameMatchup } from '@/components/player-props/NextGameMatchup'
-import { PlayerSplits } from '@/components/player-props/PlayerSplits'
-import { GameLogTable } from '@/components/player-props/GameLogTable'
-import { PropLinesPanel } from '@/components/player-props/PropLinesPanel'
+import { Loader2 } from 'lucide-react'
 import { PerformanceTrends } from '@/components/player-props/PerformanceTrends'
 import { PropPerformanceBarChart } from '@/components/player-props/PropPerformanceBarChart'
 
@@ -124,20 +119,8 @@ export default function PlayerPropsDetailPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-        {/* Back Button */}
-        <button
-          onClick={() => router.push('/player-props')}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back to Search</span>
-        </button>
-
-        {/* Player Header */}
-        <PlayerHeader player={playerData.player} />
-
-        {/* Prop Performance Bar Chart - Full Width */}
+      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6 overflow-x-hidden">
+        {/* Prop Performance Bar Chart */}
         <PropPerformanceBarChart
           games={playerData.recentGames}
           playerAvg={{
@@ -156,46 +139,14 @@ export default function PlayerPropsDetailPage() {
           initialProp="points"
         />
 
-        {/* Two Column Layout on Desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column */}
-          <div className="space-y-6">
-            <NextGameMatchup
-              nextGame={playerData.nextGame}
-              playerTeam={playerData.player.team_abbr}
-            />
-            <PlayerSplits splits={playerData.splits} />
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-6">
-            <PropLinesPanel
-              playerId={playerData.player.player_id}
-              playerName={playerData.player.full_name}
-              stats={{
-                points_avg: playerData.player.points_avg,
-                rebounds_avg: playerData.player.rebounds_avg,
-                assists_avg: playerData.player.assists_avg,
-                games_played: playerData.player.games_played
-              }}
-              recentGames={playerData.recentGames}
-            />
-
-            <PerformanceTrends
-              games={playerData.recentGames}
-              playerAvg={{
-                points_avg: playerData.player.points_avg,
-                rebounds_avg: playerData.player.rebounds_avg,
-                assists_avg: playerData.player.assists_avg
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Full Width Game Log */}
-        <GameLogTable
+        {/* Performance Trends */}
+        <PerformanceTrends
           games={playerData.recentGames}
-          playerTeam={playerData.player.team_abbr}
+          playerAvg={{
+            points_avg: playerData.player.points_avg,
+            rebounds_avg: playerData.player.rebounds_avg,
+            assists_avg: playerData.player.assists_avg
+          }}
         />
       </div>
     </AppLayout>

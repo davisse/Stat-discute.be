@@ -30,8 +30,11 @@ export function PerformanceTrends({ games, playerAvg }: PerformanceTrendsProps) 
     )
   }
 
-  // Take last 10 games for trends (most recent first in array, so reverse for chronological)
-  const trendGames = games.slice(0, 10).reverse()
+  // Filter only past games (games that have been played) and take last 10 for trends
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const pastGames = games.filter(g => new Date(g.game_date) < today)
+  const trendGames = pastGames.slice(0, 10).reverse()
 
   const StatTrend = ({
     label,
@@ -87,54 +90,55 @@ export function PerformanceTrends({ games, playerAvg }: PerformanceTrendsProps) 
         </div>
 
         {/* Chart */}
-        <div className="relative h-24">
-          <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
-            {/* Average line */}
-            <line
-              x1="0"
-              y1={avgY}
-              x2="100"
-              y2={avgY}
-              stroke="rgba(156, 163, 175, 0.3)"
-              strokeWidth="0.5"
-              strokeDasharray="2,2"
-            />
+        <div className="relative h-24 flex">
+          {/* Y-axis labels */}
+          <div className="w-6 flex-shrink-0 flex flex-col justify-between text-[10px] text-gray-600 pr-1">
+            <span>{maxValue.toFixed(0)}</span>
+            <span>0</span>
+          </div>
 
-            {/* Trend line */}
-            <polyline
-              points={points}
-              fill="none"
-              stroke={color.includes('blue') ? '#60a5fa' :
-                     color.includes('green') ? '#34d399' :
-                     '#f59e0b'}
-              strokeWidth="2"
-              vectorEffect="non-scaling-stroke"
-            />
+          {/* Chart area */}
+          <div className="flex-1 relative">
+            <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
+              {/* Average line */}
+              <line
+                x1="0"
+                y1={avgY}
+                x2="100"
+                y2={avgY}
+                stroke="rgba(156, 163, 175, 0.3)"
+                strokeWidth="0.5"
+                strokeDasharray="2,2"
+              />
 
-            {/* Data points */}
-            {data.map((value, index) => {
-              const x = (index / (data.length - 1)) * 100
-              const y = 100 - ((value - minValue) / (maxValue - minValue)) * 100
-              return (
-                <circle
-                  key={index}
-                  cx={x}
-                  cy={y}
-                  r="2"
-                  fill={color.includes('blue') ? '#60a5fa' :
+              {/* Trend line */}
+              <polyline
+                points={points}
+                fill="none"
+                stroke={color.includes('blue') ? '#60a5fa' :
                        color.includes('green') ? '#34d399' :
                        '#f59e0b'}
-                />
-              )
-            })}
-          </svg>
+                strokeWidth="2"
+                vectorEffect="non-scaling-stroke"
+              />
 
-          {/* Y-axis labels */}
-          <div className="absolute top-0 -left-8 text-xs text-gray-600">
-            {maxValue.toFixed(0)}
-          </div>
-          <div className="absolute bottom-0 -left-8 text-xs text-gray-600">
-            0
+              {/* Data points */}
+              {data.map((value, index) => {
+                const x = (index / (data.length - 1)) * 100
+                const y = 100 - ((value - minValue) / (maxValue - minValue)) * 100
+                return (
+                  <circle
+                    key={index}
+                    cx={x}
+                    cy={y}
+                    r="2"
+                    fill={color.includes('blue') ? '#60a5fa' :
+                         color.includes('green') ? '#34d399' :
+                         '#f59e0b'}
+                  />
+                )
+              })}
+            </svg>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   // Enable standalone output for Docker deployment
@@ -14,6 +15,11 @@ const nextConfig: NextConfig = {
   // Environment variables validation (optional)
   env: {
     // Expose non-sensitive env vars to client if needed
+  },
+
+  // Turbopack configuration to prevent scanning outside frontend directory
+  turbopack: {
+    root: path.resolve(__dirname),
   },
 };
 

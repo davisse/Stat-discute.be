@@ -1,188 +1,152 @@
-export const dynamic = 'force-dynamic'
+'use client'
 
+import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
-import { StatCard } from '@/components/dashboard/stat-card'
-import { TeamCard } from '@/components/dashboard/team-card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Shield, TrendingUp, Activity } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { getCurrentSeason, getTeamStandings, getRecentGames, getDatabaseStats } from '@/lib/queries'
-import { Breadcrumb } from '@/components/ui/breadcrumb'
 
-export default async function TeamsPage() {
-  const currentSeason = await getCurrentSeason()
-  const [teams, recentGames, stats] = await Promise.all([
-    getTeamStandings(),
-    getRecentGames(10),
-    getDatabaseStats(),
-  ])
+interface Team {
+  team_id: number
+  full_name: string
+  abbreviation: string
+  city?: string
+  conference?: string
+  division?: string
+}
 
-  const topTeams = teams.slice(0, 3)
+// Group teams by conference and division
+const CONFERENCE_DIVISIONS = {
+  East: ['Atlantic', 'Central', 'Southeast'],
+  West: ['Northwest', 'Pacific', 'Southwest'],
+}
+
+export default function TeamsPage() {
+  const [teams, setTeams] = useState<Team[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch teams on mount
+  useEffect(() => {
+    async function fetchTeams() {
+      try {
+        const res = await fetch('/api/teams')
+        const data = await res.json()
+        setTeams(data)
+      } catch (error) {
+        console.error('Error fetching teams:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchTeams()
+  }, [])
+
+  // Filter teams based on search query
+  const filteredTeams = useMemo(() => {
+    if (!searchQuery.trim()) return teams
+
+    const query = searchQuery.toLowerCase()
+    return teams.filter(team =>
+      team.full_name.toLowerCase().includes(query) ||
+      team.abbreviation.toLowerCase().includes(query) ||
+      (team.city && team.city.toLowerCase().includes(query))
+    )
+  }, [teams, searchQuery])
+
+  // Sort teams alphabetically
+  const sortedTeams = useMemo(() => {
+    return [...filteredTeams].sort((a, b) => a.full_name.localeCompare(b.full_name))
+  }, [filteredTeams])
 
   return (
     <AppLayout>
-      <div className="space-y-6">
-      {/* Breadcrumb Navigation */}
-      <div className="flex items-center justify-between border-b pb-4">
-        <div>
-          <Breadcrumb
-            items={[
-              { label: 'Teams Dashboard' }
-            ]}
+      <div className="px-8 pt-8 max-w-7xl mx-auto pb-16">
+        {/* Main Title */}
+        <h1 className="text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-tighter leading-[0.9] text-white">
+          ÉQUIPES
+        </h1>
+
+        <p className="mt-4 text-xl text-zinc-400 max-w-2xl">
+          Sélectionnez une équipe pour voir ses statistiques détaillées, tendances récentes et analyses de totaux.
+        </p>
+
+        {/* Search Field */}
+        <div className="mt-8 max-w-xl">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={isLoading ? "Chargement..." : "Filtrer les équipes..."}
+            disabled={isLoading}
+            className="w-full px-6 py-4 bg-zinc-900/50 border border-zinc-700 rounded-lg
+                       text-white placeholder-zinc-500 text-lg
+                       focus:outline-none focus:border-white focus:ring-1 focus:ring-white
+                       transition-all duration-300 disabled:opacity-50"
           />
-          <h1 className="text-2xl sm:text-3xl font-bold mt-2 flex items-center gap-2">
-            <Shield className="h-7 w-7 text-primary" />
-            Teams Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-1">{currentSeason} Season Standings</p>
         </div>
-      </div>
-      {/* Stats Overview */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard
-          title="Total Teams"
-          value={stats?.total_teams || 0}
-          subtitle="NBA Teams"
-          icon={Shield}
-        />
-        <StatCard
-          title="Total Games"
-          value={stats?.total_games || 0}
-          subtitle={`${currentSeason} Season`}
-          icon={Activity}
-        />
-        <StatCard
-          title="Completion"
-          value={`${((stats?.total_games || 0) / 1230 * 100).toFixed(1)}%`}
-          subtitle="Season progress"
-          icon={TrendingUp}
-        />
-      </div>
 
-      {/* Top Teams */}
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold mb-4">Top Teams by Win % - {currentSeason}</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {topTeams.map((team: any) => (
-            <TeamCard key={team.team_id} team={team} />
-          ))}
-        </div>
-      </div>
-
-      {/* Team Standings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Team Standings - {currentSeason} Season</CardTitle>
-        </CardHeader>
-        <CardContent className="px-0 sm:px-6">
-          <div className="rounded-md border overflow-x-auto">
-            <Table className="min-w-[700px]">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">#</TableHead>
-                  <TableHead>Team</TableHead>
-                  <TableHead className="text-center">W</TableHead>
-                  <TableHead className="text-center">L</TableHead>
-                  <TableHead className="text-right">Win %</TableHead>
-                  <TableHead className="text-right">PPG</TableHead>
-                  <TableHead className="text-right">Opp PPG</TableHead>
-                  <TableHead className="text-right">Diff</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {teams.map((team: any, idx: number) => {
-                  const isWinning = team.win_pct > 0.5
-                  return (
-                    <TableRow
-                      key={team.team_id}
-                      className={isWinning ? 'win-row' : 'lose-row'}
-                    >
-                      <TableCell className="font-medium">{idx + 1}</TableCell>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium">{team.full_name}</p>
-                          <p className="text-xs text-muted-foreground">{team.abbreviation}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center font-semibold text-green-600">
-                        {team.wins}
-                      </TableCell>
-                      <TableCell className="text-center font-semibold text-red-600">
-                        {team.losses}
-                      </TableCell>
-                      <TableCell className="text-right font-semibold">
-                        {(team.win_pct * 100).toFixed(1)}%
-                      </TableCell>
-                      <TableCell className="text-right">{team.points_avg}</TableCell>
-                      <TableCell className="text-right">{team.points_allowed_avg}</TableCell>
-                      <TableCell
-                        className={cn(
-                          'text-right font-medium',
-                          team.point_diff > 0 ? 'text-green-600' : 'text-red-600'
-                        )}
-                      >
-                        {team.point_diff > 0 ? '+' : ''}{team.point_diff}
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
+        {/* Loading State */}
+        {isLoading && (
+          <div className="mt-12 flex items-center gap-3 text-zinc-500">
+            <div className="w-5 h-5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
+            <span>Chargement des équipes...</span>
           </div>
-        </CardContent>
-      </Card>
+        )}
 
-      {/* Recent Games */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Recent Games - {currentSeason}</CardTitle>
-        </CardHeader>
-        <CardContent className="px-4 sm:px-6">
-          <div className="space-y-3">
-            {recentGames && recentGames.map((game: any) => {
-              const homeWon = game.home_score > game.away_score
-              return (
+        {/* Teams Grid */}
+        {!isLoading && (
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {sortedTeams.map((team) => (
+              <Link
+                key={team.team_id}
+                href={`/teams/${team.team_id}`}
+                className="group relative p-6 bg-zinc-900/50 border border-zinc-800 rounded-lg
+                           hover:border-white hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]
+                           transition-all duration-300"
+              >
+                {/* Team Logo Background */}
                 <div
-                  key={game.game_id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 rounded-lg border p-4 hover:bg-accent/50 transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className={cn('flex items-center gap-2 sm:gap-3', homeWon ? 'font-semibold' : '')}>
-                      <span className={cn('w-10 sm:w-12 text-center text-lg sm:text-xl flex-shrink-0', homeWon && 'text-green-600')}>
-                        {game.home_score}
-                      </span>
-                      <span className="truncate text-sm sm:text-base">
-                        {game.home_team} ({game.home_abbreviation})
-                      </span>
-                    </div>
-                    <div className={cn('flex items-center gap-2 sm:gap-3 mt-2', !homeWon ? 'font-semibold' : '')}>
-                      <span className={cn('w-10 sm:w-12 text-center text-lg sm:text-xl flex-shrink-0', !homeWon && 'text-green-600')}>
-                        {game.away_score}
-                      </span>
-                      <span className="truncate text-sm sm:text-base">
-                        {game.away_team} ({game.away_abbreviation})
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-left sm:text-right text-xs sm:text-sm text-muted-foreground flex-shrink-0">
-                    <p>{new Date(game.game_date).toLocaleDateString()}</p>
-                    <p className="text-xs">{game.game_status}</p>
-                  </div>
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-16 h-16 opacity-10 group-hover:opacity-20 transition-opacity"
+                  style={{
+                    backgroundImage: `url(https://cdn.nba.com/logos/nba/${team.team_id}/primary/L/logo.svg)`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                />
+
+                {/* Team Info */}
+                <div className="relative z-10">
+                  <span className="text-xs font-mono text-zinc-500 mb-1 block">{team.abbreviation}</span>
+                  <h3 className="text-lg font-bold text-white group-hover:text-white transition-colors">
+                    {team.full_name}
+                  </h3>
                 </div>
-              )
-            })}
+
+                {/* Arrow */}
+                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all">
+                  →
+                </span>
+              </Link>
+            ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        )}
+
+        {/* No results */}
+        {!isLoading && searchQuery && sortedTeams.length === 0 && (
+          <div className="mt-12 p-8 bg-zinc-900/50 border border-zinc-800 rounded-lg">
+            <p className="text-zinc-400">Aucune équipe trouvée pour "{searchQuery}"</p>
+          </div>
+        )}
+
+        {/* Stats Summary */}
+        {!isLoading && teams.length > 0 && (
+          <div className="mt-16 pt-8 border-t border-zinc-800">
+            <p className="text-sm text-zinc-500">
+              {searchQuery ? `${sortedTeams.length} équipe${sortedTeams.length > 1 ? 's' : ''} trouvée${sortedTeams.length > 1 ? 's' : ''}` : `${teams.length} équipes NBA`}
+            </p>
+          </div>
+        )}
+      </div>
     </AppLayout>
   )
 }

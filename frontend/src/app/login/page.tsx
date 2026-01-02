@@ -7,9 +7,9 @@ import Link from 'next/link'
 export default function LoginPage() {
   const { login, isLoading: authLoading } = useAuth()
 
-  // Form state
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // Form state - DEV: Prefilled for development convenience
+  const [email, setEmail] = useState('admin@stat-discute.be')
+  const [password, setPassword] = useState('Admin@StatDiscute2025!')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -87,7 +87,7 @@ export default function LoginPage() {
                 required
                 autoComplete="email"
                 className="w-full px-4 py-3 bg-black border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all"
-                placeholder="votre@email.com"
+                placeholder="admin@stat-discute.be"
                 disabled={isSubmitting}
               />
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 required
                 autoComplete="current-password"
                 className="w-full px-4 py-3 bg-black border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all"
-                placeholder="••••••••••••"
+                placeholder="Admin@StatDiscute2025!"
                 disabled={isSubmitting}
               />
             </div>

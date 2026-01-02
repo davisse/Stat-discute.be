@@ -1,0 +1,3277 @@
+[
+  {
+    "name": "Dominick Barlow",
+    "position": "PF",
+    "team": "ATL"
+  },
+  {
+    "name": "Bogdan Bogdanovi\u00c4\u0087",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Kobe Bufkin",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Clint Capela",
+    "position": "C",
+    "team": "ATL"
+  },
+  {
+    "name": "Dyson Daniels",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Mouhamed Gueye",
+    "position": "PF",
+    "team": "ATL"
+  },
+  {
+    "name": "De'Andre Hunter",
+    "position": "SF",
+    "team": "ATL"
+  },
+  {
+    "name": "Jalen Johnson",
+    "position": "SF",
+    "team": "ATL"
+  },
+  {
+    "name": "Vit Krejci",
+    "position": "PG",
+    "team": "ATL"
+  },
+  {
+    "name": "Caris LeVert",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Terance Mann",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Garrison Mathews",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "position": "PF",
+    "team": "ATL"
+  },
+  {
+    "name": "Georges Niang",
+    "position": "PF",
+    "team": "ATL"
+  },
+  {
+    "name": "Onyeka Okongwu",
+    "position": "C",
+    "team": "ATL"
+  },
+  {
+    "name": "Daeqwon Plowden",
+    "position": "SG",
+    "team": "ATL"
+  },
+  {
+    "name": "Zaccharie Risacher",
+    "position": "SF",
+    "team": "ATL"
+  },
+  {
+    "name": "David Roddy",
+    "position": "PF",
+    "team": "ATL"
+  },
+  {
+    "name": "Jacob Toppin",
+    "position": "SF",
+    "team": "ATL"
+  },
+  {
+    "name": "Keaton Wallace",
+    "position": "PG",
+    "team": "ATL"
+  },
+  {
+    "name": "Trae Young",
+    "position": "PG",
+    "team": "ATL"
+  },
+  {
+    "name": "Jaylen Brown",
+    "position": "SF",
+    "team": "BOS"
+  },
+  {
+    "name": "Torrey Craig",
+    "position": "SF",
+    "team": "BOS"
+  },
+  {
+    "name": "JD Davison",
+    "position": "PG",
+    "team": "BOS"
+  },
+  {
+    "name": "Sam Hauser",
+    "position": "PF",
+    "team": "BOS"
+  },
+  {
+    "name": "Jrue Holiday",
+    "position": "PG",
+    "team": "BOS"
+  },
+  {
+    "name": "Al Horford",
+    "position": "C",
+    "team": "BOS"
+  },
+  {
+    "name": "Luke Kornet",
+    "position": "C",
+    "team": "BOS"
+  },
+  {
+    "name": "Miles Norris",
+    "position": "PF",
+    "team": "BOS"
+  },
+  {
+    "name": "Drew Peterson",
+    "position": "PF",
+    "team": "BOS"
+  },
+  {
+    "name": "Kristaps Porzi\u00c5\u0086\u00c4\u00a3is",
+    "position": "C",
+    "team": "BOS"
+  },
+  {
+    "name": "Payton Pritchard",
+    "position": "PG",
+    "team": "BOS"
+  },
+  {
+    "name": "Neemias Queta",
+    "position": "C",
+    "team": "BOS"
+  },
+  {
+    "name": "Baylor Scheierman",
+    "position": "SG",
+    "team": "BOS"
+  },
+  {
+    "name": "Jaden Springer",
+    "position": "SG",
+    "team": "BOS"
+  },
+  {
+    "name": "Jayson Tatum",
+    "position": "PF",
+    "team": "BOS"
+  },
+  {
+    "name": "Xavier Tillman Sr.",
+    "position": "C",
+    "team": "BOS"
+  },
+  {
+    "name": "Jordan Walsh",
+    "position": "PF",
+    "team": "BOS"
+  },
+  {
+    "name": "Derrick White",
+    "position": "SG",
+    "team": "BOS"
+  },
+  {
+    "name": "Reece Beekman",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Nic Claxton",
+    "position": "C",
+    "team": "BKN"
+  },
+  {
+    "name": "Noah Clowney",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "Cui Yongxi",
+    "position": "SG",
+    "team": "BKN"
+  },
+  {
+    "name": "Tyson Etienne",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Tosan Evbuomwan",
+    "position": "SF",
+    "team": "BKN"
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "Killian Hayes",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Cameron Johnson",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "Keon Johnson",
+    "position": "SG",
+    "team": "BKN"
+  },
+  {
+    "name": "Maxwell Lewis",
+    "position": "SF",
+    "team": "BKN"
+  },
+  {
+    "name": "Jaylen Martin",
+    "position": "SF",
+    "team": "BKN"
+  },
+  {
+    "name": "Tyrese Martin",
+    "position": "SG",
+    "team": "BKN"
+  },
+  {
+    "name": "Dariq Whitehead",
+    "position": "SF",
+    "team": "BKN"
+  },
+  {
+    "name": "Shake Milton",
+    "position": "SG",
+    "team": "BKN"
+  },
+  {
+    "name": "D'Angelo Russell",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Dennis Schr\u00c3\u00b6der",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Day'Ron Sharpe",
+    "position": "C",
+    "team": "BKN"
+  },
+  {
+    "name": "Ben Simmons",
+    "position": "PG",
+    "team": "BKN"
+  },
+  {
+    "name": "Cam Thomas",
+    "position": "SG",
+    "team": "BKN"
+  },
+  {
+    "name": "Drew Timme",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "Trendon Watford",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "Ziaire Williams",
+    "position": "SF",
+    "team": "BKN"
+  },
+  {
+    "name": "Jalen Wilson",
+    "position": "PF",
+    "team": "BKN"
+  },
+  {
+    "name": "LaMelo Ball",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Damion Baugh",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Miles Bridges",
+    "position": "PF",
+    "team": "CHA"
+  },
+  {
+    "name": "Seth Curry",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Moussa Diabat\u00c3\u00a9",
+    "position": "C",
+    "team": "CHA"
+  },
+  {
+    "name": "Malachi Flynn",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Marcus Garrett",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Taj Gibson",
+    "position": "C",
+    "team": "CHA"
+  },
+  {
+    "name": "Josh Green",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "DaQuan Jeffries",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Tre Mann",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Cody Martin",
+    "position": "SF",
+    "team": "CHA"
+  },
+  {
+    "name": "Vasilije Mici\u00c4\u0087",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Brandon Miller",
+    "position": "SF",
+    "team": "CHA"
+  },
+  {
+    "name": "Wendell Moore Jr.",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Jusuf Nurki\u00c4\u0087",
+    "position": "C",
+    "team": "CHA"
+  },
+  {
+    "name": "Josh Okogie",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Elfrid Payton",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Jared Rhoden",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Nick Richards",
+    "position": "C",
+    "team": "CHA"
+  },
+  {
+    "name": "Tidjane Sala\u00c3\u00bcn",
+    "position": "PF",
+    "team": "CHA"
+  },
+  {
+    "name": "KJ Simpson",
+    "position": "PG",
+    "team": "CHA"
+  },
+  {
+    "name": "Jaylen Sims",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Nick Smith Jr.",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Grant Williams",
+    "position": "PF",
+    "team": "CHA"
+  },
+  {
+    "name": "Mark Williams",
+    "position": "C",
+    "team": "CHA"
+  },
+  {
+    "name": "Isaiah Wong",
+    "position": "SG",
+    "team": "CHA"
+  },
+  {
+    "name": "Lonzo Ball",
+    "position": "PG",
+    "team": "CHI"
+  },
+  {
+    "name": "Matas Buzelis",
+    "position": "SF",
+    "team": "CHI"
+  },
+  {
+    "name": "Jevon Carter",
+    "position": "PG",
+    "team": "CHI"
+  },
+  {
+    "name": "Zach Collins",
+    "position": "PF",
+    "team": "CHI"
+  },
+  {
+    "name": "Torrey Craig",
+    "position": "SF",
+    "team": "CHI"
+  },
+  {
+    "name": "Ayo Dosunmu",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Chris Duarte",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Josh Giddey",
+    "position": "PG",
+    "team": "CHI"
+  },
+  {
+    "name": "Talen Horton-Tucker",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Kevin Huerter",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Tre Jones",
+    "position": "PG",
+    "team": "CHI"
+  },
+  {
+    "name": "Zach LaVine",
+    "position": "SF",
+    "team": "CHI"
+  },
+  {
+    "name": "E.J. Liddell",
+    "position": "PF",
+    "team": "CHI"
+  },
+  {
+    "name": "Emanuel Miller",
+    "position": "PF",
+    "team": "CHI"
+  },
+  {
+    "name": "Julian Phillips",
+    "position": "SF",
+    "team": "CHI"
+  },
+  {
+    "name": "Adama Sanogo",
+    "position": "C",
+    "team": "CHI"
+  },
+  {
+    "name": "Jalen Smith",
+    "position": "C",
+    "team": "CHI"
+  },
+  {
+    "name": "Dalen Terry",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Nikola Vu\u00c4\u008devi\u00c4\u0087",
+    "position": "C",
+    "team": "CHI"
+  },
+  {
+    "name": "Coby White",
+    "position": "SG",
+    "team": "CHI"
+  },
+  {
+    "name": "Patrick Williams",
+    "position": "PF",
+    "team": "CHI"
+  },
+  {
+    "name": "Jahmir Young",
+    "position": "PG",
+    "team": "CHI"
+  },
+  {
+    "name": "Jarrett Allen",
+    "position": "C",
+    "team": "CLE"
+  },
+  {
+    "name": "Emoni Bates",
+    "position": "SF",
+    "team": "CLE"
+  },
+  {
+    "name": "Darius Garland",
+    "position": "PG",
+    "team": "CLE"
+  },
+  {
+    "name": "Javonte Green",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "De'Andre Hunter",
+    "position": "SF",
+    "team": "CLE"
+  },
+  {
+    "name": "Ty Jerome",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Caris LeVert",
+    "position": "SF",
+    "team": "CLE"
+  },
+  {
+    "name": "Sam Merrill",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Donovan Mitchell",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Evan Mobley",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Georges Niang",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Chuma Okeke",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Isaac Okoro",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Craig Porter Jr.",
+    "position": "PG",
+    "team": "CLE"
+  },
+  {
+    "name": "Max Strus",
+    "position": "SF",
+    "team": "CLE"
+  },
+  {
+    "name": "Tristan Thompson",
+    "position": "C",
+    "team": "CLE"
+  },
+  {
+    "name": "JT Thor",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Nae'Qwan Tomlin",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Luke Travers",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Jaylon Tyson",
+    "position": "SG",
+    "team": "CLE"
+  },
+  {
+    "name": "Dean Wade",
+    "position": "PF",
+    "team": "CLE"
+  },
+  {
+    "name": "Moses Brown",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Max Christie",
+    "position": "SG",
+    "team": "DAL"
+  },
+  {
+    "name": "Anthony Davis",
+    "position": "PF",
+    "team": "DAL"
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "position": "PG",
+    "team": "DAL"
+  },
+  {
+    "name": "Luka Don\u00c4\u008di\u00c4\u0087",
+    "position": "PG",
+    "team": "DAL"
+  },
+  {
+    "name": "Kessler Edwards",
+    "position": "SF",
+    "team": "DAL"
+  },
+  {
+    "name": "Dante Exum",
+    "position": "PG",
+    "team": "DAL"
+  },
+  {
+    "name": "Daniel Gafford",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Jazian Gortman",
+    "position": "PG",
+    "team": "DAL"
+  },
+  {
+    "name": "Quentin Grimes",
+    "position": "SG",
+    "team": "DAL"
+  },
+  {
+    "name": "Jaden Hardy",
+    "position": "SG",
+    "team": "DAL"
+  },
+  {
+    "name": "Kyrie Irving",
+    "position": "SG",
+    "team": "DAL"
+  },
+  {
+    "name": "Kai Jones",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Kylor Kelley",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Maxi Kleber",
+    "position": "PF",
+    "team": "DAL"
+  },
+  {
+    "name": "Dereck Lively II",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Naji Marshall",
+    "position": "SF",
+    "team": "DAL"
+  },
+  {
+    "name": "Caleb Martin",
+    "position": "SF",
+    "team": "DAL"
+  },
+  {
+    "name": "Markieff Morris",
+    "position": "PF",
+    "team": "DAL"
+  },
+  {
+    "name": "Dwight Powell",
+    "position": "C",
+    "team": "DAL"
+  },
+  {
+    "name": "Olivier-Maxence Prosper",
+    "position": "PF",
+    "team": "DAL"
+  },
+  {
+    "name": "Klay Thompson",
+    "position": "SF",
+    "team": "DAL"
+  },
+  {
+    "name": "P.J. Washington",
+    "position": "PF",
+    "team": "DAL"
+  },
+  {
+    "name": "Brandon Williams",
+    "position": "PG",
+    "team": "DAL"
+  },
+  {
+    "name": "Trey Alexander",
+    "position": "SG",
+    "team": "DEN"
+  },
+  {
+    "name": "Christian Braun",
+    "position": "SG",
+    "team": "DEN"
+  },
+  {
+    "name": "Vlatko \u00c4\u008can\u00c4\u008dar",
+    "position": "PF",
+    "team": "DEN"
+  },
+  {
+    "name": "Aaron Gordon",
+    "position": "PF",
+    "team": "DEN"
+  },
+  {
+    "name": "PJ Hall",
+    "position": "C",
+    "team": "DEN"
+  },
+  {
+    "name": "Nikola Joki\u00c4\u0087",
+    "position": "C",
+    "team": "DEN"
+  },
+  {
+    "name": "Spencer Jones",
+    "position": "SF",
+    "team": "DEN"
+  },
+  {
+    "name": "DeAndre Jordan",
+    "position": "C",
+    "team": "DEN"
+  },
+  {
+    "name": "Jamal Murray",
+    "position": "PG",
+    "team": "DEN"
+  },
+  {
+    "name": "Zeke Nnaji",
+    "position": "PF",
+    "team": "DEN"
+  },
+  {
+    "name": "Jalen Pickett",
+    "position": "SG",
+    "team": "DEN"
+  },
+  {
+    "name": "Michael Porter Jr.",
+    "position": "SF",
+    "team": "DEN"
+  },
+  {
+    "name": "Dario \u00c5 ari\u00c4\u0087",
+    "position": "C",
+    "team": "DEN"
+  },
+  {
+    "name": "Julian Strawther",
+    "position": "SG",
+    "team": "DEN"
+  },
+  {
+    "name": "Hunter Tyson",
+    "position": "PF",
+    "team": "DEN"
+  },
+  {
+    "name": "Peyton Watson",
+    "position": "SF",
+    "team": "DEN"
+  },
+  {
+    "name": "Russell Westbrook",
+    "position": "PG",
+    "team": "DEN"
+  },
+  {
+    "name": "Malik Beasley",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Cade Cunningham",
+    "position": "PG",
+    "team": "DET"
+  },
+  {
+    "name": "Jalen Duren",
+    "position": "C",
+    "team": "DET"
+  },
+  {
+    "name": "Simone Fontecchio",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Ron Harper Jr.",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Tobias Harris",
+    "position": "PF",
+    "team": "DET"
+  },
+  {
+    "name": "Ron Holland",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Jaden Ivey",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Daniss Jenkins",
+    "position": "PG",
+    "team": "DET"
+  },
+  {
+    "name": "Bobi Klintman",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Wendell Moore Jr.",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Paul Reed",
+    "position": "C",
+    "team": "DET"
+  },
+  {
+    "name": "Marcus Sasser",
+    "position": "PG",
+    "team": "DET"
+  },
+  {
+    "name": "Dennis Schr\u00c3\u00b6der",
+    "position": "PG",
+    "team": "DET"
+  },
+  {
+    "name": "Tolu Smith",
+    "position": "PF",
+    "team": "DET"
+  },
+  {
+    "name": "Isaiah Stewart",
+    "position": "C",
+    "team": "DET"
+  },
+  {
+    "name": "Cole Swider",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Ausar Thompson",
+    "position": "SF",
+    "team": "DET"
+  },
+  {
+    "name": "Lindy Waters III",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Alondes Williams",
+    "position": "SG",
+    "team": "DET"
+  },
+  {
+    "name": "Kyle Anderson",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Reece Beekman",
+    "position": "PG",
+    "team": "GSW"
+  },
+  {
+    "name": "Jimmy Butler",
+    "position": "SF",
+    "team": "GSW"
+  },
+  {
+    "name": "Yuri Collins",
+    "position": "PG",
+    "team": "GSW"
+  },
+  {
+    "name": "Stephen Curry",
+    "position": "PG",
+    "team": "GSW"
+  },
+  {
+    "name": "Draymond Green",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Buddy Hield",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Trayce Jackson-Davis",
+    "position": "C",
+    "team": "GSW"
+  },
+  {
+    "name": "Braxton Key",
+    "position": "SF",
+    "team": "GSW"
+  },
+  {
+    "name": "Kevin Knox",
+    "position": "SF",
+    "team": "GSW"
+  },
+  {
+    "name": "Jonathan Kuminga",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Kevon Looney",
+    "position": "C",
+    "team": "GSW"
+  },
+  {
+    "name": "De'Anthony Melton",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Moses Moody",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Gary Payton II",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Brandin Podziemski",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Quinten Post",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Jackson Rowe",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Gui Santos",
+    "position": "PF",
+    "team": "GSW"
+  },
+  {
+    "name": "Dennis Schr\u00c3\u00b6der",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Pat Spencer",
+    "position": "PG",
+    "team": "GSW"
+  },
+  {
+    "name": "Lindy Waters III",
+    "position": "SG",
+    "team": "GSW"
+  },
+  {
+    "name": "Andrew Wiggins",
+    "position": "SF",
+    "team": "GSW"
+  },
+  {
+    "name": "Steven Adams",
+    "position": "C",
+    "team": "HOU"
+  },
+  {
+    "name": "Dillon Brooks",
+    "position": "SF",
+    "team": "HOU"
+  },
+  {
+    "name": "N'Faly Dante",
+    "position": "C",
+    "team": "HOU"
+  },
+  {
+    "name": "Tari Eason",
+    "position": "PF",
+    "team": "HOU"
+  },
+  {
+    "name": "Jalen Green",
+    "position": "SG",
+    "team": "HOU"
+  },
+  {
+    "name": "Jeff Green",
+    "position": "PF",
+    "team": "HOU"
+  },
+  {
+    "name": "Aaron Holiday",
+    "position": "PG",
+    "team": "HOU"
+  },
+  {
+    "name": "Jock Landale",
+    "position": "C",
+    "team": "HOU"
+  },
+  {
+    "name": "Jack McVeigh",
+    "position": "PF",
+    "team": "HOU"
+  },
+  {
+    "name": "David Roddy",
+    "position": "PF",
+    "team": "HOU"
+  },
+  {
+    "name": "Alperen \u00c5\u009eeng\u00c3\u00bcn",
+    "position": "C",
+    "team": "HOU"
+  },
+  {
+    "name": "Reed Sheppard",
+    "position": "PG",
+    "team": "HOU"
+  },
+  {
+    "name": "Jabari Smith Jr.",
+    "position": "PF",
+    "team": "HOU"
+  },
+  {
+    "name": "Jae'Sean Tate",
+    "position": "SF",
+    "team": "HOU"
+  },
+  {
+    "name": "Amen Thompson",
+    "position": "SF",
+    "team": "HOU"
+  },
+  {
+    "name": "Fred VanVleet",
+    "position": "PG",
+    "team": "HOU"
+  },
+  {
+    "name": "Cam Whitmore",
+    "position": "SF",
+    "team": "HOU"
+  },
+  {
+    "name": "Jeenathan Williams",
+    "position": "SG",
+    "team": "HOU"
+  },
+  {
+    "name": "Tony Bradley",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Moses Brown",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Thomas Bryant",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "RayJ Dennis",
+    "position": "PG",
+    "team": "IND"
+  },
+  {
+    "name": "Enrique Freeman",
+    "position": "PF",
+    "team": "IND"
+  },
+  {
+    "name": "Johnny Furphy",
+    "position": "SG",
+    "team": "IND"
+  },
+  {
+    "name": "Tyrese Haliburton",
+    "position": "PG",
+    "team": "IND"
+  },
+  {
+    "name": "Isaiah Jackson",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Quenton Jackson",
+    "position": "PG",
+    "team": "IND"
+  },
+  {
+    "name": "James Johnson",
+    "position": "PF",
+    "team": "IND"
+  },
+  {
+    "name": "Bennedict Mathurin",
+    "position": "SF",
+    "team": "IND"
+  },
+  {
+    "name": "T.J. McConnell",
+    "position": "PG",
+    "team": "IND"
+  },
+  {
+    "name": "Andrew Nembhard",
+    "position": "SG",
+    "team": "IND"
+  },
+  {
+    "name": "Aaron Nesmith",
+    "position": "SF",
+    "team": "IND"
+  },
+  {
+    "name": "Tristen Newton",
+    "position": "SG",
+    "team": "IND"
+  },
+  {
+    "name": "Jahlil Okafor",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Ben Sheppard",
+    "position": "SG",
+    "team": "IND"
+  },
+  {
+    "name": "Pascal Siakam",
+    "position": "PF",
+    "team": "IND"
+  },
+  {
+    "name": "Obi Toppin",
+    "position": "PF",
+    "team": "IND"
+  },
+  {
+    "name": "Myles Turner",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Jarace Walker",
+    "position": "PF",
+    "team": "IND"
+  },
+  {
+    "name": "James Wiseman",
+    "position": "C",
+    "team": "IND"
+  },
+  {
+    "name": "Patrick Baldwin Jr.",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "Mo Bamba",
+    "position": "C",
+    "team": "LAC"
+  },
+  {
+    "name": "Nicolas Batum",
+    "position": "PF",
+    "team": "LAC"
+  },
+  {
+    "name": "MarJon Beauchamp",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "Bogdan Bogdanovi\u00c4\u0087",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Kobe Brown",
+    "position": "PF",
+    "team": "LAC"
+  },
+  {
+    "name": "Cam Christie",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Amir Coffey",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Kris Dunn",
+    "position": "PG",
+    "team": "LAC"
+  },
+  {
+    "name": "Drew Eubanks",
+    "position": "C",
+    "team": "LAC"
+  },
+  {
+    "name": "Trentyn Flowers",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "James Harden",
+    "position": "PG",
+    "team": "LAC"
+  },
+  {
+    "name": "Bones Hyland",
+    "position": "PG",
+    "team": "LAC"
+  },
+  {
+    "name": "Derrick Jones Jr.",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "Kai Jones",
+    "position": "C",
+    "team": "LAC"
+  },
+  {
+    "name": "Kawhi Leonard",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "Terance Mann",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Jordan Miller",
+    "position": "SF",
+    "team": "LAC"
+  },
+  {
+    "name": "Patty Mills",
+    "position": "PG",
+    "team": "LAC"
+  },
+  {
+    "name": "Kevin Porter Jr.",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Norman Powell",
+    "position": "SG",
+    "team": "LAC"
+  },
+  {
+    "name": "Ben Simmons",
+    "position": "PG",
+    "team": "LAC"
+  },
+  {
+    "name": "Ivica Zubac",
+    "position": "C",
+    "team": "LAC"
+  },
+  {
+    "name": "Max Christie",
+    "position": "SG",
+    "team": "LAL"
+  },
+  {
+    "name": "Anthony Davis",
+    "position": "C",
+    "team": "LAL"
+  },
+  {
+    "name": "Luka Don\u00c4\u008di\u00c4\u0087",
+    "position": "PG",
+    "team": "LAL"
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "position": "PF",
+    "team": "LAL"
+  },
+  {
+    "name": "Jordan Goodwin",
+    "position": "PG",
+    "team": "LAL"
+  },
+  {
+    "name": "Rui Hachimura",
+    "position": "PF",
+    "team": "LAL"
+  },
+  {
+    "name": "Jaxson Hayes",
+    "position": "C",
+    "team": "LAL"
+  },
+  {
+    "name": "Jalen Hood-Schifino",
+    "position": "SG",
+    "team": "LAL"
+  },
+  {
+    "name": "Bronny James",
+    "position": "SG",
+    "team": "LAL"
+  },
+  {
+    "name": "LeBron James",
+    "position": "SF",
+    "team": "LAL"
+  },
+  {
+    "name": "Trey Jemison",
+    "position": "C",
+    "team": "LAL"
+  },
+  {
+    "name": "Maxi Kleber",
+    "position": "PF",
+    "team": "LAL"
+  },
+  {
+    "name": "Dalton Knecht",
+    "position": "SF",
+    "team": "LAL"
+  },
+  {
+    "name": "Christian Koloko",
+    "position": "C",
+    "team": "LAL"
+  },
+  {
+    "name": "Alex Len",
+    "position": "C",
+    "team": "LAL"
+  },
+  {
+    "name": "Maxwell Lewis",
+    "position": "SF",
+    "team": "LAL"
+  },
+  {
+    "name": "Shake Milton",
+    "position": "SG",
+    "team": "LAL"
+  },
+  {
+    "name": "Markieff Morris",
+    "position": "PF",
+    "team": "LAL"
+  },
+  {
+    "name": "Quincy Olivari",
+    "position": "PG",
+    "team": "LAL"
+  },
+  {
+    "name": "Austin Reaves",
+    "position": "SG",
+    "team": "LAL"
+  },
+  {
+    "name": "Cam Reddish",
+    "position": "SF",
+    "team": "LAL"
+  },
+  {
+    "name": "D'Angelo Russell",
+    "position": "PG",
+    "team": "LAL"
+  },
+  {
+    "name": "Armel Traor\u00c3\u00a9",
+    "position": "SF",
+    "team": "LAL"
+  },
+  {
+    "name": "Jarred Vanderbilt",
+    "position": "PF",
+    "team": "LAL"
+  },
+  {
+    "name": "Gabe Vincent",
+    "position": "PG",
+    "team": "LAL"
+  },
+  {
+    "name": "Santi Aldama",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Marvin Bagley III",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Desmond Bane",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Colin Castleton",
+    "position": "C",
+    "team": "MEM"
+  },
+  {
+    "name": "Brandon Clarke",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Zach Edey",
+    "position": "C",
+    "team": "MEM"
+  },
+  {
+    "name": "Jay Huff",
+    "position": "C",
+    "team": "MEM"
+  },
+  {
+    "name": "GG Jackson II",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Jaren Jackson Jr.",
+    "position": "C",
+    "team": "MEM"
+  },
+  {
+    "name": "Yuki Kawamura",
+    "position": "PG",
+    "team": "MEM"
+  },
+  {
+    "name": "Luke Kennard",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "John Konchar",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Jake LaRavia",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Ja Morant",
+    "position": "PG",
+    "team": "MEM"
+  },
+  {
+    "name": "Scotty Pippen Jr.",
+    "position": "PG",
+    "team": "MEM"
+  },
+  {
+    "name": "Zyon Pullin",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Marcus Smart",
+    "position": "PG",
+    "team": "MEM"
+  },
+  {
+    "name": "Cam Spencer",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Lamar Stevens",
+    "position": "PF",
+    "team": "MEM"
+  },
+  {
+    "name": "Jaylen Wells",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Vince Williams Jr.",
+    "position": "SG",
+    "team": "MEM"
+  },
+  {
+    "name": "Bam Adebayo",
+    "position": "C",
+    "team": "MIA"
+  },
+  {
+    "name": "Kyle Anderson",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Thomas Bryant",
+    "position": "C",
+    "team": "MIA"
+  },
+  {
+    "name": "Alec Burks",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Jimmy Butler",
+    "position": "PF",
+    "team": "MIA"
+  },
+  {
+    "name": "Josh Christopher",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Tyler Herro",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Haywood Highsmith",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Jaime Jaquez Jr.",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Keshad Johnson",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Nikola Jovi\u00c4\u0087",
+    "position": "PF",
+    "team": "MIA"
+  },
+  {
+    "name": "Pelle Larsson",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Kevin Love",
+    "position": "PF",
+    "team": "MIA"
+  },
+  {
+    "name": "Davion Mitchell",
+    "position": "PG",
+    "team": "MIA"
+  },
+  {
+    "name": "Josh Richardson",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Duncan Robinson",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Terry Rozier",
+    "position": "PG",
+    "team": "MIA"
+  },
+  {
+    "name": "Dru Smith",
+    "position": "SG",
+    "team": "MIA"
+  },
+  {
+    "name": "Isaiah Stevens",
+    "position": "PG",
+    "team": "MIA"
+  },
+  {
+    "name": "Kel'el Ware",
+    "position": "C",
+    "team": "MIA"
+  },
+  {
+    "name": "Andrew Wiggins",
+    "position": "SF",
+    "team": "MIA"
+  },
+  {
+    "name": "Giannis Antetokounmpo",
+    "position": "PF",
+    "team": "MIL"
+  },
+  {
+    "name": "MarJon Beauchamp",
+    "position": "SF",
+    "team": "MIL"
+  },
+  {
+    "name": "Jamaree Bouyea",
+    "position": "PG",
+    "team": "MIL"
+  },
+  {
+    "name": "Pat Connaughton",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "A.J. Green",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "Andre Jackson Jr.",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "AJ Johnson",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "Kyle Kuzma",
+    "position": "PF",
+    "team": "MIL"
+  },
+  {
+    "name": "Damian Lillard",
+    "position": "PG",
+    "team": "MIL"
+  },
+  {
+    "name": "Chris Livingston",
+    "position": "SF",
+    "team": "MIL"
+  },
+  {
+    "name": "Brook Lopez",
+    "position": "C",
+    "team": "MIL"
+  },
+  {
+    "name": "Khris Middleton",
+    "position": "SF",
+    "team": "MIL"
+  },
+  {
+    "name": "Pete Nance",
+    "position": "PF",
+    "team": "MIL"
+  },
+  {
+    "name": "Kevin Porter Jr.",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "Bobby Portis",
+    "position": "PF",
+    "team": "MIL"
+  },
+  {
+    "name": "Taurean Prince",
+    "position": "SF",
+    "team": "MIL"
+  },
+  {
+    "name": "Liam Robbins",
+    "position": "C",
+    "team": "MIL"
+  },
+  {
+    "name": "Ryan Rollins",
+    "position": "PG",
+    "team": "MIL"
+  },
+  {
+    "name": "Jericho Sims",
+    "position": "C",
+    "team": "MIL"
+  },
+  {
+    "name": "Tyler Smith",
+    "position": "PF",
+    "team": "MIL"
+  },
+  {
+    "name": "Gary Trent Jr.",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "Stanley Umude",
+    "position": "SG",
+    "team": "MIL"
+  },
+  {
+    "name": "Delon Wright",
+    "position": "PG",
+    "team": "MIL"
+  },
+  {
+    "name": "Nickeil Alexander-Walker",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Jaylen Clark",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Mike Conley",
+    "position": "PG",
+    "team": "MIN"
+  },
+  {
+    "name": "Rob Dillingham",
+    "position": "PG",
+    "team": "MIN"
+  },
+  {
+    "name": "Donte DiVincenzo",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "PJ Dozier",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Anthony Edwards",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Jesse Edwards",
+    "position": "C",
+    "team": "MIN"
+  },
+  {
+    "name": "Luka Garza",
+    "position": "C",
+    "team": "MIN"
+  },
+  {
+    "name": "Rudy Gobert",
+    "position": "C",
+    "team": "MIN"
+  },
+  {
+    "name": "Bones Hyland",
+    "position": "PG",
+    "team": "MIN"
+  },
+  {
+    "name": "Joe Ingles",
+    "position": "SF",
+    "team": "MIN"
+  },
+  {
+    "name": "Jaden McDaniels",
+    "position": "PF",
+    "team": "MIN"
+  },
+  {
+    "name": "Leonard Miller",
+    "position": "SF",
+    "team": "MIN"
+  },
+  {
+    "name": "Josh Minott",
+    "position": "SF",
+    "team": "MIN"
+  },
+  {
+    "name": "Tristen Newton",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Daishen Nix",
+    "position": "PG",
+    "team": "MIN"
+  },
+  {
+    "name": "Julius Randle",
+    "position": "PF",
+    "team": "MIN"
+  },
+  {
+    "name": "Naz Reid",
+    "position": "C",
+    "team": "MIN"
+  },
+  {
+    "name": "Terrence Shannon Jr.",
+    "position": "SG",
+    "team": "MIN"
+  },
+  {
+    "name": "Jose Alvarado",
+    "position": "PG",
+    "team": "NOP"
+  },
+  {
+    "name": "Mo Bamba",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Brandon Boston Jr.",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Keion Brooks Jr.",
+    "position": "SF",
+    "team": "NOP"
+  },
+  {
+    "name": "Bruce Brown",
+    "position": "PG",
+    "team": "NOP"
+  },
+  {
+    "name": "Jamal Cain",
+    "position": "SF",
+    "team": "NOP"
+  },
+  {
+    "name": "Javonte Green",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Jordan Hawkins",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Brandon Ingram",
+    "position": "SF",
+    "team": "NOP"
+  },
+  {
+    "name": "Trey Jemison",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Herbert Jones",
+    "position": "SF",
+    "team": "NOP"
+  },
+  {
+    "name": "Kylor Kelley",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Karlo Matkovi\u00c4\u0087",
+    "position": "PF",
+    "team": "NOP"
+  },
+  {
+    "name": "CJ McCollum",
+    "position": "PG",
+    "team": "NOP"
+  },
+  {
+    "name": "Yves Missi",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Trey Murphy III",
+    "position": "SF",
+    "team": "NOP"
+  },
+  {
+    "name": "Dejounte Murray",
+    "position": "PG",
+    "team": "NOP"
+  },
+  {
+    "name": "Jaylen Nowell",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Kelly Olynyk",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Elfrid Payton",
+    "position": "PG",
+    "team": "NOP"
+  },
+  {
+    "name": "Lester Qui\u00c3\u00b1ones",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Antonio Reeves",
+    "position": "SG",
+    "team": "NOP"
+  },
+  {
+    "name": "Jeremiah Robinson-Earl",
+    "position": "PF",
+    "team": "NOP"
+  },
+  {
+    "name": "Daniel Theis",
+    "position": "C",
+    "team": "NOP"
+  },
+  {
+    "name": "Zion Williamson",
+    "position": "PF",
+    "team": "NOP"
+  },
+  {
+    "name": "Precious Achiuwa",
+    "position": "C",
+    "team": "NYK"
+  },
+  {
+    "name": "OG Anunoby",
+    "position": "PF",
+    "team": "NYK"
+  },
+  {
+    "name": "MarJon Beauchamp",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Mikal Bridges",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Jalen Brunson",
+    "position": "PG",
+    "team": "NYK"
+  },
+  {
+    "name": "Pacome Dadiet",
+    "position": "SG",
+    "team": "NYK"
+  },
+  {
+    "name": "Josh Hart",
+    "position": "SG",
+    "team": "NYK"
+  },
+  {
+    "name": "Ariel Hukporti",
+    "position": "C",
+    "team": "NYK"
+  },
+  {
+    "name": "Tyler Kolek",
+    "position": "PG",
+    "team": "NYK"
+  },
+  {
+    "name": "Miles McBride",
+    "position": "SG",
+    "team": "NYK"
+  },
+  {
+    "name": "Kevin McCullar Jr.",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Cameron Payne",
+    "position": "PG",
+    "team": "NYK"
+  },
+  {
+    "name": "Mitchell Robinson",
+    "position": "C",
+    "team": "NYK"
+  },
+  {
+    "name": "Matt Ryan",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Landry Shamet",
+    "position": "SG",
+    "team": "NYK"
+  },
+  {
+    "name": "Jericho Sims",
+    "position": "C",
+    "team": "NYK"
+  },
+  {
+    "name": "Jacob Toppin",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Karl-Anthony Towns",
+    "position": "C",
+    "team": "NYK"
+  },
+  {
+    "name": "P.J. Tucker",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Anton Watson",
+    "position": "SF",
+    "team": "NYK"
+  },
+  {
+    "name": "Delon Wright",
+    "position": "PG",
+    "team": "NYK"
+  },
+  {
+    "name": "Branden Carlson",
+    "position": "C",
+    "team": "OKC"
+  },
+  {
+    "name": "Alex Caruso",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Ousmane Dieng",
+    "position": "C",
+    "team": "OKC"
+  },
+  {
+    "name": "Luguentz Dort",
+    "position": "SF",
+    "team": "OKC"
+  },
+  {
+    "name": "Alex Ducas",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Adam Flagler",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Shai Gilgeous-Alexander",
+    "position": "PG",
+    "team": "OKC"
+  },
+  {
+    "name": "Isaiah Hartenstein",
+    "position": "C",
+    "team": "OKC"
+  },
+  {
+    "name": "Chet Holmgren",
+    "position": "C",
+    "team": "OKC"
+  },
+  {
+    "name": "Isaiah Joe",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Dillon Jones",
+    "position": "SF",
+    "team": "OKC"
+  },
+  {
+    "name": "Malevy Leons",
+    "position": "SF",
+    "team": "OKC"
+  },
+  {
+    "name": "Ajay Mitchell",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Alex Reese",
+    "position": "PF",
+    "team": "OKC"
+  },
+  {
+    "name": "Cason Wallace",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Aaron Wiggins",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Jalen Williams",
+    "position": "SG",
+    "team": "OKC"
+  },
+  {
+    "name": "Jaylin Williams",
+    "position": "PF",
+    "team": "OKC"
+  },
+  {
+    "name": "Kenrich Williams",
+    "position": "PF",
+    "team": "OKC"
+  },
+  {
+    "name": "Cole Anthony",
+    "position": "PG",
+    "team": "ORL"
+  },
+  {
+    "name": "Paolo Banchero",
+    "position": "PF",
+    "team": "ORL"
+  },
+  {
+    "name": "Goga Bitadze",
+    "position": "C",
+    "team": "ORL"
+  },
+  {
+    "name": "Anthony Black",
+    "position": "PG",
+    "team": "ORL"
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "position": "SG",
+    "team": "ORL"
+  },
+  {
+    "name": "Wendell Carter Jr.",
+    "position": "C",
+    "team": "ORL"
+  },
+  {
+    "name": "Tristan Da Silva",
+    "position": "SF",
+    "team": "ORL"
+  },
+  {
+    "name": "Gary Harris",
+    "position": "SG",
+    "team": "ORL"
+  },
+  {
+    "name": "Caleb Houstan",
+    "position": "SF",
+    "team": "ORL"
+  },
+  {
+    "name": "Jett Howard",
+    "position": "SF",
+    "team": "ORL"
+  },
+  {
+    "name": "Jonathan Isaac",
+    "position": "PF",
+    "team": "ORL"
+  },
+  {
+    "name": "Cory Joseph",
+    "position": "PG",
+    "team": "ORL"
+  },
+  {
+    "name": "Mac McClung",
+    "position": "SG",
+    "team": "ORL"
+  },
+  {
+    "name": "Trevelin Queen",
+    "position": "SG",
+    "team": "ORL"
+  },
+  {
+    "name": "Jalen Suggs",
+    "position": "PG",
+    "team": "ORL"
+  },
+  {
+    "name": "Franz Wagner",
+    "position": "SF",
+    "team": "ORL"
+  },
+  {
+    "name": "Moritz Wagner",
+    "position": "C",
+    "team": "ORL"
+  },
+  {
+    "name": "Marcus Bagley",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "Adem Bona",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Oshae Brissett",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "Jared Butler",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Colin Castleton",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Ricky Council IV",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "Jeff Dowtin Jr.",
+    "position": "PG",
+    "team": "PHI"
+  },
+  {
+    "name": "Andre Drummond",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Justin Edwards",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "Joel Embiid",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Paul George",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Eric Gordon",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Quentin Grimes",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Jalen Hood-Schifino",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Reggie Jackson",
+    "position": "PG",
+    "team": "PHI"
+  },
+  {
+    "name": "Kyle Lowry",
+    "position": "PG",
+    "team": "PHI"
+  },
+  {
+    "name": "Caleb Martin",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "KJ Martin",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Tyrese Maxey",
+    "position": "PG",
+    "team": "PHI"
+  },
+  {
+    "name": "Jared McCain",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Isaiah Mobley",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Pete Nance",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Chuma Okeke",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "position": "SF",
+    "team": "PHI"
+  },
+  {
+    "name": "Lester Qui\u00c3\u00b1ones",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Alex Reese",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "David Roddy",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Lonnie Walker IV",
+    "position": "SG",
+    "team": "PHI"
+  },
+  {
+    "name": "Phillip Wheeler",
+    "position": "PF",
+    "team": "PHI"
+  },
+  {
+    "name": "Guerschon Yabusele",
+    "position": "C",
+    "team": "PHI"
+  },
+  {
+    "name": "Grayson Allen",
+    "position": "SG",
+    "team": "PHX"
+  },
+  {
+    "name": "Bradley Beal",
+    "position": "SG",
+    "team": "PHX"
+  },
+  {
+    "name": "Bol Bol",
+    "position": "PF",
+    "team": "PHX"
+  },
+  {
+    "name": "Devin Booker",
+    "position": "SG",
+    "team": "PHX"
+  },
+  {
+    "name": "Jalen Bridges",
+    "position": "SF",
+    "team": "PHX"
+  },
+  {
+    "name": "Ryan Dunn",
+    "position": "SF",
+    "team": "PHX"
+  },
+  {
+    "name": "Kevin Durant",
+    "position": "PF",
+    "team": "PHX"
+  },
+  {
+    "name": "Collin Gillespie",
+    "position": "PG",
+    "team": "PHX"
+  },
+  {
+    "name": "Oso Ighodaro",
+    "position": "PF",
+    "team": "PHX"
+  },
+  {
+    "name": "Tyus Jones",
+    "position": "PG",
+    "team": "PHX"
+  },
+  {
+    "name": "Damion Lee",
+    "position": "SG",
+    "team": "PHX"
+  },
+  {
+    "name": "Cody Martin",
+    "position": "SF",
+    "team": "PHX"
+  },
+  {
+    "name": "Vasilije Mici\u00c4\u0087",
+    "position": "PG",
+    "team": "PHX"
+  },
+  {
+    "name": "Monte Morris",
+    "position": "PG",
+    "team": "PHX"
+  },
+  {
+    "name": "Jusuf Nurki\u00c4\u0087",
+    "position": "C",
+    "team": "PHX"
+  },
+  {
+    "name": "Royce O'Neale",
+    "position": "SF",
+    "team": "PHX"
+  },
+  {
+    "name": "Josh Okogie",
+    "position": "SG",
+    "team": "PHX"
+  },
+  {
+    "name": "Mason Plumlee",
+    "position": "C",
+    "team": "PHX"
+  },
+  {
+    "name": "Nick Richards",
+    "position": "C",
+    "team": "PHX"
+  },
+  {
+    "name": "TyTy Washington Jr.",
+    "position": "PG",
+    "team": "PHX"
+  },
+  {
+    "name": "Deni Avdija",
+    "position": "SF",
+    "team": "POR"
+  },
+  {
+    "name": "Deandre Ayton",
+    "position": "C",
+    "team": "POR"
+  },
+  {
+    "name": "Dalano Banton",
+    "position": "PG",
+    "team": "POR"
+  },
+  {
+    "name": "Toumani Camara",
+    "position": "PF",
+    "team": "POR"
+  },
+  {
+    "name": "Sidy Cissoko",
+    "position": "SF",
+    "team": "POR"
+  },
+  {
+    "name": "Donovan Clingan",
+    "position": "C",
+    "team": "POR"
+  },
+  {
+    "name": "Jerami Grant",
+    "position": "PF",
+    "team": "POR"
+  },
+  {
+    "name": "Scoot Henderson",
+    "position": "PG",
+    "team": "POR"
+  },
+  {
+    "name": "Bryce McGowens",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Justin Minaya",
+    "position": "SF",
+    "team": "POR"
+  },
+  {
+    "name": "Taze Moore",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Kris Murray",
+    "position": "SF",
+    "team": "POR"
+  },
+  {
+    "name": "Duop Reath",
+    "position": "C",
+    "team": "POR"
+  },
+  {
+    "name": "Rayan Rupert",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Shaedon Sharpe",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Anfernee Simons",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Matisse Thybulle",
+    "position": "SG",
+    "team": "POR"
+  },
+  {
+    "name": "Jabari Walker",
+    "position": "PF",
+    "team": "POR"
+  },
+  {
+    "name": "Robert Williams",
+    "position": "C",
+    "team": "POR"
+  },
+  {
+    "name": "Devin Carter",
+    "position": "PG",
+    "team": "SAC"
+  },
+  {
+    "name": "Isaiah Crawford",
+    "position": "SF",
+    "team": "SAC"
+  },
+  {
+    "name": "Jae Crowder",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Terence Davis",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "DeMar DeRozan",
+    "position": "SF",
+    "team": "SAC"
+  },
+  {
+    "name": "Keon Ellis",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "De'Aaron Fox",
+    "position": "PG",
+    "team": "SAC"
+  },
+  {
+    "name": "Markelle Fultz",
+    "position": "PG",
+    "team": "SAC"
+  },
+  {
+    "name": "Kevin Huerter",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "Colby Jones",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "Isaac Jones",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Mason Jones",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "Skal Labissi\u00c3\u00a8re",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Jake LaRavia",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Zach LaVine",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "Alex Len",
+    "position": "C",
+    "team": "SAC"
+  },
+  {
+    "name": "Trey Lyles",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Doug McDermott",
+    "position": "SF",
+    "team": "SAC"
+  },
+  {
+    "name": "Jordan McLaughlin",
+    "position": "PG",
+    "team": "SAC"
+  },
+  {
+    "name": "Malik Monk",
+    "position": "SG",
+    "team": "SAC"
+  },
+  {
+    "name": "Keegan Murray",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Orlando Robinson",
+    "position": "C",
+    "team": "SAC"
+  },
+  {
+    "name": "Domantas Sabonis",
+    "position": "C",
+    "team": "SAC"
+  },
+  {
+    "name": "Terry Taylor",
+    "position": "PF",
+    "team": "SAC"
+  },
+  {
+    "name": "Jonas Valan\u00c4\u008di\u00c5\u00abnas",
+    "position": "C",
+    "team": "SAC"
+  },
+  {
+    "name": "Harrison Barnes",
+    "position": "PF",
+    "team": "SAS"
+  },
+  {
+    "name": "Charles Bassey",
+    "position": "C",
+    "team": "SAS"
+  },
+  {
+    "name": "Bismack Biyombo",
+    "position": "C",
+    "team": "SAS"
+  },
+  {
+    "name": "Malaki Branham",
+    "position": "SG",
+    "team": "SAS"
+  },
+  {
+    "name": "Stephon Castle",
+    "position": "SG",
+    "team": "SAS"
+  },
+  {
+    "name": "Julian Champagnie",
+    "position": "SF",
+    "team": "SAS"
+  },
+  {
+    "name": "Sidy Cissoko",
+    "position": "SF",
+    "team": "SAS"
+  },
+  {
+    "name": "Zach Collins",
+    "position": "C",
+    "team": "SAS"
+  },
+  {
+    "name": "David Duke Jr.",
+    "position": "SG",
+    "team": "SAS"
+  },
+  {
+    "name": "De'Aaron Fox",
+    "position": "PG",
+    "team": "SAS"
+  },
+  {
+    "name": "Harrison Ingram",
+    "position": "SF",
+    "team": "SAS"
+  },
+  {
+    "name": "Keldon Johnson",
+    "position": "SF",
+    "team": "SAS"
+  },
+  {
+    "name": "Tre Jones",
+    "position": "PG",
+    "team": "SAS"
+  },
+  {
+    "name": "Sandro Mamukelashvili",
+    "position": "PF",
+    "team": "SAS"
+  },
+  {
+    "name": "Jordan McLaughlin",
+    "position": "PG",
+    "team": "SAS"
+  },
+  {
+    "name": "Riley Minix",
+    "position": "SF",
+    "team": "SAS"
+  },
+  {
+    "name": "Chris Paul",
+    "position": "PG",
+    "team": "SAS"
+  },
+  {
+    "name": "Jeremy Sochan",
+    "position": "PF",
+    "team": "SAS"
+  },
+  {
+    "name": "Devin Vassell",
+    "position": "SG",
+    "team": "SAS"
+  },
+  {
+    "name": "Victor Wembanyama",
+    "position": "C",
+    "team": "SAS"
+  },
+  {
+    "name": "Blake Wesley",
+    "position": "SG",
+    "team": "SAS"
+  },
+  {
+    "name": "Ochai Agbaji",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Scottie Barnes",
+    "position": "PF",
+    "team": "TOR"
+  },
+  {
+    "name": "RJ Barrett",
+    "position": "SF",
+    "team": "TOR"
+  },
+  {
+    "name": "Jamison Battle",
+    "position": "SF",
+    "team": "TOR"
+  },
+  {
+    "name": "Chris Boucher",
+    "position": "PF",
+    "team": "TOR"
+  },
+  {
+    "name": "Bruce Brown",
+    "position": "PG",
+    "team": "TOR"
+  },
+  {
+    "name": "D.J. Carton",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Colin Castleton",
+    "position": "C",
+    "team": "TOR"
+  },
+  {
+    "name": "Ulrich Chomche",
+    "position": "PF",
+    "team": "TOR"
+  },
+  {
+    "name": "Gradey Dick",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Bruno Fernando",
+    "position": "C",
+    "team": "TOR"
+  },
+  {
+    "name": "A.J. Lawson",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Davion Mitchell",
+    "position": "PG",
+    "team": "TOR"
+  },
+  {
+    "name": "Jonathan Mogbo",
+    "position": "PF",
+    "team": "TOR"
+  },
+  {
+    "name": "Kelly Olynyk",
+    "position": "C",
+    "team": "TOR"
+  },
+  {
+    "name": "Jakob Poeltl",
+    "position": "C",
+    "team": "TOR"
+  },
+  {
+    "name": "Immanuel Quickley",
+    "position": "PG",
+    "team": "TOR"
+  },
+  {
+    "name": "Jared Rhoden",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Orlando Robinson",
+    "position": "C",
+    "team": "TOR"
+  },
+  {
+    "name": "Jamal Shead",
+    "position": "PG",
+    "team": "TOR"
+  },
+  {
+    "name": "Cole Swider",
+    "position": "SF",
+    "team": "TOR"
+  },
+  {
+    "name": "Garrett Temple",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Ja'Kobe Walter",
+    "position": "SG",
+    "team": "TOR"
+  },
+  {
+    "name": "Jordan Clarkson",
+    "position": "SG",
+    "team": "UTA"
+  },
+  {
+    "name": "Isaiah Collier",
+    "position": "PG",
+    "team": "UTA"
+  },
+  {
+    "name": "John Collins",
+    "position": "PF",
+    "team": "UTA"
+  },
+  {
+    "name": "Drew Eubanks",
+    "position": "C",
+    "team": "UTA"
+  },
+  {
+    "name": "Kyle Filipowski",
+    "position": "C",
+    "team": "UTA"
+  },
+  {
+    "name": "Keyonte George",
+    "position": "PG",
+    "team": "UTA"
+  },
+  {
+    "name": "Elijah Harkless",
+    "position": "SG",
+    "team": "UTA"
+  },
+  {
+    "name": "Taylor Hendricks",
+    "position": "PF",
+    "team": "UTA"
+  },
+  {
+    "name": "Johnny Juzang",
+    "position": "SG",
+    "team": "UTA"
+  },
+  {
+    "name": "Walker Kessler",
+    "position": "C",
+    "team": "UTA"
+  },
+  {
+    "name": "Lauri Markkanen",
+    "position": "PF",
+    "team": "UTA"
+  },
+  {
+    "name": "KJ Martin",
+    "position": "SF",
+    "team": "UTA"
+  },
+  {
+    "name": "Patty Mills",
+    "position": "PG",
+    "team": "UTA"
+  },
+  {
+    "name": "Svi Mykhailiuk",
+    "position": "SF",
+    "team": "UTA"
+  },
+  {
+    "name": "Micah Potter",
+    "position": "C",
+    "team": "UTA"
+  },
+  {
+    "name": "Brice Sensabaugh",
+    "position": "SF",
+    "team": "UTA"
+  },
+  {
+    "name": "Collin Sexton",
+    "position": "SG",
+    "team": "UTA"
+  },
+  {
+    "name": "Jaden Springer",
+    "position": "PG",
+    "team": "UTA"
+  },
+  {
+    "name": "Oscar Tshiebwe",
+    "position": "C",
+    "team": "UTA"
+  },
+  {
+    "name": "Cody Williams",
+    "position": "SG",
+    "team": "UTA"
+  },
+  {
+    "name": "Marvin Bagley III",
+    "position": "C",
+    "team": "WAS"
+  },
+  {
+    "name": "Patrick Baldwin Jr.",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Malcolm Brogdon",
+    "position": "PG",
+    "team": "WAS"
+  },
+  {
+    "name": "Jared Butler",
+    "position": "PG",
+    "team": "WAS"
+  },
+  {
+    "name": "Bub Carrington",
+    "position": "PG",
+    "team": "WAS"
+  },
+  {
+    "name": "Justin Champagnie",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Bilal Coulibaly",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Johnny Davis",
+    "position": "SG",
+    "team": "WAS"
+  },
+  {
+    "name": "Kyshawn George",
+    "position": "SG",
+    "team": "WAS"
+  },
+  {
+    "name": "Anthony Gill",
+    "position": "PF",
+    "team": "WAS"
+  },
+  {
+    "name": "Richaun Holmes",
+    "position": "PF",
+    "team": "WAS"
+  },
+  {
+    "name": "AJ Johnson",
+    "position": "SG",
+    "team": "WAS"
+  },
+  {
+    "name": "Colby Jones",
+    "position": "SG",
+    "team": "WAS"
+  },
+  {
+    "name": "Corey Kispert",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Kyle Kuzma",
+    "position": "PF",
+    "team": "WAS"
+  },
+  {
+    "name": "Jaylen Martin",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Jalen McDaniels",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Khris Middleton",
+    "position": "SF",
+    "team": "WAS"
+  },
+  {
+    "name": "Jordan Poole",
+    "position": "SG",
+    "team": "WAS"
+  },
+  {
+    "name": "Alex Sarr",
+    "position": "C",
+    "team": "WAS"
+  },
+  {
+    "name": "Marcus Smart",
+    "position": "PG",
+    "team": "WAS"
+  },
+  {
+    "name": "JT Thor",
+    "position": "PF",
+    "team": "WAS"
+  },
+  {
+    "name": "Jonas Valan\u00c4\u008di\u00c5\u00abnas",
+    "position": "C",
+    "team": "WAS"
+  },
+  {
+    "name": "Tristan Vukcevic",
+    "position": "C",
+    "team": "WAS"
+  }
+]

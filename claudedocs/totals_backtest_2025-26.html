@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totals Analysis Backtest - 2025-26 Season</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .win { background-color: #dcfce7; }
+        .loss { background-color: #fee2e2; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-2">Totals Analysis Backtest</h1>
+            <p class="text-gray-400 text-lg">2025-26 NBA Season | 5-Method Framework Performance</p>
+            <p class="text-gray-500 mt-2">Generated: December 18, 2024 | Sample: 21 Games with Betting Data</p>
+        </header>
+
+        <!-- Executive Summary -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-blue-500 rounded-full mr-3"></span>
+                Executive Summary
+            </h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-white">21</div>
+                    <div class="text-gray-400 text-sm">Games Analyzed</div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-yellow-400">52.4%</div>
+                    <div class="text-gray-400 text-sm">Overall Win Rate</div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-white">11-10</div>
+                    <div class="text-gray-400 text-sm">Win-Loss Record</div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-400">14.1 pts</div>
+                    <div class="text-gray-400 text-sm">Avg Prediction Error</div>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-gray-700/50 rounded-lg">
+                <p class="text-gray-300">
+                    <strong class="text-white">Key Finding:</strong> The 5-method totals analysis achieves 52.4% accuracy overall,
+                    but performance varies significantly by signal strength. Strong OVER signals hit at <span class="text-green-400 font-bold">75%</span>,
+                    while Moderate UNDER signals hit at <span class="text-green-400 font-bold">100%</span> (small sample).
+                    The method shows a slight UNDER bias with better performance on under plays (57.1% vs 50.0%).
+                </p>
+            </div>
+        </section>
+
+        <!-- Performance by Signal Type -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
+                Performance by Signal Type
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-3 px-4 text-gray-400 font-medium">Signal</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Bets</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Wins</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Losses</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Win %</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-green-400">Strong OVER (>+5 pts)</td>
+                            <td class="py-3 px-4 text-center">4</td>
+                            <td class="py-3 px-4 text-center text-green-400">3</td>
+                            <td class="py-3 px-4 text-center text-red-400">1</td>
+                            <td class="py-3 px-4 text-center font-bold text-green-400">75.0%</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-sm">PROFITABLE</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-emerald-400">Moderate OVER (+2 to +5)</td>
+                            <td class="py-3 px-4 text-center">7</td>
+                            <td class="py-3 px-4 text-center text-green-400">3</td>
+                            <td class="py-3 px-4 text-center text-red-400">4</td>
+                            <td class="py-3 px-4 text-center font-bold text-red-400">42.9%</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-sm">LOSING</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-gray-400">PUSH/No Edge (-2 to +2)</td>
+                            <td class="py-3 px-4 text-center">3</td>
+                            <td class="py-3 px-4 text-center text-green-400">1</td>
+                            <td class="py-3 px-4 text-center text-red-400">2</td>
+                            <td class="py-3 px-4 text-center font-bold text-red-400">33.3%</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-gray-500/20 text-gray-400 text-sm">NO PLAY</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-blue-400">Moderate UNDER (-2 to -5)</td>
+                            <td class="py-3 px-4 text-center">2</td>
+                            <td class="py-3 px-4 text-center text-green-400">2</td>
+                            <td class="py-3 px-4 text-center text-red-400">0</td>
+                            <td class="py-3 px-4 text-center font-bold text-green-400">100.0%</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-sm">PROFITABLE</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium text-purple-400">Strong UNDER (<-5 pts)</td>
+                            <td class="py-3 px-4 text-center">5</td>
+                            <td class="py-3 px-4 text-center text-green-400">2</td>
+                            <td class="py-3 px-4 text-center text-red-400">3</td>
+                            <td class="py-3 px-4 text-center font-bold text-red-400">40.0%</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-sm">LOSING</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Performance by Edge Size -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></span>
+                Performance by Edge Size (Absolute)
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-3 px-4 text-gray-400 font-medium">Edge Bucket</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Bets</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Wins</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Win %</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Avg Edge</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Assessment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-yellow-400">10+ pts edge</td>
+                            <td class="py-3 px-4 text-center">3</td>
+                            <td class="py-3 px-4 text-center text-green-400">2</td>
+                            <td class="py-3 px-4 text-center font-bold text-green-400">66.7%</td>
+                            <td class="py-3 px-4 text-center">14.9</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-sm">HIGH VALUE</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-orange-400">5-10 pts edge</td>
+                            <td class="py-3 px-4 text-center">6</td>
+                            <td class="py-3 px-4 text-center text-green-400">3</td>
+                            <td class="py-3 px-4 text-center font-bold text-yellow-400">50.0%</td>
+                            <td class="py-3 px-4 text-center">7.2</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-yellow-500/20 text-yellow-400 text-sm">BREAKEVEN</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-blue-400">2-5 pts edge</td>
+                            <td class="py-3 px-4 text-center">9</td>
+                            <td class="py-3 px-4 text-center text-green-400">5</td>
+                            <td class="py-3 px-4 text-center font-bold text-green-400">55.6%</td>
+                            <td class="py-3 px-4 text-center">3.8</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-sm">PROFITABLE</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium text-gray-400">0-2 pts (no edge)</td>
+                            <td class="py-3 px-4 text-center">3</td>
+                            <td class="py-3 px-4 text-center text-green-400">1</td>
+                            <td class="py-3 px-4 text-center font-bold text-red-400">33.3%</td>
+                            <td class="py-3 px-4 text-center">0.9</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-sm">AVOID</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- OVER vs UNDER Analysis -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+                OVER vs UNDER Performance
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-green-400 mb-4">OVER Plays</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Total Bets:</span>
+                            <span class="text-white font-bold">14</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Win Rate:</span>
+                            <span class="text-yellow-400 font-bold">50.0%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Avg Margin (Win):</span>
+                            <span class="text-green-400 font-bold">+16.1 pts</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Avg Margin (Loss):</span>
+                            <span class="text-red-400 font-bold">-10.1 pts</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-purple-400 mb-4">UNDER Plays</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Total Bets:</span>
+                            <span class="text-white font-bold">7</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Win Rate:</span>
+                            <span class="text-green-400 font-bold">57.1%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Avg Margin (Win):</span>
+                            <span class="text-green-400 font-bold">-25.0 pts</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Avg Margin (Loss):</span>
+                            <span class="text-red-400 font-bold">+11.5 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/30">
+                <p class="text-blue-300">
+                    <strong>Insight:</strong> UNDER plays show higher win rate (57.1% vs 50.0%) and larger winning margins (-25 pts vs +16 pts).
+                    This suggests the model may be more reliable at identifying over-inflated totals than under-priced games.
+                </p>
+            </div>
+        </section>
+
+        <!-- Method Accuracy Comparison -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-cyan-500 rounded-full mr-3"></span>
+                Individual Method Accuracy
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-3 px-4 text-gray-400 font-medium">Method</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Avg Error (pts)</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Std Deviation</th>
+                            <th class="py-3 px-4 text-gray-400 font-medium text-center">Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700/50 bg-green-500/10">
+                            <td class="py-3 px-4 font-medium text-cyan-400">M5: ORtg/DRtg Efficiency</td>
+                            <td class="py-3 px-4 text-center font-bold text-green-400">13.6</td>
+                            <td class="py-3 px-4 text-center">16.6</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-green-500/30 text-green-400 font-bold">1st</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-blue-400">M3: vs Defense Adjusted</td>
+                            <td class="py-3 px-4 text-center font-bold">13.9</td>
+                            <td class="py-3 px-4 text-center">17.6</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-gray-500/30 text-gray-300">2nd</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-purple-400">M1: Season PPG Average</td>
+                            <td class="py-3 px-4 text-center font-bold">13.9</td>
+                            <td class="py-3 px-4 text-center">17.7</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-gray-500/30 text-gray-300">3rd</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-yellow-400">AVG (5 Methods Combined)</td>
+                            <td class="py-3 px-4 text-center font-bold">14.1</td>
+                            <td class="py-3 px-4 text-center">17.4</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-gray-500/30 text-gray-300">4th</span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50">
+                            <td class="py-3 px-4 font-medium text-orange-400">M2: Location PPG</td>
+                            <td class="py-3 px-4 text-center font-bold">14.5</td>
+                            <td class="py-3 px-4 text-center">18.8</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-gray-500/30 text-gray-300">5th</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium text-red-400">M4: Last 5 Games</td>
+                            <td class="py-3 px-4 text-center font-bold text-red-400">16.0</td>
+                            <td class="py-3 px-4 text-center">19.3</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 rounded bg-red-500/30 text-red-400">6th</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 p-4 bg-cyan-500/10 rounded-lg border border-cyan-500/30">
+                <p class="text-cyan-300">
+                    <strong>Finding:</strong> The ORtg/DRtg Efficiency method (M5) is most accurate with lowest average error (13.6 pts).
+                    The Last 5 Games method (M4) is least reliable (16.0 pts error), suggesting recent form may introduce noise rather than signal.
+                    Interestingly, the 5-method average performs slightly worse than the best individual methods.
+                </p>
+            </div>
+        </section>
+
+        <!-- Game-by-Game Results -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-red-500 rounded-full mr-3"></span>
+                Game-by-Game Results
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-2 px-3 text-gray-400 font-medium">Date</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium">Matchup</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Line</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Expected</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Edge</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Signal</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Actual</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Result</th>
+                            <th class="py-2 px-3 text-gray-400 font-medium text-center">Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Nov 23</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">PHI vs MIA</td>
+                            <td class="py-2 px-3 text-center text-gray-800">240.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">234.3</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-5.7</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Strong U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">244</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Nov 24</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">BKN vs NYK</td>
+                            <td class="py-2 px-3 text-center text-gray-800">227.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">228.7</td>
+                            <td class="py-2 px-3 text-center text-gray-600">+1.2</td>
+                            <td class="py-2 px-3 text-center text-gray-600">PUSH</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">213</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Nov 24</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">TOR vs CLE</td>
+                            <td class="py-2 px-3 text-center text-gray-800">227.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">232.3</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+4.8</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">209</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 24</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">PHX vs HOU</td>
+                            <td class="py-2 px-3 text-center text-gray-800">234.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">230.7</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-3.3</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Mod U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">206</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Nov 26</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">BOS vs DET</td>
+                            <td class="py-2 px-3 text-center text-gray-800">231.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">236.4</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+4.9</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">231</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">PHX vs DEN</td>
+                            <td class="py-2 px-3 text-center text-gray-800">225.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">238.1</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+13.1</td>
+                            <td class="py-2 px-3 text-center text-green-700">Strong O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">242</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">IND vs CHI</td>
+                            <td class="py-2 px-3 text-center text-gray-800">239.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">231.9</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-7.6</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Strong U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">204</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">MIN vs BOS</td>
+                            <td class="py-2 px-3 text-center text-gray-800">226.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">235.8</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+9.8</td>
+                            <td class="py-2 px-3 text-center text-green-700">Strong O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">234</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">CHA vs TOR</td>
+                            <td class="py-2 px-3 text-center text-gray-800">248.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">226.7</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-21.3</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Strong U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">229</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">MIL vs BKN</td>
+                            <td class="py-2 px-3 text-center text-gray-800">232.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">228.5</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-4.0</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Mod U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">215</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Nov 29</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">LAC vs DAL</td>
+                            <td class="py-2 px-3 text-center text-gray-800">225.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">226.3</td>
+                            <td class="py-2 px-3 text-center text-gray-600">+0.8</td>
+                            <td class="py-2 px-3 text-center text-gray-600">PUSH</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">224</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Dec 3</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">NYK vs CHA</td>
+                            <td class="py-2 px-3 text-center text-gray-800">231.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">234.5</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+3.5</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">223</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Dec 7</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">TOR vs BOS</td>
+                            <td class="py-2 px-3 text-center text-gray-800">223.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">229.9</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+6.9</td>
+                            <td class="py-2 px-3 text-center text-green-700">Strong O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">234</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Dec 7</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">NYK vs ORL</td>
+                            <td class="py-2 px-3 text-center text-gray-800">230.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">236.7</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+6.7</td>
+                            <td class="py-2 px-3 text-center text-green-700">Strong O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">206</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">CHA vs CHI</td>
+                            <td class="py-2 px-3 text-center text-gray-800">228.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">229.3</td>
+                            <td class="py-2 px-3 text-center text-gray-600">+0.8</td>
+                            <td class="py-2 px-3 text-center text-gray-600">PUSH</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">255</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">PHI vs IND</td>
+                            <td class="py-2 px-3 text-center text-gray-800">223.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">226.2</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+2.7</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">220</td>
+                            <td class="py-2 px-3 text-center text-gray-800">UNDER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">WAS vs CLE</td>
+                            <td class="py-2 px-3 text-center text-gray-800">241.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">235.0</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-6.5</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Strong U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">256</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 loss">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">MEM vs UTA</td>
+                            <td class="py-2 px-3 text-center text-gray-800">240.0</td>
+                            <td class="py-2 px-3 text-center text-gray-800">229.5</td>
+                            <td class="py-2 px-3 text-center text-purple-700 font-bold">-10.5</td>
+                            <td class="py-2 px-3 text-center text-purple-700">Strong U</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">256</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-red-600 text-white text-xs font-bold">LOSS</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">DAL vs BKN</td>
+                            <td class="py-2 px-3 text-center text-gray-800">221.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">225.2</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+3.7</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">230</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-700/50 win">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">DET vs ATL</td>
+                            <td class="py-2 px-3 text-center text-gray-800">231.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">236.4</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+4.9</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">257</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                        <tr class="win">
+                            <td class="py-2 px-3 text-gray-800">Dec 13</td>
+                            <td class="py-2 px-3 font-medium text-gray-800">GSW vs MIN</td>
+                            <td class="py-2 px-3 text-center text-gray-800">230.5</td>
+                            <td class="py-2 px-3 text-center text-gray-800">232.9</td>
+                            <td class="py-2 px-3 text-center text-green-700 font-bold">+2.4</td>
+                            <td class="py-2 px-3 text-center text-green-700">Mod O</td>
+                            <td class="py-2 px-3 text-center text-gray-800 font-bold">247</td>
+                            <td class="py-2 px-3 text-center text-gray-800">OVER</td>
+                            <td class="py-2 px-3 text-center"><span class="px-2 py-1 rounded bg-green-600 text-white text-xs font-bold">WIN</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Key Insights & Recommendations -->
+        <section class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
+                Key Insights & Recommendations
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-green-400">What Works</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">✓</span>
+                            <span><strong>Strong OVER signals</strong> hit at 75% - focus on games where model expects 5+ pts above line</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">✓</span>
+                            <span><strong>Moderate UNDER signals</strong> hit at 100% (small sample) - under plays more reliable overall</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">✓</span>
+                            <span><strong>2-5 pt edge bucket</strong> is most profitable at 55.6% with high volume (9 bets)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-2">✓</span>
+                            <span><strong>ORtg/DRtg method (M5)</strong> is most accurate individual predictor (13.6 pts avg error)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-red-400">What Doesn't Work</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">✗</span>
+                            <span><strong>Strong UNDER signals</strong> only hit 40% - large negative edges often wrong</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">✗</span>
+                            <span><strong>Moderate OVER signals</strong> hit just 42.9% - below breakeven threshold</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">✗</span>
+                            <span><strong>No edge plays</strong> (0-2 pts) hit 33.3% - correctly identifies when to pass</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">✗</span>
+                            <span><strong>Last 5 Games method (M4)</strong> is least accurate - recent form adds noise</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-amber-500/10 rounded-lg border border-amber-500/30">
+                <h3 class="text-lg font-bold text-amber-400 mb-2">Recommended Strategy Adjustments</h3>
+                <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                    <li><strong>Filter for Strong OVER only:</strong> Skip moderate and push signals for over plays</li>
+                    <li><strong>Trust moderate UNDER:</strong> Under plays with 2-5 pt edge are reliable</li>
+                    <li><strong>Weight M5 higher:</strong> Consider giving ORtg/DRtg method more weight in average</li>
+                    <li><strong>Reduce M4 weight:</strong> Last 5 games introduces volatility without accuracy gains</li>
+                    <li><strong>Sample size caveat:</strong> 21 games is small sample - monitor as data accumulates</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ROI Simulation -->
+        <section class="bg-gray-800 rounded-xl p-6">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <span class="w-3 h-3 bg-pink-500 rounded-full mr-3"></span>
+                ROI Simulation (Flat Betting @ 1.91 odds)
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-white mb-4">All Plays (21 bets)</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Win Rate:</span>
+                            <span class="text-yellow-400">52.4%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Won:</span>
+                            <span class="text-green-400">+10.01</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Lost:</span>
+                            <span class="text-red-400">-10.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-600 pt-2 mt-2">
+                            <span class="text-gray-400">Net ROI:</span>
+                            <span class="text-green-400 font-bold">+0.05%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-white mb-4">Strong Signals Only (9 bets)</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Win Rate:</span>
+                            <span class="text-yellow-400">55.6%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Won:</span>
+                            <span class="text-green-400">+4.55</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Lost:</span>
+                            <span class="text-red-400">-4.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-600 pt-2 mt-2">
+                            <span class="text-gray-400">Net ROI:</span>
+                            <span class="text-green-400 font-bold">+6.1%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-white mb-4">Optimal Filter (StrongO + ModU)</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Bets:</span>
+                            <span>6</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Win Rate:</span>
+                            <span class="text-green-400">83.3%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Won:</span>
+                            <span class="text-green-400">+4.55</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Units Lost:</span>
+                            <span class="text-red-400">-1.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-600 pt-2 mt-2">
+                            <span class="text-gray-400">Net ROI:</span>
+                            <span class="text-green-400 font-bold">+59.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-4 text-gray-400 text-sm text-center">
+                * ROI calculations assume flat 1 unit bets at standard -110 odds (1.91 decimal).
+                Sample size of 21 games is insufficient for statistical significance.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>Generated by Totals Analysis Backtest System | Season 2025-26</p>
+            <p class="mt-1">Data sourced from team_game_stats, betting_events, betting_markets, betting_odds tables</p>
+        </footer>
+    </div>
+</body>
+</html>

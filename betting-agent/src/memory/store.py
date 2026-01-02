@@ -485,6 +485,485 @@ class MemoryStore:
             "total_profit": sum(r["profit"] for r in results if r["profit"]),
         }
 
+    # ==================== PLAYER PROP SETTLEMENT ====================
+
+    def settle_player_prop(
+        self,
+        wager_id: int,
+        actual_stat: float,
+        line: float | None = None,
+        direction: str | None = None,
+    ) -> dict:
+        """
+        Settle a player prop wager.
+
+        Args:
+            wager_id: The wager ID to settle
+            actual_stat: The player's actual stat value
+            line: The prop line (if not stored in wager)
+            direction: 'over' or 'under' (if not stored in selection)
+
+        Returns:
+            dict with settlement result
+        """
+        wager = self.get_wager(wager_id)
+        if not wager:
+            return {"error": f"Wager {wager_id} not found"}
+
+        if wager.get("outcome"):
+            return {"error": f"Wager {wager_id} already settled: {wager['outcome']}"}
+
+        selection = wager.get("selection", "").upper()
+        wager_line = line or wager.get("line", 0)
+
+        # Determine direction from selection if not provided
+        if direction is None:
+            if "OVER" in selection:
+                direction = "over"
+            elif "UNDER" in selection:
+                direction = "under"
+            else:
+                return {"error": f"Cannot determine direction from selection: {selection}"}
+
+        # Determine outcome
+        if direction == "over":
+            if actual_stat > wager_line:
+                outcome = "WIN"
+            elif actual_stat < wager_line:
+                outcome = "LOSS"
+            else:
+                outcome = "PUSH"
+        else:  # under
+            if actual_stat < wager_line:
+                outcome = "WIN"
+            elif actual_stat > wager_line:
+                outcome = "LOSS"
+            else:
+                outcome = "PUSH"
+
+        # Calculate profit (assuming -110 odds = 1.91 decimal)
+        if outcome == "WIN":
+            profit = 0.91  # Standard -110 payout
+        elif outcome == "LOSS":
+            profit = -1.0
+        else:
+            profit = 0.0
+
+        # Settle the wager
+        actual_margin = actual_stat - wager_line
+        self.settle_wager(
+            wager_id=wager_id,
+            outcome=outcome,
+            actual_margin=actual_margin,
+            profit=profit,
+        )
+
+        return {
+            "wager_id": wager_id,
+            "selection": selection,
+            "line": wager_line,
+            "actual_stat": actual_stat,
+            "direction": direction,
+            "outcome": outcome,
+            "profit": profit,
+            "margin": actual_margin,
+        }
+
+    async def auto_settle_player_props(self, db_tool) -> dict:
+        """
+        Auto-settle player prop wagers from game stats.
+
+        Args:
+            db_tool: DatabaseTool instance for PostgreSQL queries
+
+        Returns:
+            dict with settlement summary
+        """
+        unsettled = self.get_unsettled_wagers()
+
+        # Filter to player props only
+        player_prop_wagers = [
+            w for w in unsettled
+            if w.get("bet_type", "").upper() == "PLAYER_PROP"
+        ]
+
+        if not player_prop_wagers:
+            return {
+                "settled_count": 0,
+                "message": "No unsettled player prop wagers found"
+            }
+
+        settled_count = 0
+        wins = 0
+        losses = 0
+        pushes = 0
+        results = []
+        errors = []
+
+        for wager in player_prop_wagers:
+            game_id = wager.get("game_id")
+            selection = wager.get("selection", "")
+            line = wager.get("line", 0)
+
+            if not game_id:
+                errors.append({"wager_id": wager["id"], "error": "No game_id"})
+                continue
+
+            # Parse selection to get player name and stat type
+            # Format expected: "LeBron James OVER 25.5 points" or similar
+            import re
+            match = re.match(
+                r'^(.+?)\s+(OVER|UNDER)\s+([\d.]+)\s+(\w+)',
+                selection,
+                re.IGNORECASE
+            )
+            if not match:
+                errors.append({
+                    "wager_id": wager["id"],
+                    "error": f"Cannot parse selection: {selection}"
+                })
+                continue
+
+            player_name = match.group(1).strip()
+            direction = match.group(2).lower()
+            prop_line = float(match.group(3))
+            stat_type = match.group(4).lower()
+
+            # Map stat type to database column
+            stat_column_map = {
+                "points": "points",
+                "pts": "points",
+                "rebounds": "rebounds",
+                "rebs": "rebounds",
+                "assists": "assists",
+                "asts": "assists",
+                "threes": "fg3_made",
+                "3pm": "fg3_made",
+                "3s": "fg3_made",
+                "steals": "steals",
+                "blocks": "blocks",
+                "turnovers": "turnovers",
+            }
+
+            db_column = stat_column_map.get(stat_type)
+            if not db_column:
+                # Handle combo stats
+                if stat_type in ("pra", "pts+rebs+asts"):
+                    db_column = "points + rebounds + assists"
+                elif stat_type in ("pr", "pts+rebs", "points_rebounds"):
+                    db_column = "points + rebounds"
+                elif stat_type in ("pa", "pts+asts", "points_assists"):
+                    db_column = "points + assists"
+                elif stat_type in ("ra", "rebs+asts", "rebounds_assists"):
+                    db_column = "rebounds + assists"
+                else:
+                    errors.append({
+                        "wager_id": wager["id"],
+                        "error": f"Unknown stat type: {stat_type}"
+                    })
+                    continue
+
+            # Get actual stat from player_game_stats
+            result = await db_tool.execute(f"""
+                SELECT {db_column} as stat_value
+                FROM player_game_stats pgs
+                JOIN players p ON pgs.player_id = p.player_id
+                WHERE pgs.game_id = $1
+                  AND LOWER(p.full_name) LIKE $2
+            """, [game_id, f"%{player_name.lower()}%"])
+
+            if not result.success or not result.data:
+                # Game not finished or player didn't play
+                continue
+
+            actual_stat = result.data[0]["stat_value"]
+            if actual_stat is None:
+                continue
+
+            actual_stat = float(actual_stat)
+
+            # Settle the prop
+            settlement = self.settle_player_prop(
+                wager_id=wager["id"],
+                actual_stat=actual_stat,
+                line=prop_line,
+                direction=direction,
+            )
+
+            if "error" not in settlement:
+                settled_count += 1
+                outcome = settlement["outcome"]
+                if outcome == "WIN":
+                    wins += 1
+                elif outcome == "LOSS":
+                    losses += 1
+                else:
+                    pushes += 1
+
+                results.append({
+                    "wager_id": wager["id"],
+                    "player": player_name,
+                    "stat_type": stat_type,
+                    "line": prop_line,
+                    "actual": actual_stat,
+                    "direction": direction,
+                    "outcome": outcome,
+                    "profit": settlement["profit"],
+                })
+            else:
+                errors.append({
+                    "wager_id": wager["id"],
+                    "error": settlement["error"]
+                })
+
+        return {
+            "settled_count": settled_count,
+            "wins": wins,
+            "losses": losses,
+            "pushes": pushes,
+            "results": results,
+            "errors": errors if errors else None,
+            "total_profit": sum(r["profit"] for r in results if r.get("profit")),
+        }
+
+    def get_player_prop_performance(self) -> dict:
+        """
+        Get performance breakdown for player props by stat type.
+
+        Returns performance by:
+        - Stat type (points, rebounds, assists, etc.)
+        - Direction (over vs under)
+        - Player (if enough samples)
+        """
+        cursor = self.conn.execute(
+            """
+            SELECT
+                CASE
+                    WHEN UPPER(selection) LIKE '%OVER%' THEN 'OVER'
+                    WHEN UPPER(selection) LIKE '%UNDER%' THEN 'UNDER'
+                    ELSE 'UNKNOWN'
+                END as direction,
+                CASE
+                    WHEN LOWER(selection) LIKE '%points%' OR LOWER(selection) LIKE '%pts%' THEN 'points'
+                    WHEN LOWER(selection) LIKE '%rebounds%' OR LOWER(selection) LIKE '%rebs%' THEN 'rebounds'
+                    WHEN LOWER(selection) LIKE '%assists%' OR LOWER(selection) LIKE '%asts%' THEN 'assists'
+                    WHEN LOWER(selection) LIKE '%threes%' OR LOWER(selection) LIKE '%3pm%' THEN '3pm'
+                    WHEN LOWER(selection) LIKE '%pra%' THEN 'pra'
+                    ELSE 'other'
+                END as stat_type,
+                COUNT(*) as total,
+                SUM(CASE WHEN outcome = 'WIN' THEN 1 ELSE 0 END) as wins,
+                SUM(CASE WHEN outcome = 'LOSS' THEN 1 ELSE 0 END) as losses,
+                AVG(confidence) as avg_confidence,
+                AVG(predicted_edge) as avg_edge,
+                SUM(COALESCE(profit, 0)) as total_profit
+            FROM wagers
+            WHERE bet_type = 'PLAYER_PROP'
+              AND outcome IS NOT NULL
+            GROUP BY direction, stat_type
+            ORDER BY total DESC
+            """
+        )
+
+        results = {
+            "by_direction": {"OVER": {}, "UNDER": {}},
+            "by_stat_type": {},
+            "overall": {"total": 0, "wins": 0, "losses": 0, "profit": 0}
+        }
+
+        for row in cursor.fetchall():
+            direction = row["direction"]
+            stat_type = row["stat_type"]
+            total = row["total"]
+            wins = row["wins"] or 0
+            losses = row["losses"] or 0
+
+            stat_data = {
+                "total": total,
+                "wins": wins,
+                "losses": losses,
+                "win_rate": wins / (wins + losses) if (wins + losses) > 0 else 0,
+                "avg_confidence": row["avg_confidence"],
+                "avg_edge": row["avg_edge"],
+                "total_profit": row["total_profit"] or 0,
+            }
+
+            # Add to direction breakdown
+            if direction in results["by_direction"]:
+                results["by_direction"][direction][stat_type] = stat_data
+
+            # Add to stat type breakdown
+            if stat_type not in results["by_stat_type"]:
+                results["by_stat_type"][stat_type] = {
+                    "total": 0, "wins": 0, "losses": 0, "profit": 0
+                }
+            results["by_stat_type"][stat_type]["total"] += total
+            results["by_stat_type"][stat_type]["wins"] += wins
+            results["by_stat_type"][stat_type]["losses"] += losses
+            results["by_stat_type"][stat_type]["profit"] += row["total_profit"] or 0
+
+            # Update overall
+            results["overall"]["total"] += total
+            results["overall"]["wins"] += wins
+            results["overall"]["losses"] += losses
+            results["overall"]["profit"] += row["total_profit"] or 0
+
+        # Calculate win rates for stat types
+        for stat_type, data in results["by_stat_type"].items():
+            if data["wins"] + data["losses"] > 0:
+                data["win_rate"] = data["wins"] / (data["wins"] + data["losses"])
+            else:
+                data["win_rate"] = 0
+
+        # Calculate overall win rate
+        if results["overall"]["wins"] + results["overall"]["losses"] > 0:
+            results["overall"]["win_rate"] = (
+                results["overall"]["wins"] /
+                (results["overall"]["wins"] + results["overall"]["losses"])
+            )
+        else:
+            results["overall"]["win_rate"] = 0
+
+        return results
+
+    def get_direction_performance(self) -> dict:
+        """
+        Get performance breakdown by direction (OVER vs UNDER).
+
+        Critical for calibration - Nov 2025 backtest showed:
+        - OVER: 16.7% win rate (disaster)
+        - UNDER: 62.5% win rate (profitable)
+        """
+        cursor = self.conn.execute(
+            """
+            SELECT
+                CASE
+                    WHEN UPPER(selection) LIKE '%OVER%' THEN 'OVER'
+                    WHEN UPPER(selection) LIKE '%UNDER%' THEN 'UNDER'
+                    ELSE 'OTHER'
+                END as direction,
+                COUNT(*) as total,
+                SUM(CASE WHEN outcome = 'WIN' THEN 1 ELSE 0 END) as wins,
+                SUM(CASE WHEN outcome = 'LOSS' THEN 1 ELSE 0 END) as losses,
+                AVG(confidence) as avg_confidence,
+                AVG(predicted_edge) as avg_edge,
+                SUM(COALESCE(profit, 0)) as total_profit
+            FROM wagers
+            WHERE outcome IS NOT NULL
+            GROUP BY direction
+            """
+        )
+        results = {}
+        for row in cursor.fetchall():
+            direction = row["direction"]
+            total = row["total"]
+            wins = row["wins"] or 0
+            losses = row["losses"] or 0
+            results[direction] = {
+                "total": total,
+                "wins": wins,
+                "losses": losses,
+                "win_rate": wins / (wins + losses) if (wins + losses) > 0 else 0,
+                "avg_confidence": row["avg_confidence"],
+                "avg_edge": row["avg_edge"],
+                "total_profit": row["total_profit"] or 0,
+            }
+        return results
+
+    def get_confidence_vs_outcome(self) -> dict:
+        """
+        Get win rate by confidence bucket to detect inverse correlation.
+
+        Returns buckets: low (<55%), medium (55-70%), high (>70%)
+        """
+        cursor = self.conn.execute(
+            """
+            SELECT
+                CASE
+                    WHEN confidence < 0.55 THEN 'low'
+                    WHEN confidence < 0.70 THEN 'medium'
+                    ELSE 'high'
+                END as conf_bucket,
+                COUNT(*) as total,
+                SUM(CASE WHEN outcome = 'WIN' THEN 1 ELSE 0 END) as wins,
+                SUM(CASE WHEN outcome = 'LOSS' THEN 1 ELSE 0 END) as losses
+            FROM wagers
+            WHERE outcome IS NOT NULL
+            GROUP BY conf_bucket
+            """
+        )
+        results = {}
+        for row in cursor.fetchall():
+            bucket = row["conf_bucket"]
+            total = row["total"]
+            wins = row["wins"] or 0
+            losses = row["losses"] or 0
+            results[bucket] = {
+                "total": total,
+                "wins": wins,
+                "losses": losses,
+                "win_rate": wins / (wins + losses) if (wins + losses) > 0 else 0,
+            }
+        return results
+
+    def get_calibration_adjustments(self) -> dict:
+        """
+        Calculate recommended adjustments based on historical performance.
+
+        Used by judge.py to apply data-driven confidence corrections.
+        """
+        direction_perf = self.get_direction_performance()
+        conf_perf = self.get_confidence_vs_outcome()
+
+        adjustments = {
+            "direction_multipliers": {},
+            "confidence_discounts": {},
+            "recommendations": [],
+        }
+
+        # Direction adjustments
+        over_perf = direction_perf.get("OVER", {})
+        under_perf = direction_perf.get("UNDER", {})
+
+        if over_perf.get("total", 0) >= 5:
+            over_win_rate = over_perf.get("win_rate", 0.5)
+            if over_win_rate < 0.35:
+                adjustments["direction_multipliers"]["OVER"] = 0.5
+                adjustments["recommendations"].append(
+                    f"OVER picks: {over_win_rate:.1%} win rate - apply 50% edge penalty"
+                )
+            elif over_win_rate < 0.45:
+                adjustments["direction_multipliers"]["OVER"] = 0.75
+                adjustments["recommendations"].append(
+                    f"OVER picks: {over_win_rate:.1%} win rate - apply 25% edge penalty"
+                )
+
+        if under_perf.get("total", 0) >= 5:
+            under_win_rate = under_perf.get("win_rate", 0.5)
+            if under_win_rate > 0.55:
+                adjustments["direction_multipliers"]["UNDER"] = 1.15
+                adjustments["recommendations"].append(
+                    f"UNDER picks: {under_win_rate:.1%} win rate - apply 15% edge boost"
+                )
+
+        # Confidence adjustments (detect inverse correlation)
+        high_conf = conf_perf.get("high", {})
+        low_conf = conf_perf.get("low", {})
+
+        if high_conf.get("total", 0) >= 5 and low_conf.get("total", 0) >= 5:
+            high_win = high_conf.get("win_rate", 0.5)
+            low_win = low_conf.get("win_rate", 0.5)
+
+            if high_win < low_win:
+                # Inverse correlation detected!
+                adjustments["confidence_discounts"]["inverse_detected"] = True
+                adjustments["confidence_discounts"]["high_conf_penalty"] = 0.75
+                adjustments["recommendations"].append(
+                    f"INVERSE CORRELATION: High conf {high_win:.1%} < Low conf {low_win:.1%}"
+                )
+
+        return adjustments
+
     def get_performance_summary(self, bet_type: str = None) -> dict:
         """
         Get performance summary, optionally filtered by bet type.

@@ -1,0 +1,33 @@
+{
+  "season": "2023-24",
+  "completed_at": "2025-12-19T02:57:55.822159",
+  "duration_seconds": 22268.927239,
+  "games": {
+    "season": "2023-24",
+    "games_found": 1230,
+    "games_inserted": 1230,
+    "games_updated": 0,
+    "games_skipped": 0,
+    "errors": []
+  },
+  "box_scores": {
+    "season": "2023-24",
+    "games_needing_stats": 1230,
+    "games_processed": 1230,
+    "games_successful": 0,
+    "games_failed": 1230,
+    "total_player_stats": 0,
+    "errors": [
+      "0022300061: column \"updated_at\" of relation \"player_game_stats",
+      "0022300062: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300063: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300064: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300065: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300066: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300067: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300068: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300069: HTTPSConnectionPool(host='stats.nba.com', port=443",
+      "0022300070: HTTPSConnectionPool(host='stats.nba.com', port=443"
+    ]
+  }
+}

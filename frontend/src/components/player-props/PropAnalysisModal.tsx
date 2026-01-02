@@ -109,14 +109,15 @@ export function PropAnalysisModal({ player, onClose }: PropAnalysisModalProps) {
   const maxPointsDefense = defenseStats ? Math.max(defenseStats.max, threshold * 1.2) : 40
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="bg-gray-900 rounded-xl border border-gray-800 w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/80 backdrop-blur-sm md:p-4">
+      {/* Full screen on mobile, centered modal on desktop */}
+      <div className="bg-gray-900 md:rounded-xl border-t md:border border-gray-800 w-full md:max-w-5xl h-[95vh] md:h-auto md:max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-gray-950 px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-3">
-              {player.player_name}
-              <span className={`text-sm px-2 py-0.5 rounded ${
+        <div className="sticky top-0 bg-gray-950 px-4 md:px-6 py-3 md:py-4 border-b border-gray-800 flex items-center justify-between">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 md:gap-3 flex-wrap">
+              <span className="truncate">{player.player_name}</span>
+              <span className={`text-xs md:text-sm px-2 py-0.5 rounded flex-shrink-0 ${
                 player.edge_verdict.includes('OVER') ? 'bg-green-400/20 text-green-400' :
                 player.edge_verdict.includes('UNDER') ? 'bg-red-400/20 text-red-400' :
                 'bg-gray-400/20 text-gray-400'
@@ -124,15 +125,15 @@ export function PropAnalysisModal({ player, onClose }: PropAnalysisModalProps) {
                 {player.edge_verdict.replace('_', ' ')}
               </span>
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs md:text-sm text-gray-500 mt-1">
               {player.team_abbr} {player.position} • {player.is_home ? 'vs' : '@'} {player.opponent_abbr}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white transition-colors"
+            className="p-2 text-gray-400 hover:text-white transition-colors flex-shrink-0 ml-2"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
 
@@ -141,28 +142,28 @@ export function PropAnalysisModal({ player, onClose }: PropAnalysisModalProps) {
             <Loader2 className="w-8 h-8 text-white animate-spin" />
           </div>
         ) : (
-          <div className="p-6 space-y-6">
+          <div className="p-4 md:p-6 space-y-4 md:space-y-6">
             {/* Key Stats Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gray-950 rounded-lg border border-gray-800 p-4 text-center">
-                <div className="text-3xl font-bold text-white font-mono">{player.ppg}</div>
-                <div className="text-xs text-gray-500 mt-1">Season PPG</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+              <div className="bg-gray-950 rounded-lg border border-gray-800 p-3 md:p-4 text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white font-mono">{player.ppg}</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1">Season PPG</div>
               </div>
-              <div className="bg-gray-950 rounded-lg border border-gray-800 p-4 text-center">
-                <div className="text-3xl font-bold text-white font-mono">{player.defense_starter_ppg_allowed.toFixed(1)}</div>
-                <div className="text-xs text-gray-500 mt-1">Starter {player.position} PPG vs {player.opponent_abbr}</div>
+              <div className="bg-gray-950 rounded-lg border border-gray-800 p-3 md:p-4 text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white font-mono">{player.defense_starter_ppg_allowed.toFixed(1)}</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1">{player.position} vs {player.opponent_abbr}</div>
               </div>
-              <div className="bg-gray-950 rounded-lg border border-gray-800 p-4 text-center">
-                <div className={`text-3xl font-bold font-mono ${
+              <div className="bg-gray-950 rounded-lg border border-gray-800 p-3 md:p-4 text-center">
+                <div className={`text-2xl md:text-3xl font-bold font-mono ${
                   player.edge_points > 0 ? 'text-green-400' : player.edge_points < 0 ? 'text-red-400' : 'text-gray-400'
                 }`}>
                   {player.edge_points > 0 ? '+' : ''}{player.edge_points.toFixed(1)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Edge</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1">Edge</div>
               </div>
-              <div className="bg-gray-950 rounded-lg border border-gray-800 p-4 text-center">
-                <div className="text-3xl font-bold text-white font-mono">#{player.defense_rank}</div>
-                <div className="text-xs text-gray-500 mt-1">Defense Rank (Worst)</div>
+              <div className="bg-gray-950 rounded-lg border border-gray-800 p-3 md:p-4 text-center">
+                <div className="text-2xl md:text-3xl font-bold text-white font-mono">#{player.defense_rank}</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1">Def Rank</div>
               </div>
             </div>
 
@@ -330,8 +331,8 @@ export function PropAnalysisModal({ player, onClose }: PropAnalysisModalProps) {
             </div>
 
             {/* Analysis Summary */}
-            <div className="bg-gray-950 rounded-lg border border-gray-800 p-6">
-              <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <div className="bg-gray-950 rounded-lg border border-gray-800 p-4 md:p-6">
+              <h3 className="text-sm font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Analysis Summary
               </h3>

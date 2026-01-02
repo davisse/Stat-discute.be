@@ -1,9 +1,14 @@
-"""Monte Carlo simulation tools for NBA totals betting.
+"""Monte Carlo simulation tools for NBA betting.
 
-Enhanced with data-driven parameters from 2024-25 NBA season analysis:
+Game Totals:
+- Enhanced with data-driven parameters from 2024-25 NBA season analysis
 - Actual score correlation: 0.19 (not 0.5 as commonly assumed)
 - Slight positive skew: 0.19 (more high-scoring games than low)
-- Slight leptokurtosis: 0.19 excess (slightly fatter tails)
+
+Player Props:
+- Poisson distribution for counting stats (3pm, steals, blocks, rebounds, assists)
+- Normal distribution for continuous stats (points, PRA)
+- Minutes variance modeling (DNP risk, blowout benching)
 """
 import numpy as np
 from typing import Optional, Literal
@@ -693,3 +698,390 @@ def monte_carlo_realistic(
         return results["skew"]
     else:
         return results
+
+
+# ============================================================
+# PLAYER PROP SIMULATIONS
+# ============================================================
+
+# Player prop empirical constants
+PLAYER_PROP_EMPIRICAL = {
+    # Minutes distribution parameters
+    "minutes_mean": 32.0,          # Average minutes for starters
+    "minutes_std": 5.0,            # Standard deviation of minutes
+    "dnp_probability": 0.02,       # Chance of DNP (rest, minor injury)
+    "blowout_minutes_cut": 0.08,   # Chance of reduced minutes due to blowout
+
+    # Stat-specific variance multipliers (relative to player's own std)
+    "points_variance_mult": 1.0,   # Points follow normal well
+    "rebounds_variance_mult": 1.1, # Rebounds slightly more variable
+    "assists_variance_mult": 1.2,  # Assists more dependent on game flow
+    "3pm_variance_mult": 1.3,      # 3PM highly variable (streaky)
+
+    # Per-36 rates for typical starters (for sanity checks)
+    "typical_ppg_per36": 18.0,
+    "typical_rpg_per36": 6.5,
+    "typical_apg_per36": 4.0,
+    "typical_3pm_per36": 2.2,
+}
+
+# Stats that should use Poisson (discrete counting stats)
+POISSON_STATS = {"3pm", "fg3_made", "steals", "blocks", "turnovers"}
+
+# Stats that should use normal distribution (continuous or high-count)
+NORMAL_STATS = {"points", "rebounds", "assists", "pra", "points_rebounds",
+                "points_assists", "rebounds_assists"}
+
+
+def monte_carlo_player_prop(
+    projection: float,
+    std_dev: float,
+    line: float,
+    stat_type: str,
+    n_sims: int = 10000,
+    minutes_mean: float = 32.0,
+    minutes_std: float = 5.0,
+    seed: Optional[int] = None,
+) -> dict:
+    """
+    Monte Carlo simulation for player prop betting.
+
+    Distribution Selection:
+    - Poisson: For counting stats (3pm, steals, blocks) - discrete, can't be negative
+    - Normal: For continuous stats (points, PRA) - scaled by minutes variance
+
+    Minutes Variance Model:
+    - 2% chance of DNP (injury/rest) → 0 stat outcome
+    - 8% chance of blowout → reduced minutes (70% of normal)
+    - Otherwise: Normal distribution around expected minutes
+
+    Args:
+        projection: Expected stat value (e.g., player's adjusted average)
+        std_dev: Historical standard deviation of this stat for player
+        line: Betting line to compare against (e.g., 25.5 points)
+        stat_type: Type of stat ('points', 'rebounds', 'assists', '3pm', 'pra', etc.)
+        n_sims: Number of simulations (default 10,000)
+        minutes_mean: Expected minutes (default 32.0)
+        minutes_std: Minutes standard deviation (default 5.0)
+        seed: Random seed for reproducibility
+
+    Returns:
+        dict with probabilities, confidence intervals, percentiles, and edge metrics
+    """
+    if seed is not None:
+        np.random.seed(seed)
+
+    # Ensure valid std_dev (use 20% of projection as floor)
+    std_dev = max(std_dev, projection * 0.15, 1.0)
+
+    # Normalize stat_type
+    stat_type_lower = stat_type.lower().replace(" ", "_")
+
+    # ========================================
+    # MINUTES VARIANCE MODEL
+    # ========================================
+    # Generate minutes distribution with special cases
+
+    # 1. DNP probability (2% chance of 0 minutes)
+    dnp_mask = np.random.random(n_sims) < PLAYER_PROP_EMPIRICAL["dnp_probability"]
+
+    # 2. Blowout probability (8% chance of reduced minutes)
+    blowout_mask = np.random.random(n_sims) < PLAYER_PROP_EMPIRICAL["blowout_minutes_cut"]
+
+    # 3. Generate base minutes (normal distribution)
+    minutes = np.random.normal(minutes_mean, minutes_std, n_sims)
+    minutes = np.maximum(minutes, 0)  # Can't have negative minutes
+
+    # Apply DNP (0 minutes)
+    minutes[dnp_mask] = 0
+
+    # Apply blowout reduction (70% of minutes)
+    minutes[blowout_mask & ~dnp_mask] *= 0.70
+
+    # Cap minutes at 48 (regulation max)
+    minutes = np.minimum(minutes, 48)
+
+    # Calculate minutes factor (ratio of actual to expected)
+    minutes_factor = np.where(minutes_mean > 0, minutes / minutes_mean, 1.0)
+
+    # ========================================
+    # STAT SIMULATION
+    # ========================================
+    if stat_type_lower in POISSON_STATS or stat_type_lower == "fg3_made":
+        # POISSON DISTRIBUTION for counting stats
+        # Rate parameter lambda = projection * (minutes/expected_minutes)
+        # Poisson is discrete and naturally handles low counts
+
+        # Adjust rate by minutes
+        adjusted_rate = projection * minutes_factor
+
+        # Add some extra variance for 3PM (streaky stat)
+        if stat_type_lower in ("3pm", "fg3_made"):
+            # Add overdispersion: use negative binomial approximation
+            # by adding gamma-distributed noise to rate
+            rate_noise = np.random.gamma(10, 0.1, n_sims)  # Slight noise
+            adjusted_rate = adjusted_rate * rate_noise
+
+        # Ensure non-negative rates
+        adjusted_rate = np.maximum(adjusted_rate, 0)
+
+        # Generate Poisson samples
+        # For DNP games, stat is 0
+        stat_values = np.zeros(n_sims)
+        active_mask = minutes > 0
+        stat_values[active_mask] = np.random.poisson(adjusted_rate[active_mask])
+
+    else:
+        # NORMAL DISTRIBUTION for continuous/high-count stats
+        # Scale by minutes and add appropriate variance
+
+        # Adjusted mean based on minutes
+        adjusted_mean = projection * minutes_factor
+
+        # Adjusted std dev (also scales with minutes, but less than linearly)
+        adjusted_std = std_dev * np.sqrt(minutes_factor)
+
+        # Generate normal samples
+        stat_values = np.random.normal(adjusted_mean, adjusted_std)
+
+        # Floor at 0 (can't have negative stats)
+        stat_values = np.maximum(stat_values, 0)
+
+        # DNP games get 0
+        stat_values[dnp_mask] = 0
+
+    # ========================================
+    # CALCULATE PROBABILITIES
+    # ========================================
+    over_count = np.sum(stat_values > line)
+    under_count = np.sum(stat_values < line)
+    push_count = np.sum(stat_values == line)  # Rare for continuous, possible for discrete
+
+    p_over = over_count / n_sims
+    p_under = under_count / n_sims
+    p_push = push_count / n_sims
+
+    # Standard errors for confidence intervals
+    se_over = np.sqrt(p_over * (1 - p_over) / n_sims) if p_over > 0 else 0
+    se_under = np.sqrt(p_under * (1 - p_under) / n_sims) if p_under > 0 else 0
+
+    # Percentiles
+    percentiles = np.percentile(stat_values, [5, 10, 25, 50, 75, 90, 95])
+
+    # ========================================
+    # RESULT COMPILATION
+    # ========================================
+    return {
+        "n_simulations": n_sims,
+        "stat_type": stat_type,
+        "line": line,
+
+        # Core probabilities
+        "p_over": round(p_over, 4),
+        "p_under": round(p_under, 4),
+        "p_push": round(p_push, 4),
+
+        # Standard errors
+        "se_over": round(se_over, 4),
+        "se_under": round(se_under, 4),
+
+        # 95% Confidence intervals
+        "ci_95_over": [
+            round(max(0, p_over - 1.96 * se_over), 4),
+            round(min(1, p_over + 1.96 * se_over), 4)
+        ],
+        "ci_95_under": [
+            round(max(0, p_under - 1.96 * se_under), 4),
+            round(min(1, p_under + 1.96 * se_under), 4)
+        ],
+
+        # Distribution statistics
+        "mean": round(float(np.mean(stat_values)), 2),
+        "median": round(float(np.median(stat_values)), 2),
+        "std": round(float(np.std(stat_values)), 2),
+        "min": round(float(np.min(stat_values)), 2),
+        "max": round(float(np.max(stat_values)), 2),
+
+        # Percentiles
+        "percentiles": {
+            "p5": round(float(percentiles[0]), 2),
+            "p10": round(float(percentiles[1]), 2),
+            "p25": round(float(percentiles[2]), 2),
+            "p50": round(float(percentiles[3]), 2),
+            "p75": round(float(percentiles[4]), 2),
+            "p90": round(float(percentiles[5]), 2),
+            "p95": round(float(percentiles[6]), 2),
+        },
+
+        # Minutes variance info
+        "minutes_model": {
+            "dnp_simulated": int(np.sum(dnp_mask)),
+            "blowout_simulated": int(np.sum(blowout_mask & ~dnp_mask)),
+            "avg_minutes": round(float(np.mean(minutes)), 1),
+            "minutes_mean_input": minutes_mean,
+            "minutes_std_input": minutes_std,
+        },
+
+        # Model info
+        "distribution": "poisson" if stat_type_lower in POISSON_STATS else "normal",
+        "inputs": {
+            "projection": projection,
+            "std_dev": std_dev,
+            "line": line,
+        }
+    }
+
+
+def calculate_player_prop_ev(
+    p_over: float,
+    p_under: float,
+    over_odds: float = 1.87,  # Typical player prop juice
+    under_odds: float = 1.87,
+) -> dict:
+    """
+    Calculate expected value and Kelly criterion for player prop betting.
+
+    Args:
+        p_over: Probability of over hitting (from MC simulation)
+        p_under: Probability of under hitting (from MC simulation)
+        over_odds: Decimal odds for over (default 1.87 = -115)
+        under_odds: Decimal odds for under (default 1.87 = -115)
+
+    Returns:
+        dict with EV, Kelly fractions, edge, and recommendation
+    """
+    # Implied probabilities from odds
+    implied_over = 1 / over_odds
+    implied_under = 1 / under_odds
+
+    # Edge = our probability - implied probability
+    edge_over = p_over - implied_over
+    edge_under = p_under - implied_under
+
+    # Expected Value: EV = P(win) * profit - P(lose) * stake
+    ev_over = p_over * (over_odds - 1) - (1 - p_over)
+    ev_under = p_under * (under_odds - 1) - (1 - p_under)
+
+    # Kelly Criterion: f* = (b*p - q) / b
+    b_over = over_odds - 1
+    b_under = under_odds - 1
+
+    kelly_over_full = (b_over * p_over - (1 - p_over)) / b_over if ev_over > 0 and b_over > 0 else 0
+    kelly_under_full = (b_under * p_under - (1 - p_under)) / b_under if ev_under > 0 and b_under > 0 else 0
+
+    # Fractional Kelly (25% - conservative)
+    kelly_over_frac = max(0, min(kelly_over_full * 0.25, 0.05))
+    kelly_under_frac = max(0, min(kelly_under_full * 0.25, 0.05))
+
+    # Determine recommendation
+    # Player props require higher edge due to lower limits and higher variance
+    if edge_under > 0.04 and edge_under > edge_over:
+        recommendation = "BET_UNDER" if edge_under > 0.07 else "LEAN_UNDER"
+    elif edge_over > 0.04 and edge_over > edge_under:
+        recommendation = "BET_OVER" if edge_over > 0.07 else "LEAN_OVER"
+    else:
+        recommendation = "NO_BET"
+
+    return {
+        "edge_over": round(edge_over, 4),
+        "edge_under": round(edge_under, 4),
+        "ev_over": round(ev_over, 4),
+        "ev_under": round(ev_under, 4),
+        "implied_over": round(implied_over, 4),
+        "implied_under": round(implied_under, 4),
+        "kelly_over_full": round(kelly_over_full, 4),
+        "kelly_under_full": round(kelly_under_full, 4),
+        "kelly_over_fractional": round(kelly_over_frac, 4),
+        "kelly_under_fractional": round(kelly_under_frac, 4),
+        "recommended_bet": recommendation,
+        "best_edge": round(max(edge_over, edge_under), 4),
+        "best_ev": round(max(ev_over, ev_under), 4),
+        "odds_used": {
+            "over": over_odds,
+            "under": under_odds,
+        }
+    }
+
+
+def full_player_prop_analysis(
+    projection: float,
+    std_dev: float,
+    line: float,
+    stat_type: str,
+    direction: str = "over",
+    over_odds: float = 1.87,
+    under_odds: float = 1.87,
+    minutes_mean: float = 32.0,
+    minutes_std: float = 5.0,
+    n_sims: int = 10000,
+) -> dict:
+    """
+    Complete Monte Carlo analysis for a player prop.
+
+    Combines simulation with EV/Kelly calculations.
+
+    Args:
+        projection: Expected stat value (adjusted for matchup)
+        std_dev: Historical standard deviation
+        line: Betting line
+        stat_type: Type of stat ('points', 'rebounds', '3pm', etc.)
+        direction: Betting direction ('over' or 'under')
+        over_odds: Decimal odds for over
+        under_odds: Decimal odds for under
+        minutes_mean: Expected minutes
+        minutes_std: Minutes standard deviation
+        n_sims: Number of simulations
+
+    Returns:
+        Complete analysis dict with simulation results and betting metrics
+    """
+    # Run Monte Carlo simulation
+    mc_result = monte_carlo_player_prop(
+        projection=projection,
+        std_dev=std_dev,
+        line=line,
+        stat_type=stat_type,
+        n_sims=n_sims,
+        minutes_mean=minutes_mean,
+        minutes_std=minutes_std,
+    )
+
+    # Calculate EV metrics
+    ev_metrics = calculate_player_prop_ev(
+        p_over=mc_result["p_over"],
+        p_under=mc_result["p_under"],
+        over_odds=over_odds,
+        under_odds=under_odds,
+    )
+
+    # Determine our position
+    direction_lower = direction.lower()
+    our_prob = mc_result["p_over"] if direction_lower == "over" else mc_result["p_under"]
+    our_edge = ev_metrics["edge_over"] if direction_lower == "over" else ev_metrics["edge_under"]
+    our_ev = ev_metrics["ev_over"] if direction_lower == "over" else ev_metrics["ev_under"]
+    our_kelly = ev_metrics["kelly_over_fractional"] if direction_lower == "over" else ev_metrics["kelly_under_fractional"]
+    our_odds = over_odds if direction_lower == "over" else under_odds
+    implied_prob = 1 / our_odds
+
+    return {
+        "simulation": mc_result,
+        "ev_metrics": ev_metrics,
+        "direction": direction_lower,
+        "line": line,
+        "stat_type": stat_type,
+
+        # Our position summary
+        "our_probability": round(our_prob, 4),
+        "implied_probability": round(implied_prob, 4),
+        "our_edge": round(our_edge, 4),
+        "our_ev": round(our_ev, 4),
+        "our_kelly": round(our_kelly, 4),
+
+        # Quick verdict
+        "verdict": "BET" if our_edge > 0.04 else ("LEAN" if our_edge > 0.02 else "NO_BET"),
+
+        # Projection vs line comparison
+        "projection": projection,
+        "projection_vs_line": round(projection - line, 2),
+        "projection_vs_line_pct": round((projection - line) / line * 100, 1) if line > 0 else 0,
+    }

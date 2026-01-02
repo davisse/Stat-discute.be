@@ -67,6 +67,7 @@ class PinnacleOddsFetcher:
         self.conn = None
         self.events_fetched = 0
         self.markets_stored = 0
+        self.props_stored = 0
         self.errors_count = 0
 
         # Initialize Pinnacle session manager
@@ -161,6 +162,85 @@ class PinnacleOddsFetcher:
         except Exception as e:
             logger.error(f"Error fetching/parsing markets for {event_id}: {e}")
             self.errors_count += 1
+            return None
+
+    def _extract_main_game_total_from_compact(self, event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Extract the main game total line from the compact endpoint data.
+
+        The compact endpoint (events list) includes the main line at markets['0'][1],
+        while the detailed endpoint returns alternative lines at markets['0'][3]
+        but SKIPS ~3 lines around the main line.
+
+        Args:
+            event: Event dict from compact endpoint with 'markets' key
+
+        Returns:
+            Market dict in format expected by store_market_odds, or None
+        """
+        try:
+            markets_data = event.get('markets', {})
+            if not markets_data:
+                return None
+
+            # Get full game markets (key '0')
+            full_game = markets_data.get('0', [])
+            if not full_game or len(full_game) < 2:
+                return None
+
+            # Index 1 contains game totals from compact endpoint
+            # Structure: [[display_line, line_value, over_odds, under_odds, market_id, ...]]
+            game_totals = full_game[1]
+            if not game_totals or not isinstance(game_totals, list):
+                return None
+
+            # Get the first (and usually only) main line
+            if len(game_totals) == 0:
+                return None
+
+            main_line_data = game_totals[0]
+            if not isinstance(main_line_data, list) or len(main_line_data) < 4:
+                return None
+
+            # Parse the line data
+            display_line = str(main_line_data[0])  # e.g., "235.0"
+            line_value = float(main_line_data[1])   # e.g., 235.0
+            over_odds = float(main_line_data[2])    # e.g., "1.917"
+            under_odds = float(main_line_data[3])   # e.g., "1.934"
+
+            # Validate odds
+            if not (1.0 < over_odds < 100.0 and 1.0 < under_odds < 100.0):
+                logger.warning(f"Invalid odds for main game total: over={over_odds}, under={under_odds}")
+                return None
+
+            # Create market dict matching the format expected by store_market_odds
+            market = {
+                'market_key': f"fullgame_game_total_{display_line.replace('.', '_')}",
+                'market_name': f"Full Game Game Total {display_line}",
+                'market_type': 'total',
+                'category': 'Full Game - Game Total',
+                'line': line_value,
+                'odds': [
+                    {
+                        'selection': f"Over {display_line}",
+                        'odds_decimal': over_odds,
+                        'odds_american': decimal_to_american(over_odds),
+                        'handicap': line_value
+                    },
+                    {
+                        'selection': f"Under {display_line}",
+                        'odds_decimal': under_odds,
+                        'odds_american': decimal_to_american(under_odds),
+                        'handicap': line_value
+                    }
+                ]
+            }
+
+            logger.info(f"📌 Extracted MAIN game total from compact endpoint: {display_line} (Over: {over_odds}, Under: {under_odds})")
+            return market
+
+        except (KeyError, IndexError, TypeError, ValueError) as e:
+            logger.debug(f"Could not extract main game total from compact: {e}")
             return None
 
     def match_pinnacle_to_game(self, home_team: str, away_team: str,
@@ -279,12 +359,137 @@ class PinnacleOddsFetcher:
             self.conn.rollback()
             return False
 
-    def store_market_odds(self, event_id: str, markets: List[Dict[str, Any]]) -> int:
+    def store_player_props(self, event_id: str, game_id: str, markets: List[Dict[str, Any]]) -> int:
         """
-        Store market odds in database.
+        Store player props in player_props table.
 
         Args:
             event_id: Pinnacle event ID
+            game_id: Our database game ID
+            markets: List of market dictionaries
+
+        Returns:
+            Number of props stored
+        """
+        # Filter to player props only
+        player_prop_markets = [m for m in markets if 'Player Props' in m.get('category', '')]
+
+        if not player_prop_markets:
+            return 0
+
+        if self.dry_run:
+            logger.info(f"DRY RUN: Would store {len(player_prop_markets)} player props")
+            return len(player_prop_markets)
+
+        # Map Pinnacle unit names to our prop_type (must match check_prop_type constraint)
+        # Allowed: points, rebounds, assists, 3pm, pra, steals, blocks, turnovers,
+        #          double_double, points_rebounds, points_assists, rebounds_assists, steals_blocks
+        unit_to_prop_type = {
+            'Points': 'points',
+            'Rebounds': 'rebounds',
+            'Assists': 'assists',
+            'ThreePointFieldGoals': '3pm',
+            'Steals': 'steals',
+            'Blocks': 'blocks',
+            'PointsReboundsAssists': 'pra',
+            'PointsAssists': 'points_assists',
+            'PointsRebounds': 'points_rebounds',
+            'ReboundsAssists': 'rebounds_assists',
+            'StealsBlocks': 'steals_blocks',
+            'Turnovers': 'turnovers',
+            'DoubleDouble': 'double_double',
+            # Note: TripleDouble not in check constraint, skip these
+        }
+
+        props_stored = 0
+
+        for market in player_prop_markets:
+            try:
+                market_name = market.get('market_name', '')
+                unit = market.get('unit', '')
+                line = market.get('line')
+                odds = market.get('odds', [])
+
+                # Parse player name from market_name: "Aaron Nesmith (3 Point FG)"
+                if '(' in market_name:
+                    player_name = market_name.split('(')[0].strip()
+                else:
+                    player_name = market_name.strip()
+
+                if not player_name or line is None:
+                    continue
+
+                # Map unit to prop_type - skip if not in our allowed list
+                prop_type = unit_to_prop_type.get(unit)
+                if not prop_type:
+                    logger.debug(f"Skipping unknown prop type: {unit} for {player_name}")
+                    continue
+
+                # Extract over/under odds
+                over_odds_decimal = None
+                over_odds_american = None
+                under_odds_decimal = None
+                under_odds_american = None
+
+                for odd in odds:
+                    selection = odd.get('selection', '').lower()
+                    if 'over' in selection:
+                        over_odds_decimal = odd.get('odds_decimal')
+                        over_odds_american = odd.get('odds_american')
+                    elif 'under' in selection:
+                        under_odds_decimal = odd.get('odds_decimal')
+                        under_odds_american = odd.get('odds_american')
+
+                # Insert into player_props
+                query = """
+                    INSERT INTO player_props (
+                        game_id, player_name, bookmaker, prop_type, line,
+                        over_odds_decimal, over_odds_american,
+                        under_odds_decimal, under_odds_american,
+                        external_event_id, is_available, recorded_at
+                    ) VALUES (
+                        %s, %s, 'pinnacle', %s, %s,
+                        %s, %s, %s, %s,
+                        %s, true, NOW()
+                    )
+                    ON CONFLICT (game_id, player_name, bookmaker, prop_type, line, recorded_at)
+                    DO NOTHING
+                """
+
+                with self.conn.cursor() as cur:
+                    cur.execute(query, (
+                        game_id,
+                        player_name,
+                        prop_type,
+                        line,
+                        over_odds_decimal,
+                        over_odds_american,
+                        under_odds_decimal,
+                        under_odds_american,
+                        event_id
+                    ))
+                    props_stored += 1
+
+            except Exception as e:
+                logger.warning(f"Error storing player prop: {e}")
+                self.conn.rollback()  # Rollback to recover from failed transaction
+                continue
+
+        if props_stored > 0:
+            self.conn.commit()
+            logger.info(f"✅ Stored {props_stored} player props for game {game_id}")
+
+        return props_stored
+
+    def store_market_odds(self, event_id: str, game_id: str, game_start_time: datetime,
+                         markets: List[Dict[str, Any]]) -> int:
+        """
+        Store market odds in database with hours_to_game calculation.
+
+        Args:
+            event_id: Pinnacle event ID
+            game_id: Our database game ID
+            game_start_time: Game start time
             markets: List of market dictionaries
 
         Returns:
@@ -297,6 +502,13 @@ class PinnacleOddsFetcher:
             return len(markets)
 
         odds_stored = 0
+
+        # Calculate hours to game
+        now = datetime.now(game_start_time.tzinfo) if game_start_time.tzinfo else datetime.now()
+        hours_to_game = (game_start_time - now).total_seconds() / 3600
+
+        # Determine if this is likely a closing line (within 2 hours of game start)
+        is_closing_line = 0 < hours_to_game <= 2.0
 
         for market in markets:
             try:
@@ -353,9 +565,10 @@ class PinnacleOddsFetcher:
                             INSERT INTO betting_odds (
                                 market_id, selection,
                                 odds_decimal, odds_american,
-                                handicap, recorded_at
+                                handicap, hours_to_game, is_closing_line,
+                                recorded_at
                             ) VALUES (
-                                %s, %s, %s, %s, %s, NOW()
+                                %s, %s, %s, %s, %s, %s, %s, NOW()
                             )
                         """
 
@@ -364,7 +577,9 @@ class PinnacleOddsFetcher:
                             odds['selection'],
                             odds['odds_decimal'],
                             odds.get('odds_american'),
-                            odds.get('handicap')
+                            odds.get('handicap'),
+                            round(hours_to_game, 2),
+                            is_closing_line
                         ))
                         odds_stored += 1
 
@@ -374,6 +589,9 @@ class PinnacleOddsFetcher:
                 logger.error(f"Database error storing market {market['market_key']}: {e}")
                 self.conn.rollback()
                 continue
+
+        if is_closing_line:
+            logger.info(f"🚨 Closing line captured! {hours_to_game:.2f} hours before game")
 
         logger.info(f"✅ Stored {odds_stored} odds records")
         self.markets_stored += odds_stored
@@ -411,6 +629,14 @@ class PinnacleOddsFetcher:
                 if not event_id:
                     continue
 
+                # Skip live games - only fetch pre-match odds
+                event_start_time = event.get('start_time')
+                if event_start_time:
+                    now = datetime.now(event_start_time.tzinfo) if event_start_time.tzinfo else datetime.now()
+                    if event_start_time <= now:
+                        logger.info(f"⏭️  Skipping LIVE game: {event.get('away_team')} @ {event.get('home_team')} (started {event_start_time})")
+                        continue
+
                 self.events_fetched += 1
 
                 # Log event data before matching
@@ -441,7 +667,31 @@ class PinnacleOddsFetcher:
 
                 # Store markets and odds
                 markets = markets_data.get('markets', [])
-                self.store_market_odds(event_id, markets)
+
+                # CRITICAL FIX: Extract main game total from compact endpoint
+                # The detailed endpoint (markets_data) returns alternative lines at [3]
+                # but SKIPS ~3 lines around the main line area.
+                # The compact endpoint (event) has the main line at ['0'][1]
+                main_total = self._extract_main_game_total_from_compact(event)
+                if main_total:
+                    # Check if this line already exists in markets (avoid duplicates)
+                    main_line = main_total['line']
+                    existing_lines = [m.get('line') for m in markets
+                                      if m.get('market_type') == 'total' and 'Game Total' in m.get('category', '')]
+                    if main_line not in existing_lines:
+                        markets.append(main_total)
+                        logger.info(f"✅ Injected main game total line {main_line} into markets")
+                    else:
+                        logger.debug(f"Main game total line {main_line} already exists in markets")
+
+                self.store_market_odds(event_id, game_id, event.get('start_time'), markets)
+
+                # Store player props in player_props table
+                if game_id:
+                    props_count = self.store_player_props(event_id, game_id, markets)
+                    self.props_stored += props_count
+                    if props_count > 0:
+                        logger.info(f"   ✅ Stored {props_count} player props")
 
                 # Log summary for this event
                 summary = markets_data.get('summary', {})
@@ -462,6 +712,7 @@ class PinnacleOddsFetcher:
             logger.info(f"📈 Scraping Summary:")
             logger.info(f"   - Events fetched: {self.events_fetched}")
             logger.info(f"   - Markets stored: {self.markets_stored}")
+            logger.info(f"   - Player props stored: {self.props_stored}")
             logger.info(f"   - Errors encountered: {self.errors_count}")
             logger.info(f"{'='*60}")
 

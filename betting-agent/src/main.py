@@ -2,15 +2,29 @@
 NBA Expert Bettor Agent - Main Entry Point
 
 Usage:
+    # Game Analysis (spreads and totals)
     python -m src.main analyze "Lakers vs Heat"
     python -m src.main analyze "Should I bet Celtics -5?" --depth deep
-    python -m src.main bet "Lakers -5 vs Celtics"  # Alias for analyze
+    python -m src.main bet "Lakers -5 vs Celtics"
+    python -m src.main analyze "over 220 Lakers Heat"
+
+    # Player Props
+    python -m src.main analyze "LeBron over 25.5 points"
+    python -m src.main analyze "Curry under 4.5 threes"
+    python -m src.main analyze "Jokic over 45.5 PRA"
+    python -m src.main analyze "Tatum over 8.5 rebounds"
+
+    # Dashboard & Reports
     python -m src.main dashboard                    # Show calibration dashboard
     python -m src.main calibration                  # Calibration report
     python -m src.main post-mortem                  # Run nightly analysis
     python -m src.main history                      # Recent wagers
-    python -m src.main settle-all                   # Auto-settle from game results
     python -m src.main performance                  # Show performance summary
+    python -m src.main prop-performance             # Player prop specific stats
+
+    # Settlement
+    python -m src.main settle-all                   # Auto-settle from game results
+    python -m src.main settle-props                 # Auto-settle player props
 """
 import argparse
 import asyncio
@@ -28,10 +42,20 @@ def parse_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
+  # Game bets (spreads, totals)
   python -m src.main analyze "Lakers vs Celtics"
   python -m src.main bet "Lakers -5 vs Celtics" --depth deep
+  python -m src.main analyze "over 220.5 Lakers Heat"
+
+  # Player props
+  python -m src.main analyze "LeBron over 25.5 points"
+  python -m src.main analyze "Curry under 4.5 threes"
+  python -m src.main analyze "Jokic over 45.5 PRA"
+  python -m src.main analyze "Tatum over 32.5 pts+rebs"
+
+  # Reports
   python -m src.main dashboard
-  python -m src.main calibration
+  python -m src.main prop-performance
   python -m src.main history --limit 10
         """
     )
@@ -97,6 +121,12 @@ Examples:
 
     # Performance summary
     subparsers.add_parser("performance", help="Show performance summary")
+
+    # Settle player props
+    subparsers.add_parser("settle-props", help="Auto-settle player prop wagers from game stats")
+
+    # Player prop performance
+    subparsers.add_parser("prop-performance", help="Show player prop performance breakdown")
 
     return parser.parse_args()
 
@@ -427,6 +457,99 @@ async def run_settle_all(args):
     print(f"Total: {result['wins']}W - {result['losses']}L - {result['pushes']}P | Profit: {result['total_profit']:+.2f} units")
 
 
+async def run_settle_props(args=None):
+    """Auto-settle player prop wagers from game stats"""
+    from src.memory import get_memory_store
+    from src.tools.db_tool import get_db
+
+    store = get_memory_store()
+    db = await get_db()
+
+    print("🎯 Auto-settling player prop wagers...")
+    print("-" * 60)
+
+    result = await store.auto_settle_player_props(db)
+
+    if result.get("message"):
+        print(result["message"])
+        return
+
+    if result["settled_count"] == 0:
+        print("⚠️  No player props could be settled (games may not be finished yet)")
+        return
+
+    # Show results
+    print("Settlement Results:")
+    print("-" * 60)
+    print(f"{'Player':<20} {'Stat':<10} {'Line':>6} {'Actual':>8} {'Result':>8} {'P&L':>8}")
+    print("-" * 60)
+
+    for r in result["results"]:
+        player = r["player"][:18]
+        stat_type = r["stat_type"][:8]
+        line = r["line"]
+        actual = r["actual"]
+        outcome = r["outcome"]
+        profit = r["profit"]
+
+        outcome_symbol = {"WIN": "✅", "LOSS": "❌", "PUSH": "➖"}.get(outcome, "?")
+        print(f"{player:<20} {stat_type:<10} {line:>6.1f} {actual:>8.1f} {outcome_symbol} {outcome:<5} {profit:>+7.2f}")
+
+    print("-" * 60)
+    print(f"Total: {result['wins']}W - {result['losses']}L - {result['pushes']}P | Profit: {result['total_profit']:+.2f} units")
+
+    if result.get("errors"):
+        print(f"\n⚠️  {len(result['errors'])} wagers could not be settled (parsing errors)")
+
+
+def run_prop_performance(args=None):
+    """Show player prop performance breakdown"""
+    from src.memory import get_memory_store
+
+    store = get_memory_store()
+
+    print("🎯 Player Prop Performance")
+    print("=" * 60)
+
+    perf = store.get_player_prop_performance()
+
+    overall = perf.get("overall", {})
+    if overall.get("total", 0) == 0:
+        print("No settled player prop bets found yet.")
+        return
+
+    # Overall
+    print("\n📈 Overall Player Props:")
+    print(f"  Total Bets:  {overall['total']}")
+    print(f"  Record:      {overall['wins']}W - {overall['losses']}L")
+    print(f"  Win Rate:    {overall['win_rate']*100:.1f}%")
+    print(f"  Total P&L:   {overall['profit']:+.2f} units")
+
+    # By Direction
+    print("\n📊 By Direction:")
+    for direction in ["OVER", "UNDER"]:
+        dir_data = perf.get("by_direction", {}).get(direction, {})
+        if dir_data:
+            total_wins = sum(s.get("wins", 0) for s in dir_data.values())
+            total_losses = sum(s.get("losses", 0) for s in dir_data.values())
+            total = total_wins + total_losses
+            if total > 0:
+                win_rate = total_wins / total
+                profit = sum(s.get("total_profit", 0) for s in dir_data.values())
+                print(f"\n  {direction}:")
+                print(f"    Record:   {total_wins}W - {total_losses}L ({win_rate*100:.1f}%)")
+                print(f"    P&L:      {profit:+.2f} units")
+
+    # By Stat Type
+    print("\n📊 By Stat Type:")
+    for stat_type, data in sorted(perf.get("by_stat_type", {}).items(), key=lambda x: -x[1].get("total", 0)):
+        if data.get("total", 0) > 0:
+            print(f"\n  {stat_type.upper()}:")
+            print(f"    Bets:     {data['total']}")
+            print(f"    Record:   {data['wins']}W - {data['losses']}L ({data['win_rate']*100:.1f}%)")
+            print(f"    P&L:      {data['profit']:+.2f} units")
+
+
 def run_performance(args=None):
     """Show performance summary"""
     from src.memory import get_memory_store
@@ -494,27 +617,44 @@ async def main_async():
     elif args.command == "performance":
         run_performance(args)
 
+    elif args.command == "settle-props":
+        await run_settle_props(args)
+
+    elif args.command == "prop-performance":
+        run_prop_performance(args)
+
     else:
         print("NBA Expert Bettor Agent - System 2 Architecture")
-        print("=" * 50)
+        print("=" * 60)
         print()
         print("Usage: python -m src.main <command> [options]")
         print()
         print("Commands:")
-        print("  analyze     Analyze a betting opportunity")
-        print("  bet         Alias for analyze")
-        print("  dashboard   Show calibration dashboard")
-        print("  calibration Generate calibration report")
-        print("  post-mortem Run nightly post-mortem analysis")
-        print("  history     Show recent wagers")
-        print("  settle      Manually settle a wager")
-        print("  settle-all  Auto-settle wagers from game results")
-        print("  performance Show performance summary")
+        print("  analyze         Analyze a betting opportunity")
+        print("  bet             Alias for analyze")
+        print("  dashboard       Show calibration dashboard")
+        print("  calibration     Generate calibration report")
+        print("  post-mortem     Run nightly post-mortem analysis")
+        print("  history         Show recent wagers")
+        print("  settle          Manually settle a wager")
+        print("  settle-all      Auto-settle game wagers from results")
+        print("  settle-props    Auto-settle player prop wagers")
+        print("  performance     Show performance summary")
+        print("  prop-performance Show player prop performance breakdown")
         print()
         print("Examples:")
+        print("  # Game bets")
         print("  python -m src.main bet 'Lakers -5 vs Celtics'")
+        print("  python -m src.main analyze 'over 220.5 Lakers Heat'")
+        print()
+        print("  # Player props")
+        print("  python -m src.main analyze 'LeBron over 25.5 points'")
+        print("  python -m src.main analyze 'Curry under 4.5 threes'")
+        print("  python -m src.main analyze 'Jokic over 45.5 PRA'")
+        print()
+        print("  # Reports")
         print("  python -m src.main dashboard --refresh 30")
-        print("  python -m src.main history --unsettled")
+        print("  python -m src.main prop-performance")
         sys.exit(1)
 
 

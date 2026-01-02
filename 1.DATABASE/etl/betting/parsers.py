@@ -113,9 +113,9 @@ class PinnacleMarketParser:
 
         try:
             event_id = str(self.event_data[0]) if len(self.event_data) > 0 else ''
-            # e[3][1] is home team, e[3][2] is away team
-            home_team = str(self.event_data[1]) if len(self.event_data) > 1 else 'Unknown'
-            away_team = str(self.event_data[2]) if len(self.event_data) > 2 else 'Unknown'
+            # e[3][1] is AWAY team, e[3][2] is HOME team (per Pinnacle API structure)
+            away_team = str(self.event_data[1]) if len(self.event_data) > 1 else 'Unknown'
+            home_team = str(self.event_data[2]) if len(self.event_data) > 2 else 'Unknown'
             start_time_ms = self.event_data[4] if len(self.event_data) > 4 else 0
 
             start_time = datetime.fromtimestamp(start_time_ms / 1000) if start_time_ms else None
@@ -219,12 +219,12 @@ class PinnacleMarketParser:
                     continue
 
                 try:
-                    # Array order is [away_handicap, home_handicap, display, away_odds, home_odds]
-                    away_handicap = float(line_data[0])  # e.g., 13.5
-                    home_handicap = float(line_data[1])  # e.g., -13.5
+                    # Array order is [home_handicap, away_handicap, display, home_odds, away_odds] - CORRECTED
+                    home_handicap = float(line_data[0])  # e.g., -13.5 (home team)
+                    away_handicap = float(line_data[1])  # e.g., 13.5 (away team)
                     display_line = str(line_data[2])      # e.g., "13.5"
-                    away_odds = float(line_data[3])      # e.g., "2.420"
-                    home_odds = float(line_data[4])      # e.g., "1.613"
+                    home_odds = float(line_data[3])      # e.g., "1.613" (home team)
+                    away_odds = float(line_data[4])      # e.g., "2.420" (away team)
 
                     # Assign to teams: team1=home gets [1] and [4], team2=away gets [0] and [3]
                     team1_handicap = home_handicap  # home team gets home handicap
@@ -435,9 +435,9 @@ class PinnacleMarketParser:
             if not isinstance(moneyline_array, list) or len(moneyline_array) < 2:
                 return markets
 
-            # Array order is [away_odds, home_odds]
-            away_odds_str = moneyline_array[0]
-            home_odds_str = moneyline_array[1]
+            # Array order is [home_odds, away_odds] - CORRECTED
+            home_odds_str = moneyline_array[0]
+            away_odds_str = moneyline_array[1]
 
             if not away_odds_str or not home_odds_str:
                 return markets
@@ -722,12 +722,13 @@ def extract_all_nba_games(raw_data: Dict[str, Any]) -> List[Dict[str, Any]]:
                     if isinstance(game_list, list):
                         for game_data in game_list:
                             if isinstance(game_data, list) and len(game_data) > 4:
+                                # Index [1] is AWAY team, [2] is HOME team (per Pinnacle API structure)
                                 game_info = {
                                     'event_id': str(game_data[0]) if len(game_data) > 0 else '',
-                                    'home_team': game_data[1] if len(game_data) > 1 else 'Unknown',
-                                    'away_team': game_data[2] if len(game_data) > 2 else 'Unknown',
+                                    'away_team': game_data[1] if len(game_data) > 1 else 'Unknown',
+                                    'home_team': game_data[2] if len(game_data) > 2 else 'Unknown',
                                     'start_time': datetime.fromtimestamp(game_data[4] / 1000) if len(game_data) > 4 and game_data[4] else None,
-                                    'game_name': f"{game_data[2]} @ {game_data[1]}" if len(game_data) > 2 else 'Unknown',
+                                    'game_name': f"{game_data[1]} @ {game_data[2]}" if len(game_data) > 2 else 'Unknown',
                                     'raw_data': game_data  # Keep raw data for detailed parsing
                                 }
                                 games.append(game_info)
@@ -822,14 +823,15 @@ def extract_all_nba_games_compact(raw_data: Dict[str, Any]) -> List[Dict[str, An
                         continue
 
                     try:
+                        # Index [1] is AWAY team, [2] is HOME team (per Pinnacle API structure)
                         game_info = {
                             'event_id': str(event_data[0]),
-                            'home_team': event_data[1],
-                            'away_team': event_data[2],
+                            'away_team': event_data[1],
+                            'home_team': event_data[2],
                             'num_markets': event_data[3],
                             'start_time': datetime.fromtimestamp(event_data[4] / 1000),
                             'markets': event_data[8],  # Full markets object
-                            'game_name': f"{event_data[2]} @ {event_data[1]}",
+                            'game_name': f"{event_data[1]} @ {event_data[2]}",
                             'raw_data': event_data  # Keep raw data for detailed parsing
                         }
                         games.append(game_info)

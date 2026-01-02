@@ -215,6 +215,110 @@ class BullAgent:
                         "evidence": "Strong defenses correlate with lower-scoring games"
                     })
 
+        # ============ PLAYER PROP-SPECIFIC ARGUMENTS ============
+        if bet_type == "player_prop":
+            player_data = game_data.get("player", {})
+            player_name = player_data.get("full_name", "Player")
+            stat_type = game_data.get("stat_type", "points")
+            direction = game_data.get("direction", "over")
+            prop_line = game_data.get("line")
+
+            # Get player averages
+            season_avg = player_data.get("season_averages", {})
+            l5_avg = player_data.get("last_5_averages", {})
+            l10_avg = player_data.get("recent_games_avg", {})
+
+            # Argument P1: Projection vs Line
+            projection = quant_result.get("projection")
+            if projection is not None and prop_line is not None:
+                margin = projection - float(prop_line)
+                if direction == "under":
+                    margin = -margin
+
+                if margin > 0:
+                    arguments.append({
+                        "type": "prop_projection",
+                        "strength": min(abs(margin) / 5, 1.0),
+                        "text": f"Projection ({projection:.1f}) {'exceeds' if direction == 'over' else 'is below'} line ({prop_line}) by {abs(margin):.1f}.",
+                        "evidence": f"Based on weighted L5/L10/Season averages with opponent adjustment"
+                    })
+
+            # Argument P2: Hot Streak (L5 > Season)
+            stat_key = stat_type if stat_type in season_avg else "points"
+            l5_val = l5_avg.get(stat_key, 0)
+            season_val = season_avg.get(stat_key, 0)
+
+            if l5_val and season_val:
+                l5_val = float(l5_val)
+                season_val = float(season_val)
+                if direction == "over" and l5_val > season_val * 1.1:
+                    arguments.append({
+                        "type": "hot_streak",
+                        "strength": min((l5_val - season_val) / season_val * 2, 0.9),
+                        "text": f"{player_name} is hot: L5 avg ({l5_val:.1f}) exceeds season avg ({season_val:.1f}).",
+                        "evidence": f"Recent form suggests {stat_type} production trending up"
+                    })
+                elif direction == "under" and l5_val < season_val * 0.9:
+                    arguments.append({
+                        "type": "cold_streak",
+                        "strength": min((season_val - l5_val) / season_val * 2, 0.9),
+                        "text": f"{player_name} is cold: L5 avg ({l5_val:.1f}) below season avg ({season_val:.1f}).",
+                        "evidence": f"Recent slump suggests {stat_type} production trending down"
+                    })
+
+            # Argument P3: Favorable Defensive Matchup
+            opp_defense = game_data.get("opponent_defense", {})
+            def_factor = opp_defense.get("factor", 1.0)
+            if direction == "over" and def_factor > 1.05:
+                arguments.append({
+                    "type": "matchup_favorable",
+                    "strength": min((def_factor - 1.0) * 5, 0.85),
+                    "text": f"Favorable matchup: opponent allows {((def_factor - 1) * 100):.0f}% more {stat_type} than average.",
+                    "evidence": "Opponent defensive weakness creates scoring opportunity"
+                })
+            elif direction == "under" and def_factor < 0.95:
+                arguments.append({
+                    "type": "matchup_favorable",
+                    "strength": min((1.0 - def_factor) * 5, 0.85),
+                    "text": f"Tough matchup: opponent allows {((1 - def_factor) * 100):.0f}% fewer {stat_type} than average.",
+                    "evidence": "Elite defender limits production in this matchup"
+                })
+
+            # Argument P4: Minutes Stability
+            minutes_data = player_data.get("minutes_data", {})
+            avg_mins = minutes_data.get("avg_minutes", 0)
+            if avg_mins and float(avg_mins) >= 32:
+                arguments.append({
+                    "type": "minutes_secure",
+                    "strength": 0.65,
+                    "text": f"{player_name} averaging {float(avg_mins):.1f} minutes - secure role in rotation.",
+                    "evidence": "High minutes = more opportunity for production"
+                })
+
+            # Argument P5: Monte Carlo Confidence
+            mc_result = quant_result.get("mc_result", {})
+            p_over = mc_result.get("p_over", 0.5)
+            p_under = mc_result.get("p_under", 0.5)
+            prob = p_over if direction == "over" else p_under
+
+            if prob > 0.55:
+                arguments.append({
+                    "type": "simulation",
+                    "strength": (prob - 0.5) * 2,
+                    "text": f"Monte Carlo simulation: {prob * 100:.0f}% probability of hitting {direction.upper()}.",
+                    "evidence": f"Based on {mc_result.get('n_sims', 10000)} simulations with variance modeling"
+                })
+
+            # Argument P6: Home Game Boost
+            is_home = game_data.get("is_home", False)
+            if is_home and direction == "over":
+                arguments.append({
+                    "type": "home_boost",
+                    "strength": 0.55,
+                    "text": f"{player_name} plays at home - slight statistical boost expected.",
+                    "evidence": "Home players average ~2-3% better statistical production"
+                })
+
         # Sort by strength and take top 5
         arguments.sort(key=lambda x: x["strength"], reverse=True)
         return arguments[:5]
@@ -430,6 +534,114 @@ class BearAgent:
                 "evidence": "PPG can swing 10+ points based on opponent schedule"
             })
 
+        # ============ PLAYER PROP-SPECIFIC COUNTER-ARGUMENTS ============
+        if bet_type == "player_prop":
+            player_data = game_data.get("player", {})
+            player_name = player_data.get("full_name", "Player")
+            stat_type = game_data.get("stat_type", "points")
+            direction = game_data.get("direction", "over")
+            prop_line = game_data.get("line")
+
+            # Counter P1: Minutes Variance Risk
+            arguments.append({
+                "type": "minutes_variance",
+                "strength": 0.75,
+                "text": f"Minutes variance is the #1 risk: DNP, injury, blowout benching all derail props.",
+                "evidence": "~10% of games see unexpected minutes reduction (injury, foul trouble, blowout)"
+            })
+
+            # Counter P2: Regression to Mean
+            season_avg = player_data.get("season_averages", {})
+            l5_avg = player_data.get("last_5_averages", {})
+            stat_key = stat_type if stat_type in season_avg else "points"
+            l5_val = l5_avg.get(stat_key, 0)
+            season_val = season_avg.get(stat_key, 0)
+
+            if l5_val and season_val:
+                l5_val = float(l5_val)
+                season_val = float(season_val)
+                if direction == "over" and l5_val > season_val * 1.05:
+                    arguments.append({
+                        "type": "regression",
+                        "strength": 0.7,
+                        "text": f"{player_name}'s recent L5 ({l5_val:.1f}) is above season average ({season_val:.1f}) - regression likely.",
+                        "evidence": "Hot streaks are poor predictors; mean reversion is strong in player stats"
+                    })
+                elif direction == "under" and l5_val < season_val * 0.95:
+                    arguments.append({
+                        "type": "regression",
+                        "strength": 0.7,
+                        "text": f"{player_name}'s recent L5 ({l5_val:.1f}) is below season average ({season_val:.1f}) - bounce back possible.",
+                        "evidence": "Cold streaks often end suddenly; betting on continued slump is risky"
+                    })
+
+            # Counter P3: Tough/Favorable Matchup (opposite of direction)
+            opp_defense = game_data.get("opponent_defense", {})
+            def_factor = opp_defense.get("factor", 1.0)
+            if direction == "over" and def_factor < 0.97:
+                arguments.append({
+                    "type": "matchup_tough",
+                    "strength": min((1.0 - def_factor) * 5, 0.8),
+                    "text": f"Tough matchup: opponent allows {((1 - def_factor) * 100):.0f}% fewer {stat_type} than average.",
+                    "evidence": "Elite defense limits production opportunities"
+                })
+            elif direction == "under" and def_factor > 1.03:
+                arguments.append({
+                    "type": "matchup_weak",
+                    "strength": min((def_factor - 1.0) * 5, 0.8),
+                    "text": f"Weak defense: opponent allows {((def_factor - 1) * 100):.0f}% more {stat_type} - upside exists.",
+                    "evidence": "Poor defense creates scoring opportunities that may exceed projection"
+                })
+
+            # Counter P4: Small Sample Size for Player Stats
+            arguments.append({
+                "type": "prop_sample_size",
+                "strength": 0.65,
+                "text": "Player prop projections rely on L5/L10 data - high variance in small samples.",
+                "evidence": "Individual player stats are MORE volatile than team stats; need 20+ games for reliable patterns"
+            })
+
+            # Counter P5: Line Already Efficient
+            if prop_line is not None:
+                arguments.append({
+                    "type": "market_efficiency",
+                    "strength": 0.6,
+                    "text": f"Prop markets are sharp; {prop_line} line likely accounts for most factors.",
+                    "evidence": "Vegas limits props quickly on sharp action - inefficiencies are rare"
+                })
+
+            # Counter P6: Game Script Risk
+            if direction == "over":
+                arguments.append({
+                    "type": "game_script",
+                    "strength": 0.55,
+                    "text": "Blowout risk: if team gets big lead or trails badly, star minutes get cut.",
+                    "evidence": "~15% of games are blowouts where starters play <28 minutes"
+                })
+            else:
+                arguments.append({
+                    "type": "game_script",
+                    "strength": 0.55,
+                    "text": "Close game risk: overtime or extended minutes in close games inflate stats.",
+                    "evidence": "~8% of games go to OT or have star playing 40+ minutes"
+                })
+
+            # Counter P7: Back-to-Back Impact on Props
+            news_data = state.get("news_data", [])
+            fatigue_items = [n for n in news_data if n.get("category") == "fatigue"]
+            team1_name = game_data.get("team1", {}).get("abbreviation", "")
+            player_team = player_data.get("team_abbreviation", team1_name)
+
+            for item in fatigue_items[:1]:
+                if player_team and player_team in item.get("headline", ""):
+                    arguments.append({
+                        "type": "prop_b2b",
+                        "strength": 0.8,
+                        "text": f"{player_name}'s team on B2B - expect ~5% reduction in statistical output.",
+                        "evidence": "Back-to-back games historically reduce individual stats 3-7%"
+                    })
+                    break
+
         # Counter-Argument 8: Against Bull's Strongest Point
         if bull_arguments:
             strongest_bull = bull_arguments[0]
@@ -555,6 +767,21 @@ class DebateRoomNode:
                 bull_points.append(f"favorable pace")
             elif arg["type"] == "defense":
                 bull_points.append(f"defensive matchup advantage")
+            # Player prop-specific Bull points
+            elif arg["type"] == "prop_projection":
+                bull_points.append(f"projection exceeds line")
+            elif arg["type"] == "hot_streak":
+                bull_points.append(f"recent hot streak")
+            elif arg["type"] == "cold_streak":
+                bull_points.append(f"recent cold streak supports under")
+            elif arg["type"] == "matchup_favorable":
+                bull_points.append(f"favorable defensive matchup")
+            elif arg["type"] == "minutes_secure":
+                bull_points.append(f"secure minutes role")
+            elif arg["type"] == "simulation":
+                bull_points.append(f"strong Monte Carlo probability")
+            elif arg["type"] == "home_boost":
+                bull_points.append(f"home game statistical boost")
 
         # Build Bear summary
         bear_points = []
@@ -592,6 +819,23 @@ class DebateRoomNode:
                 bear_points.append(f"close game risk")
             elif arg["type"] == "totals_sample":
                 bear_points.append(f"volatile PPG averages")
+            # Player prop-specific Bear points
+            elif arg["type"] == "minutes_variance":
+                bear_points.append(f"minutes variance risk")
+            elif arg["type"] == "regression":
+                bear_points.append(f"regression to mean")
+            elif arg["type"] == "matchup_tough":
+                bear_points.append(f"tough defensive matchup")
+            elif arg["type"] == "matchup_weak":
+                bear_points.append(f"weak defense upside risk")
+            elif arg["type"] == "prop_sample_size":
+                bear_points.append(f"small sample size")
+            elif arg["type"] == "market_efficiency":
+                bear_points.append(f"efficient prop market")
+            elif arg["type"] == "game_script":
+                bear_points.append(f"game script risk")
+            elif arg["type"] == "prop_b2b":
+                bear_points.append(f"back-to-back fatigue")
 
         # Generate verdict text
         if winner == "BULL":

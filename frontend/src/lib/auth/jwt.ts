@@ -2,16 +2,17 @@ import * as jose from 'jose'
 import type { CryptoKey } from 'jose'
 
 // Token configuration constants
+// DEV: Extended durations for development convenience
 export const ACCESS_TOKEN_CONFIG = {
   algorithm: 'EdDSA' as const,
-  expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN || '15m',
+  expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN || '30d', // DEV: 30 days instead of 15m
   issuer: process.env.JWT_ISSUER || 'stat-discute.be',
   audience: process.env.JWT_AUDIENCE || 'stat-discute-api'
 } as const
 
 export const REFRESH_TOKEN_CONFIG = {
   algorithm: 'EdDSA' as const,
-  expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '7d',
+  expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '90d', // DEV: 90 days instead of 7d
   issuer: process.env.JWT_ISSUER || 'stat-discute.be',
   audience: 'stat-discute-refresh'
 } as const

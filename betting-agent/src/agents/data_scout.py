@@ -150,16 +150,59 @@ class DataScoutNode:
                     result["bet_type"] = "spread"
 
         # Detect player prop (takes priority if stat keyword found)
-        prop_stats = ["points", "rebounds", "assists", "steals", "blocks", "threes", "3s"]
-        for stat in prop_stats:
-            if stat in query_lower:
-                # Check if it's a player prop (has over/under with small number)
+        # Extended list includes combo stats and alternative names
+        prop_stats_map = {
+            "points": "points",
+            "pts": "points",
+            "rebounds": "rebounds",
+            "rebs": "rebounds",
+            "assists": "assists",
+            "asts": "assists",
+            "steals": "steals",
+            "blocks": "blocks",
+            "threes": "3pm",
+            "3s": "3pm",
+            "3pm": "3pm",
+            "three pointers": "3pm",
+            "turnovers": "turnovers",
+            "pra": "pra",
+            "pts+rebs+asts": "pra",
+            "pr": "points_rebounds",
+            "pts+rebs": "points_rebounds",
+            "pa": "points_assists",
+            "pts+asts": "points_assists",
+            "ra": "rebounds_assists",
+            "rebs+asts": "rebounds_assists",
+        }
+
+        for stat_key, stat_value in prop_stats_map.items():
+            if stat_key in query_lower:
+                # Check if it's a player prop (has over/under with number)
+                # Allow numbers up to 99.5 for combo stats like PRA
                 prop_line_match = re.search(r'(?:over|under)\s*(\d{1,2}\.?\d*)', query_lower)
                 if prop_line_match:
-                    result["bet_type"] = "player_prop"
-                    result["stat"] = stat.replace("3s", "threes")
-                    result["line"] = float(prop_line_match.group(1))
-                break
+                    prop_line = float(prop_line_match.group(1))
+                    # Validate line range based on stat type
+                    # Points: 5-50, Rebounds: 2-20, Assists: 2-20, 3PM: 0.5-10, PRA: 15-80
+                    valid_ranges = {
+                        "points": (5, 55),
+                        "rebounds": (2, 25),
+                        "assists": (2, 20),
+                        "3pm": (0.5, 12),
+                        "steals": (0.5, 5),
+                        "blocks": (0.5, 6),
+                        "turnovers": (0.5, 8),
+                        "pra": (15, 90),
+                        "points_rebounds": (10, 60),
+                        "points_assists": (10, 55),
+                        "rebounds_assists": (5, 35),
+                    }
+                    min_val, max_val = valid_ranges.get(stat_value, (0.5, 100))
+                    if min_val <= prop_line <= max_val:
+                        result["bet_type"] = "player_prop"
+                        result["stat"] = stat_value
+                        result["line"] = prop_line
+                        break
 
         # Extract direction for non-totals if not already set
         if result["direction"] is None:
@@ -168,14 +211,34 @@ class DataScoutNode:
             elif "under" in query_lower:
                 result["direction"] = "under"
 
-        # Look for player names (simple heuristic: capitalized words not in team list)
+        # Look for player names (combine consecutive capitalized words into full names)
+        # E.g., "De Aaron Fox" or "LeBron James" should be combined
         words = query.split()
+        skip_words = {"should", "bet", "the", "over", "under", "at", "vs"}
+        skip_words.update(w.lower() for w in nba_teams)
+
+        name_parts = []
         for word in words:
-            clean_word = re.sub(r'[^a-zA-Z]', '', word)
-            if clean_word and clean_word[0].isupper() and clean_word.lower() not in nba_teams:
-                # Might be a player name
-                if len(clean_word) > 2 and clean_word.lower() not in ["should", "bet", "the", "over", "under"]:
-                    result["players"].append(clean_word)
+            clean_word = re.sub(r'[^a-zA-Z\']', '', word)  # Keep apostrophes for De'Aaron
+            is_name_part = (
+                clean_word
+                and len(clean_word) >= 2
+                and clean_word[0].isupper()
+                and clean_word.lower() not in skip_words
+                and not clean_word.replace('.', '').isdigit()
+            )
+
+            if is_name_part:
+                name_parts.append(clean_word)
+            else:
+                # End of name sequence - combine parts if we have any
+                if name_parts:
+                    result["players"].append(" ".join(name_parts))
+                    name_parts = []
+
+        # Don't forget trailing name parts
+        if name_parts:
+            result["players"].append(" ".join(name_parts))
 
         return result
 
@@ -381,27 +444,139 @@ class DataScoutNode:
         player: dict,
         parsed: dict
     ) -> dict:
-        """Build context for player prop query"""
-        recent_stats = await db.get_player_recent_stats(player["player_id"], last_n_games=10)
-        season_avg = await db.get_player_averages(player["player_id"])
-        last5_avg = await db.get_player_averages(player["player_id"], last_n_games=5)
+        """
+        Build comprehensive context for player prop query.
 
+        Enhanced with:
+        1. Upcoming game and opponent info
+        2. Opponent defensive factor
+        3. Player stat standard deviation
+        4. Prop odds from betting markets
+        5. Player vs opponent history
+        """
+        player_id = player["player_id"]
+        stat_type = parsed.get("stat", "points")
+        line = parsed.get("line")
+        direction = parsed.get("direction", "over")
+
+        # Get basic stats
+        recent_stats = await db.get_player_recent_stats(player_id, last_n_games=10)
+        season_avg = await db.get_player_averages(player_id)
+        last5_avg = await db.get_player_averages(player_id, last_n_games=5)
+        last10_avg = await db.get_player_averages(player_id, last_n_games=10)
+
+        # Get player's current team
+        player_team_id = await db.get_player_team_id(player_id)
+
+        # Get upcoming game for player's team
+        upcoming_game = None
+        opponent_info = {}
+        opponent_defense = {}
+
+        if player_team_id:
+            upcoming_game = await db.get_player_upcoming_game(player_id)
+
+            if upcoming_game:
+                opponent_id = upcoming_game.get("opponent_id")
+                if opponent_id:
+                    # Get opponent defensive quality
+                    defense_data = await db.get_team_defensive_vs_position(opponent_id)
+                    if defense_data:
+                        opponent_defense = {
+                            "team_id": opponent_id,
+                            "abbreviation": upcoming_game.get("opponent_abbr"),
+                            "ppg_allowed": defense_data.get("ppg_allowed"),
+                            "def_rating": defense_data.get("def_rating"),
+                            "pace": defense_data.get("pace"),
+                            "defensive_quality": defense_data.get("defensive_quality"),
+                            "defensive_factor": defense_data.get("projection_factor", 1.0),
+                        }
+
+                    opponent_info = {
+                        "team_id": opponent_id,
+                        "abbreviation": upcoming_game.get("opponent_abbr"),
+                    }
+
+                    # Get player's history vs this opponent
+                    vs_opponent = await db.get_player_vs_opponent(player_id, opponent_id)
+                    if vs_opponent:
+                        opponent_info["player_history"] = vs_opponent
+
+        # Get stat standard deviation
+        stat_std_data = await db.get_player_stat_std_dev(player_id, stat_type, last_n_games=15)
+        stat_std_dev = stat_std_data.get("std_dev", 0) if stat_std_data else 0
+        avg_minutes = stat_std_data.get("avg_minutes", 32.0) if stat_std_data else 32.0
+        minutes_std = stat_std_data.get("minutes_std", 5.0) if stat_std_data else 5.0
+
+        # Get prop odds from betting markets
+        prop_odds = None
+        if player.get("full_name") and stat_type:
+            prop_odds_data = await db.get_player_prop_odds(
+                player["full_name"],
+                stat_type,
+                game_id=upcoming_game.get("game_id") if upcoming_game else None
+            )
+            if prop_odds_data:
+                prop_odds = {
+                    "market_id": prop_odds_data.get("market_id"),
+                    "line": prop_odds_data.get("line"),
+                    "over_odds": prop_odds_data.get("over_odds"),
+                    "under_odds": prop_odds_data.get("under_odds"),
+                }
+                # Use odds line if no line specified in query
+                if line is None and prop_odds.get("line"):
+                    line = prop_odds["line"]
+
+        # Build selection string
+        selection = f"{player['full_name']} {direction} {line or ''} {stat_type}"
+
+        # Build the game_data structure expected by quant_analyst
         return {
-            "game_id": None,
-            "player": {
-                "player_id": player["player_id"],
-                "name": player["full_name"],
-                "team": player.get("team_abbreviation"),
-            },
-            "line": parsed.get("line"),
-            "stat": parsed.get("stat"),
-            "direction": parsed.get("direction"),
-            "selection": f"{player['full_name']} {parsed.get('direction', 'over')} {parsed.get('line', '')} {parsed.get('stat', 'points')}",
-            "season_averages": season_avg,
-            "last_5_averages": last5_avg,
-            "recent_games": recent_stats,
-            "data_quality": "FRESH",
+            "game_id": upcoming_game.get("game_id") if upcoming_game else None,
+            "game_date": str(upcoming_game.get("game_date")) if upcoming_game else None,
             "bet_type": "player_prop",
+            "data_quality": "FRESH" if upcoming_game and prop_odds else "PARTIAL",
+
+            # Player info
+            "player": {
+                "player_id": player_id,
+                "full_name": player["full_name"],
+                "team_id": player_team_id,
+                "team_abbreviation": player.get("team_abbreviation"),
+            },
+
+            # Prop details
+            "prop": {
+                "stat_type": stat_type,
+                "line": line,
+                "direction": direction,
+            },
+
+            # Stats for projection
+            "stats": {
+                "season_averages": season_avg,
+                "last_5_averages": last5_avg,
+                "last_10_averages": last10_avg,
+                "recent_games": recent_stats,
+                "stat_std_dev": stat_std_dev,
+                "avg_minutes": avg_minutes,
+                "minutes_std": minutes_std,
+            },
+
+            # Opponent info
+            "opponent": opponent_defense if opponent_defense else opponent_info,
+
+            # Prop odds
+            "prop_odds": prop_odds,
+
+            # For display
+            "selection": selection,
+            "line": line,
+            "stat": stat_type,
+            "direction": direction,
+
+            # Upcoming game details
+            "upcoming_game": upcoming_game,
         }
 
     async def _fetch_odds_data(self, game_id: str, errors: list) -> dict | None:
