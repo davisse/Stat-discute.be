@@ -370,10 +370,15 @@ export function TeamQuadrantChart({
         className
       )}
     >
-      {/* Component Title */}
-      <h2 className="text-white text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-center">
-        Team Quadrant Analysis
-      </h2>
+      {/* Component Title - Cinematic */}
+      <div className="mb-4 sm:mb-6 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+          QUADRANT
+        </h2>
+        <p className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] uppercase mt-1">
+          Team Analysis
+        </p>
+      </div>
 
       {/* Pill Tabs - Scenario Selector */}
       <div className="flex justify-center mb-3 sm:mb-4">
