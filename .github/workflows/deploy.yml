@@ -88,6 +88,10 @@ jobs:
               BUILD_ARGS="--no-cache"
             fi
 
+            # Stop existing containers
+            echo "Stopping existing containers..."
+            docker compose -f docker/docker-compose.yml --env-file docker/.env down --remove-orphans || true
+
             # Build and restart containers
             echo "Building and restarting containers..."
             docker compose -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
