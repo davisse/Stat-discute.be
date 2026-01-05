@@ -1,0 +1,151 @@
+# =============================================================================
+# Stat Discute - VPS Deployment Workflow
+# =============================================================================
+# Deploys to OVH VPS via SSH when pushing to main branch
+#
+# Required Secrets:
+#   VPS_HOST        - VPS IP address (e.g., 57.129.74.182)
+#   VPS_USER        - SSH user (e.g., root or deploy)
+#   VPS_SSH_KEY     - Private SSH key for authentication
+#   VPS_DEPLOY_PATH - Deployment path (e.g., /opt/stat-discute)
+#
+# Optional Secrets:
+#   SLACK_WEBHOOK   - Slack webhook URL for notifications
+# =============================================================================
+
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Force rebuild all containers (--no-cache)'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH || '/opt/stat-discute' }}
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      # -----------------------------------------------------------------------
+      # Setup
+      # -----------------------------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      # -----------------------------------------------------------------------
+      # Deploy
+      # -----------------------------------------------------------------------
+      - name: Deploy to VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          FORCE_REBUILD: ${{ github.event.inputs.force_rebuild || 'false' }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST << 'ENDSSH'
+            set -e
+
+            echo "=========================================="
+            echo "Starting deployment at $(date)"
+            echo "=========================================="
+
+            # Navigate to deployment directory
+            cd ${{ env.DEPLOY_PATH }}
+
+            # Pull latest changes
+            echo "Pulling latest changes..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Check if force rebuild is requested
+            BUILD_ARGS=""
+            if [ "${{ env.FORCE_REBUILD }}" = "true" ]; then
+              echo "Force rebuild requested - using --no-cache"
+              BUILD_ARGS="--no-cache"
+            fi
+
+            # Build and restart containers
+            echo "Building and restarting containers..."
+            docker compose -f docker/docker-compose.yml build $BUILD_ARGS
+            docker compose -f docker/docker-compose.yml up -d
+
+            # Wait for health checks
+            echo "Waiting for services to be healthy..."
+            sleep 10
+
+            # Check container status
+            echo "Container status:"
+            docker compose -f docker/docker-compose.yml ps
+
+            # Cleanup old images
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "=========================================="
+            echo "Deployment completed at $(date)"
+            echo "=========================================="
+          ENDSSH
+
+      # -----------------------------------------------------------------------
+      # Health Check
+      # -----------------------------------------------------------------------
+      - name: Verify deployment
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST << 'ENDSSH'
+            set -e
+
+            echo "Checking frontend health..."
+
+            # Wait for frontend to be ready
+            for i in {1..30}; do
+              if curl -sf http://localhost:3000 > /dev/null 2>&1; then
+                echo "Frontend is healthy!"
+                exit 0
+              fi
+              echo "Waiting for frontend... ($i/30)"
+              sleep 2
+            done
+
+            echo "ERROR: Frontend health check failed!"
+            docker compose -f ${{ env.DEPLOY_PATH }}/docker/docker-compose.yml logs --tail=50 frontend
+            exit 1
+          ENDSSH
+
+      # -----------------------------------------------------------------------
+      # Notifications (Optional)
+      # -----------------------------------------------------------------------
+      - name: Notify on success
+        if: success() && secrets.SLACK_WEBHOOK != ''
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"Stat Discute deployed successfully to production"}' \
+            ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify on failure
+        if: failure() && secrets.SLACK_WEBHOOK != ''
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"Stat Discute deployment FAILED - check GitHub Actions"}' \
+            ${{ secrets.SLACK_WEBHOOK }}
