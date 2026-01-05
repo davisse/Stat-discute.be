@@ -97,10 +97,33 @@ jobs:
             # Build and restart containers
             echo "Building and restarting containers..."
             docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
+
+            # Start database first and wait for it to be healthy
+            echo "Starting database..."
+            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d postgres
+
+            # Wait for database to be ready (with retries)
+            echo "Waiting for database to be healthy..."
+            for i in \$(seq 1 30); do
+              if docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env exec -T postgres pg_isready -U nba_admin -d nba_stats > /dev/null 2>&1; then
+                echo "Database is ready!"
+                break
+              fi
+              if [ \$i -eq 30 ]; then
+                echo "Database failed to become ready. Logs:"
+                docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env logs postgres
+                exit 1
+              fi
+              echo "Waiting for database... (\$i/30)"
+              sleep 2
+            done
+
+            # Now start all services
+            echo "Starting all services..."
             docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d
 
-            # Wait for health checks
-            echo "Waiting for services to be healthy..."
+            # Wait for services to stabilize
+            echo "Waiting for services to stabilize..."
             sleep 10
 
             # Check container status
