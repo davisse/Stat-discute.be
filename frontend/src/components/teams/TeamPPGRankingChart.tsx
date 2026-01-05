@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { cn } from '@/lib/utils'
+import { cn, safeNum } from '@/lib/utils'
 
 /**
  * TeamPPGRankingChart Component
@@ -41,13 +41,13 @@ export function TeamPPGRankingChart({
 }: TeamPPGRankingChartProps) {
   // Sort teams by PPG descending (highest first)
   const sortedTeams = useMemo(() => {
-    return [...data].sort((a, b) => b.ppg - a.ppg)
+    return [...data].sort((a, b) => safeNum(b.ppg) - safeNum(a.ppg))
   }, [data])
 
   // Calculate max PPG for proportional bar widths
   const maxPPG = useMemo(() => {
     if (sortedTeams.length === 0) return 100
-    return Math.max(...sortedTeams.map(t => t.ppg))
+    return Math.max(...sortedTeams.map(t => safeNum(t.ppg)))
   }, [sortedTeams])
 
   // Calculate bar width as percentage
@@ -57,31 +57,21 @@ export function TeamPPGRankingChart({
 
   if (data.length === 0) {
     return (
-      <div className={cn(
-        'bg-zinc-900/50 border border-zinc-800 rounded-lg p-6',
-        className
-      )}>
+      <div className={cn('', className)}>
         <p className="text-zinc-500 text-sm text-center">No team data available</p>
       </div>
     )
   }
 
   return (
-    <div className={cn(
-      'bg-zinc-900/50 border border-zinc-800 rounded-lg p-4',
-      className
-    )}>
-      {/* Header */}
-      <h3 className="text-white text-sm font-medium mb-4">
-        Team PPG Ranking
-      </h3>
-
+    <div className={cn('', className)}>
       {/* Team Rows */}
       <div className="flex flex-col gap-0.5">
         {sortedTeams.map((team, index) => {
           const rank = index + 1
           const isSelected = team.team_id === selectedTeamId
-          const barWidth = getBarWidth(team.ppg)
+          const ppgValue = safeNum(team.ppg)
+          const barWidth = getBarWidth(ppgValue)
 
           return (
             <div
@@ -118,7 +108,7 @@ export function TeamPPGRankingChart({
                 'text-xs font-mono w-12 text-right shrink-0',
                 isSelected ? 'text-white font-medium' : 'text-zinc-500'
               )}>
-                {team.ppg.toFixed(1)}
+                {ppgValue.toFixed(1)}
               </span>
             </div>
           )

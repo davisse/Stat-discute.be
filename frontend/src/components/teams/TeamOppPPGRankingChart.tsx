@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { cn } from '@/lib/utils'
+import { cn, safeNum } from '@/lib/utils'
 
 /**
  * TeamOppPPGRankingChart Component
@@ -40,45 +40,31 @@ export function TeamOppPPGRankingChart({
 }: TeamOppPPGRankingChartProps) {
   // Sort by OPP PPG ascending (best defense = lowest OPP PPG first)
   const sortedData = React.useMemo(() => {
-    return [...data].sort((a, b) => a.opp_ppg - b.opp_ppg)
+    return [...data].sort((a, b) => safeNum(a.opp_ppg) - safeNum(b.opp_ppg))
   }, [data])
 
   // Calculate max OPP PPG for bar width calculation
   const maxOppPpg = React.useMemo(() => {
     if (sortedData.length === 0) return 130
-    return Math.max(...sortedData.map((team) => team.opp_ppg))
+    return Math.max(...sortedData.map((team) => safeNum(team.opp_ppg)))
   }, [sortedData])
 
   if (sortedData.length === 0) {
     return (
-      <div
-        className={cn(
-          'bg-zinc-900/50 border border-zinc-800 rounded-lg p-4',
-          className
-        )}
-      >
+      <div className={cn('', className)}>
         <p className="text-zinc-500 text-sm">No team data available</p>
       </div>
     )
   }
 
   return (
-    <div
-      className={cn(
-        'bg-zinc-900/50 border border-zinc-800 rounded-lg p-4',
-        className
-      )}
-    >
-      {/* Header */}
-      <h3 className="text-white text-sm font-medium mb-4">
-        Team OPP PPG Ranking
-      </h3>
-
+    <div className={cn('', className)}>
       <div className="flex flex-col gap-0.5">
         {sortedData.map((team, index) => {
           const rank = index + 1
           const isSelected = team.team_id === selectedTeamId
-          const barWidthPercent = (team.opp_ppg / maxOppPpg) * 100
+          const oppPpgValue = safeNum(team.opp_ppg)
+          const barWidthPercent = (oppPpgValue / maxOppPpg) * 100
 
           return (
             <div
@@ -92,7 +78,7 @@ export function TeamOppPPGRankingChart({
                   isSelected ? 'text-white font-medium' : 'text-zinc-500'
                 )}
               >
-                {team.opp_ppg.toFixed(1)}
+                {oppPpgValue.toFixed(1)}
               </span>
 
               {/* Bar Container - bars grow from right to left */}
