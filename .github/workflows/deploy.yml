@@ -102,26 +102,22 @@ jobs:
             echo "Starting database..."
             docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d postgres
 
-            # Wait for database to be ready (with retries)
+            # Wait for database to be ready using while loop (no break needed)
             echo "Waiting for database to be healthy..."
-            DB_READY=0
-            for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do
-              if docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env exec -T postgres pg_isready -U nba_admin -d nba_stats > /dev/null 2>&1; then
-                echo "Database is ready!"
-                DB_READY=1
-                break
+            WAIT_COUNT=0
+            while ! docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env exec -T postgres pg_isready -U nba_admin -d nba_stats > /dev/null 2>&1; do
+              WAIT_COUNT=\$((WAIT_COUNT + 1))
+              if [ \$WAIT_COUNT -ge 30 ]; then
+                echo "Database failed to become ready after 30 attempts. Logs:"
+                docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env logs postgres
+                exit 1
               fi
-              echo "Waiting for database... attempt \$i/30"
+              echo "Waiting for database... attempt \$WAIT_COUNT/30"
               sleep 2
             done
+            echo "Database is ready!"
 
-            if [ "\$DB_READY" = "0" ]; then
-              echo "Database failed to become ready. Logs:"
-              docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env logs postgres
-              exit 1
-            fi
-
-            # Now start all services
+            # Now start frontend and ETL services
             echo "Starting frontend and ETL services..."
             docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d frontend etl
 
