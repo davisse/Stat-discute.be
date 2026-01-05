@@ -88,14 +88,16 @@ jobs:
               BUILD_ARGS="--no-cache"
             fi
 
-            # Stop existing containers
+            # Stop existing containers (handle both old and new project names)
             echo "Stopping existing containers..."
-            docker compose -f docker/docker-compose.yml --env-file docker/.env down --remove-orphans || true
+            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env down --remove-orphans 2>/dev/null || true
+            docker stop stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true
+            docker rm stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true
 
             # Build and restart containers
             echo "Building and restarting containers..."
-            docker compose -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
-            docker compose -f docker/docker-compose.yml --env-file docker/.env up -d
+            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
+            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d
 
             # Wait for health checks
             echo "Waiting for services to be healthy..."
@@ -103,7 +105,7 @@ jobs:
 
             # Check container status
             echo "Container status:"
-            docker compose -f docker/docker-compose.yml --env-file docker/.env ps
+            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env ps
 
             # Cleanup old images
             echo "Cleaning up old images..."
@@ -139,7 +141,7 @@ jobs:
             done
 
             echo "ERROR: Frontend health check failed!"
-            docker compose -f $DEPLOY_PATH/docker/docker-compose.yml --env-file $DEPLOY_PATH/docker/.env logs --tail=50 frontend
+            docker compose -p stat-discute -f $DEPLOY_PATH/docker/docker-compose.yml --env-file $DEPLOY_PATH/docker/.env logs --tail=50 frontend
             exit 1
           ENDSSH
 
