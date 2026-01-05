@@ -448,44 +448,6 @@ export function TeamQuadrantChart({
             className="relative bg-zinc-900 sm:border sm:border-zinc-800 rounded h-[320px] sm:h-[360px] md:h-[480px]"
           >
 
-            {/* Quadrant backgrounds */}
-            <div
-              className="absolute bg-red-900/10"
-              style={{
-                left: 0,
-                top: 0,
-                width: `${centerLines.x}%`,
-                height: `${centerLines.y}%`,
-              }}
-            />
-            <div
-              className="absolute bg-yellow-900/10"
-              style={{
-                left: `${centerLines.x}%`,
-                top: 0,
-                right: 0,
-                height: `${centerLines.y}%`,
-              }}
-            />
-            <div
-              className="absolute bg-blue-900/10"
-              style={{
-                left: 0,
-                top: `${centerLines.y}%`,
-                width: `${centerLines.x}%`,
-                bottom: 0,
-              }}
-            />
-            <div
-              className="absolute bg-green-900/10"
-              style={{
-                left: `${centerLines.x}%`,
-                top: `${centerLines.y}%`,
-                right: 0,
-                bottom: 0,
-              }}
-            />
-
             {/* Center lines */}
             <div
               className="absolute w-px bg-zinc-700"
@@ -603,45 +565,6 @@ export function TeamQuadrantChart({
         </div>
       </div>
 
-      {/* Legend - hidden on mobile, 4 cols desktop */}
-      <div className="hidden sm:grid mt-6 pt-4 border-t border-zinc-800 md:grid-cols-4 grid-cols-2 gap-3">
-        <div className="flex items-center gap-2">
-          <div className={cn(
-            'w-3 h-3 rounded shrink-0',
-            scenario.quadrants.eliteCorner === 'bottomRight'
-              ? 'bg-green-900/30 border border-green-800/50'
-              : 'bg-zinc-800/30 border border-zinc-700/50'
-          )} />
-          <span className="text-zinc-500 text-xs md:text-sm truncate">{scenario.quadrants.bottomRight}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className={cn(
-            'w-3 h-3 rounded shrink-0',
-            scenario.quadrants.eliteCorner === 'topRight'
-              ? 'bg-green-900/30 border border-green-800/50'
-              : 'bg-yellow-900/30 border border-yellow-800/50'
-          )} />
-          <span className="text-zinc-500 text-xs md:text-sm truncate">{scenario.quadrants.topRight}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className={cn(
-            'w-3 h-3 rounded shrink-0',
-            scenario.quadrants.eliteCorner === 'bottomLeft'
-              ? 'bg-green-900/30 border border-green-800/50'
-              : 'bg-blue-900/30 border border-blue-800/50'
-          )} />
-          <span className="text-zinc-500 text-xs md:text-sm truncate">{scenario.quadrants.bottomLeft}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className={cn(
-            'w-3 h-3 rounded shrink-0',
-            scenario.quadrants.eliteCorner === 'topLeft'
-              ? 'bg-green-900/30 border border-green-800/50'
-              : 'bg-red-900/30 border border-red-800/50'
-          )} />
-          <span className="text-zinc-500 text-xs md:text-sm truncate">{scenario.quadrants.topLeft}</span>
-        </div>
-      </div>
     </div>
   )
 }
