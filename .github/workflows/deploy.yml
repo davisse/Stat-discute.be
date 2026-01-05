@@ -52,91 +52,64 @@ jobs:
       # -----------------------------------------------------------------------
       # Deploy
       # -----------------------------------------------------------------------
-      - name: Deploy to VPS
+      - name: Pull latest code on VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "cd $DEPLOY_PATH && git fetch origin main && git reset --hard origin/main"
+
+      - name: Setup environment
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "echo 'DB_PASSWORD=$DB_PASSWORD' > $DEPLOY_PATH/docker/.env && echo 'DB_USER=nba_admin' >> $DEPLOY_PATH/docker/.env && echo 'DB_NAME=nba_stats' >> $DEPLOY_PATH/docker/.env"
+
+      - name: Stop existing containers
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "cd $DEPLOY_PATH && docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env down --remove-orphans 2>/dev/null || true && docker stop stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true && docker rm stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true"
+
+      - name: Build containers
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
           FORCE_REBUILD: ${{ github.event.inputs.force_rebuild || 'false' }}
         run: |
-          ssh $VPS_USER@$VPS_HOST << ENDSSH
-            set -e
+          BUILD_ARGS=""
+          if [ "$FORCE_REBUILD" = "true" ]; then
+            BUILD_ARGS="--no-cache"
+          fi
+          ssh $VPS_USER@$VPS_HOST "cd $DEPLOY_PATH && docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env build $BUILD_ARGS"
 
-            echo "=========================================="
-            echo "Starting deployment at \$(date)"
-            echo "=========================================="
+      - name: Start all containers
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "cd $DEPLOY_PATH && docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d"
 
-            # Navigate to deployment directory
-            cd $DEPLOY_PATH
+      - name: Wait for services to start
+        run: |
+          echo "Waiting 15 seconds for services to start..."
+          sleep 15
 
-            # Pull latest changes
-            echo "Pulling latest changes..."
-            git fetch origin main
-            git reset --hard origin/main
-
-            # Create/update .env file with required environment variables
-            echo "Updating environment configuration..."
-            echo "DB_PASSWORD=$DB_PASSWORD" > docker/.env
-            echo "DB_USER=nba_admin" >> docker/.env
-            echo "DB_NAME=nba_stats" >> docker/.env
-
-            # Check if force rebuild is requested
-            BUILD_ARGS=""
-            if [ "$FORCE_REBUILD" = "true" ]; then
-              echo "Force rebuild requested - using --no-cache"
-              BUILD_ARGS="--no-cache"
-            fi
-
-            # Stop existing containers (handle both old and new project names)
-            echo "Stopping existing containers..."
-            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env down --remove-orphans 2>/dev/null || true
-            docker stop stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true
-            docker rm stat-discute-frontend stat-discute-etl stat-discute-db 2>/dev/null || true
-
-            # Build and restart containers
-            echo "Building and restarting containers..."
-            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
-
-            # Start database first and wait for it to be healthy
-            echo "Starting database..."
-            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d postgres
-
-            # Wait for database to be ready using while loop (no break needed)
-            echo "Waiting for database to be healthy..."
-            WAIT_COUNT=0
-            while ! docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env exec -T postgres pg_isready -U nba_admin -d nba_stats > /dev/null 2>&1; do
-              WAIT_COUNT=\$((WAIT_COUNT + 1))
-              if [ \$WAIT_COUNT -ge 30 ]; then
-                echo "Database failed to become ready after 30 attempts. Logs:"
-                docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env logs postgres
-                exit 1
-              fi
-              echo "Waiting for database... attempt \$WAIT_COUNT/30"
-              sleep 2
-            done
-            echo "Database is ready!"
-
-            # Now start frontend and ETL services
-            echo "Starting frontend and ETL services..."
-            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d frontend etl
-
-            # Wait for services to stabilize
-            echo "Waiting for services to stabilize..."
-            sleep 10
-
-            # Check container status
-            echo "Container status:"
-            docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env ps
-
-            # Cleanup old images
-            echo "Cleaning up old images..."
-            docker image prune -f
-
-            echo "=========================================="
-            echo "Deployment completed at \$(date)"
-            echo "=========================================="
-          ENDSSH
+      - name: Show container status
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "docker ps -a --filter 'name=stat-discute' --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
 
       # -----------------------------------------------------------------------
       # Health Check
