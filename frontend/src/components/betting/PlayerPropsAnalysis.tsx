@@ -192,8 +192,8 @@ export default function PlayerPropsAnalysis({ game }: PlayerPropsAnalysisProps) 
                   <div key={idx} className="flex items-center justify-between text-sm">
                     <span className="text-gray-400 truncate flex-1">{prop.stat_type}</span>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-white font-mono">{prop.line}</span>
-                      <span className="text-green-400 text-xs font-mono">{prop.over_odds.toFixed(2)}</span>
+                      <span className="text-white font-mono">{prop.line ?? '-'}</span>
+                      <span className="text-green-400 text-xs font-mono">{prop.over_odds?.toFixed(2) ?? '-'}</span>
                     </div>
                   </div>
                 ))}

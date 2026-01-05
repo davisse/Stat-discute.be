@@ -60,9 +60,9 @@ export const navSections: NavSection[] = [
     label: 'Analysis',
     description: 'Game previews, matchup analysis, and predictive insights.',
     links: [
-      { href: '/analysis/games', label: 'Game Analysis' },
-      { href: '/analysis/matchups', label: 'Matchups' },
-      { href: '/analysis/predictions', label: 'Predictions' },
+      { href: '/analysis', label: 'Totals Analysis' },
+      { href: '/analysis/quarters', label: 'Quarter Stats' },
+      { href: '/analysis/q1-value', label: 'Q1 Value' },
     ]
   },
 ]

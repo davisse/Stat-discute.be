@@ -296,13 +296,13 @@ export default function QuartersAnalysisPage() {
                             <span className="text-white font-medium">{team.teamName}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-white font-mono font-bold">{team.avgPoints.toFixed(1)}</td>
-                        <td className="px-4 py-3 text-white font-mono">{team.avgAllowed.toFixed(1)}</td>
+                        <td className="px-4 py-3 text-white font-mono font-bold">{team.avgPoints?.toFixed(1) ?? '-'}</td>
+                        <td className="px-4 py-3 text-white font-mono">{team.avgAllowed?.toFixed(1) ?? '-'}</td>
                         <td className={`px-4 py-3 font-mono font-bold ${diffColor}`}>
-                          {team.differential > 0 ? '+' : ''}{team.differential.toFixed(1)}
+                          {team.differential > 0 ? '+' : ''}{team.differential?.toFixed(1) ?? '-'}
                         </td>
                         <td className={`px-4 py-3 font-mono ${winPctColor}`}>
-                          {(team.periodWinPct * 100).toFixed(1)}%
+                          {team.periodWinPct != null ? `${(team.periodWinPct * 100).toFixed(1)}%` : '-'}
                         </td>
                         <td className="px-4 py-3 text-gray-400">{team.gamesPlayed}</td>
                       </tr>
@@ -354,10 +354,10 @@ export default function QuartersAnalysisPage() {
                             <span className="text-white font-medium">{team.teamName}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-white font-mono font-bold">{team.avgPoints.toFixed(1)}</td>
-                        <td className="px-4 py-3 text-white font-mono">{team.avgTotal.toFixed(1)}</td>
+                        <td className="px-4 py-3 text-white font-mono font-bold">{team.avgPoints?.toFixed(1) ?? '-'}</td>
+                        <td className="px-4 py-3 text-white font-mono">{team.avgTotal?.toFixed(1) ?? '-'}</td>
                         <td className={`px-4 py-3 font-mono font-bold ${marginColor}`}>
-                          {team.avgMargin > 0 ? '+' : ''}{team.avgMargin.toFixed(1)}
+                          {team.avgMargin != null ? (team.avgMargin > 0 ? '+' : '') + team.avgMargin.toFixed(1) : '-'}
                         </td>
                         <td className="px-4 py-3 text-gray-400">{team.gamesPlayed}</td>
                       </tr>
