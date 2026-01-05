@@ -29,12 +29,20 @@ export interface TeamQuadrantData {
   std_dev?: number
 }
 
+// Quadrant type for team position
+type QuadrantPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
+
 // Scenario configuration type
 interface QuadrantScenario {
   id: string
   label: string
   title: string
-  subtitle: string
+  description: {
+    axes: string
+    zones: string
+  }
+  // Dynamic insights based on quadrant position
+  insights: Record<QuadrantPosition, (teamAbbr: string, rank: { x: number; y: number }) => string>
   xAxis: {
     key: keyof TeamQuadrantData
     labelLow: string
@@ -51,7 +59,7 @@ interface QuadrantScenario {
     topRight: string
     bottomLeft: string
     bottomRight: string
-    eliteCorner: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
+    eliteCorner: QuadrantPosition
   }
 }
 
@@ -61,7 +69,16 @@ const SCENARIOS: QuadrantScenario[] = [
     id: 'score',
     label: 'Pts',
     title: 'Offense vs Defense',
-    subtitle: 'Bottom-right = elite teams',
+    description: {
+      axes: 'X: Points Per Game (offensive output) | Y: Opponent PPG (defensive efficiency)',
+      zones: 'Bottom-right = elite (high scoring + strong defense). Top-left = struggling both ends.',
+    },
+    insights: {
+      topLeft: (abbr, r) => `${abbr} struggles on both ends: #${r.x} in scoring, #${r.y} in defense. Needs improvement across the board.`,
+      topRight: (abbr, r) => `${abbr} is offense-first: #${r.x} in scoring but #${r.y} in defense. Can outscore opponents but vulnerable.`,
+      bottomLeft: (abbr, r) => `${abbr} is defense-first: #${r.y} in defense but only #${r.x} in scoring. Wins ugly, grinds it out.`,
+      bottomRight: (abbr, r) => `${abbr} is elite: #${r.x} in scoring AND #${r.y} in defense. True contender profile.`,
+    },
     xAxis: { key: 'ppg', labelLow: 'Low Offense', labelHigh: 'High Offense' },
     yAxis: { key: 'opp_ppg', labelLow: 'Strong Defense', labelHigh: 'Weak Defense', inverted: true },
     quadrants: {
@@ -76,7 +93,16 @@ const SCENARIOS: QuadrantScenario[] = [
     id: 'style',
     label: 'Style',
     title: 'Pace vs Net Rating',
-    subtitle: 'Bottom-right = fast elite',
+    description: {
+      axes: 'X: Pace (possessions per 48 min) | Y: Net Rating (point differential per 100 poss)',
+      zones: 'Top-right = fast winners. Bottom-left = slow losers. Style vs results.',
+    },
+    insights: {
+      topLeft: (abbr, r) => `${abbr} wins grinding: #${r.y} net rating with #${r.x} pace. Methodical, controls tempo.`,
+      topRight: (abbr, r) => `${abbr} is the ideal: #${r.x} pace AND #${r.y} net rating. Fast and dominant.`,
+      bottomLeft: (abbr, r) => `${abbr} is slow and losing: #${r.x} pace with #${r.y} net rating. Needs to find identity.`,
+      bottomRight: (abbr, r) => `${abbr} runs but loses: #${r.x} pace but #${r.y} net rating. Fast tempo not translating to wins.`,
+    },
     xAxis: { key: 'pace', labelLow: 'Slow Pace', labelHigh: 'Fast Pace' },
     yAxis: { key: 'net_rtg', labelLow: 'Losing', labelHigh: 'Winning', inverted: false },
     quadrants: {
@@ -90,8 +116,17 @@ const SCENARIOS: QuadrantScenario[] = [
   {
     id: 'eff',
     label: 'Eff',
-    title: 'Offensive vs Defensive Eff',
-    subtitle: 'Top-right = elite efficiency',
+    title: 'Offensive vs Defensive Efficiency',
+    description: {
+      axes: 'X: ORTG (points per 100 poss) | Y: DRTG (opp points per 100 poss)',
+      zones: 'Bottom-right = elite efficiency both ends. Pace-adjusted truth.',
+    },
+    insights: {
+      topLeft: (abbr, r) => `${abbr} is inefficient everywhere: #${r.x} ORTG, #${r.y} DRTG. Fundamental issues.`,
+      topRight: (abbr, r) => `${abbr} scores efficiently (#${r.x} ORTG) but leaks points (#${r.y} DRTG). Offensive focus.`,
+      bottomLeft: (abbr, r) => `${abbr} defends well (#${r.y} DRTG) but struggles to score (#${r.x} ORTG). Defensive identity.`,
+      bottomRight: (abbr, r) => `${abbr} is two-way elite: #${r.x} ORTG AND #${r.y} DRTG. Championship caliber.`,
+    },
     xAxis: { key: 'ortg', labelLow: 'Bad Offense', labelHigh: 'Good Offense' },
     yAxis: { key: 'drtg', labelLow: 'Good Defense', labelHigh: 'Bad Defense', inverted: true },
     quadrants: {
@@ -106,7 +141,16 @@ const SCENARIOS: QuadrantScenario[] = [
     id: 'stable',
     label: 'Stable',
     title: 'Totals vs Consistency',
-    subtitle: 'Bottom-right = high & stable',
+    description: {
+      axes: 'X: Game Total Avg (combined team+opp score) | Y: Std Deviation (volatility)',
+      zones: 'Bottom-right = high scoring + predictable. Key for O/U betting.',
+    },
+    insights: {
+      topLeft: (abbr, r) => `${abbr} is low and volatile: #${r.x} avg total, #${r.y} consistency. Hard to predict, tends under.`,
+      topRight: (abbr, r) => `${abbr} is high but wild: #${r.x} avg total, #${r.y} consistency. Overs likely but risky.`,
+      bottomLeft: (abbr, r) => `${abbr} is low but stable: #${r.x} avg total, #${r.y} consistency. Reliable unders.`,
+      bottomRight: (abbr, r) => `${abbr} is the bettor's dream: #${r.x} avg total AND #${r.y} consistency. Predictable high-scoring games.`,
+    },
     xAxis: { key: 'total_avg', labelLow: 'Low Scoring', labelHigh: 'High Scoring' },
     yAxis: { key: 'std_dev', labelLow: 'Consistent', labelHigh: 'Volatile', inverted: true },
     quadrants: {
@@ -230,6 +274,65 @@ export function TeamQuadrantChart({
     return { x: avgX, y: avgY }
   }, [stats, scenario])
 
+  // Get selected team's quadrant and rankings
+  const selectedTeamInfo = React.useMemo(() => {
+    if (!selectedTeamId) return null
+
+    const selectedTeam = data.find((t) => t.team_id === selectedTeamId)
+    if (!selectedTeam) return null
+
+    const xKey = scenario.xAxis.key
+    const yKey = scenario.yAxis.key
+    const xVal = selectedTeam[xKey]
+    const yVal = selectedTeam[yKey]
+
+    if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) {
+      return null
+    }
+
+    // Calculate rankings (1 = best)
+    // For X: higher is usually better (ppg, pace, ortg, total_avg)
+    const xSorted = [...data]
+      .filter((t) => t[xKey] !== undefined && t[xKey] !== null)
+      .sort((a, b) => safeNum(b[xKey] as number) - safeNum(a[xKey] as number))
+    const xRank = xSorted.findIndex((t) => t.team_id === selectedTeamId) + 1
+
+    // For Y: depends on scenario (lower opp_ppg/drtg/std_dev is better, higher net_rtg is better)
+    const yHigherIsBetter = !scenario.yAxis.inverted
+    const ySorted = [...data]
+      .filter((t) => t[yKey] !== undefined && t[yKey] !== null)
+      .sort((a, b) => {
+        const diff = safeNum(b[yKey] as number) - safeNum(a[yKey] as number)
+        return yHigherIsBetter ? diff : -diff
+      })
+    const yRank = ySorted.findIndex((t) => t.team_id === selectedTeamId) + 1
+
+    // Determine quadrant based on comparison to average
+    const aboveAvgX = safeNum(xVal as number) > stats.avgX
+    const aboveAvgY = safeNum(yVal as number) > stats.avgY
+
+    let quadrant: QuadrantPosition
+    if (scenario.yAxis.inverted) {
+      // Inverted Y (opp_ppg, drtg, std_dev) - high values at TOP
+      quadrant = aboveAvgY
+        ? (aboveAvgX ? 'topRight' : 'topLeft')
+        : (aboveAvgX ? 'bottomRight' : 'bottomLeft')
+    } else {
+      // Non-inverted Y (net_rtg) - high values at TOP (after visual flip)
+      quadrant = aboveAvgY
+        ? (aboveAvgX ? 'topRight' : 'topLeft')
+        : (aboveAvgX ? 'bottomRight' : 'bottomLeft')
+    }
+
+    return {
+      team: selectedTeam,
+      quadrant,
+      xRank,
+      yRank,
+      insight: scenario.insights[quadrant](selectedTeam.abbreviation, { x: xRank, y: yRank }),
+    }
+  }, [data, selectedTeamId, scenario, stats])
+
   // Get tooltip text for a team
   const getTooltip = React.useCallback(
     (team: TeamQuadrantData) => {
@@ -267,8 +370,13 @@ export function TeamQuadrantChart({
         className
       )}
     >
+      {/* Component Title */}
+      <h2 className="text-white text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-center">
+        Team Quadrant Analysis
+      </h2>
+
       {/* Pill Tabs - Scenario Selector */}
-      <div className="flex justify-center mb-2 sm:mb-3">
+      <div className="flex justify-center mb-3 sm:mb-4">
         <div className="inline-flex bg-zinc-800/50 rounded-full p-0.5 sm:p-1">
           {SCENARIOS.map((sc) => {
             const isActive = sc.id === selectedScenario
@@ -295,13 +403,27 @@ export function TeamQuadrantChart({
         </div>
       </div>
 
-      {/* Dynamic Header */}
-      <h3 className="text-white text-sm sm:text-base font-medium mb-0.5 sm:mb-1 text-center sm:text-left">
-        {scenario.title}
-      </h3>
-      <p className="text-zinc-500 text-xs sm:text-sm mb-1 sm:mb-4 md:mb-6 text-center sm:text-left">
-        {scenario.subtitle}
-      </p>
+      {/* Scenario Description */}
+      <div className="mb-3 sm:mb-4 px-1">
+        <h3 className="text-white text-sm sm:text-base font-medium mb-1 text-center">
+          {scenario.title}
+        </h3>
+        <p className="text-zinc-500 text-[10px] sm:text-xs mb-1 text-center leading-relaxed">
+          {scenario.description.axes}
+        </p>
+        <p className="text-zinc-400 text-[10px] sm:text-xs text-center">
+          {scenario.description.zones}
+        </p>
+      </div>
+
+      {/* Dynamic Team Insight */}
+      {selectedTeamInfo && (
+        <div className="mb-3 sm:mb-4 px-2 py-2 bg-zinc-800/30 rounded-lg border border-zinc-700/50">
+          <p className="text-white text-xs sm:text-sm text-center leading-relaxed">
+            {selectedTeamInfo.insight}
+          </p>
+        </div>
+      )}
 
       {/* Chart Container */}
       <div className="relative">
