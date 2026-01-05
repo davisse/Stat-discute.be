@@ -57,6 +57,7 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           FORCE_REBUILD: ${{ github.event.inputs.force_rebuild || 'false' }}
         run: |
           ssh $VPS_USER@$VPS_HOST << ENDSSH
@@ -74,6 +75,14 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            # Create/update .env file with required environment variables
+            echo "Updating environment configuration..."
+            cat > docker/.env << 'ENVEOF'
+DB_PASSWORD=$DB_PASSWORD
+DB_USER=nba_admin
+DB_NAME=nba_stats
+ENVEOF
+
             # Check if force rebuild is requested
             BUILD_ARGS=""
             if [ "$FORCE_REBUILD" = "true" ]; then
@@ -83,8 +92,8 @@ jobs:
 
             # Build and restart containers
             echo "Building and restarting containers..."
-            docker compose -f docker/docker-compose.yml build \$BUILD_ARGS
-            docker compose -f docker/docker-compose.yml up -d
+            docker compose -f docker/docker-compose.yml --env-file docker/.env build \$BUILD_ARGS
+            docker compose -f docker/docker-compose.yml --env-file docker/.env up -d
 
             # Wait for health checks
             echo "Waiting for services to be healthy..."
@@ -92,7 +101,7 @@ jobs:
 
             # Check container status
             echo "Container status:"
-            docker compose -f docker/docker-compose.yml ps
+            docker compose -f docker/docker-compose.yml --env-file docker/.env ps
 
             # Cleanup old images
             echo "Cleaning up old images..."
@@ -128,7 +137,7 @@ jobs:
             done
 
             echo "ERROR: Frontend health check failed!"
-            docker compose -f $DEPLOY_PATH/docker/docker-compose.yml logs --tail=50 frontend
+            docker compose -f $DEPLOY_PATH/docker/docker-compose.yml --env-file $DEPLOY_PATH/docker/.env logs --tail=50 frontend
             exit 1
           ENDSSH
 
