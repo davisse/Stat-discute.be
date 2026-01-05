@@ -77,11 +77,9 @@ jobs:
 
             # Create/update .env file with required environment variables
             echo "Updating environment configuration..."
-            cat > docker/.env << 'ENVEOF'
-DB_PASSWORD=$DB_PASSWORD
-DB_USER=nba_admin
-DB_NAME=nba_stats
-ENVEOF
+            echo "DB_PASSWORD=$DB_PASSWORD" > docker/.env
+            echo "DB_USER=nba_admin" >> docker/.env
+            echo "DB_NAME=nba_stats" >> docker/.env
 
             # Check if force rebuild is requested
             BUILD_ARGS=""
