@@ -25,22 +25,22 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
   }
 
   const ghostButtonStyle = (isActive: boolean) => ({
-    background: isActive ? colors.gray[900] : 'transparent',
-    color: isActive ? colors.foreground : colors.gray[400],
-    border: `1px solid ${isActive ? colors.gray[700] : colors.gray[800]}`,
+    background: isActive ? colors.neutral[900] : 'transparent',
+    color: isActive ? colors.text.primary : colors.neutral[400],
+    border: `1px solid ${isActive ? colors.neutral[700] : colors.neutral[800]}`,
     borderRadius: radius.md,
     padding: `${spacing[2]} ${spacing[4]}`,
-    fontSize: typography.fontSize.sm,
-    fontFamily: typography.fontSans,
-    fontWeight: typography.fontWeight.medium,
+    fontSize: typography.sizes.sm,
+    fontFamily: typography.fonts.sans,
+    fontWeight: typography.weights.medium,
     cursor: 'pointer',
-    transition: transitions.fast
+    transition: transitions.presets.fast
   })
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[800]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[800]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       marginBottom: spacing[6]
@@ -50,8 +50,8 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
         marginBottom: spacing[4]
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           marginBottom: spacing[3]
@@ -70,14 +70,14 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
             style={ghostButtonStyle(limit === 10)}
             onMouseEnter={(e) => {
               if (limit !== 10) {
-                e.currentTarget.style.borderColor = colors.gray[700]
-                e.currentTarget.style.color = colors.foreground
+                e.currentTarget.style.borderColor = colors.neutral[700]
+                e.currentTarget.style.color = colors.text.primary
               }
             }}
             onMouseLeave={(e) => {
               if (limit !== 10) {
-                e.currentTarget.style.borderColor = colors.gray[800]
-                e.currentTarget.style.color = colors.gray[400]
+                e.currentTarget.style.borderColor = colors.neutral[800]
+                e.currentTarget.style.color = colors.neutral[400]
               }
             }}
           >
@@ -89,14 +89,14 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
             style={ghostButtonStyle(limit === 20)}
             onMouseEnter={(e) => {
               if (limit !== 20) {
-                e.currentTarget.style.borderColor = colors.gray[700]
-                e.currentTarget.style.color = colors.foreground
+                e.currentTarget.style.borderColor = colors.neutral[700]
+                e.currentTarget.style.color = colors.text.primary
               }
             }}
             onMouseLeave={(e) => {
               if (limit !== 20) {
-                e.currentTarget.style.borderColor = colors.gray[800]
-                e.currentTarget.style.color = colors.gray[400]
+                e.currentTarget.style.borderColor = colors.neutral[800]
+                e.currentTarget.style.color = colors.neutral[400]
               }
             }}
           >
@@ -109,14 +109,14 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
             style={ghostButtonStyle(location === 'HOME')}
             onMouseEnter={(e) => {
               if (location !== 'HOME') {
-                e.currentTarget.style.borderColor = colors.gray[700]
-                e.currentTarget.style.color = colors.foreground
+                e.currentTarget.style.borderColor = colors.neutral[700]
+                e.currentTarget.style.color = colors.text.primary
               }
             }}
             onMouseLeave={(e) => {
               if (location !== 'HOME') {
-                e.currentTarget.style.borderColor = colors.gray[800]
-                e.currentTarget.style.color = colors.gray[400]
+                e.currentTarget.style.borderColor = colors.neutral[800]
+                e.currentTarget.style.color = colors.neutral[400]
               }
             }}
           >
@@ -128,14 +128,14 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
             style={ghostButtonStyle(location === 'AWAY')}
             onMouseEnter={(e) => {
               if (location !== 'AWAY') {
-                e.currentTarget.style.borderColor = colors.gray[700]
-                e.currentTarget.style.color = colors.foreground
+                e.currentTarget.style.borderColor = colors.neutral[700]
+                e.currentTarget.style.color = colors.text.primary
               }
             }}
             onMouseLeave={(e) => {
               if (location !== 'AWAY') {
-                e.currentTarget.style.borderColor = colors.gray[800]
-                e.currentTarget.style.color = colors.gray[400]
+                e.currentTarget.style.borderColor = colors.neutral[800]
+                e.currentTarget.style.color = colors.neutral[400]
               }
             }}
           >
@@ -152,20 +152,20 @@ export function FilterControls({ onFilterChange }: FilterControlsProps) {
               }}
               style={{
                 background: 'transparent',
-                color: colors.gray[500],
+                color: colors.neutral[500],
                 border: 'none',
                 padding: `${spacing[2]} ${spacing[4]}`,
-                fontSize: typography.fontSize.sm,
-                fontFamily: typography.fontSans,
+                fontSize: typography.sizes.sm,
+                fontFamily: typography.fonts.sans,
                 cursor: 'pointer',
                 textDecoration: 'underline',
-                transition: transitions.fast
+                transition: transitions.presets.fast
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = colors.foreground
+                e.currentTarget.style.color = colors.text.primary
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = colors.gray[500]
+                e.currentTarget.style.color = colors.neutral[500]
               }}
             >
               Clear Filters

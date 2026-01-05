@@ -34,7 +34,7 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
 
   // Calculate combined totals for each game
   const gamesWithTotals = limitedGames.map(game => {
-    const combinedTotal = game.team_score + game.opponent_score
+    const combinedTotal = game.total
     const vsLine = combinedTotal > totalLine ? 'OVER' : combinedTotal < totalLine ? 'UNDER' : 'PUSH'
     const diff = combinedTotal - totalLine
 
@@ -61,8 +61,8 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[900]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[900]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       marginBottom: spacing[8]
@@ -78,16 +78,16 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
       }}>
         <div>
           <h2 style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
             marginBottom: spacing[1]
           }}>
             Combined Total Analysis
           </h2>
           <p style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400]
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400]
           }}>
             Team Score + Opponent Score for {teamAbbreviation} games
           </p>
@@ -96,9 +96,9 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
         {/* Total Line Input */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
           <label style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
-            fontWeight: typography.fontWeight.medium
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
+            fontWeight: typography.weights.medium
           }}>
             Betting Line:
           </label>
@@ -109,12 +109,12 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
             style={{
               width: '100px',
               padding: `${spacing[2]} ${spacing[3]}`,
-              background: colors.background,
-              border: `1px solid ${colors.gray[800]}`,
+              background: colors.background.primary,
+              border: `1px solid ${colors.neutral[800]}`,
               borderRadius: radius.md,
-              color: colors.foreground,
-              fontSize: typography.fontSize.base,
-              fontFamily: typography.fontMono,
+              color: colors.text.primary,
+              fontSize: typography.sizes.base,
+              fontFamily: typography.fonts.mono,
               textAlign: 'center',
               outline: 'none'
             }}
@@ -136,28 +136,28 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
       }}>
         {/* Average Total */}
         <div style={{
-          background: colors.background,
+          background: colors.background.primary,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginBottom: spacing[1]
           }}>
             Average Total
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
+            fontFamily: typography.fonts.mono
           }}>
             {avgTotal.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
+            fontSize: typography.sizes.xs,
             color: avgTotal > totalLine ? colors.positive : colors.negative,
             marginTop: spacing[1]
           }}>
@@ -167,29 +167,29 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
 
         {/* Over Count */}
         <div style={{
-          background: colors.background,
+          background: colors.background.primary,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginBottom: spacing[1]
           }}>
             Over {totalLine}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
             color: colors.positive,
-            fontFamily: typography.fontMono
+            fontFamily: typography.fonts.mono
           }}>
             {overCount}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
             marginTop: spacing[1]
           }}>
             {overPct.toFixed(1)}% of games
@@ -198,29 +198,29 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
 
         {/* Under Count */}
         <div style={{
-          background: colors.background,
+          background: colors.background.primary,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginBottom: spacing[1]
           }}>
             Under {totalLine}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
             color: colors.negative,
-            fontFamily: typography.fontMono
+            fontFamily: typography.fonts.mono
           }}>
             {underCount}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
             marginTop: spacing[1]
           }}>
             {((underCount / totalGames) * 100).toFixed(1)}% of games
@@ -229,29 +229,29 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
 
         {/* Trend */}
         <div style={{
-          background: colors.background,
+          background: colors.background.primary,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginBottom: spacing[1]
           }}>
             Trend
           </div>
           <div style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: overPct > 55 ? colors.positive : overPct < 45 ? colors.negative : colors.gray[400],
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: overPct > 55 ? colors.positive : overPct < 45 ? colors.negative : colors.neutral[400],
+            fontFamily: typography.fonts.mono
           }}>
             {overPct > 55 ? 'OVER' : overPct < 45 ? 'UNDER' : 'EVEN'}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
             marginTop: spacing[1]
           }}>
             {totalGames} games analyzed
@@ -269,85 +269,85 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
       {/* Games Table */}
       <div style={{
         overflowX: 'auto',
-        border: `1px solid ${colors.gray[900]}`,
+        border: `1px solid ${colors.neutral[900]}`,
         borderRadius: radius.md
       }}>
         <table style={{
           width: '100%',
           borderCollapse: 'collapse',
-          fontSize: typography.fontSize.sm
+          fontSize: typography.sizes.sm
         }}>
           <thead>
-            <tr style={{ background: colors.background }}>
+            <tr style={{ background: colors.background.primary }}>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'left',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 Date
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'left',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 Opponent
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 Location
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 {teamAbbreviation}
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 OPP
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 Total
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 vs {totalLine}
               </th>
               <th style={{
                 padding: spacing[3],
                 textAlign: 'center',
-                color: colors.gray[400],
-                fontWeight: typography.fontWeight.semibold,
-                borderBottom: `1px solid ${colors.gray[900]}`
+                color: colors.neutral[400],
+                fontWeight: typography.weights.semibold,
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 Result
               </th>
@@ -358,15 +358,15 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
               <tr
                 key={game.game_id}
                 style={{
-                  background: index % 2 === 0 ? colors.background : 'transparent',
-                  transition: transitions.fast
+                  background: index % 2 === 0 ? colors.background.primary : 'transparent',
+                  transition: transitions.presets.fast
                 }}
               >
                 <td style={{
                   padding: spacing[3],
-                  color: colors.gray[400],
-                  fontFamily: typography.fontMono,
-                  fontSize: typography.fontSize.xs
+                  color: colors.neutral[400],
+                  fontFamily: typography.fonts.mono,
+                  fontSize: typography.sizes.xs
                 }}>
                   {new Date(game.game_date).toLocaleDateString('en-US', {
                     month: 'short',
@@ -375,44 +375,44 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
                 </td>
                 <td style={{
                   padding: spacing[3],
-                  color: colors.foreground,
-                  fontFamily: typography.fontMono,
-                  fontWeight: typography.fontWeight.semibold
+                  color: colors.text.primary,
+                  fontFamily: typography.fonts.mono,
+                  fontWeight: typography.weights.semibold
                 }}>
-                  {game.opponent_abbr}
+                  {game.opponent}
                 </td>
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'center',
-                  color: colors.gray[400],
-                  fontSize: typography.fontSize.xs
+                  color: colors.neutral[400],
+                  fontSize: typography.sizes.xs
                 }}>
                   {game.location === 'HOME' ? 'vs' : '@'}
                 </td>
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'center',
-                  color: colors.foreground,
-                  fontFamily: typography.fontMono,
-                  fontWeight: typography.fontWeight.bold
+                  color: colors.text.primary,
+                  fontFamily: typography.fonts.mono,
+                  fontWeight: typography.weights.bold
                 }}>
-                  {game.team_score}
+                  {game.team_points}
                 </td>
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'center',
-                  color: colors.gray[400],
-                  fontFamily: typography.fontMono
+                  color: colors.neutral[400],
+                  fontFamily: typography.fonts.mono
                 }}>
-                  {game.opponent_score}
+                  {game.points_allowed}
                 </td>
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'center',
-                  color: colors.foreground,
-                  fontFamily: typography.fontMono,
-                  fontWeight: typography.fontWeight.bold,
-                  fontSize: typography.fontSize.base
+                  color: colors.text.primary,
+                  fontFamily: typography.fonts.mono,
+                  fontWeight: typography.weights.bold,
+                  fontSize: typography.sizes.base
                 }}>
                   {game.combinedTotal}
                 </td>
@@ -420,8 +420,8 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
                   padding: spacing[3],
                   textAlign: 'center',
                   color: game.diff > 0 ? colors.positive : colors.negative,
-                  fontFamily: typography.fontMono,
-                  fontWeight: typography.fontWeight.semibold
+                  fontFamily: typography.fonts.mono,
+                  fontWeight: typography.weights.semibold
                 }}>
                   {game.diff > 0 ? '+' : ''}{game.diff}
                 </td>
@@ -432,19 +432,19 @@ export function CombinedTotalAnalysis({ games, teamAbbreviation }: CombinedTotal
                   <span style={{
                     padding: `${spacing[1]} ${spacing[3]}`,
                     borderRadius: radius.sm,
-                    fontSize: typography.fontSize.xs,
-                    fontWeight: typography.fontWeight.bold,
-                    fontFamily: typography.fontMono,
+                    fontSize: typography.sizes.xs,
+                    fontWeight: typography.weights.bold,
+                    fontFamily: typography.fonts.mono,
                     background: game.vsLine === 'OVER'
-                      ? colors.positiveBg
+                      ? 'rgba(34, 197, 94, 0.15)'
                       : game.vsLine === 'UNDER'
-                        ? colors.negativeBg
-                        : colors.gray[800],
+                        ? 'rgba(239, 68, 68, 0.15)'
+                        : colors.neutral[800],
                     color: game.vsLine === 'OVER'
                       ? colors.positive
                       : game.vsLine === 'UNDER'
                         ? colors.negative
-                        : colors.gray[400]
+                        : colors.neutral[400]
                   }}>
                     {game.vsLine}
                   </span>

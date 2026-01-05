@@ -24,23 +24,23 @@ export function PlayerImpactChart({
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[12],
         textAlign: 'center'
       }}>
         <div style={{ fontSize: '48px', marginBottom: spacing[4] }}>📊</div>
         <div style={{
-          fontSize: typography.fontSize.lg,
-          color: colors.foreground,
+          fontSize: typography.sizes.lg,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
           No games to display
         </div>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           Select a player to view impact analysis
         </div>
@@ -54,9 +54,9 @@ export function PlayerImpactChart({
   // Calculate chart dimensions based on view mode
   const getGameValue = (game: PlayerImpactGame) => {
     if (viewMode === 'opponent-scoring') {
-      return game.opponent_score
+      return game.opponent_points
     } else {
-      return game.team_score + game.opponent_score
+      return game.team_points + game.opponent_points
     }
   }
 
@@ -102,16 +102,16 @@ export function PlayerImpactChart({
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[800]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[800]}`,
       borderRadius: radius.lg,
       padding: spacing[6]
     }}>
       {/* Chart Title */}
       <h3 style={{
-        fontSize: typography.fontSize.xl,
-        fontWeight: typography.fontWeight.semibold,
-        color: colors.foreground,
+        fontSize: typography.sizes.xl,
+        fontWeight: typography.weights.semibold,
+        color: colors.text.primary,
         marginBottom: spacing[6]
       }}>
         {viewMode === 'opponent-scoring' ? 'Opponent Scoring' : 'Combined Totals'} by Game
@@ -138,9 +138,9 @@ export function PlayerImpactChart({
                   position: 'absolute',
                   bottom: `${position}%`,
                   right: 0,
-                  fontSize: typography.fontSize.xs,
-                  fontFamily: typography.fontMono,
-                  color: colors.gray[500],
+                  fontSize: typography.sizes.xs,
+                  fontFamily: typography.fonts.mono,
+                  color: colors.neutral[500],
                   textAlign: 'right',
                   transform: 'translateY(50%)'
                 }}
@@ -156,8 +156,8 @@ export function PlayerImpactChart({
           flex: 1,
           position: 'relative',
           height: `${chartHeight}px`,
-          borderLeft: `1px solid ${colors.gray[800]}`,
-          borderBottom: `1px solid ${colors.gray[800]}`
+          borderLeft: `1px solid ${colors.neutral[800]}`,
+          borderBottom: `1px solid ${colors.neutral[800]}`
         }}>
           {/* Y-Axis Gridlines */}
           {yAxisLabels.map((label) => {
@@ -171,7 +171,7 @@ export function PlayerImpactChart({
                   left: 0,
                   right: 0,
                   height: '1px',
-                  background: colors.gray[800],
+                  background: colors.neutral[800],
                   opacity: 0.3,
                   zIndex: 5,
                   pointerEvents: 'none'
@@ -197,10 +197,10 @@ export function PlayerImpactChart({
               position: 'absolute',
               right: spacing[2],
               top: '-10px',
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
               color: colors.positive,
-              background: colors.gray[950],
+              background: colors.neutral[950],
               padding: `0 ${spacing[1]}`
             }}>
               With: {avgWithPlayer.toFixed(1)}
@@ -223,10 +223,10 @@ export function PlayerImpactChart({
               position: 'absolute',
               right: spacing[2],
               top: '-10px',
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
               color: colors.negative,
-              background: colors.gray[950],
+              background: colors.neutral[950],
               padding: `0 ${spacing[1]}`
             }}>
               Without: {avgWithoutPlayer.toFixed(1)}
@@ -241,9 +241,9 @@ export function PlayerImpactChart({
               left: 0,
               right: 0,
               height: '1px',
-              background: colors.foreground,
+              background: colors.text.primary,
               opacity: 0.4,
-              borderTop: `2px dashed ${colors.foreground}`,
+              borderTop: `2px dashed ${colors.text.primary}`,
               zIndex: 9,
               pointerEvents: 'none'
             }}>
@@ -251,10 +251,10 @@ export function PlayerImpactChart({
                 position: 'absolute',
                 left: spacing[2],
                 top: '-10px',
-                fontSize: typography.fontSize.xs,
-                fontFamily: typography.fontMono,
-                color: colors.foreground,
-                background: colors.gray[950],
+                fontSize: typography.sizes.xs,
+                fontFamily: typography.fonts.mono,
+                color: colors.text.primary,
+                background: colors.neutral[950],
                 padding: `0 ${spacing[1]}`
               }}>
                 {viewMode === 'opponent-scoring' ? 'Opp Line: ' : 'Total Line: '}{totalLine}
@@ -290,7 +290,7 @@ export function PlayerImpactChart({
                     background: `linear-gradient(to top, ${barColor}, ${barColor}cc)`,
                     borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                     cursor: 'pointer',
-                    transition: transitions.fast,
+                    transition: transitions.presets.fast,
                     opacity: isHovered ? 1 : 0.8,
                     border: game.player_played ? `1px solid ${colors.positive}` : `1px solid ${colors.negative}`
                   }}
@@ -306,8 +306,8 @@ export function PlayerImpactChart({
                       transform: 'translateX(-50%)',
                       marginBottom: spacing[2],
                       padding: spacing[3],
-                      background: colors.gray[900],
-                      border: `1px solid ${colors.gray[700]}`,
+                      background: colors.neutral[900],
+                      border: `1px solid ${colors.neutral[700]}`,
                       borderRadius: radius.md,
                       whiteSpace: 'nowrap',
                       boxShadow: '0 0 24px rgba(255, 255, 255, 0.12)',
@@ -315,26 +315,26 @@ export function PlayerImpactChart({
                       pointerEvents: 'none'
                     }}>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontWeight: typography.fontWeight.semibold,
-                        color: colors.foreground,
+                        fontSize: typography.sizes.sm,
+                        fontWeight: typography.weights.semibold,
+                        color: colors.text.primary,
                         marginBottom: spacing[1]
                       }}>
-                        vs {game.opponent_abbr}
+                        vs {game.opponent}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontFamily: typography.fontMono,
+                        fontSize: typography.sizes.sm,
+                        fontFamily: typography.fonts.mono,
                         color: barColor,
                         marginBottom: spacing[1]
                       }}>
                         {viewMode === 'opponent-scoring'
-                          ? `${game.opponent_score} PTS (Opp)`
-                          : `${game.team_score + game.opponent_score} PTS (Total)`}
+                          ? `${game.opponent_points} PTS (Opp)`
+                          : `${game.team_points + game.opponent_points} PTS (Total)`}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: colors.gray[400]
+                        fontSize: typography.sizes.xs,
+                        color: colors.neutral[400]
                       }}>
                         {new Date(game.game_date).toLocaleDateString('en-US', {
                           month: 'short',
@@ -342,21 +342,19 @@ export function PlayerImpactChart({
                         })} • {game.location}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
+                        fontSize: typography.sizes.xs,
                         color: game.player_played ? colors.positive : colors.negative,
                         marginTop: spacing[1],
-                        fontWeight: typography.fontWeight.semibold
+                        fontWeight: typography.weights.semibold
                       }}>
-                        {game.player_played
-                          ? `Played (${game.player_minutes?.toFixed(0)} min)`
-                          : 'Did Not Play'}
+                        {game.player_played ? '✓ Played' : 'Did Not Play'}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: game.result === 'W' ? colors.positive : colors.negative,
+                        fontSize: typography.sizes.xs,
+                        color: game.team_points > game.opponent_points ? colors.positive : colors.negative,
                         marginTop: spacing[1]
                       }}>
-                        {game.result === 'W' ? 'Won' : 'Lost'} {game.team_score}-{game.opponent_score}
+                        {game.team_points > game.opponent_points ? 'Won' : 'Lost'} {game.team_points}-{game.opponent_points}
                       </div>
                     </div>
                   )}
@@ -380,9 +378,9 @@ export function PlayerImpactChart({
             key={game.game_id}
             style={{
               flex: 1,
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.gray[500],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.neutral[500],
               textAlign: 'center',
               transform: 'rotate(-45deg)',
               transformOrigin: 'top center',
@@ -390,7 +388,7 @@ export function PlayerImpactChart({
               whiteSpace: 'nowrap'
             }}
           >
-            {game.opponent_abbr}
+            {game.opponent}
           </div>
         ))}
       </div>
@@ -401,8 +399,8 @@ export function PlayerImpactChart({
         justifyContent: 'center',
         gap: spacing[6],
         marginTop: spacing[6],
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
           <div style={{

@@ -8,7 +8,9 @@ interface DefenseMetricsGridProps {
 }
 
 export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
-  const avgDiff = parseFloat(metrics.avg_opponent_ppg) - parseFloat(metrics.league_avg_ppg)
+  // League average is approximately 113-114 PPG
+  const leagueAvgPpg = 113.5
+  const avgDiff = Number(metrics.avg_points_allowed) - leagueAvgPpg
   const isGoodDefense = avgDiff < 0
 
   return (
@@ -20,8 +22,8 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
     }}>
       {/* Average Opponent PPG */}
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[6],
         minHeight: '160px',
@@ -31,41 +33,41 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
         transition: '300ms ease-out'
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = colors.foreground
+        e.currentTarget.style.borderColor = colors.text.primary
         e.currentTarget.style.boxShadow = shadows.md
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = colors.gray[800]
+        e.currentTarget.style.borderColor = colors.neutral[800]
         e.currentTarget.style.boxShadow = 'none'
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           marginBottom: spacing[2]
         }}>
-          Avg Opponent PPG
+          Avg Points Allowed
         </div>
 
         <div style={{
-          fontSize: typography.fontSize['4xl'],
-          fontWeight: typography.fontWeight.bold,
-          fontFamily: typography.fontMono,
-          color: colors.foreground,
+          fontSize: typography.sizes['4xl'],
+          fontWeight: typography.weights.bold,
+          fontFamily: typography.fonts.mono,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
-          {metrics.avg_opponent_ppg}
+          {Number(metrics.avg_points_allowed).toFixed(1)}
         </div>
 
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           League Avg: <span style={{
-            fontFamily: typography.fontMono,
-            color: colors.gray[400]
-          }}>{metrics.league_avg_ppg}</span>
+            fontFamily: typography.fonts.mono,
+            color: colors.neutral[400]
+          }}>{leagueAvgPpg.toFixed(1)}</span>
         </div>
 
         {/* Comparison indicator */}
@@ -73,8 +75,8 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
           display: 'flex',
           alignItems: 'center',
           gap: spacing[1],
-          fontSize: typography.fontSize.sm,
-          fontFamily: typography.fontMono,
+          fontSize: typography.sizes.sm,
+          fontFamily: typography.fonts.mono,
           color: isGoodDefense ? colors.positive : colors.negative,
           marginTop: spacing[2]
         }}>
@@ -83,10 +85,10 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
         </div>
       </div>
 
-      {/* Best Defense Game */}
+      {/* Average Total */}
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[6],
         minHeight: '160px',
@@ -96,59 +98,45 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
         transition: '300ms ease-out'
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = colors.foreground
+        e.currentTarget.style.borderColor = colors.text.primary
         e.currentTarget.style.boxShadow = shadows.md
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = colors.gray[800]
+        e.currentTarget.style.borderColor = colors.neutral[800]
         e.currentTarget.style.boxShadow = 'none'
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           marginBottom: spacing[2]
         }}>
-          Best Defense
+          Avg Combined Total
         </div>
 
         <div style={{
-          fontSize: typography.fontSize['4xl'],
-          fontWeight: typography.fontWeight.bold,
-          fontFamily: typography.fontMono,
-          color: colors.positive,
+          fontSize: typography.sizes['4xl'],
+          fontWeight: typography.weights.bold,
+          fontFamily: typography.fonts.mono,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
-          {metrics.best_defense_game?.opponent_score || '-'}
+          {Number(metrics.avg_total).toFixed(1)}
         </div>
 
-        {metrics.best_defense_game && (
-          <>
-            <div style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400]
-            }}>
-              vs {metrics.best_defense_game.opponent_abbr}
-            </div>
-            <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
-              marginTop: spacing[1]
-            }}>
-              {new Date(metrics.best_defense_game.game_date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric'
-              })}
-            </div>
-          </>
-        )}
+        <div style={{
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
+        }}>
+          Team + Opponent scores
+        </div>
       </div>
 
-      {/* Worst Defense Game */}
+      {/* Games Analyzed */}
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[6],
         minHeight: '160px',
@@ -158,109 +146,38 @@ export function DefenseMetricsGrid({ metrics }: DefenseMetricsGridProps) {
         transition: '300ms ease-out'
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = colors.foreground
+        e.currentTarget.style.borderColor = colors.text.primary
         e.currentTarget.style.boxShadow = shadows.md
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = colors.gray[800]
+        e.currentTarget.style.borderColor = colors.neutral[800]
         e.currentTarget.style.boxShadow = 'none'
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           marginBottom: spacing[2]
         }}>
-          Worst Defense
+          Games Analyzed
         </div>
 
         <div style={{
-          fontSize: typography.fontSize['4xl'],
-          fontWeight: typography.fontWeight.bold,
-          fontFamily: typography.fontMono,
-          color: colors.negative,
+          fontSize: typography.sizes['4xl'],
+          fontWeight: typography.weights.bold,
+          fontFamily: typography.fonts.mono,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
-          {metrics.worst_defense_game?.opponent_score || '-'}
-        </div>
-
-        {metrics.worst_defense_game && (
-          <>
-            <div style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400]
-            }}>
-              vs {metrics.worst_defense_game.opponent_abbr}
-            </div>
-            <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
-              marginTop: spacing[1]
-            }}>
-              {new Date(metrics.worst_defense_game.game_date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric'
-              })}
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Consistency */}
-      <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
-        borderRadius: radius.lg,
-        padding: spacing[6],
-        minHeight: '160px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        transition: '300ms ease-out'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = colors.foreground
-        e.currentTarget.style.boxShadow = shadows.md
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = colors.gray[800]
-        e.currentTarget.style.boxShadow = 'none'
-      }}>
-        <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          marginBottom: spacing[2]
-        }}>
-          Consistency
+          {metrics.games_analyzed}
         </div>
 
         <div style={{
-          fontSize: typography.fontSize['4xl'],
-          fontWeight: typography.fontWeight.bold,
-          fontFamily: typography.fontMono,
-          color: colors.foreground,
-          marginBottom: spacing[2]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
-          ±{metrics.consistency_score}
-        </div>
-
-        <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500],
-          marginBottom: spacing[1]
-        }}>
-          Std Deviation
-        </div>
-
-        <div style={{
-          fontSize: typography.fontSize.sm,
-          fontFamily: typography.fontMono,
-          color: colors.gray[400]
-        }}>
-          {metrics.games_under_avg}/{metrics.games_played} under avg
+          {metrics.team_abbreviation}
         </div>
       </div>
     </div>

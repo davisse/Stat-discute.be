@@ -43,26 +43,26 @@ export function RiskAssessmentGrid({
   const getLikelihoodColor = (level: string) => {
     switch (level) {
       case 'HIGH':
-        return colors.negative
+        return colors.betting.negative
       case 'MEDIUM':
         return '#f59e0b' // Orange
       case 'LOW':
-        return colors.positive
+        return colors.betting.positive
       default:
-        return colors.gray[400]
+        return colors.neutral[400]
     }
   }
 
   const getImpactColor = (level: string) => {
     switch (level) {
       case 'HIGH':
-        return colors.negative
+        return colors.betting.negative
       case 'MEDIUM':
         return '#f59e0b'
       case 'LOW':
-        return colors.positive
+        return colors.betting.positive
       default:
-        return colors.gray[400]
+        return colors.neutral[400]
     }
   }
 
@@ -73,9 +73,9 @@ export function RiskAssessmentGrid({
   }
 
   const getOverallRiskColor = (score: number) => {
-    if (score >= 6) return colors.negative
+    if (score >= 6) return colors.betting.negative
     if (score >= 4) return '#f59e0b'
-    return colors.positive
+    return colors.betting.positive
   }
 
   const getOverallRiskLevel = (score: number) => {
@@ -96,7 +96,7 @@ export function RiskAssessmentGrid({
     <div>
       {/* Overall Risk Summary */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
         border: `2px solid ${overallRiskColor}`,
@@ -109,8 +109,8 @@ export function RiskAssessmentGrid({
         }}>
           <div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
@@ -118,10 +118,10 @@ export function RiskAssessmentGrid({
               Overall Risk Level
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
               color: overallRiskColor,
-              fontFamily: typography.fontMono
+              fontFamily: typography.fonts.mono
             }}>
               {overallRiskLevel}
             </div>
@@ -135,10 +135,10 @@ export function RiskAssessmentGrid({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
             color: overallRiskColor,
-            fontFamily: typography.fontMono
+            fontFamily: typography.fonts.mono
           }}>
             {averageRiskScore.toFixed(1)}
           </div>
@@ -147,16 +147,16 @@ export function RiskAssessmentGrid({
 
       {/* Risk Factors Grid */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[4],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Risk Factor Assessment
         </div>
@@ -167,10 +167,10 @@ export function RiskAssessmentGrid({
           gridTemplateColumns: '2fr 1fr 1fr 1fr',
           gap: spacing[3],
           paddingBottom: spacing[3],
-          borderBottom: `1px solid ${colors.gray[900]}`,
-          fontSize: typography.fontSize.xs,
-          fontWeight: typography.fontWeight.semibold,
-          color: colors.gray[400],
+          borderBottom: `1px solid ${colors.neutral[900]}`,
+          fontSize: typography.sizes.xs,
+          fontWeight: typography.weights.semibold,
+          color: colors.neutral[400],
           textTransform: 'uppercase',
           letterSpacing: '0.05em'
         }}>
@@ -189,7 +189,7 @@ export function RiskAssessmentGrid({
             <div
               key={index}
               style={{
-                borderBottom: index < riskFactors.length - 1 ? `1px solid ${colors.gray[900]}` : 'none'
+                borderBottom: index < riskFactors.length - 1 ? `1px solid ${colors.neutral[900]}` : 'none'
               }}
             >
               {/* Main Row */}
@@ -204,16 +204,16 @@ export function RiskAssessmentGrid({
                 {/* Risk Name */}
                 <div>
                   <div style={{
-                    fontSize: typography.fontSize.sm,
-                    fontWeight: typography.fontWeight.semibold,
-                    color: colors.foreground,
+                    fontSize: typography.sizes.sm,
+                    fontWeight: typography.weights.semibold,
+                    color: colors.text.primary,
                     marginBottom: spacing[1]
                   }}>
                     {factor.name}
                   </div>
                   <div style={{
-                    fontSize: typography.fontSize.xs,
-                    color: colors.gray[400]
+                    fontSize: typography.sizes.xs,
+                    color: colors.neutral[400]
                   }}>
                     {factor.description}
                   </div>
@@ -229,8 +229,8 @@ export function RiskAssessmentGrid({
                     borderRadius: radius.sm,
                     background: `${getLikelihoodColor(factor.likelihood)}20`,
                     border: `1px solid ${getLikelihoodColor(factor.likelihood)}`,
-                    fontSize: typography.fontSize.xs,
-                    fontWeight: typography.fontWeight.bold,
+                    fontSize: typography.sizes.xs,
+                    fontWeight: typography.weights.bold,
                     color: getLikelihoodColor(factor.likelihood),
                     textTransform: 'uppercase'
                   }}>
@@ -248,8 +248,8 @@ export function RiskAssessmentGrid({
                     borderRadius: radius.sm,
                     background: `${getImpactColor(factor.impact)}20`,
                     border: `1px solid ${getImpactColor(factor.impact)}`,
-                    fontSize: typography.fontSize.xs,
-                    fontWeight: typography.fontWeight.bold,
+                    fontSize: typography.sizes.xs,
+                    fontWeight: typography.weights.bold,
                     color: getImpactColor(factor.impact),
                     textTransform: 'uppercase'
                   }}>
@@ -271,10 +271,10 @@ export function RiskAssessmentGrid({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: typography.fontSize.lg,
-                    fontWeight: typography.fontWeight.bold,
+                    fontSize: typography.sizes.lg,
+                    fontWeight: typography.weights.bold,
                     color: riskColor,
-                    fontFamily: typography.fontMono
+                    fontFamily: typography.fonts.mono
                   }}>
                     {riskScore}
                   </div>
@@ -286,10 +286,10 @@ export function RiskAssessmentGrid({
                 <div style={{
                   paddingBottom: spacing[4],
                   paddingLeft: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  color: colors.gray[500]
+                  fontSize: typography.sizes.xs,
+                  color: colors.neutral[500]
                 }}>
-                  <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>
+                  <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>
                     Mitigation:
                   </span>
                   {' '}{factor.mitigation}
@@ -304,17 +304,17 @@ export function RiskAssessmentGrid({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Risk Assessment Summary:</strong> Identified {riskFactors.length} risk factors with an average risk score of{' '}
         <span style={{
           color: overallRiskColor,
-          fontFamily: typography.fontMono,
-          fontWeight: typography.fontWeight.bold
+          fontFamily: typography.fonts.mono,
+          fontWeight: typography.weights.bold
         }}>
           {averageRiskScore.toFixed(1)}/9
         </span>

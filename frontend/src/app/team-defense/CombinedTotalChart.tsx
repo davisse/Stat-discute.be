@@ -16,23 +16,23 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[12],
         textAlign: 'center'
       }}>
         <div style={{ fontSize: '48px', marginBottom: spacing[4] }}>📊</div>
         <div style={{
-          fontSize: typography.fontSize.lg,
-          color: colors.foreground,
+          fontSize: typography.sizes.lg,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
           No games to display
         </div>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           Select a team to view combined total analysis
         </div>
@@ -46,7 +46,7 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
   // Calculate combined totals
   const gamesWithTotals = chronologicalGames.map(game => ({
     ...game,
-    combinedTotal: game.team_score + game.opponent_score
+    combinedTotal: game.team_points + game.points_allowed
   }))
 
   // Calculate chart dimensions
@@ -78,17 +78,17 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[800]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[800]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       marginBottom: spacing[6]
     }}>
       {/* Chart Title */}
       <h3 style={{
-        fontSize: typography.fontSize.xl,
-        fontWeight: typography.fontWeight.semibold,
-        color: colors.foreground,
+        fontSize: typography.sizes.xl,
+        fontWeight: typography.weights.semibold,
+        color: colors.text.primary,
         marginBottom: spacing[6]
       }}>
         Combined Total Points by Game
@@ -115,9 +115,9 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                   position: 'absolute',
                   bottom: `${position}%`,
                   right: 0,
-                  fontSize: typography.fontSize.xs,
-                  fontFamily: typography.fontMono,
-                  color: colors.gray[500],
+                  fontSize: typography.sizes.xs,
+                  fontFamily: typography.fonts.mono,
+                  color: colors.neutral[500],
                   textAlign: 'right',
                   transform: 'translateY(50%)'
                 }}
@@ -133,8 +133,8 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
           flex: 1,
           position: 'relative',
           height: `${chartHeight}px`,
-          borderLeft: `1px solid ${colors.gray[800]}`,
-          borderBottom: `1px solid ${colors.gray[800]}`
+          borderLeft: `1px solid ${colors.neutral[800]}`,
+          borderBottom: `1px solid ${colors.neutral[800]}`
         }}>
           {/* Y-Axis Gridlines */}
           {yAxisLabels.map((label) => {
@@ -148,7 +148,7 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                   left: 0,
                   right: 0,
                   height: '1px',
-                  background: colors.gray[800],
+                  background: colors.neutral[800],
                   opacity: 0.3,
                   zIndex: 5,
                   pointerEvents: 'none'
@@ -164,7 +164,7 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
             left: 0,
             right: 0,
             height: '2px',
-            background: colors.foreground,
+            background: colors.text.primary,
             opacity: 0.8,
             zIndex: 10,
             pointerEvents: 'none'
@@ -173,12 +173,12 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
               position: 'absolute',
               left: spacing[2],
               top: '-10px',
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.foreground,
-              background: colors.gray[950],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.text.primary,
+              background: colors.neutral[950],
               padding: `0 ${spacing[1]}`,
-              fontWeight: typography.fontWeight.bold
+              fontWeight: typography.weights.bold
             }}>
               Line: {totalLine}
             </span>
@@ -191,9 +191,9 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
             left: 0,
             right: 0,
             height: '1px',
-            background: colors.gray[400],
+            background: colors.neutral[400],
             opacity: 0.6,
-            borderTop: `2px dashed ${colors.gray[400]}`,
+            borderTop: `2px dashed ${colors.neutral[400]}`,
             zIndex: 10,
             pointerEvents: 'none'
           }}>
@@ -201,10 +201,10 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
               position: 'absolute',
               right: spacing[2],
               top: '-10px',
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.gray[400],
-              background: colors.gray[950],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.neutral[400],
+              background: colors.neutral[950],
               padding: `0 ${spacing[1]}`
             }}>
               Avg: {avgTotal.toFixed(1)}
@@ -240,7 +240,7 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                       : `linear-gradient(to top, ${colors.negative}, rgba(239, 68, 68, 0.6))`,
                     borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                     cursor: 'pointer',
-                    transition: transitions.fast,
+                    transition: transitions.presets.fast,
                     opacity: isHovered ? 1 : 0.8
                   }}
                   onMouseEnter={() => setHoveredGame(game.game_id)}
@@ -255,8 +255,8 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                       transform: 'translateX(-50%)',
                       marginBottom: spacing[2],
                       padding: spacing[3],
-                      background: colors.gray[900],
-                      border: `1px solid ${colors.gray[700]}`,
+                      background: colors.neutral[900],
+                      border: `1px solid ${colors.neutral[700]}`,
                       borderRadius: radius.md,
                       whiteSpace: 'nowrap',
                       boxShadow: '0 0 24px rgba(255, 255, 255, 0.12)',
@@ -264,31 +264,31 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                       pointerEvents: 'none'
                     }}>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontWeight: typography.fontWeight.semibold,
-                        color: colors.foreground,
+                        fontSize: typography.sizes.sm,
+                        fontWeight: typography.weights.semibold,
+                        color: colors.text.primary,
                         marginBottom: spacing[1]
                       }}>
-                        vs {game.opponent_abbr}
+                        vs {game.opponent}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontFamily: typography.fontMono,
-                        color: colors.foreground,
+                        fontSize: typography.sizes.sm,
+                        fontFamily: typography.fonts.mono,
+                        color: colors.text.primary,
                         marginBottom: spacing[1]
                       }}>
                         Combined: {game.combinedTotal} PTS
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: colors.gray[400],
+                        fontSize: typography.sizes.xs,
+                        color: colors.neutral[400],
                         marginBottom: spacing[1]
                       }}>
-                        {game.team_score} + {game.opponent_score}
+                        {game.team_points} + {game.points_allowed}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: colors.gray[400]
+                        fontSize: typography.sizes.xs,
+                        color: colors.neutral[400]
                       }}>
                         {new Date(game.game_date).toLocaleDateString('en-US', {
                           month: 'short',
@@ -296,8 +296,8 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
                         })} • {game.location}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        fontWeight: typography.fontWeight.bold,
+                        fontSize: typography.sizes.xs,
+                        fontWeight: typography.weights.bold,
                         color: isOver ? colors.positive : colors.negative,
                         marginTop: spacing[1]
                       }}>
@@ -325,9 +325,9 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
             key={game.game_id}
             style={{
               flex: 1,
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.gray[500],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.neutral[500],
               textAlign: 'center',
               transform: 'rotate(-45deg)',
               transformOrigin: 'top center',
@@ -335,7 +335,7 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
               whiteSpace: 'nowrap'
             }}
           >
-            {game.opponent_abbr}
+            {game.opponent}
           </div>
         ))}
       </div>
@@ -346,8 +346,8 @@ export function CombinedTotalChart({ games, avgTotal, totalLine }: CombinedTotal
         justifyContent: 'center',
         gap: spacing[6],
         marginTop: spacing[6],
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
           <div style={{

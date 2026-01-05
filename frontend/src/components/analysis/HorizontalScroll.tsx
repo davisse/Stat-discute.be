@@ -146,7 +146,7 @@ export function SequencePage({ children, isActive }: SequencePageProps) {
         className="h-full w-full px-8 py-6 overflow-hidden"
         style={{
           opacity: isActive ? 1 : 0.3,
-          transition: `opacity ${transitions.normal}`,
+          transition: `opacity ${transitions.presets.default}`,
         }}
       >
         {children}
@@ -174,8 +174,8 @@ function AnalysisHeader({ sequences, activeIndex, onNavigate }: AnalysisHeaderPr
     <header
       className="flex-shrink-0 border-b px-8 py-3"
       style={{
-        backgroundColor: colors.background,
-        borderColor: colors.gray[800],
+        backgroundColor: colors.background.primary,
+        borderColor: colors.neutral[800],
       }}
     >
       {/* Logo centré */}
@@ -197,8 +197,8 @@ function AnalysisHeader({ sequences, activeIndex, onNavigate }: AnalysisHeaderPr
               onClick={() => onNavigate(originalIndex)}
               className="px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors"
               style={{
-                color: originalIndex === activeIndex ? colors.foreground : colors.gray[500],
-                borderBottom: originalIndex === activeIndex ? `2px solid ${colors.foreground}` : '2px solid transparent',
+                color: originalIndex === activeIndex ? colors.text.primary : colors.neutral[500],
+                borderBottom: originalIndex === activeIndex ? `2px solid ${colors.text.primary}` : '2px solid transparent',
               }}
             >
               {seq.title}
@@ -226,7 +226,7 @@ export function DotsPagination({ total, active, onNavigate }: DotsPaginationProp
     <div
       className="flex-shrink-0 flex items-center justify-center gap-3 py-6"
       style={{
-        backgroundColor: colors.background,
+        backgroundColor: colors.background.primary,
       }}
     >
       {/* Flèche gauche */}
@@ -236,7 +236,7 @@ export function DotsPagination({ total, active, onNavigate }: DotsPaginationProp
         className="p-2 transition-opacity"
         style={{
           opacity: active === 0 ? 0.3 : 1,
-          color: colors.gray[400],
+          color: colors.neutral[400],
         }}
         aria-label="Séquence précédente"
       >
@@ -262,7 +262,7 @@ export function DotsPagination({ total, active, onNavigate }: DotsPaginationProp
               width: index === active ? '24px' : '10px',
               height: '10px',
               borderRadius: '5px',
-              backgroundColor: index === active ? colors.foreground : colors.gray[700],
+              backgroundColor: index === active ? colors.text.primary : colors.neutral[700],
             }}
             aria-label={`Aller à la séquence ${index + 1}`}
             aria-current={index === active ? 'true' : undefined}
@@ -277,7 +277,7 @@ export function DotsPagination({ total, active, onNavigate }: DotsPaginationProp
         className="p-2 transition-opacity"
         style={{
           opacity: active === total - 1 ? 0.3 : 1,
-          color: colors.gray[400],
+          color: colors.neutral[400],
         }}
         aria-label="Séquence suivante"
       >
@@ -320,7 +320,7 @@ export function SequenceContent({
       {title && (
         <h2
           className="text-2xl font-bold mb-4"
-          style={{ color: colors.foreground }}
+          style={{ color: colors.text.primary }}
         >
           {title}
         </h2>
@@ -331,13 +331,13 @@ export function SequenceContent({
         <div
           className="p-4 rounded-lg mb-6"
           style={{
-            backgroundColor: colors.gray[900],
-            borderLeft: `3px solid ${colors.gray[600]}`,
+            backgroundColor: colors.neutral[900],
+            borderLeft: `3px solid ${colors.neutral[600]}`,
           }}
         >
           <div
             className="text-base leading-relaxed"
-            style={{ color: colors.gray[400] }}
+            style={{ color: colors.neutral[400] }}
           >
             {contextText}
           </div>
@@ -355,19 +355,19 @@ export function SequenceContent({
           className="mt-auto pt-6 p-4 rounded-lg"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: `1px solid ${colors.gray[800]}`,
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <div className="flex items-start gap-3">
             <span
               className="text-xl"
-              style={{ color: colors.gray[500] }}
+              style={{ color: colors.neutral[500] }}
             >
               ?
             </span>
             <div
               className="text-sm italic"
-              style={{ color: colors.gray[400] }}
+              style={{ color: colors.neutral[400] }}
             >
               {reflectionQuestion}
             </div>

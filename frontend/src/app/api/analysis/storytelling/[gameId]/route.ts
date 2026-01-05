@@ -249,7 +249,7 @@ async function getTeamData(
   )
 
   const pointsAllowed = defenseResult.rows.length > 0
-    ? defenseResult.rows.reduce((sum: number, r: { points_allowed: number }) => sum + r.points_allowed, 0) / defenseResult.rows.length
+    ? Number(defenseResult.rows.reduce((sum, r) => sum + parseFloat(r.points_allowed || '0'), 0)) / defenseResult.rows.length
     : 0
 
   // Team total history not available in current schema
@@ -290,17 +290,17 @@ async function getTeamData(
     teamTotal: null,
     teamTotalOverOdds: null,
     teamTotalUnderOdds: null,
-    scoringHistory: scoringResult.rows.map((r: { opponent: string; points: number; game_date: string }) => ({
+    scoringHistory: (scoringResult.rows as Array<{ opponent: string; points: number; game_date: string }>).map((r) => ({
       opponent: r.opponent,
       points: r.points,
       gameDate: r.game_date,
     })),
-    teamTotalHistory: teamTotalHistoryResult.rows.map((r: { opponent: string; total: number }) => ({
+    teamTotalHistory: teamTotalHistoryResult.rows.map((r) => ({
       opponent: r.opponent,
       total: r.total,
     })),
     pointsAllowed: parseFloat(pointsAllowed.toFixed(1)),
-    pointsAllowedLast5: defenseResult.rows.map((r: { opponent: string; points_allowed: number; game_date: string }) => ({
+    pointsAllowedLast5: (defenseResult.rows as Array<{ opponent: string; points_allowed: number; game_date: string }>).map((r) => ({
       opponent: r.opponent,
       pointsAllowed: r.points_allowed,
       gameDate: r.game_date,
@@ -379,7 +379,7 @@ async function getH2HData(
     [homeTeamId, awayTeamId, excludeGameId]
   )
 
-  const games = result.rows.map((r: { game_date: string; home_team_score: number; away_team_score: number; total_points: number }) => ({
+  const games = (result.rows as Array<{ game_date: string; home_team_score: number; away_team_score: number; total_points: number }>).map((r) => ({
     date: r.game_date,
     totalPoints: r.total_points,
     awayPoints: r.away_team_score,
@@ -387,12 +387,12 @@ async function getH2HData(
   }))
 
   const avgTotal = games.length > 0
-    ? games.reduce((sum: number, g: { totalPoints: number }) => sum + g.totalPoints, 0) / games.length
+    ? games.reduce((sum, g) => sum + g.totalPoints, 0) / games.length
     : 0
 
   // Count over/under vs typical line (using 220 as baseline)
   const baseline = 220
-  const overCount = games.filter((g: { totalPoints: number }) => g.totalPoints > baseline).length
+  const overCount = games.filter((g) => g.totalPoints > baseline).length
   const underCount = games.length - overCount
 
   return {
@@ -426,7 +426,7 @@ async function getTrendData(
     [awayTeamId, homeTeamId, season, excludeGameId]
   )
 
-  const recentResults = result.rows.map((r: { total_points: number; line_value: number }) => {
+  const recentResults = (result.rows as Array<{ total_points: number; line_value: number }>).map((r) => {
     const diff = r.total_points - r.line_value
     return {
       type: diff > 0 ? 'over' : 'under' as 'over' | 'under',
@@ -434,7 +434,7 @@ async function getTrendData(
     }
   })
 
-  const overCount = recentResults.filter((r: { type: string }) => r.type === 'over').length
+  const overCount = recentResults.filter((r) => r.type === 'over').length
   const underCount = recentResults.length - overCount
 
   return {

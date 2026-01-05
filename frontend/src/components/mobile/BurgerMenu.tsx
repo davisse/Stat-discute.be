@@ -46,11 +46,8 @@ export default function BurgerMenu() {
       {/* Burger Button - Fixed Top Right, vertically centered with logo bar */}
       <button
         onClick={toggleMenu}
-        className="fixed top-2.5 right-6 z-[60] p-3 rounded-xl bg-white/10 backdrop-blur-lg transition-all duration-200 hover:bg-white/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-white/20 active:translate-y-0 active:shadow-sm"
+        className="fixed top-2.5 right-6 z-[60] p-3 rounded-xl bg-zinc-900 border border-zinc-700 transition-all duration-200 hover:bg-zinc-800 hover:-translate-y-1 active:translate-y-0"
         aria-label="Menu"
-        style={{
-          boxShadow: isOpen ? '0 1px 3px rgba(255,255,255,0.1)' : '0 4px 6px rgba(0,0,0,0.3)'
-        }}
       >
         <div className="w-6 h-5 flex flex-col justify-between">
           <span
@@ -74,7 +71,7 @@ export default function BurgerMenu() {
       {/* Backdrop Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[55] transition-opacity duration-300"
+          className="fixed inset-0 bg-black/90 z-[55] transition-opacity duration-300"
           onClick={closeMenu}
           style={{ top: '64px' }} // Below header bar (py-3 + h-10 = 64px)
         />

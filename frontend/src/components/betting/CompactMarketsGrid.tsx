@@ -9,8 +9,12 @@ interface CompactMarketsGridProps {
   selectedMarketId: number | null
 }
 
-const formatOdds = (decimal: string, american: number) => {
-  return `${parseFloat(decimal).toFixed(2)} (${american > 0 ? '+' : ''}${american})`
+const formatOdds = (decimal: number) => {
+  // Convert decimal odds to American odds
+  const american = decimal >= 2
+    ? Math.round((decimal - 1) * 100)
+    : Math.round(-100 / (decimal - 1))
+  return `${decimal.toFixed(2)} (${american > 0 ? '+' : ''}${american})`
 }
 
 const getMarketTypeBadge = (marketType: string) => {
@@ -69,7 +73,7 @@ export function CompactMarketsGrid({
             // Format odds inline (e.g., "2.05 (+104) | 1.85 (-118)")
             const oddsText = odds.length > 0
               ? odds
-                  .map((odd) => formatOdds(odd.odds_decimal, odd.odds_american))
+                  .map((odd) => formatOdds(odd.odds))
                   .join(' | ')
               : 'N/A'
 
@@ -87,7 +91,7 @@ export function CompactMarketsGrid({
                   <div className="flex items-center gap-2">
                     {getMarketTypeBadge(market.market_type)}
                     <span className="text-xs text-gray-200 truncate">
-                      {market.market_name}
+                      {market.selection}{market.line !== null ? ` (${market.line > 0 ? '+' : ''}${market.line})` : ''}
                     </span>
                   </div>
                 </td>

@@ -71,11 +71,11 @@ export function CompactEventsList({
           events.map((event) => (
             <button
               key={event.event_id}
-              onClick={() => onSelectEvent(event.event_id)}
+              onClick={() => onSelectEvent(String(event.event_id))}
               className={`
                 w-full px-3 py-2 text-left text-xs transition-all duration-200
                 hover:bg-gray-700/30 cursor-pointer
-                ${selectedEventId === event.event_id
+                ${selectedEventId === String(event.event_id)
                   ? 'bg-blue-600/20 border-l-4 border-blue-500'
                   : 'border-l-4 border-transparent'
                 }
@@ -83,11 +83,11 @@ export function CompactEventsList({
             >
               <div className="flex items-center gap-2 flex-wrap">
                 {/* Status Badge */}
-                {getStatusBadge(event.game_status)}
+                {getStatusBadge(event.status)}
 
                 {/* Teams */}
                 <span className="font-bold text-white">
-                  {event.away_abbr} @ {event.home_abbr}
+                  {event.away_team} @ {event.home_team}
                 </span>
 
                 {/* Separator */}
@@ -95,7 +95,7 @@ export function CompactEventsList({
 
                 {/* Time */}
                 <span className="text-gray-300">
-                  {formatTime(event.event_start_time)}
+                  {formatTime(event.game_time)}
                 </span>
 
                 {/* Separator */}
@@ -103,7 +103,7 @@ export function CompactEventsList({
 
                 {/* Date */}
                 <span className="text-gray-400">
-                  {formatDate(event.game_date)}
+                  {formatDate(event.game_time)}
                 </span>
               </div>
             </button>

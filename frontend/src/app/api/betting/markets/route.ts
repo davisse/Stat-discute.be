@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     const markets = await getMarketsByEvent(
-      eventId,
+      parseInt(eventId, 10),
       marketType === 'all' ? undefined : marketType
     )
 

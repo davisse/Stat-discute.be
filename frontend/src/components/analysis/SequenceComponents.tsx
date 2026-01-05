@@ -40,26 +40,26 @@ export function AnalysisStatCard({
   const variationColor = {
     positive: COLORS.positive,
     negative: COLORS.negative,
-    neutral: colors.gray[500],
+    neutral: colors.neutral[500],
   }
 
   return (
     <div
       className="p-4 rounded-lg text-center"
       style={{
-        backgroundColor: colors.gray[900],
-        border: `1px solid ${colors.gray[800]}`,
+        backgroundColor: colors.neutral[900],
+        border: `1px solid ${colors.neutral[800]}`,
       }}
     >
       <div
         className={`${sizeStyles[size].value} font-bold font-mono`}
-        style={{ color: colors.foreground }}
+        style={{ color: colors.text.primary }}
       >
         {value}
       </div>
       <div
         className={`${sizeStyles[size].label} uppercase tracking-wider mt-1`}
-        style={{ color: colors.gray[500] }}
+        style={{ color: colors.neutral[500] }}
       >
         {label}
       </div>
@@ -115,7 +115,7 @@ export function TrendBar({ results, showDiff = true }: TrendBarProps) {
       </div>
       <div
         className="text-sm text-center"
-        style={{ color: colors.gray[400] }}
+        style={{ color: colors.neutral[400] }}
       >
         {overCount}-{underCount} {overCount > underCount ? 'OVER' : 'UNDER'} sur {results.length} matchs
       </div>
@@ -150,7 +150,7 @@ export function DistributionBar({
     <div className="space-y-2">
       <div
         className="text-xs uppercase tracking-wider"
-        style={{ color: colors.gray[500] }}
+        style={{ color: colors.neutral[500] }}
       >
         {label}
       </div>
@@ -163,7 +163,7 @@ export function DistributionBar({
         </span>
         <div
           className="flex-1 h-3 rounded-full overflow-hidden"
-          style={{ backgroundColor: colors.gray[800] }}
+          style={{ backgroundColor: colors.neutral[800] }}
         >
           <div
             className="h-full rounded-full"
@@ -219,7 +219,7 @@ export function FactorsList({ overFactors, underFactors }: FactorsListProps) {
             <li
               key={index}
               className="flex items-start gap-2 text-sm"
-              style={{ color: colors.gray[400] }}
+              style={{ color: colors.neutral[400] }}
             >
               <span style={{ color: COLORS.positive }}>+</span>
               {factor}
@@ -247,7 +247,7 @@ export function FactorsList({ overFactors, underFactors }: FactorsListProps) {
             <li
               key={index}
               className="flex items-start gap-2 text-sm"
-              style={{ color: colors.gray[400] }}
+              style={{ color: colors.neutral[400] }}
             >
               <span style={{ color: COLORS.negative }}>-</span>
               {factor}
@@ -295,7 +295,7 @@ export function InjuryStatus({ players }: InjuryStatusProps) {
   return (
     <div
       className="rounded-lg overflow-hidden"
-      style={{ border: `1px solid ${colors.gray[800]}` }}
+      style={{ border: `1px solid ${colors.neutral[800]}` }}
     >
       {players.map((player, index) => {
         const config = statusConfig[player.status]
@@ -304,8 +304,8 @@ export function InjuryStatus({ players }: InjuryStatusProps) {
             key={index}
             className="flex items-center justify-between px-4 py-3"
             style={{
-              backgroundColor: index % 2 === 0 ? colors.gray[900] : colors.gray[950],
-              borderBottom: index < players.length - 1 ? `1px solid ${colors.gray[800]}` : undefined,
+              backgroundColor: index % 2 === 0 ? colors.neutral[900] : colors.neutral[950],
+              borderBottom: index < players.length - 1 ? `1px solid ${colors.neutral[800]}` : undefined,
             }}
           >
             <div className="flex items-center gap-3">
@@ -318,7 +318,7 @@ export function InjuryStatus({ players }: InjuryStatusProps) {
               >
                 {config.icon}
               </span>
-              <span style={{ color: colors.foreground }}>{player.name}</span>
+              <span style={{ color: colors.text.primary }}>{player.name}</span>
             </div>
             <div className="flex items-center gap-4">
               <span
@@ -330,7 +330,7 @@ export function InjuryStatus({ players }: InjuryStatusProps) {
               {player.impact && (
                 <span
                   className="text-sm font-mono"
-                  style={{ color: colors.gray[500] }}
+                  style={{ color: colors.neutral[500] }}
                 >
                   {player.impact}
                 </span>
@@ -358,21 +358,21 @@ export function MatchupHeader({ awayTeam, homeTeam, line, lineType }: MatchupHea
     <div className="text-center py-8">
       <div
         className="text-3xl font-bold mb-2"
-        style={{ color: colors.foreground }}
+        style={{ color: colors.text.primary }}
       >
-        {awayTeam} <span style={{ color: colors.gray[600] }}>@</span> {homeTeam}
+        {awayTeam} <span style={{ color: colors.neutral[600] }}>@</span> {homeTeam}
       </div>
       <div
         className="inline-block px-6 py-2 rounded-full"
         style={{
-          backgroundColor: colors.gray[900],
-          border: `1px solid ${colors.gray[700]}`,
+          backgroundColor: colors.neutral[900],
+          border: `1px solid ${colors.neutral[700]}`,
         }}
       >
-        <span style={{ color: colors.gray[400] }}>{lineType}</span>
+        <span style={{ color: colors.neutral[400] }}>{lineType}</span>
         <span
           className="ml-2 font-mono font-bold text-xl"
-          style={{ color: colors.foreground }}
+          style={{ color: colors.text.primary }}
         >
           {line}
         </span>
@@ -423,15 +423,15 @@ export function AnimatedChart({
           className="absolute left-0 right-0 border-t-2 border-dashed"
           style={{
             bottom: `${((threshold - paddedMin) / paddedRange) * 100}%`,
-            borderColor: colors.gray[600],
-            transition: animate ? `bottom ${transitions.slow}` : undefined,
+            borderColor: colors.neutral[600],
+            transition: animate ? `bottom ${transitions.duration.slow} ${transitions.easing.inOut}` : undefined,
           }}
         >
           <span
             className="absolute right-0 -top-5 text-xs font-mono px-2 py-0.5 rounded"
             style={{
-              backgroundColor: colors.gray[900],
-              color: colors.gray[400],
+              backgroundColor: colors.neutral[900],
+              color: colors.neutral[400],
             }}
           >
             {threshold}
@@ -460,7 +460,7 @@ export function AnimatedChart({
               />
               <span
                 className="mt-2 text-xs"
-                style={{ color: colors.gray[500] }}
+                style={{ color: colors.neutral[500] }}
               >
                 {item.label}
               </span>
@@ -491,7 +491,7 @@ export function ConfidenceIndicator({
     <div className="flex items-center gap-3">
       <span
         className="text-xs uppercase tracking-wider"
-        style={{ color: colors.gray[500] }}
+        style={{ color: colors.neutral[500] }}
       >
         {label}:
       </span>
@@ -501,14 +501,14 @@ export function ConfidenceIndicator({
             key={i}
             className="w-3 h-3 rounded-sm"
             style={{
-              backgroundColor: i < filledBlocks ? colors.foreground : colors.gray[800],
+              backgroundColor: i < filledBlocks ? colors.text.primary : colors.neutral[800],
             }}
           />
         ))}
       </div>
       <span
         className="text-sm font-mono"
-        style={{ color: colors.gray[400] }}
+        style={{ color: colors.neutral[400] }}
       >
         {percent}%
       </span>

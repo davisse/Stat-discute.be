@@ -62,11 +62,11 @@ export function HeadToHeadHistory({
   if (isLoading) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         Loading head-to-head history...
       </div>
@@ -76,11 +76,11 @@ export function HeadToHeadHistory({
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         No head-to-head games found
       </div>
@@ -105,14 +105,14 @@ export function HeadToHeadHistory({
       }}>
         {/* Average Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -120,17 +120,17 @@ export function HeadToHeadHistory({
             AVERAGE (LAST {games.length} H2H)
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: average < bettingLine ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: average < bettingLine ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {average.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Combined Total
           </div>
@@ -138,14 +138,14 @@ export function HeadToHeadHistory({
 
         {/* Trend Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -159,47 +159,47 @@ export function HeadToHeadHistory({
             marginBottom: spacing[1]
           }}>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: colors.positive,
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
+              color: colors.betting.positive,
+              fontFamily: typography.fonts.mono
             }}>
               {gamesUnder}
             </div>
             <div style={{
-              fontSize: typography.fontSize.xl,
-              color: colors.gray[500],
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes.xl,
+              color: colors.neutral[500],
+              fontFamily: typography.fonts.mono
             }}>
               /
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: colors.negative,
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
+              color: colors.betting.negative,
+              fontFamily: typography.fonts.mono
             }}>
               {gamesOver}
             </div>
             <div style={{
-              fontSize: typography.fontSize.xl,
-              color: colors.gray[500],
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes.xl,
+              color: colors.neutral[500],
+              fontFamily: typography.fonts.mono
             }}>
               /
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: colors.gray[400],
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
+              color: colors.neutral[400],
+              fontFamily: typography.fonts.mono
             }}>
               {gamesPush}
             </div>
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             vs {Number(bettingLine).toFixed(1)} line
           </div>
@@ -208,16 +208,16 @@ export function HeadToHeadHistory({
 
       {/* Games Table */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[4],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           {team1Abbr} vs {team2Abbr} Recent Matchups
         </div>
@@ -230,14 +230,14 @@ export function HeadToHeadHistory({
           }}>
             <thead>
               <tr style={{
-                borderBottom: `1px solid ${colors.gray[900]}`
+                borderBottom: `1px solid ${colors.neutral[900]}`
               }}>
                 <th style={{
                   textAlign: 'left',
                   padding: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  fontWeight: typography.fontWeight.semibold,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.neutral[400],
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em'
                 }}>
@@ -246,9 +246,9 @@ export function HeadToHeadHistory({
                 <th style={{
                   textAlign: 'left',
                   padding: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  fontWeight: typography.fontWeight.semibold,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.neutral[400],
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em'
                 }}>
@@ -257,9 +257,9 @@ export function HeadToHeadHistory({
                 <th style={{
                   textAlign: 'center',
                   padding: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  fontWeight: typography.fontWeight.semibold,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.neutral[400],
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em'
                 }}>
@@ -268,9 +268,9 @@ export function HeadToHeadHistory({
                 <th style={{
                   textAlign: 'center',
                   padding: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  fontWeight: typography.fontWeight.semibold,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.neutral[400],
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em'
                 }}>
@@ -279,9 +279,9 @@ export function HeadToHeadHistory({
                 <th style={{
                   textAlign: 'center',
                   padding: spacing[3],
-                  fontSize: typography.fontSize.xs,
-                  fontWeight: typography.fontWeight.semibold,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.neutral[400],
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em'
                 }}>
@@ -301,41 +301,41 @@ export function HeadToHeadHistory({
                   <tr
                     key={index}
                     style={{
-                      borderBottom: index < games.length - 1 ? `1px solid ${colors.gray[900]}` : 'none'
+                      borderBottom: index < games.length - 1 ? `1px solid ${colors.neutral[900]}` : 'none'
                     }}
                   >
                     <td style={{
                       padding: spacing[3],
-                      fontSize: typography.fontSize.sm,
-                      color: colors.gray[400],
-                      fontFamily: typography.fontMono
+                      fontSize: typography.sizes.sm,
+                      color: colors.neutral[400],
+                      fontFamily: typography.fonts.mono
                     }}>
                       {dateStr}
                     </td>
                     <td style={{
                       padding: spacing[3],
-                      fontSize: typography.fontSize.sm,
-                      color: colors.foreground,
-                      fontWeight: typography.fontWeight.medium
+                      fontSize: typography.sizes.sm,
+                      color: colors.text.primary,
+                      fontWeight: typography.weights.medium
                     }}>
                       {game.home_team_abbr} vs {game.away_team_abbr}
                     </td>
                     <td style={{
                       padding: spacing[3],
-                      fontSize: typography.fontSize.sm,
-                      color: colors.gray[400],
+                      fontSize: typography.sizes.sm,
+                      color: colors.neutral[400],
                       textAlign: 'center',
-                      fontFamily: typography.fontMono
+                      fontFamily: typography.fonts.mono
                     }}>
                       {game.home_team_score}-{game.away_team_score}
                     </td>
                     <td style={{
                       padding: spacing[3],
-                      fontSize: typography.fontSize.sm,
-                      color: colors.foreground,
+                      fontSize: typography.sizes.sm,
+                      color: colors.text.primary,
                       textAlign: 'center',
-                      fontWeight: typography.fontWeight.bold,
-                      fontFamily: typography.fontMono
+                      fontWeight: typography.weights.bold,
+                      fontFamily: typography.fonts.mono
                     }}>
                       {game.combined_total}
                     </td>
@@ -347,10 +347,10 @@ export function HeadToHeadHistory({
                         display: 'inline-block',
                         padding: `${spacing[1]} ${spacing[3]}`,
                         borderRadius: radius.sm,
-                        fontSize: typography.fontSize.xs,
-                        fontWeight: typography.fontWeight.bold,
-                        background: isUnder ? colors.positiveBg : isOver ? colors.negativeBg : colors.gray[800],
-                        color: isUnder ? colors.positive : isOver ? colors.negative : colors.gray[400]
+                        fontSize: typography.sizes.xs,
+                        fontWeight: typography.weights.bold,
+                        background: isUnder ? `${colors.betting.positive}20` : isOver ? `${colors.betting.negative}20` : colors.neutral[800],
+                        color: isUnder ? colors.betting.positive : isOver ? colors.betting.negative : colors.neutral[400]
                       }}>
                         {isUnder ? 'UNDER' : isOver ? 'OVER' : 'PUSH'}
                       </span>
@@ -367,31 +367,31 @@ export function HeadToHeadHistory({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Head-to-Head Analysis:</strong> In the last {games.length} matchups between {team1Abbr} and {team2Abbr},
         {' '}games averaged{' '}
-        <span style={{ color: colors.foreground, fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ color: colors.text.primary, fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {average.toFixed(1)} combined points
         </span>.
         {' '}{gamesUnder}/{games.length} games went UNDER{' '}
-        <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {Number(bettingLine).toFixed(1)}
         </span>
         {' '}({hitRate.toFixed(0)}% hit rate).
         {' '}
         {hitRate === 100 ? (
-          <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>Perfect UNDER record</span>
+          <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>Perfect UNDER record</span>
         ) : hitRate >= 75 ? (
-          <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>Strong UNDER trend</span>
+          <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>Strong UNDER trend</span>
         ) : hitRate >= 50 ? (
-          <span style={{ color: colors.foreground, fontWeight: typography.fontWeight.semibold }}>Moderate UNDER lean</span>
+          <span style={{ color: colors.text.primary, fontWeight: typography.weights.semibold }}>Moderate UNDER lean</span>
         ) : (
-          <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>Favors OVER</span>
+          <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>Favors OVER</span>
         )}
       </div>
     </div>

@@ -12,23 +12,23 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[12],
         textAlign: 'center'
       }}>
         <div style={{ fontSize: '48px', marginBottom: spacing[4] }}>📋</div>
         <div style={{
-          fontSize: typography.fontSize.lg,
-          color: colors.foreground,
+          fontSize: typography.sizes.lg,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
           No games to display
         </div>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           Select a team to view game details
         </div>
@@ -38,17 +38,17 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[800]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[800]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       overflowX: 'auto'
     }}>
       {/* Table Title */}
       <h3 style={{
-        fontSize: typography.fontSize.xl,
-        fontWeight: typography.fontWeight.semibold,
-        color: colors.foreground,
+        fontSize: typography.sizes.xl,
+        fontWeight: typography.weights.semibold,
+        color: colors.text.primary,
         marginBottom: spacing[6]
       }}>
         Game Details
@@ -57,19 +57,19 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
       <table style={{
         width: '100%',
         borderCollapse: 'collapse',
-        fontFamily: typography.fontSans
+        fontFamily: typography.fonts.sans
       }}>
         <thead>
           <tr style={{
-            background: colors.gray[900],
-            borderBottom: `1px solid ${colors.gray[800]}`
+            background: colors.neutral[900],
+            borderBottom: `1px solid ${colors.neutral[800]}`
           }}>
             <th style={{
               padding: spacing[3],
               textAlign: 'left',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -78,9 +78,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'left',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -89,9 +89,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'center',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -100,9 +100,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'right',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -111,9 +111,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'right',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -122,9 +122,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'center',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -133,9 +133,9 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
             <th style={{
               padding: spacing[3],
               textAlign: 'right',
-              fontSize: typography.fontSize.xs,
-              fontWeight: typography.fontWeight.medium,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              fontWeight: typography.weights.medium,
+              color: colors.neutral[400],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}>
@@ -145,17 +145,19 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
         </thead>
         <tbody>
           {games.map((game) => {
-            const isAboveAvg = game.opponent_score > avgOpponentPpg
+            const isAboveAvg = game.points_allowed > avgOpponentPpg
+            const result = game.team_points > game.points_allowed ? 'W' : 'L'
+            const pointDiff = game.team_points - game.points_allowed
 
             return (
               <tr
                 key={game.game_id}
                 style={{
-                  borderBottom: `1px solid ${colors.gray[800]}`,
+                  borderBottom: `1px solid ${colors.neutral[800]}`,
                   transition: '150ms ease-out'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = colors.gray[900]
+                  e.currentTarget.style.background = colors.neutral[900]
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent'
@@ -164,8 +166,8 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
                 {/* Date */}
                 <td style={{
                   padding: spacing[3],
-                  fontSize: typography.fontSize.sm,
-                  color: colors.gray[400]
+                  fontSize: typography.sizes.sm,
+                  color: colors.neutral[400]
                 }}>
                   {new Date(game.game_date).toLocaleDateString('en-US', {
                     month: 'short',
@@ -177,29 +179,24 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
                 {/* Opponent */}
                 <td style={{
                   padding: spacing[3],
-                  fontSize: typography.fontSize.sm,
-                  color: colors.foreground
+                  fontSize: typography.sizes.sm,
+                  color: colors.text.primary
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>
-                    <span style={{
-                      fontFamily: typography.fontMono,
-                      fontWeight: typography.fontWeight.semibold,
-                      fontSize: typography.fontSize.xs,
-                      color: colors.gray[500]
-                    }}>
-                      {game.opponent_abbr}
-                    </span>
-                    <span>{game.opponent_full_name}</span>
-                  </div>
+                  <span style={{
+                    fontFamily: typography.fonts.mono,
+                    fontWeight: typography.weights.semibold
+                  }}>
+                    {game.opponent}
+                  </span>
                 </td>
 
                 {/* Location */}
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'center',
-                  fontSize: typography.fontSize.sm,
-                  fontFamily: typography.fontMono,
-                  color: colors.gray[400]
+                  fontSize: typography.sizes.sm,
+                  fontFamily: typography.fonts.mono,
+                  color: colors.neutral[400]
                 }}>
                   {game.location === 'HOME' ? 'Home' : 'Away'}
                 </td>
@@ -208,23 +205,23 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'right',
-                  fontSize: typography.fontSize.sm,
-                  fontFamily: typography.fontMono,
-                  color: colors.foreground
+                  fontSize: typography.sizes.sm,
+                  fontFamily: typography.fonts.mono,
+                  color: colors.text.primary
                 }}>
-                  {game.team_score}-{game.opponent_score}
+                  {game.team_points}-{game.points_allowed}
                 </td>
 
                 {/* Opponent Points */}
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'right',
-                  fontSize: typography.fontSize.sm,
-                  fontFamily: typography.fontMono,
-                  fontWeight: typography.fontWeight.semibold,
+                  fontSize: typography.sizes.sm,
+                  fontFamily: typography.fonts.mono,
+                  fontWeight: typography.weights.semibold,
                   color: isAboveAvg ? colors.negative : colors.positive
                 }}>
-                  {game.opponent_score}
+                  {game.points_allowed}
                 </td>
 
                 {/* Result */}
@@ -236,15 +233,15 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
                     display: 'inline-block',
                     padding: `${spacing[1]} ${spacing[2]}`,
                     borderRadius: radius.sm,
-                    fontSize: typography.fontSize.xs,
-                    fontFamily: typography.fontMono,
-                    fontWeight: typography.fontWeight.semibold,
-                    background: game.result === 'W'
+                    fontSize: typography.sizes.xs,
+                    fontFamily: typography.fonts.mono,
+                    fontWeight: typography.weights.semibold,
+                    background: result === 'W'
                       ? 'rgba(16, 185, 129, 0.1)'
                       : 'rgba(239, 68, 68, 0.1)',
-                    color: game.result === 'W' ? colors.positive : colors.negative
+                    color: result === 'W' ? colors.positive : colors.negative
                   }}>
-                    {game.result}
+                    {result}
                   </span>
                 </td>
 
@@ -252,11 +249,11 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
                 <td style={{
                   padding: spacing[3],
                   textAlign: 'right',
-                  fontSize: typography.fontSize.sm,
-                  fontFamily: typography.fontMono,
-                  color: game.point_diff > 0 ? colors.positive : game.point_diff < 0 ? colors.negative : colors.gray[400]
+                  fontSize: typography.sizes.sm,
+                  fontFamily: typography.fonts.mono,
+                  color: pointDiff > 0 ? colors.positive : pointDiff < 0 ? colors.negative : colors.neutral[400]
                 }}>
-                  {game.point_diff > 0 ? '+' : ''}{game.point_diff}
+                  {pointDiff > 0 ? '+' : ''}{pointDiff}
                 </td>
               </tr>
             )
@@ -268,26 +265,26 @@ export function GameDetailsTable({ games, avgOpponentPpg }: GameDetailsTableProp
       <div style={{
         marginTop: spacing[6],
         paddingTop: spacing[4],
-        borderTop: `1px solid ${colors.gray[800]}`,
+        borderTop: `1px solid ${colors.neutral[800]}`,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           Showing {games.length} game{games.length !== 1 ? 's' : ''}
         </div>
 
         <div style={{
-          fontSize: typography.fontSize.sm,
-          fontFamily: typography.fontMono,
-          color: colors.gray[400]
+          fontSize: typography.sizes.sm,
+          fontFamily: typography.fonts.mono,
+          color: colors.neutral[400]
         }}>
           Avg Opponent PPG: <span style={{
-            fontWeight: typography.fontWeight.semibold,
-            color: colors.foreground
+            fontWeight: typography.weights.semibold,
+            color: colors.text.primary
           }}>{avgOpponentPpg.toFixed(1)}</span>
         </div>
       </div>

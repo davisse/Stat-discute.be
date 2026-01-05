@@ -13,6 +13,7 @@ interface Team {
   division?: string
 }
 
+
 // Group teams by conference and division
 const CONFERENCE_DIVISIONS = {
   East: ['Atlantic', 'Central', 'Southeast'],
@@ -24,9 +25,9 @@ export default function TeamsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
-  // Fetch teams on mount
+  // Fetch teams and rankings on mount
   useEffect(() => {
-    async function fetchTeams() {
+    async function fetchData() {
       try {
         const res = await fetch('/api/teams')
         const data = await res.json()
@@ -37,7 +38,7 @@ export default function TeamsPage() {
         setIsLoading(false)
       }
     }
-    fetchTeams()
+    fetchData()
   }, [])
 
   // Filter teams based on search query

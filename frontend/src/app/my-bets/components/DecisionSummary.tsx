@@ -28,9 +28,9 @@ export function DecisionSummary({
 
   // Confidence level indicators
   const getConfidenceColor = (level: number) => {
-    if (level >= 8) return colors.positive
-    if (level >= 6) return colors.foreground
-    return colors.negative
+    if (level >= 8) return colors.betting.positive
+    if (level >= 6) return colors.text.primary
+    return colors.betting.negative
   }
 
   const getConfidenceLabel = (level: number) => {
@@ -42,16 +42,16 @@ export function DecisionSummary({
 
   return (
     <div style={{
-      background: colors.background,
+      background: colors.background.card,
       padding: spacing[6],
       borderRadius: radius.md,
-      border: `2px solid ${colors.positive}`,
-      boxShadow: `0 0 20px ${colors.positive}20`
+      border: `2px solid ${colors.betting.positive}`,
+      boxShadow: `0 0 20px ${colors.betting.positive}20`
     }}>
       {/* Header */}
       <div style={{
-        fontSize: typography.fontSize.xs,
-        color: colors.gray[400],
+        fontSize: typography.sizes.xs,
+        color: colors.neutral[400],
         marginBottom: spacing[4],
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
@@ -66,19 +66,19 @@ export function DecisionSummary({
         marginBottom: spacing[6]
       }}>
         <div style={{
-          fontSize: typography.fontSize['4xl'],
-          fontWeight: typography.fontWeight.bold,
-          color: colors.positive,
-          fontFamily: typography.fontMono,
+          fontSize: typography.sizes['4xl'],
+          fontWeight: typography.weights.bold,
+          color: colors.betting.positive,
+          fontFamily: typography.fonts.mono,
           marginBottom: spacing[2]
         }}>
           {betSelection}
         </div>
         <div style={{
-          fontSize: typography.fontSize['2xl'],
-          color: colors.foreground,
-          fontFamily: typography.fontMono,
-          fontWeight: typography.fontWeight.semibold
+          fontSize: typography.sizes['2xl'],
+          color: colors.text.primary,
+          fontFamily: typography.fonts.mono,
+          fontWeight: typography.weights.semibold
         }}>
           {lineValueNum.toFixed(1)}
         </div>
@@ -91,13 +91,13 @@ export function DecisionSummary({
         gap: spacing[4],
         marginBottom: spacing[4],
         paddingBottom: spacing[4],
-        borderBottom: `1px solid ${colors.gray[900]}`
+        borderBottom: `1px solid ${colors.neutral[900]}`
       }}>
         {/* Odds */}
         <div style={{ textAlign: 'center' }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -105,16 +105,16 @@ export function DecisionSummary({
             Odds
           </div>
           <div style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
+            fontFamily: typography.fonts.mono
           }}>
             {oddsDecimalNum.toFixed(2)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             +{potentialProfit}%
           </div>
@@ -123,8 +123,8 @@ export function DecisionSummary({
         {/* Expected ROI */}
         <div style={{ textAlign: 'center' }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -132,16 +132,16 @@ export function DecisionSummary({
             Expected ROI
           </div>
           <div style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: expectedROINum > 0 ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: expectedROINum > 0 ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono
           }}>
             {expectedROINum > 0 ? '+' : ''}{expectedROINum.toFixed(1)}%
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Value bet
           </div>
@@ -150,8 +150,8 @@ export function DecisionSummary({
         {/* Confidence */}
         <div style={{ textAlign: 'center' }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -159,16 +159,16 @@ export function DecisionSummary({
             Confidence
           </div>
           <div style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
             color: getConfidenceColor(confidenceNum),
-            fontFamily: typography.fontMono
+            fontFamily: typography.fonts.mono
           }}>
             {confidenceNum}/10
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             {getConfidenceLabel(confidenceNum)}
           </div>
@@ -181,7 +181,7 @@ export function DecisionSummary({
       }}>
         <div style={{
           height: '8px',
-          background: colors.gray[900],
+          background: colors.neutral[900],
           borderRadius: radius.sm,
           overflow: 'hidden'
         }}>
@@ -196,22 +196,22 @@ export function DecisionSummary({
 
       {/* Summary Text */}
       <div style={{
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400],
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400],
         textAlign: 'center',
         lineHeight: 1.6
       }}>
         Strong value bet with{' '}
         <span style={{
-          color: colors.positive,
-          fontWeight: typography.fontWeight.semibold
+          color: colors.betting.positive,
+          fontWeight: typography.weights.semibold
         }}>
           {expectedROINum.toFixed(1)}% expected ROI
         </span>
         {' '}at {oddsDecimalNum.toFixed(2)} odds.{' '}
         <span style={{
           color: getConfidenceColor(confidenceNum),
-          fontWeight: typography.fontWeight.semibold
+          fontWeight: typography.weights.semibold
         }}>
           {getConfidenceLabel(confidenceNum)} confidence
         </span>

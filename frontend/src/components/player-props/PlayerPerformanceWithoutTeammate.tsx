@@ -9,24 +9,13 @@ import type { PlayerSplitsWithTeammate } from '@/lib/queries'
 /**
  * PlayerPerformanceWithoutTeammate Component
  *
- * Comparaison visuelle de la performance individuelle d'un joueur avec et sans un coéquipier spécifique.
- * Permet d'analyser les synergies et dépendances entre joueurs.
+ * Visual comparison of a player's individual performance with and without a specific teammate.
+ * Helps analyze synergies and dependencies between players.
  *
- * Philosophy: Identifier les combinaisons de joueurs qui maximisent la performance.
- * Design minimaliste avec focus sur les métriques avancées (Usage%, TS%).
- *
- * @param splits - Données de splits avec/sans coéquipier
- * @param variant - Layout: 'side-by-side' (2 colonnes) | 'stacked' (empilé)
- * @param highlightDifferences - Mettre en évidence les différences significatives
- * @param showAdvancedStats - Afficher les stats avancées (Usage%, TS%)
- *
- * @example
- * <PlayerPerformanceWithoutTeammate
- *   splits={splitsData}
- *   variant="side-by-side"
- *   highlightDifferences={true}
- *   showAdvancedStats={true}
- * />
+ * @param splits - Splits data with/without teammate
+ * @param variant - Layout: 'side-by-side' (2 columns) | 'stacked' (stacked)
+ * @param playerName - Name of the player being analyzed (optional display)
+ * @param teammateName - Name of the teammate (optional display)
  */
 
 const playerPerformanceVariants = cva('', {
@@ -46,17 +35,17 @@ export interface PlayerPerformanceWithoutTeammateProps
     VariantProps<typeof playerPerformanceVariants> {
   splits: PlayerSplitsWithTeammate | null
   variant?: 'side-by-side' | 'stacked'
-  highlightDifferences?: boolean
-  showAdvancedStats?: boolean
+  playerName?: string
+  teammateName?: string
 }
 
 /**
- * Indicateur de différence avec direction (plus élevé = meilleur)
+ * Performance delta indicator
  */
 function PerformanceDelta({ value, higherIsBetter = true }: { value: number; higherIsBetter?: boolean }) {
-  if (value === 0) {
+  if (Math.abs(value) < 0.1) {
     return (
-      <span className="text-[var(--color-gray-600)] text-[var(--text-xs)]">
+      <span className="text-gray-600 text-xs">
         —
       </span>
     )
@@ -68,58 +57,42 @@ function PerformanceDelta({ value, higherIsBetter = true }: { value: number; hig
   const colorClass = isBetter ? 'text-green-400' : 'text-red-400'
 
   return (
-    <span className={cn('font-[family-name:var(--font-mono)] text-[var(--text-xs)] font-[var(--font-semibold)]', colorClass)}>
+    <span className={cn('font-mono text-xs font-semibold', colorClass)}>
       {arrow} {Math.abs(value).toFixed(1)}
     </span>
   )
 }
 
 /**
- * Row de statistique pour comparaison side-by-side
+ * Stat comparison row for side-by-side layout
  */
 function StatComparisonRow({
   label,
   withValue,
   withoutValue,
-  difference,
-  highlightDifferences,
-  higherIsBetter,
+  higherIsBetter = true,
 }: {
   label: string
   withValue: number
   withoutValue: number
-  difference: number
-  highlightDifferences?: boolean
   higherIsBetter?: boolean
 }) {
-  const threshold = label.includes('%') ? 3 : 2
-  const isSignificant = highlightDifferences && Math.abs(difference) > threshold
-  const isBetter = higherIsBetter ? difference > 0 : difference < 0
+  const difference = withValue - withoutValue
 
   return (
-    <div className="grid grid-cols-[1fr_auto_auto_auto] gap-[var(--space-4)] items-center py-[var(--space-3)] border-b border-[var(--color-gray-800)] last:border-b-0">
+    <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center py-3 border-b border-gray-800 last:border-b-0">
       {/* Label */}
-      <div className="text-[var(--text-sm)] text-[var(--color-gray-400)]">
+      <div className="text-sm text-gray-400">
         {label}
       </div>
 
       {/* With Teammate Value */}
-      <div
-        className={cn(
-          'font-[family-name:var(--font-mono)] text-[var(--text-base)] text-white font-[var(--font-semibold)] text-right min-w-[60px]',
-          isSignificant && isBetter && 'text-green-400'
-        )}
-      >
+      <div className="font-mono text-base text-white font-semibold text-right min-w-[60px]">
         {withValue.toFixed(1)}
       </div>
 
       {/* Without Teammate Value */}
-      <div
-        className={cn(
-          'font-[family-name:var(--font-mono)] text-[var(--text-base)] text-[var(--color-gray-500)] text-right min-w-[60px]',
-          isSignificant && !isBetter && 'text-red-400'
-        )}
-      >
+      <div className="font-mono text-base text-gray-500 text-right min-w-[60px]">
         {withoutValue.toFixed(1)}
       </div>
 
@@ -132,279 +105,139 @@ function StatComparisonRow({
 }
 
 /**
- * Card de statistiques pour une colonne (avec ou sans coéquipier)
+ * Stat card for a single scenario (with/without)
  */
-function PerformanceColumn({
+function PerformanceCard({
   title,
-  stats,
+  games,
+  pts,
+  usage,
   isPrimary,
-  showAdvancedStats,
 }: {
   title: string
-  stats: {
-    games: number
-    minutes_avg: number
-    points_avg: number
-    rebounds_avg: number
-    assists_avg: number
-    fg_pct: number
-    fg3_pct: number
-    ft_pct: number
-    usage_rate: number
-    true_shooting_pct: number
-  }
+  games: number
+  pts: number
+  usage: number
   isPrimary: boolean
-  showAdvancedStats?: boolean
 }) {
   return (
-    <div className="space-y-[var(--space-4)]">
+    <div className="space-y-4">
       {/* Header */}
-      <div className="text-center pb-[var(--space-3)] border-b border-[var(--color-gray-800)]">
+      <div className="text-center pb-3 border-b border-gray-800">
         <div className={cn(
-          'text-[var(--text-sm)] uppercase tracking-wider mb-[var(--space-2)]',
-          isPrimary ? 'text-white' : 'text-[var(--color-gray-400)]'
+          'text-sm uppercase tracking-wider mb-2',
+          isPrimary ? 'text-white' : 'text-gray-400'
         )}>
           {title}
         </div>
-        <div className="space-y-[var(--space-1)]">
+        <div className="space-y-1">
           <div className={cn(
-            'font-[family-name:var(--font-mono)] text-[var(--text-2xl)] font-[var(--font-bold)]',
-            isPrimary ? 'text-white' : 'text-[var(--color-gray-500)]'
+            'font-mono text-2xl font-bold',
+            isPrimary ? 'text-white' : 'text-gray-500'
           )}>
-            {stats.points_avg.toFixed(1)}
+            {pts.toFixed(1)}
           </div>
           <div className={cn(
-            'text-[var(--text-xs)]',
-            isPrimary ? 'text-[var(--color-gray-400)]' : 'text-[var(--color-gray-600)]'
+            'text-xs',
+            isPrimary ? 'text-gray-400' : 'text-gray-600'
           )}>
-            PPG • {stats.games} games
+            PPG • {games} games
           </div>
         </div>
       </div>
 
-      {/* Basic Stats */}
-      <div className="space-y-[var(--space-3)]">
-        <ColumnStatItem label="Minutes" value={stats.minutes_avg} isPrimary={isPrimary} />
-        <ColumnStatItem label="Rebounds" value={stats.rebounds_avg} isPrimary={isPrimary} />
-        <ColumnStatItem label="Assists" value={stats.assists_avg} isPrimary={isPrimary} />
-        <ColumnStatItem label="FG%" value={stats.fg_pct} isPrimary={isPrimary} suffix="%" />
-        <ColumnStatItem label="3P%" value={stats.fg3_pct} isPrimary={isPrimary} suffix="%" />
-        <ColumnStatItem label="FT%" value={stats.ft_pct} isPrimary={isPrimary} suffix="%" />
-      </div>
-
-      {/* Advanced Stats */}
-      {showAdvancedStats && (
-        <div className="pt-[var(--space-3)] border-t border-[var(--color-gray-800)] space-y-[var(--space-3)]">
-          <ColumnStatItem label="Usage%" value={stats.usage_rate} isPrimary={isPrimary} suffix="%" />
-          <ColumnStatItem label="True Shooting%" value={stats.true_shooting_pct} isPrimary={isPrimary} suffix="%" />
+      {/* Stats */}
+      <div className="space-y-3">
+        <div className="flex justify-between items-center">
+          <span className={cn(
+            'text-sm',
+            isPrimary ? 'text-gray-400' : 'text-gray-600'
+          )}>
+            Usage Rate
+          </span>
+          <span className={cn(
+            'font-mono text-base font-semibold',
+            isPrimary ? 'text-white' : 'text-gray-500'
+          )}>
+            {usage.toFixed(1)}%
+          </span>
         </div>
-      )}
-    </div>
-  )
-}
-
-/**
- * Item de statistique dans une colonne
- */
-function ColumnStatItem({
-  label,
-  value,
-  isPrimary,
-  suffix,
-}: {
-  label: string
-  value: number
-  isPrimary: boolean
-  suffix?: string
-}) {
-  return (
-    <div className="flex justify-between items-center">
-      <span className={cn(
-        'text-[var(--text-sm)]',
-        isPrimary ? 'text-[var(--color-gray-400)]' : 'text-[var(--color-gray-600)]'
-      )}>
-        {label}
-      </span>
-      <span className={cn(
-        'font-[family-name:var(--font-mono)] text-[var(--text-base)] font-[var(--font-semibold)]',
-        isPrimary ? 'text-white' : 'text-[var(--color-gray-500)]'
-      )}>
-        {value.toFixed(1)}
-        {suffix}
-      </span>
-    </div>
-  )
-}
-
-/**
- * Header du composant avec info joueur/coéquipier
- */
-function SplitsHeader({ splits }: { splits: PlayerSplitsWithTeammate }) {
-  return (
-    <div className="mb-[var(--space-6)] pb-[var(--space-4)] border-b border-[var(--color-gray-800)]">
-      <h3 className="text-[var(--text-lg)] text-white font-[var(--font-semibold)]">
-        Player Performance Analysis
-      </h3>
-      <div className="flex items-center gap-[var(--space-2)] mt-[var(--space-2)] text-[var(--text-sm)]">
-        <span className="text-white font-[var(--font-semibold)]">
-          {splits.player_name}
-        </span>
-        <span className="text-[var(--color-gray-600)]">•</span>
-        <span className="text-[var(--color-gray-400)]">With/Without</span>
-        <span className="text-white font-[var(--font-semibold)]">
-          {splits.teammate_name}
-        </span>
-        <span className="text-[var(--color-gray-600)]">•</span>
-        <span className="text-[var(--color-gray-400)]">{splits.team_abbreviation}</span>
       </div>
-      <p className="text-[var(--text-sm)] text-[var(--color-gray-500)] mt-[var(--space-2)]">
-        How player performance changes with/without teammate
-      </p>
     </div>
   )
 }
 
 /**
- * Layout side-by-side (table format)
+ * Side-by-side layout
  */
-function SideBySideLayout({
-  splits,
-  highlightDifferences,
-  showAdvancedStats,
-}: {
-  splits: PlayerSplitsWithTeammate
-  highlightDifferences?: boolean
-  showAdvancedStats?: boolean
-}) {
+function SideBySideLayout({ splits }: { splits: PlayerSplitsWithTeammate }) {
   return (
-    <div className="space-y-[var(--space-6)]">
+    <div className="space-y-6">
       {/* Column Headers */}
-      <div className="grid grid-cols-[1fr_auto_auto_auto] gap-[var(--space-4)] items-center pb-[var(--space-2)] border-b border-[var(--color-gray-700)]">
-        <div className="text-[var(--text-sm)] text-[var(--color-gray-500)] uppercase tracking-wider">
+      <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center pb-2 border-b border-gray-700">
+        <div className="text-sm text-gray-500 uppercase tracking-wider">
           Metric
         </div>
-        <div className="text-[var(--text-sm)] text-white uppercase tracking-wider text-right min-w-[60px]">
+        <div className="text-sm text-white uppercase tracking-wider text-right min-w-[60px]">
           With
         </div>
-        <div className="text-[var(--text-sm)] text-[var(--color-gray-500)] uppercase tracking-wider text-right min-w-[60px]">
+        <div className="text-sm text-gray-500 uppercase tracking-wider text-right min-w-[60px]">
           Without
         </div>
-        <div className="text-[var(--text-sm)] text-[var(--color-gray-500)] uppercase tracking-wider text-right min-w-[50px]">
+        <div className="text-sm text-gray-500 uppercase tracking-wider text-right min-w-[50px]">
           Diff
         </div>
       </div>
 
-      {/* Basic Stats */}
+      {/* Stats */}
       <div>
         <StatComparisonRow
           label="Points"
-          withValue={splits.with_teammate.points_avg}
-          withoutValue={splits.without_teammate.points_avg}
-          difference={splits.difference.points_diff}
-          highlightDifferences={highlightDifferences}
+          withValue={splits.with_teammate_pts}
+          withoutValue={splits.without_teammate_pts}
           higherIsBetter={true}
         />
         <StatComparisonRow
-          label="Minutes"
-          withValue={splits.with_teammate.minutes_avg}
-          withoutValue={splits.without_teammate.minutes_avg}
-          difference={splits.with_teammate.minutes_avg - splits.without_teammate.minutes_avg}
-          highlightDifferences={highlightDifferences}
-          higherIsBetter={true}
-        />
-        <StatComparisonRow
-          label="Rebounds"
-          withValue={splits.with_teammate.rebounds_avg}
-          withoutValue={splits.without_teammate.rebounds_avg}
-          difference={splits.with_teammate.rebounds_avg - splits.without_teammate.rebounds_avg}
-          highlightDifferences={highlightDifferences}
-          higherIsBetter={true}
-        />
-        <StatComparisonRow
-          label="Assists"
-          withValue={splits.with_teammate.assists_avg}
-          withoutValue={splits.without_teammate.assists_avg}
-          difference={splits.difference.assists_diff}
-          highlightDifferences={highlightDifferences}
-          higherIsBetter={true}
-        />
-        <StatComparisonRow
-          label="FG%"
-          withValue={splits.with_teammate.fg_pct}
-          withoutValue={splits.without_teammate.fg_pct}
-          difference={splits.with_teammate.fg_pct - splits.without_teammate.fg_pct}
-          highlightDifferences={highlightDifferences}
-          higherIsBetter={true}
-        />
-        <StatComparisonRow
-          label="3P%"
-          withValue={splits.with_teammate.fg3_pct}
-          withoutValue={splits.without_teammate.fg3_pct}
-          difference={splits.with_teammate.fg3_pct - splits.without_teammate.fg3_pct}
-          highlightDifferences={highlightDifferences}
-          higherIsBetter={true}
-        />
-        <StatComparisonRow
-          label="FT%"
-          withValue={splits.with_teammate.ft_pct}
-          withoutValue={splits.without_teammate.ft_pct}
-          difference={splits.with_teammate.ft_pct - splits.without_teammate.ft_pct}
-          highlightDifferences={highlightDifferences}
+          label="Usage Rate"
+          withValue={splits.with_teammate_usage}
+          withoutValue={splits.without_teammate_usage}
           higherIsBetter={true}
         />
       </div>
 
-      {/* Advanced Stats */}
-      {showAdvancedStats && (
-        <div className="pt-[var(--space-4)] border-t border-[var(--color-gray-800)]">
-          <StatComparisonRow
-            label="Usage Rate"
-            withValue={splits.with_teammate.usage_rate}
-            withoutValue={splits.without_teammate.usage_rate}
-            difference={splits.difference.usage_diff}
-            highlightDifferences={highlightDifferences}
-            higherIsBetter={true}
-          />
-          <StatComparisonRow
-            label="True Shooting%"
-            withValue={splits.with_teammate.true_shooting_pct}
-            withoutValue={splits.without_teammate.true_shooting_pct}
-            difference={splits.with_teammate.true_shooting_pct - splits.without_teammate.true_shooting_pct}
-            highlightDifferences={highlightDifferences}
-            higherIsBetter={true}
-          />
-        </div>
-      )}
-
       {/* Summary */}
-      <div className="pt-[var(--space-4)] border-t border-[var(--color-gray-800)]">
-        <div className="grid grid-cols-3 gap-[var(--space-4)] text-center">
+      <div className="pt-4 border-t border-gray-800">
+        <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-[var(--text-xs)] uppercase tracking-wider text-[var(--color-gray-400)] mb-[var(--space-1)]">
+            <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">
               Games With
             </div>
-            <div className="font-[family-name:var(--font-mono)] text-[var(--text-lg)] text-white font-[var(--font-bold)]">
-              {splits.with_teammate.games}
+            <div className="font-mono text-lg text-white font-bold">
+              {splits.with_teammate_games}
             </div>
           </div>
           <div>
-            <div className="text-[var(--text-xs)] uppercase tracking-wider text-[var(--color-gray-400)] mb-[var(--space-1)]">
+            <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">
               PPG Impact
             </div>
-            <div className={cn(
-              'font-[family-name:var(--font-mono)] text-[var(--text-lg)] font-[var(--font-bold)]',
-              splits.difference.points_diff > 0 ? 'text-green-400' : splits.difference.points_diff < 0 ? 'text-red-400' : 'text-[var(--color-gray-500)]'
-            )}>
-              {splits.difference.points_diff > 0 ? '+' : ''}
-              {splits.difference.points_diff.toFixed(1)}
-            </div>
+            {(() => {
+              const diff = splits.with_teammate_pts - splits.without_teammate_pts
+              return (
+                <div className={cn(
+                  'font-mono text-lg font-bold',
+                  diff > 0 ? 'text-green-400' : diff < 0 ? 'text-red-400' : 'text-gray-500'
+                )}>
+                  {diff > 0 ? '+' : ''}{diff.toFixed(1)}
+                </div>
+              )
+            })()}
           </div>
           <div>
-            <div className="text-[var(--text-xs)] uppercase tracking-wider text-[var(--color-gray-400)] mb-[var(--space-1)]">
+            <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">
               Games Without
             </div>
-            <div className="font-[family-name:var(--font-mono)] text-[var(--text-lg)] text-white font-[var(--font-bold)]">
-              {splits.without_teammate.games}
+            <div className="font-mono text-lg text-white font-bold">
+              {splits.without_teammate_games}
             </div>
           </div>
         </div>
@@ -414,32 +247,28 @@ function SideBySideLayout({
 }
 
 /**
- * Layout stacked (colonnes empilées)
+ * Stacked layout
  */
-function StackedLayout({
-  splits,
-  showAdvancedStats,
-}: {
-  splits: PlayerSplitsWithTeammate
-  showAdvancedStats?: boolean
-}) {
+function StackedLayout({ splits }: { splits: PlayerSplitsWithTeammate }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-6)]">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card variant="anthracite">
-        <PerformanceColumn
+        <PerformanceCard
           title="With Teammate"
-          stats={splits.with_teammate}
+          games={splits.with_teammate_games}
+          pts={splits.with_teammate_pts}
+          usage={splits.with_teammate_usage}
           isPrimary={true}
-          showAdvancedStats={showAdvancedStats}
         />
       </Card>
 
       <Card variant="anthracite">
-        <PerformanceColumn
+        <PerformanceCard
           title="Without Teammate"
-          stats={splits.without_teammate}
+          games={splits.without_teammate_games}
+          pts={splits.without_teammate_pts}
+          usage={splits.without_teammate_usage}
           isPrimary={false}
-          showAdvancedStats={showAdvancedStats}
         />
       </Card>
     </div>
@@ -455,8 +284,8 @@ export const PlayerPerformanceWithoutTeammate = React.forwardRef<
       className,
       splits,
       variant = 'side-by-side',
-      highlightDifferences = true,
-      showAdvancedStats = true,
+      playerName,
+      teammateName,
       ...props
     },
     ref
@@ -465,11 +294,11 @@ export const PlayerPerformanceWithoutTeammate = React.forwardRef<
     if (!splits) {
       return (
         <Card ref={ref} variant="default" className={cn(className)} {...props}>
-          <div className="text-center py-[var(--space-8)]">
-            <p className="text-[var(--color-gray-400)] text-[var(--text-base)]">
+          <div className="text-center py-8">
+            <p className="text-gray-400 text-base">
               No player performance data available
             </p>
-            <p className="text-[var(--color-gray-600)] text-[var(--text-sm)] mt-[var(--space-2)]">
+            <p className="text-gray-600 text-sm mt-2">
               Select a player and teammate to see performance splits
             </p>
           </div>
@@ -478,28 +307,40 @@ export const PlayerPerformanceWithoutTeammate = React.forwardRef<
     }
 
     // Insufficient data state
-    if (splits.with_teammate.games < 3 || splits.without_teammate.games < 3) {
+    if (splits.with_teammate_games < 3 || splits.without_teammate_games < 3) {
       return (
         <Card ref={ref} variant="default" className={cn(className)} {...props}>
-          <SplitsHeader splits={splits} />
-          <div className="text-center py-[var(--space-6)]">
-            <p className="text-[var(--color-gray-400)] text-[var(--text-base)]">
+          <div className="mb-6 pb-4 border-b border-gray-800">
+            <h3 className="text-lg text-white font-semibold">
+              Player Performance Analysis
+            </h3>
+            {playerName && teammateName && (
+              <div className="flex items-center gap-2 mt-2 text-sm">
+                <span className="text-white font-semibold">{playerName}</span>
+                <span className="text-gray-600">•</span>
+                <span className="text-gray-400">With/Without</span>
+                <span className="text-white font-semibold">{teammateName}</span>
+              </div>
+            )}
+          </div>
+          <div className="text-center py-6">
+            <p className="text-gray-400 text-base">
               Insufficient data for meaningful comparison
             </p>
-            <p className="text-[var(--color-gray-600)] text-[var(--text-sm)] mt-[var(--space-2)]">
+            <p className="text-gray-600 text-sm mt-2">
               Need at least 3 games in each scenario for analysis
             </p>
-            <div className="mt-[var(--space-4)] flex items-center justify-center gap-[var(--space-6)] text-[var(--text-sm)]">
+            <div className="mt-4 flex items-center justify-center gap-6 text-sm">
               <div>
-                <span className="text-[var(--color-gray-500)]">With: </span>
-                <span className="font-[family-name:var(--font-mono)] text-white">
-                  {splits.with_teammate.games} games
+                <span className="text-gray-500">With: </span>
+                <span className="font-mono text-white">
+                  {splits.with_teammate_games} games
                 </span>
               </div>
               <div>
-                <span className="text-[var(--color-gray-500)]">Without: </span>
-                <span className="font-[family-name:var(--font-mono)] text-white">
-                  {splits.without_teammate.games} games
+                <span className="text-gray-500">Without: </span>
+                <span className="font-mono text-white">
+                  {splits.without_teammate_games} games
                 </span>
               </div>
             </div>
@@ -515,19 +356,28 @@ export const PlayerPerformanceWithoutTeammate = React.forwardRef<
         className={cn(playerPerformanceVariants({ variant }), className)}
         {...props}
       >
-        <SplitsHeader splits={splits} />
+        {/* Header */}
+        <div className="mb-6 pb-4 border-b border-gray-800">
+          <h3 className="text-lg text-white font-semibold">
+            Player Performance Analysis
+          </h3>
+          {playerName && teammateName && (
+            <div className="flex items-center gap-2 mt-2 text-sm">
+              <span className="text-white font-semibold">{playerName}</span>
+              <span className="text-gray-600">•</span>
+              <span className="text-gray-400">With/Without</span>
+              <span className="text-white font-semibold">{teammateName}</span>
+            </div>
+          )}
+          <p className="text-sm text-gray-500 mt-2">
+            How player performance changes with/without teammate
+          </p>
+        </div>
 
         {variant === 'side-by-side' ? (
-          <SideBySideLayout
-            splits={splits}
-            highlightDifferences={highlightDifferences}
-            showAdvancedStats={showAdvancedStats}
-          />
+          <SideBySideLayout splits={splits} />
         ) : (
-          <StackedLayout
-            splits={splits}
-            showAdvancedStats={showAdvancedStats}
-          />
+          <StackedLayout splits={splits} />
         )}
       </Card>
     )

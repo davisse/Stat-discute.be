@@ -75,8 +75,8 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
 
     const values = gamesList.map(g =>
       viewMode === 'opponent-scoring'
-        ? g.opponent_score
-        : g.team_score + g.opponent_score
+        ? g.opponent_points
+        : g.team_points + g.opponent_points
     )
 
     const avg = values.reduce((sum, v) => sum + v, 0) / values.length
@@ -92,23 +92,23 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
   if (!selectedPlayerId || players.length === 0) {
     return (
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[900]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[900]}`,
         borderRadius: radius.lg,
         padding: spacing[6],
         marginBottom: spacing[8]
       }}>
         <h2 style={{
-          fontSize: typography.fontSize['2xl'],
-          fontWeight: typography.fontWeight.bold,
-          color: colors.foreground,
+          fontSize: typography.sizes['2xl'],
+          fontWeight: typography.weights.bold,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
           Player Impact Analysis
         </h2>
         <p style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400]
         }}>
           No players available for analysis. Players need at least 3 games played this season.
         </p>
@@ -118,8 +118,8 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[900]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[900]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       marginBottom: spacing[8]
@@ -129,16 +129,16 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         marginBottom: spacing[6]
       }}>
         <h2 style={{
-          fontSize: typography.fontSize['2xl'],
-          fontWeight: typography.fontWeight.bold,
-          color: colors.foreground,
+          fontSize: typography.sizes['2xl'],
+          fontWeight: typography.weights.bold,
+          color: colors.text.primary,
           marginBottom: spacing[1]
         }}>
           Player Impact Analysis
         </h2>
         <p style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400]
         }}>
           Compare {teamAbbreviation} performance with and without selected player
         </p>
@@ -156,9 +156,9 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         {/* Player Selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
           <label style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
-            fontWeight: typography.fontWeight.medium
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
+            fontWeight: typography.weights.medium
           }}>
             Player:
           </label>
@@ -167,12 +167,12 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
             onChange={(e) => setSelectedPlayerId(Number(e.target.value))}
             style={{
               padding: `${spacing[2]} ${spacing[3]}`,
-              background: colors.background,
-              border: `1px solid ${colors.gray[800]}`,
+              background: colors.background.primary,
+              border: `1px solid ${colors.neutral[800]}`,
               borderRadius: radius.md,
-              color: colors.foreground,
-              fontSize: typography.fontSize.base,
-              fontFamily: typography.fontMono,
+              color: colors.text.primary,
+              fontSize: typography.sizes.base,
+              fontFamily: typography.fonts.mono,
               outline: 'none',
               cursor: 'pointer',
               minWidth: '200px'
@@ -189,32 +189,32 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         {/* View Mode Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
           <label style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
-            fontWeight: typography.fontWeight.medium
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
+            fontWeight: typography.weights.medium
           }}>
             View:
           </label>
           <div style={{
             display: 'flex',
             gap: spacing[2],
-            background: colors.background,
+            background: colors.background.primary,
             padding: spacing[1],
             borderRadius: radius.md,
-            border: `1px solid ${colors.gray[800]}`
+            border: `1px solid ${colors.neutral[800]}`
           }}>
             <button
               onClick={() => setViewMode('opponent-scoring')}
               style={{
                 padding: `${spacing[2]} ${spacing[4]}`,
-                background: viewMode === 'opponent-scoring' ? colors.gray[800] : 'transparent',
+                background: viewMode === 'opponent-scoring' ? colors.neutral[800] : 'transparent',
                 border: 'none',
                 borderRadius: radius.sm,
-                color: viewMode === 'opponent-scoring' ? colors.foreground : colors.gray[400],
-                fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
+                color: viewMode === 'opponent-scoring' ? colors.text.primary : colors.neutral[400],
+                fontSize: typography.sizes.sm,
+                fontWeight: typography.weights.medium,
                 cursor: 'pointer',
-                transition: transitions.fast
+                transition: transitions.presets.fast
               }}
             >
               Opponent Scoring
@@ -223,14 +223,14 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
               onClick={() => setViewMode('combined-totals')}
               style={{
                 padding: `${spacing[2]} ${spacing[4]}`,
-                background: viewMode === 'combined-totals' ? colors.gray[800] : 'transparent',
+                background: viewMode === 'combined-totals' ? colors.neutral[800] : 'transparent',
                 border: 'none',
                 borderRadius: radius.sm,
-                color: viewMode === 'combined-totals' ? colors.foreground : colors.gray[400],
-                fontSize: typography.fontSize.sm,
-                fontWeight: typography.fontWeight.medium,
+                color: viewMode === 'combined-totals' ? colors.text.primary : colors.neutral[400],
+                fontSize: typography.sizes.sm,
+                fontWeight: typography.weights.medium,
                 cursor: 'pointer',
-                transition: transitions.fast
+                transition: transitions.presets.fast
               }}
             >
               Combined Totals
@@ -242,9 +242,9 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         {viewMode === 'opponent-scoring' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
             <label style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400],
-              fontWeight: typography.fontWeight.medium
+              fontSize: typography.sizes.sm,
+              color: colors.neutral[400],
+              fontWeight: typography.weights.medium
             }}>
               Betting Line:
             </label>
@@ -262,12 +262,12 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
               style={{
                 width: '100px',
                 padding: `${spacing[2]} ${spacing[3]}`,
-                background: colors.background,
-                border: `1px solid ${colors.gray[800]}`,
+                background: colors.background.primary,
+                border: `1px solid ${colors.neutral[800]}`,
                 borderRadius: radius.md,
-                color: colors.foreground,
-                fontSize: typography.fontSize.base,
-                fontFamily: typography.fontMono,
+                color: colors.text.primary,
+                fontSize: typography.sizes.base,
+                fontFamily: typography.fonts.mono,
                 textAlign: 'center',
                 outline: 'none'
               }}
@@ -279,9 +279,9 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         {viewMode === 'combined-totals' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
             <label style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400],
-              fontWeight: typography.fontWeight.medium
+              fontSize: typography.sizes.sm,
+              color: colors.neutral[400],
+              fontWeight: typography.weights.medium
             }}>
               Betting Line:
             </label>
@@ -299,12 +299,12 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
               style={{
                 width: '100px',
                 padding: `${spacing[2]} ${spacing[3]}`,
-                background: colors.background,
-                border: `1px solid ${colors.gray[800]}`,
+                background: colors.background.primary,
+                border: `1px solid ${colors.neutral[800]}`,
                 borderRadius: radius.md,
-                color: colors.foreground,
-                fontSize: typography.fontSize.base,
-                fontFamily: typography.fontMono,
+                color: colors.text.primary,
+                fontSize: typography.sizes.base,
+                fontFamily: typography.fonts.mono,
                 textAlign: 'center',
                 outline: 'none'
               }}
@@ -318,8 +318,8 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
         <div style={{
           textAlign: 'center',
           padding: spacing[8],
-          fontSize: typography.fontSize.base,
-          color: colors.gray[500]
+          fontSize: typography.sizes.base,
+          color: colors.neutral[500]
         }}>
           Loading player impact data...
         </div>
@@ -337,37 +337,37 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
           }}>
             {/* With Player Card */}
             <div style={{
-              background: colors.background,
+              background: colors.background.primary,
               padding: spacing[4],
               borderRadius: radius.md,
               border: `1px solid ${colors.positive}20`,
               borderLeft: `4px solid ${colors.positive}`
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 WITH {selectedPlayer?.full_name.toUpperCase()}
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
                 color: colors.positive,
-                fontFamily: typography.fontMono,
+                fontFamily: typography.fonts.mono,
                 marginBottom: spacing[1]
               }}>
                 {withPlayerMetrics.avg.toFixed(1)}
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500]
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500]
               }}>
                 {viewMode === 'opponent-scoring' ? 'Avg Opponent PPG' : 'Avg Combined Total'}
               </div>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginTop: spacing[2]
               }}>
                 {withPlayerMetrics.count} games
@@ -376,37 +376,37 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
 
             {/* Without Player Card */}
             <div style={{
-              background: colors.background,
+              background: colors.background.primary,
               padding: spacing[4],
               borderRadius: radius.md,
               border: `1px solid ${colors.negative}20`,
               borderLeft: `4px solid ${colors.negative}`
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 WITHOUT {selectedPlayer?.full_name.toUpperCase()}
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
                 color: colors.negative,
-                fontFamily: typography.fontMono,
+                fontFamily: typography.fonts.mono,
                 marginBottom: spacing[1]
               }}>
                 {withoutPlayerMetrics.count > 0 ? withoutPlayerMetrics.avg.toFixed(1) : 'N/A'}
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500]
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500]
               }}>
                 {viewMode === 'opponent-scoring' ? 'Avg Opponent PPG' : 'Avg Combined Total'}
               </div>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginTop: spacing[2]
               }}>
                 {withoutPlayerMetrics.count} games
@@ -415,25 +415,25 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
 
             {/* Impact Difference Card */}
             <div style={{
-              background: colors.background,
+              background: colors.background.primary,
               padding: spacing[4],
               borderRadius: radius.md,
-              border: `1px solid ${colors.gray[900]}`
+              border: `1px solid ${colors.neutral[900]}`
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 IMPACT
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
                 color: withoutPlayerMetrics.count > 0
                   ? (withoutPlayerMetrics.avg > withPlayerMetrics.avg ? colors.positive : colors.negative)
-                  : colors.gray[400],
-                fontFamily: typography.fontMono,
+                  : colors.neutral[400],
+                fontFamily: typography.fonts.mono,
                 marginBottom: spacing[1]
               }}>
                 {withoutPlayerMetrics.count > 0
@@ -441,18 +441,18 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
                   : 'N/A'}
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500]
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500]
               }}>
                 Difference without player
               </div>
               {withoutPlayerMetrics.count < 3 && withoutPlayerMetrics.count > 0 && (
                 <div style={{
-                  fontSize: typography.fontSize.xs,
-                  color: colors.gray[500],
+                  fontSize: typography.sizes.xs,
+                  color: colors.neutral[500],
                   marginTop: spacing[2],
                   padding: spacing[1],
-                  background: colors.gray[900],
+                  background: colors.neutral[900],
                   borderRadius: radius.sm
                 }}>
                   ⚠️ Small sample size
@@ -475,76 +475,76 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
           <div style={{
             marginTop: spacing[6],
             overflowX: 'auto',
-            border: `1px solid ${colors.gray[900]}`,
+            border: `1px solid ${colors.neutral[900]}`,
             borderRadius: radius.md
           }}>
             <table style={{
               width: '100%',
               borderCollapse: 'collapse',
-              fontSize: typography.fontSize.sm
+              fontSize: typography.sizes.sm
             }}>
               <thead>
-                <tr style={{ background: colors.background }}>
+                <tr style={{ background: colors.background.primary }}>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'left',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     Date
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'left',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     Opponent
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'center',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     Location
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'center',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     {viewMode === 'opponent-scoring' ? 'OPP PTS' : 'Total'}
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'center',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     vs Avg
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'center',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     Player Status
                   </th>
                   <th style={{
                     padding: spacing[3],
                     textAlign: 'center',
-                    color: colors.gray[400],
-                    fontWeight: typography.fontWeight.semibold,
-                    borderBottom: `1px solid ${colors.gray[900]}`
+                    color: colors.neutral[400],
+                    fontWeight: typography.weights.semibold,
+                    borderBottom: `1px solid ${colors.neutral[900]}`
                   }}>
                     Result
                   </th>
@@ -553,23 +553,24 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
               <tbody>
                 {games.map((game, index) => {
                   const value = viewMode === 'opponent-scoring'
-                    ? game.opponent_score
-                    : game.team_score + game.opponent_score
+                    ? game.opponent_points
+                    : game.team_points + game.opponent_points
                   const diff = value - allGamesMetrics.avg
+                  const result = game.team_points > game.opponent_points ? 'W' : 'L'
 
                   return (
                     <tr
                       key={game.game_id}
                       style={{
-                        background: index % 2 === 0 ? colors.background : 'transparent',
-                        transition: transitions.fast
+                        background: index % 2 === 0 ? colors.background.primary : 'transparent',
+                        transition: transitions.presets.fast
                       }}
                     >
                       <td style={{
                         padding: spacing[3],
-                        color: colors.gray[400],
-                        fontFamily: typography.fontMono,
-                        fontSize: typography.fontSize.xs
+                        color: colors.neutral[400],
+                        fontFamily: typography.fonts.mono,
+                        fontSize: typography.sizes.xs
                       }}>
                         {new Date(game.game_date).toLocaleDateString('en-US', {
                           month: 'short',
@@ -578,26 +579,26 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
                       </td>
                       <td style={{
                         padding: spacing[3],
-                        color: colors.foreground,
-                        fontFamily: typography.fontMono,
-                        fontWeight: typography.fontWeight.semibold
+                        color: colors.text.primary,
+                        fontFamily: typography.fonts.mono,
+                        fontWeight: typography.weights.semibold
                       }}>
-                        {game.opponent_abbr}
+                        {game.opponent}
                       </td>
                       <td style={{
                         padding: spacing[3],
                         textAlign: 'center',
-                        color: colors.gray[400],
-                        fontSize: typography.fontSize.xs
+                        color: colors.neutral[400],
+                        fontSize: typography.sizes.xs
                       }}>
                         {game.location === 'HOME' ? 'vs' : '@'}
                       </td>
                       <td style={{
                         padding: spacing[3],
                         textAlign: 'center',
-                        color: colors.foreground,
-                        fontFamily: typography.fontMono,
-                        fontWeight: typography.fontWeight.bold
+                        color: colors.text.primary,
+                        fontFamily: typography.fonts.mono,
+                        fontWeight: typography.weights.bold
                       }}>
                         {value}
                       </td>
@@ -605,8 +606,8 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
                         padding: spacing[3],
                         textAlign: 'center',
                         color: diff > 0 ? colors.negative : colors.positive,
-                        fontFamily: typography.fontMono,
-                        fontWeight: typography.fontWeight.semibold
+                        fontFamily: typography.fonts.mono,
+                        fontWeight: typography.weights.semibold
                       }}>
                         {diff > 0 ? '+' : ''}{diff.toFixed(1)}
                       </td>
@@ -617,24 +618,24 @@ export function PlayerImpactAnalysis({ teamId, teamAbbreviation }: PlayerImpactA
                         <span style={{
                           padding: `${spacing[1]} ${spacing[2]}`,
                           borderRadius: radius.sm,
-                          fontSize: typography.fontSize.xs,
-                          fontWeight: typography.fontWeight.semibold,
-                          background: game.player_played ? colors.positiveBg : colors.negativeBg,
+                          fontSize: typography.sizes.xs,
+                          fontWeight: typography.weights.semibold,
+                          background: game.player_played ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
                           color: game.player_played ? colors.positive : colors.negative
                         }}>
                           {game.player_played
-                            ? `✓ ${game.player_minutes?.toFixed(0)} min`
+                            ? '✓ Played'
                             : '✗ DNP'}
                         </span>
                       </td>
                       <td style={{
                         padding: spacing[3],
                         textAlign: 'center',
-                        color: game.result === 'W' ? colors.positive : colors.negative,
-                        fontFamily: typography.fontMono,
-                        fontWeight: typography.fontWeight.bold
+                        color: result === 'W' ? colors.positive : colors.negative,
+                        fontFamily: typography.fonts.mono,
+                        fontWeight: typography.weights.bold
                       }}>
-                        {game.result}
+                        {result}
                       </td>
                     </tr>
                   )

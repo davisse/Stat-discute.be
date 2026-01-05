@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { colors } from '@/lib/design-tokens'
+import { safeNum } from '@/lib/utils'
 
 interface TonightGame {
   gameId: string
@@ -75,14 +76,14 @@ export default function StorytellingLanding() {
       <div
         className="min-h-screen flex items-center justify-center"
         style={{
-          backgroundColor: colors.background,
+          backgroundColor: colors.background.primary,
           backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
           backgroundSize: '30px 30px',
         }}
       >
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-white border-t-transparent rounded-full mx-auto mb-4" />
-          <p style={{ color: colors.gray[400] }}>Chargement des matchs...</p>
+          <p style={{ color: colors.neutral[400] }}>Chargement des matchs...</p>
         </div>
       </div>
     )
@@ -93,13 +94,13 @@ export default function StorytellingLanding() {
       <div
         className="min-h-screen flex items-center justify-center"
         style={{
-          backgroundColor: colors.background,
+          backgroundColor: colors.background.primary,
           backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
           backgroundSize: '30px 30px',
         }}
       >
         <div className="text-center">
-          <p style={{ color: colors.gray[400] }}>{error}</p>
+          <p style={{ color: colors.neutral[400] }}>{error}</p>
         </div>
       </div>
     )
@@ -109,13 +110,13 @@ export default function StorytellingLanding() {
     <div
       className="min-h-screen"
       style={{
-        backgroundColor: colors.background,
+        backgroundColor: colors.background.primary,
         backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
         backgroundSize: '30px 30px',
       }}
     >
       {/* Header */}
-      <header className="px-8 py-6 border-b" style={{ borderColor: colors.gray[800] }}>
+      <header className="px-8 py-6 border-b" style={{ borderColor: colors.neutral[800] }}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img
@@ -125,10 +126,10 @@ export default function StorytellingLanding() {
             />
           </div>
           <div className="text-right">
-            <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.gray[600] }}>
+            <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.neutral[600] }}>
               Analyse Totaux
             </div>
-            <div className="font-medium capitalize" style={{ color: colors.foreground }}>
+            <div className="font-medium capitalize" style={{ color: colors.text.primary }}>
               {formattedDate}
             </div>
           </div>
@@ -142,11 +143,11 @@ export default function StorytellingLanding() {
           <div className="text-center mb-12">
             <h1
               className="text-5xl font-bold mb-4"
-              style={{ color: colors.foreground }}
+              style={{ color: colors.text.primary }}
             >
               Matchs du Soir
             </h1>
-            <p className="text-xl" style={{ color: colors.gray[400] }}>
+            <p className="text-xl" style={{ color: colors.neutral[400] }}>
               {data?.count || 0} matchs disponibles pour analyse
             </p>
           </div>
@@ -163,17 +164,17 @@ export default function StorytellingLanding() {
               className="text-center py-20 rounded-2xl"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: `1px dashed ${colors.gray[700]}`,
+                border: `1px dashed ${colors.neutral[700]}`,
               }}
             >
               <div className="text-6xl mb-4">🏀</div>
               <h3
                 className="text-2xl font-bold mb-2"
-                style={{ color: colors.foreground }}
+                style={{ color: colors.text.primary }}
               >
                 Pas de matchs ce soir
               </h3>
-              <p style={{ color: colors.gray[500] }}>
+              <p style={{ color: colors.neutral[500] }}>
                 Revenez demain pour de nouvelles analyses !
               </p>
             </div>
@@ -188,7 +189,7 @@ function GameCard({ game }: { game: TonightGame }) {
   const [isHovered, setIsHovered] = React.useState(false)
 
   // Calculate projected total from PPGs
-  const projectedTotal = game.awayTeam.ppg + game.homeTeam.ppg
+  const projectedTotal = safeNum(game.awayTeam.ppg) + safeNum(game.homeTeam.ppg)
   const hasLine = game.betting.total !== null
   const diffVsLine = hasLine
     ? projectedTotal - (game.betting.total as number)
@@ -205,7 +206,7 @@ function GameCard({ game }: { game: TonightGame }) {
         className="relative rounded-2xl overflow-hidden transition-all duration-300"
         style={{
           backgroundColor: 'rgba(255, 255, 255, 0.03)',
-          border: `1px solid ${isHovered ? colors.gray[600] : colors.gray[800]}`,
+          border: `1px solid ${isHovered ? colors.neutral[600] : colors.neutral[800]}`,
           transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
           boxShadow: isHovered
             ? '0 20px 40px rgba(0, 0, 0, 0.4)'
@@ -234,7 +235,7 @@ function GameCard({ game }: { game: TonightGame }) {
           <div className="flex items-center justify-between mb-4">
             <div
               className="text-xs uppercase tracking-widest"
-              style={{ color: colors.gray[500] }}
+              style={{ color: colors.neutral[500] }}
             >
               {formatGameTime(game.gameTime)}
             </div>
@@ -243,7 +244,7 @@ function GameCard({ game }: { game: TonightGame }) {
                 className="px-3 py-1 rounded-full text-sm font-medium"
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                  color: colors.foreground,
+                  color: colors.text.primary,
                 }}
               >
                 O/U {game.betting.total}
@@ -263,11 +264,11 @@ function GameCard({ game }: { game: TonightGame }) {
               <div>
                 <div
                   className="text-2xl font-bold"
-                  style={{ color: colors.foreground }}
+                  style={{ color: colors.text.primary }}
                 >
                   {game.awayTeam.abbreviation}
                 </div>
-                <div className="text-sm" style={{ color: colors.gray[500] }}>
+                <div className="text-sm" style={{ color: colors.neutral[500] }}>
                   {game.awayTeam.record}
                 </div>
               </div>
@@ -276,7 +277,7 @@ function GameCard({ game }: { game: TonightGame }) {
             {/* @ */}
             <div
               className="text-2xl font-light"
-              style={{ color: colors.gray[600] }}
+              style={{ color: colors.neutral[600] }}
             >
               @
             </div>
@@ -286,11 +287,11 @@ function GameCard({ game }: { game: TonightGame }) {
               <div className="text-right">
                 <div
                   className="text-2xl font-bold"
-                  style={{ color: colors.foreground }}
+                  style={{ color: colors.text.primary }}
                 >
                   {game.homeTeam.abbreviation}
                 </div>
-                <div className="text-sm" style={{ color: colors.gray[500] }}>
+                <div className="text-sm" style={{ color: colors.neutral[500] }}>
                   {game.homeTeam.record}
                 </div>
               </div>
@@ -305,16 +306,16 @@ function GameCard({ game }: { game: TonightGame }) {
           {/* Stats Row */}
           <div
             className="grid grid-cols-3 gap-4 pt-4 border-t"
-            style={{ borderColor: colors.gray[800] }}
+            style={{ borderColor: colors.neutral[800] }}
           >
             <div className="text-center">
               <div
                 className="text-lg font-bold font-mono"
-                style={{ color: colors.foreground }}
+                style={{ color: colors.text.primary }}
               >
-                {game.awayTeam.ppg.toFixed(1)}
+                {safeNum(game.awayTeam.ppg).toFixed(1)}
               </div>
-              <div className="text-xs" style={{ color: colors.gray[600] }}>
+              <div className="text-xs" style={{ color: colors.neutral[600] }}>
                 {game.awayTeam.abbreviation} PPG
               </div>
             </div>
@@ -322,23 +323,23 @@ function GameCard({ game }: { game: TonightGame }) {
               <div
                 className="text-lg font-bold font-mono"
                 style={{
-                  color: diffVsLine > 0 ? 'rgb(29, 193, 0)' : diffVsLine < 0 ? 'rgb(239, 45, 44)' : colors.foreground,
+                  color: diffVsLine > 0 ? 'rgb(29, 193, 0)' : diffVsLine < 0 ? 'rgb(239, 45, 44)' : colors.text.primary,
                 }}
               >
                 {projectedTotal.toFixed(1)}
               </div>
-              <div className="text-xs" style={{ color: colors.gray[600] }}>
+              <div className="text-xs" style={{ color: colors.neutral[600] }}>
                 Proj. Total
               </div>
             </div>
             <div className="text-center">
               <div
                 className="text-lg font-bold font-mono"
-                style={{ color: colors.foreground }}
+                style={{ color: colors.text.primary }}
               >
-                {game.homeTeam.ppg.toFixed(1)}
+                {safeNum(game.homeTeam.ppg).toFixed(1)}
               </div>
-              <div className="text-xs" style={{ color: colors.gray[600] }}>
+              <div className="text-xs" style={{ color: colors.neutral[600] }}>
                 {game.homeTeam.abbreviation} PPG
               </div>
             </div>
@@ -349,7 +350,7 @@ function GameCard({ game }: { game: TonightGame }) {
             className="mt-4 flex items-center justify-center gap-2 py-3 rounded-lg transition-all duration-300"
             style={{
               backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-              color: isHovered ? colors.foreground : colors.gray[500],
+              color: isHovered ? colors.text.primary : colors.neutral[500],
             }}
           >
             <span className="text-sm font-medium">Voir l'analyse</span>

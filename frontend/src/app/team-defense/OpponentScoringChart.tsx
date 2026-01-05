@@ -16,23 +16,23 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.gray[950],
-        border: `1px solid ${colors.gray[800]}`,
+        background: colors.neutral[950],
+        border: `1px solid ${colors.neutral[800]}`,
         borderRadius: radius.lg,
         padding: spacing[12],
         textAlign: 'center'
       }}>
         <div style={{ fontSize: '48px', marginBottom: spacing[4] }}>📊</div>
         <div style={{
-          fontSize: typography.fontSize.lg,
-          color: colors.foreground,
+          fontSize: typography.sizes.lg,
+          color: colors.text.primary,
           marginBottom: spacing[2]
         }}>
           No games to display
         </div>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[500]
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[500]
         }}>
           Select a team to view defensive performance
         </div>
@@ -44,7 +44,7 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
   const chronologicalGames = [...games].reverse()
 
   // Calculate chart dimensions
-  const scores = chronologicalGames.map(g => g.opponent_score)
+  const scores = chronologicalGames.map(g => g.points_allowed)
   const actualMax = Math.max(...scores)
   const actualMin = Math.min(...scores)
 
@@ -75,16 +75,16 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[800]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[800]}`,
       borderRadius: radius.lg,
       padding: spacing[6]
     }}>
       {/* Chart Title */}
       <h3 style={{
-        fontSize: typography.fontSize.xl,
-        fontWeight: typography.fontWeight.semibold,
-        color: colors.foreground,
+        fontSize: typography.sizes.xl,
+        fontWeight: typography.weights.semibold,
+        color: colors.text.primary,
         marginBottom: spacing[6]
       }}>
         Opponent Scoring by Game
@@ -111,9 +111,9 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                   position: 'absolute',
                   bottom: `${position}%`,
                   right: 0,
-                  fontSize: typography.fontSize.xs,
-                  fontFamily: typography.fontMono,
-                  color: colors.gray[500],
+                  fontSize: typography.sizes.xs,
+                  fontFamily: typography.fonts.mono,
+                  color: colors.neutral[500],
                   textAlign: 'right',
                   transform: 'translateY(50%)'
                 }}
@@ -129,8 +129,8 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
           flex: 1,
           position: 'relative',
           height: `${chartHeight}px`,
-          borderLeft: `1px solid ${colors.gray[800]}`,
-          borderBottom: `1px solid ${colors.gray[800]}`
+          borderLeft: `1px solid ${colors.neutral[800]}`,
+          borderBottom: `1px solid ${colors.neutral[800]}`
         }}>
           {/* Y-Axis Gridlines */}
           {yAxisLabels.map((label) => {
@@ -144,7 +144,7 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                   left: 0,
                   right: 0,
                   height: '1px',
-                  background: colors.gray[800],
+                  background: colors.neutral[800],
                   opacity: 0.3,
                   zIndex: 5,
                   pointerEvents: 'none'
@@ -160,9 +160,9 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
             left: 0,
             right: 0,
             height: '1px',
-            background: colors.foreground,
+            background: colors.text.primary,
             opacity: 0.6,
-            borderTop: `2px dashed ${colors.foreground}`,
+            borderTop: `2px dashed ${colors.text.primary}`,
             zIndex: 10,
             pointerEvents: 'none'
           }}>
@@ -170,10 +170,10 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
               position: 'absolute',
               right: spacing[2],
               top: '-10px',
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.foreground,
-              background: colors.gray[950],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.text.primary,
+              background: colors.neutral[950],
               padding: `0 ${spacing[1]}`
             }}>
               Avg: {avgOpponentPpg.toFixed(1)}
@@ -198,10 +198,10 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                 position: 'absolute',
                 left: spacing[2],
                 top: '-10px',
-                fontSize: typography.fontSize.xs,
-                fontFamily: typography.fontMono,
+                fontSize: typography.sizes.xs,
+                fontFamily: typography.fonts.mono,
                 color: 'rgb(234, 179, 8)',
-                background: colors.gray[950],
+                background: colors.neutral[950],
                 padding: `0 ${spacing[1]}`
               }}>
                 Line: {opponentLine?.toFixed(1)}
@@ -222,9 +222,10 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
             padding: `0 ${spacing[2]}`
           }}>
             {chronologicalGames.map((game) => {
-              const barHeight = getBarHeight(game.opponent_score)
-              const isAboveAvg = game.opponent_score > avgOpponentPpg
+              const barHeight = getBarHeight(game.points_allowed)
+              const isAboveAvg = game.points_allowed > avgOpponentPpg
               const isHovered = hoveredGame === game.game_id
+              const result = game.team_points > game.points_allowed ? 'W' : 'L'
 
               return (
                 <div
@@ -238,7 +239,7 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                       : `linear-gradient(to top, ${colors.positive}, rgba(16, 185, 129, 0.6))`,
                     borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                     cursor: 'pointer',
-                    transition: transitions.fast,
+                    transition: transitions.presets.fast,
                     opacity: isHovered ? 1 : 0.8
                   }}
                   onMouseEnter={() => setHoveredGame(game.game_id)}
@@ -253,8 +254,8 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                       transform: 'translateX(-50%)',
                       marginBottom: spacing[2],
                       padding: spacing[3],
-                      background: colors.gray[900],
-                      border: `1px solid ${colors.gray[700]}`,
+                      background: colors.neutral[900],
+                      border: `1px solid ${colors.neutral[700]}`,
                       borderRadius: radius.md,
                       whiteSpace: 'nowrap',
                       boxShadow: '0 0 24px rgba(255, 255, 255, 0.12)',
@@ -262,24 +263,24 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                       pointerEvents: 'none'
                     }}>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontWeight: typography.fontWeight.semibold,
-                        color: colors.foreground,
+                        fontSize: typography.sizes.sm,
+                        fontWeight: typography.weights.semibold,
+                        color: colors.text.primary,
                         marginBottom: spacing[1]
                       }}>
-                        vs {game.opponent_abbr}
+                        vs {game.opponent}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        fontFamily: typography.fontMono,
+                        fontSize: typography.sizes.sm,
+                        fontFamily: typography.fonts.mono,
                         color: isAboveAvg ? colors.negative : colors.positive,
                         marginBottom: spacing[1]
                       }}>
-                        {game.opponent_score} PTS
+                        {game.points_allowed} PTS
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: colors.gray[400]
+                        fontSize: typography.sizes.xs,
+                        color: colors.neutral[400]
                       }}>
                         {new Date(game.game_date).toLocaleDateString('en-US', {
                           month: 'short',
@@ -287,11 +288,11 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
                         })} • {game.location}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.xs,
-                        color: game.result === 'W' ? colors.positive : colors.negative,
+                        fontSize: typography.sizes.xs,
+                        color: result === 'W' ? colors.positive : colors.negative,
                         marginTop: spacing[1]
                       }}>
-                        {game.result === 'W' ? 'Won' : 'Lost'} {game.team_score}-{game.opponent_score}
+                        {result === 'W' ? 'Won' : 'Lost'} {game.team_points}-{game.points_allowed}
                       </div>
                     </div>
                   )}
@@ -315,9 +316,9 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
             key={game.game_id}
             style={{
               flex: 1,
-              fontSize: typography.fontSize.xs,
-              fontFamily: typography.fontMono,
-              color: colors.gray[500],
+              fontSize: typography.sizes.xs,
+              fontFamily: typography.fonts.mono,
+              color: colors.neutral[500],
               textAlign: 'center',
               transform: 'rotate(-45deg)',
               transformOrigin: 'top center',
@@ -325,7 +326,7 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
               whiteSpace: 'nowrap'
             }}
           >
-            {game.opponent_abbr}
+            {game.opponent}
           </div>
         ))}
       </div>
@@ -336,8 +337,8 @@ export function OpponentScoringChart({ games, avgOpponentPpg, opponentLine }: Op
         justifyContent: 'center',
         gap: spacing[6],
         marginTop: spacing[6],
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400],
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400],
         flexWrap: 'wrap'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[2] }}>

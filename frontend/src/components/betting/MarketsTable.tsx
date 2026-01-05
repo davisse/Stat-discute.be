@@ -15,8 +15,12 @@ export function MarketsTable({
   onSelectMarket,
   selectedMarketId
 }: MarketsTableProps) {
-  const formatOdds = (oddsDecimal: string, oddsAmerican: number) => {
-    return `${parseFloat(oddsDecimal).toFixed(2)} (${oddsAmerican > 0 ? '+' : ''}${oddsAmerican})`
+  const formatOdds = (decimal: number) => {
+    // Convert decimal odds to American odds
+    const american = decimal >= 2
+      ? Math.round((decimal - 1) * 100)
+      : Math.round(-100 / (decimal - 1))
+    return `${decimal.toFixed(2)} (${american > 0 ? '+' : ''}${american})`
   }
 
   return (
@@ -56,7 +60,7 @@ export function MarketsTable({
             <tbody className="bg-white divide-y divide-gray-200">
               {markets.map((market) => {
                 const odds = currentOdds.get(market.market_id) || []
-                const lastUpdate = new Date(market.last_updated)
+                const lastUpdate = odds.length > 0 ? new Date(odds[0].timestamp) : null
                 const isSelected = selectedMarketId === market.market_id
 
                 return (
@@ -66,10 +70,10 @@ export function MarketsTable({
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {market.market_name}
+                        {market.selection}{market.line !== null ? ` (${market.line > 0 ? '+' : ''}${market.line})` : ''}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {market.market_key}
+                        {market.period}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -84,29 +88,21 @@ export function MarketsTable({
                         ) : (
                           odds.map((odd, idx) => (
                             <div key={idx} className="text-sm">
-                              <span className="font-medium text-gray-900">
-                                {odd.selection}:
-                              </span>{' '}
                               <span className="text-gray-600">
-                                {formatOdds(odd.odds_decimal, odd.odds_american)}
+                                {formatOdds(odd.odds)}
                               </span>
-                              {odd.handicap && (
-                                <span className="ml-2 text-gray-500">
-                                  ({odd.handicap})
-                                </span>
-                              )}
                             </div>
                           ))
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {lastUpdate.toLocaleString('fr-FR', {
+                      {lastUpdate ? lastUpdate.toLocaleString('fr-FR', {
                         day: '2-digit',
                         month: '2-digit',
                         hour: '2-digit',
                         minute: '2-digit'
-                      })}
+                      }) : '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <button

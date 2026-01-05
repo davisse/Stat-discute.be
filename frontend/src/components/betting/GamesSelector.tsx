@@ -20,13 +20,13 @@ export function GamesSelector({ events, selectedEventId, onSelectEvent }: GamesS
           <p className="text-sm text-gray-500">Aucun match disponible avec des cotes</p>
         ) : (
           events.map((event) => {
-            const eventDate = new Date(event.event_start_time)
-            const isSelected = selectedEventId === event.event_id
+            const eventDate = new Date(event.game_time)
+            const isSelected = selectedEventId === String(event.event_id)
 
             return (
               <button
                 key={event.event_id}
-                onClick={() => onSelectEvent(event.event_id)}
+                onClick={() => onSelectEvent(String(event.event_id))}
                 className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
                   isSelected
                     ? 'border-blue-500 bg-blue-50'
@@ -37,11 +37,11 @@ export function GamesSelector({ events, selectedEventId, onSelectEvent }: GamesS
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
                       <span className="font-semibold text-gray-900">
-                        {event.away_abbr}
+                        {event.away_team}
                       </span>
                       <span className="text-gray-500">@</span>
                       <span className="font-semibold text-gray-900">
-                        {event.home_abbr}
+                        {event.home_team}
                       </span>
                     </div>
                     <div className="text-sm text-gray-600">
@@ -63,7 +63,7 @@ export function GamesSelector({ events, selectedEventId, onSelectEvent }: GamesS
                       })}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {event.game_status}
+                      {event.status}
                     </div>
                   </div>
                 </div>

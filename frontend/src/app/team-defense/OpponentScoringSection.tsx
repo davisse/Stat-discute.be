@@ -35,8 +35,8 @@ export function OpponentScoringSection({ games, avgOpponentPpg }: OpponentScorin
 
   return (
     <div style={{
-      background: colors.gray[950],
-      border: `1px solid ${colors.gray[900]}`,
+      background: colors.neutral[950],
+      border: `1px solid ${colors.neutral[900]}`,
       borderRadius: radius.lg,
       padding: spacing[6],
       marginBottom: spacing[8]
@@ -52,16 +52,16 @@ export function OpponentScoringSection({ games, avgOpponentPpg }: OpponentScorin
       }}>
         <div>
           <h2 style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
             marginBottom: spacing[1]
           }}>
             Opponent Scoring by Game
           </h2>
           <p style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400]
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400]
           }}>
             Points allowed per game
           </p>
@@ -70,9 +70,9 @@ export function OpponentScoringSection({ games, avgOpponentPpg }: OpponentScorin
         {/* Betting Line Input */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing[3] }}>
           <label style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
-            fontWeight: typography.fontWeight.medium
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
+            fontWeight: typography.weights.medium
           }}>
             Betting Line:
           </label>
@@ -90,12 +90,12 @@ export function OpponentScoringSection({ games, avgOpponentPpg }: OpponentScorin
             style={{
               width: '100px',
               padding: `${spacing[2]} ${spacing[3]}`,
-              background: colors.background,
-              border: `1px solid ${colors.gray[800]}`,
+              background: colors.background.primary,
+              border: `1px solid ${colors.neutral[800]}`,
               borderRadius: radius.md,
-              color: colors.foreground,
-              fontSize: typography.fontSize.base,
-              fontFamily: typography.fontMono,
+              color: colors.text.primary,
+              fontSize: typography.sizes.base,
+              fontFamily: typography.fonts.mono,
               textAlign: 'center',
               outline: 'none'
             }}

@@ -81,17 +81,17 @@ export default function MyBetsPage() {
   }
 
   const getResultColor = (result: string | null) => {
-    if (result === 'win') return colors.positive
-    if (result === 'loss') return colors.negative
-    if (result === 'push') return colors.gray[400]
-    return colors.gray[500]
+    if (result === 'win') return colors.betting.positive
+    if (result === 'loss') return colors.betting.negative
+    if (result === 'push') return colors.neutral[400]
+    return colors.neutral[500]
   }
 
   const getResultBg = (result: string | null) => {
-    if (result === 'win') return colors.positiveBg
-    if (result === 'loss') return colors.negativeBg
-    if (result === 'push') return colors.gray[800]
-    return colors.gray[900]
+    if (result === 'win') return `${colors.betting.positive}20`
+    if (result === 'loss') return `${colors.betting.negative}20`
+    if (result === 'push') return colors.neutral[800]
+    return colors.neutral[900]
   }
 
   if (isLoading) {
@@ -105,8 +105,8 @@ export default function MyBetsPage() {
           paddingTop: spacing[12],
           paddingBottom: spacing[6],
           textAlign: 'center',
-          fontSize: typography.fontSize.lg,
-          color: colors.gray[500]
+          fontSize: typography.sizes.lg,
+          color: colors.neutral[500]
         }}>
           Loading your bets...
         </div>
@@ -124,16 +124,16 @@ export default function MyBetsPage() {
         {/* Page Header */}
         <div style={{ marginBottom: spacing[8] }}>
           <h1 style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
             marginBottom: spacing[2]
           }}>
             My Betting Tracker
           </h1>
           <p style={{
-            fontSize: typography.fontSize.base,
-            color: colors.gray[400]
+            fontSize: typography.sizes.base,
+            color: colors.neutral[400]
           }}>
             One bet per day - Track performance and analyze results
           </p>
@@ -149,29 +149,29 @@ export default function MyBetsPage() {
           }}>
             {/* Current Bankroll */}
             <div style={{
-              background: colors.gray[950],
-              border: `1px solid ${colors.gray[900]}`,
+              background: colors.neutral[950],
+              border: `1px solid ${colors.neutral[900]}`,
               borderRadius: radius.lg,
               padding: spacing[4]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Current Bankroll
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: colors.foreground,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
+                color: colors.text.primary,
+                fontFamily: typography.fonts.mono
               }}>
                 {(100 + Number(stats.total_profit_loss || 0)).toFixed(2)}€
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500],
                 marginTop: spacing[1]
               }}>
                 Started with 100.00€
@@ -180,23 +180,23 @@ export default function MyBetsPage() {
 
             {/* Total Profit/Loss */}
             <div style={{
-              background: colors.gray[950],
-              border: `1px solid ${colors.gray[900]}`,
+              background: colors.neutral[950],
+              border: `1px solid ${colors.neutral[900]}`,
               borderRadius: radius.lg,
               padding: spacing[4]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Total P/L
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: Number(stats.total_profit_loss || 0) >= 0 ? colors.positive : colors.negative,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
+                color: Number(stats.total_profit_loss || 0) >= 0 ? colors.betting.positive : colors.betting.negative,
+                fontFamily: typography.fonts.mono
               }}>
                 {Number(stats.total_profit_loss || 0) >= 0 ? '+' : ''}{Number(stats.total_profit_loss || 0).toFixed(2)}€
               </div>
@@ -204,29 +204,29 @@ export default function MyBetsPage() {
 
             {/* Win Percentage */}
             <div style={{
-              background: colors.gray[950],
-              border: `1px solid ${colors.gray[900]}`,
+              background: colors.neutral[950],
+              border: `1px solid ${colors.neutral[900]}`,
               borderRadius: radius.lg,
               padding: spacing[4]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Win Rate
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: colors.foreground,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
+                color: colors.text.primary,
+                fontFamily: typography.fonts.mono
               }}>
                 {Number(stats.win_percentage || 0).toFixed(1)}%
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500],
                 marginTop: spacing[1]
               }}>
                 {stats.wins}W - {stats.losses}L - {stats.pushes}P
@@ -235,23 +235,23 @@ export default function MyBetsPage() {
 
             {/* ROI Per Bet */}
             <div style={{
-              background: colors.gray[950],
-              border: `1px solid ${colors.gray[900]}`,
+              background: colors.neutral[950],
+              border: `1px solid ${colors.neutral[900]}`,
               borderRadius: radius.lg,
               padding: spacing[4]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Avg P/L per Bet
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: Number(stats.roi_per_bet || 0) >= 0 ? colors.positive : colors.negative,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
+                color: Number(stats.roi_per_bet || 0) >= 0 ? colors.betting.positive : colors.betting.negative,
+                fontFamily: typography.fonts.mono
               }}>
                 {Number(stats.roi_per_bet || 0) >= 0 ? '+' : ''}{Number(stats.roi_per_bet || 0).toFixed(2)}€
               </div>
@@ -259,29 +259,29 @@ export default function MyBetsPage() {
 
             {/* Total Bets */}
             <div style={{
-              background: colors.gray[950],
-              border: `1px solid ${colors.gray[900]}`,
+              background: colors.neutral[950],
+              border: `1px solid ${colors.neutral[900]}`,
               borderRadius: radius.lg,
               padding: spacing[4]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.gray[400],
+                fontSize: typography.sizes.sm,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Total Bets
               </div>
               <div style={{
-                fontSize: typography.fontSize['3xl'],
-                fontWeight: typography.fontWeight.bold,
-                color: colors.foreground,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes['3xl'],
+                fontWeight: typography.weights.bold,
+                color: colors.text.primary,
+                fontFamily: typography.fonts.mono
               }}>
                 {stats.total_bets}
               </div>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[500],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[500],
                 marginTop: spacing[1]
               }}>
                 {stats.pending} pending
@@ -292,15 +292,15 @@ export default function MyBetsPage() {
 
         {/* Bets List */}
         <div style={{
-          background: colors.gray[950],
-          border: `1px solid ${colors.gray[900]}`,
+          background: colors.neutral[950],
+          border: `1px solid ${colors.neutral[900]}`,
           borderRadius: radius.lg,
           padding: spacing[6]
         }}>
           <h2 style={{
-            fontSize: typography.fontSize.xl,
-            fontWeight: typography.fontWeight.semibold,
-            color: colors.foreground,
+            fontSize: typography.sizes.xl,
+            fontWeight: typography.weights.semibold,
+            color: colors.text.primary,
             marginBottom: spacing[6]
           }}>
             All Bets
@@ -310,11 +310,11 @@ export default function MyBetsPage() {
             <div style={{
               textAlign: 'center',
               padding: spacing[12],
-              color: colors.gray[500]
+              color: colors.neutral[500]
             }}>
               <div style={{ fontSize: '48px', marginBottom: spacing[4] }}>🎲</div>
-              <div style={{ fontSize: typography.fontSize.lg }}>No bets yet</div>
-              <div style={{ fontSize: typography.fontSize.sm, marginTop: spacing[2] }}>
+              <div style={{ fontSize: typography.sizes.lg }}>No bets yet</div>
+              <div style={{ fontSize: typography.sizes.sm, marginTop: spacing[2] }}>
                 Your bets will appear here
               </div>
             </div>
@@ -324,8 +324,8 @@ export default function MyBetsPage() {
                 <div
                   key={bet.bet_id}
                   style={{
-                    background: colors.background,
-                    border: `1px solid ${colors.gray[900]}`,
+                    background: colors.background.card,
+                    border: `1px solid ${colors.neutral[900]}`,
                     borderRadius: radius.md,
                     overflow: 'hidden'
                   }}
@@ -345,8 +345,8 @@ export default function MyBetsPage() {
                     {/* Left: Date and Game */}
                     <div style={{ flex: 1 }}>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        color: colors.gray[400],
+                        fontSize: typography.sizes.sm,
+                        color: colors.neutral[400],
                         marginBottom: spacing[1]
                       }}>
                         {new Date(bet.bet_date).toLocaleDateString('en-US', {
@@ -356,10 +356,10 @@ export default function MyBetsPage() {
                         })}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.lg,
-                        fontWeight: typography.fontWeight.semibold,
-                        color: colors.foreground,
-                        fontFamily: typography.fontMono
+                        fontSize: typography.sizes.lg,
+                        fontWeight: typography.weights.semibold,
+                        color: colors.text.primary,
+                        fontFamily: typography.fonts.mono
                       }}>
                         {bet.home_team_abbr} vs {bet.away_team_abbr}
                       </div>
@@ -368,16 +368,16 @@ export default function MyBetsPage() {
                     {/* Center: Bet Details */}
                     <div style={{ flex: 2, textAlign: 'center' }}>
                       <div style={{
-                        fontSize: typography.fontSize.xl,
-                        fontWeight: typography.fontWeight.bold,
-                        color: colors.foreground,
+                        fontSize: typography.sizes.xl,
+                        fontWeight: typography.weights.bold,
+                        color: colors.text.primary,
                         marginBottom: spacing[1]
                       }}>
                         {bet.bet_selection}
                       </div>
                       <div style={{
-                        fontSize: typography.fontSize.sm,
-                        color: colors.gray[400]
+                        fontSize: typography.sizes.sm,
+                        color: colors.neutral[400]
                       }}>
                         {Number(bet.stake_units).toFixed(2)}€ @ {bet.odds_decimal} • Confidence: {bet.confidence_rating}/10
                       </div>
@@ -391,19 +391,19 @@ export default function MyBetsPage() {
                         borderRadius: radius.md,
                         background: getResultBg(bet.result),
                         color: getResultColor(bet.result),
-                        fontSize: typography.fontSize.sm,
-                        fontWeight: typography.fontWeight.bold,
-                        fontFamily: typography.fontMono,
+                        fontSize: typography.sizes.sm,
+                        fontWeight: typography.weights.bold,
+                        fontFamily: typography.fonts.mono,
                         marginBottom: spacing[2]
                       }}>
                         {bet.result?.toUpperCase() || 'PENDING'}
                       </div>
                       {bet.profit_loss !== null && (
                         <div style={{
-                          fontSize: typography.fontSize.lg,
-                          fontWeight: typography.fontWeight.bold,
-                          color: Number(bet.profit_loss) >= 0 ? colors.positive : colors.negative,
-                          fontFamily: typography.fontMono
+                          fontSize: typography.sizes.lg,
+                          fontWeight: typography.weights.bold,
+                          color: Number(bet.profit_loss) >= 0 ? colors.betting.positive : colors.betting.negative,
+                          fontFamily: typography.fonts.mono
                         }}>
                           {Number(bet.profit_loss) >= 0 ? '+' : ''}{Number(bet.profit_loss).toFixed(2)}€
                         </div>
@@ -415,30 +415,30 @@ export default function MyBetsPage() {
                   {expandedBetId === bet.bet_id && (
                     <div style={{
                       padding: spacing[4],
-                      borderTop: `1px solid ${colors.gray[900]}`,
-                      background: colors.gray[950]
+                      borderTop: `1px solid ${colors.neutral[900]}`,
+                      background: colors.neutral[950]
                     }}>
                       {/* Game Result */}
                       {bet.combined_total !== null && (
                         <div style={{ marginBottom: spacing[4] }}>
                           <div style={{
-                            fontSize: typography.fontSize.sm,
-                            color: colors.gray[400],
+                            fontSize: typography.sizes.sm,
+                            color: colors.neutral[400],
                             marginBottom: spacing[2]
                           }}>
                             Final Score
                           </div>
                           <div style={{
-                            fontSize: typography.fontSize.xl,
-                            fontWeight: typography.fontWeight.bold,
-                            color: colors.foreground,
-                            fontFamily: typography.fontMono
+                            fontSize: typography.sizes.xl,
+                            fontWeight: typography.weights.bold,
+                            color: colors.text.primary,
+                            fontFamily: typography.fonts.mono
                           }}>
                             {bet.home_team_abbr} {bet.home_team_score} - {bet.away_team_score} {bet.away_team_abbr}
                             <span style={{
                               marginLeft: spacing[4],
-                              color: colors.gray[400],
-                              fontSize: typography.fontSize.base
+                              color: colors.neutral[400],
+                              fontSize: typography.sizes.base
                             }}>
                               (Total: {bet.combined_total})
                             </span>
@@ -450,8 +450,8 @@ export default function MyBetsPage() {
                       {bet.key_factors && bet.key_factors.length > 0 && (
                         <div style={{ marginBottom: spacing[4] }}>
                           <div style={{
-                            fontSize: typography.fontSize.sm,
-                            color: colors.gray[400],
+                            fontSize: typography.sizes.sm,
+                            color: colors.neutral[400],
                             marginBottom: spacing[2]
                           }}>
                             Key Factors
@@ -466,10 +466,10 @@ export default function MyBetsPage() {
                                 key={index}
                                 style={{
                                   padding: `${spacing[1]} ${spacing[3]}`,
-                                  background: colors.gray[900],
+                                  background: colors.neutral[900],
                                   borderRadius: radius.sm,
-                                  fontSize: typography.fontSize.xs,
-                                  color: colors.gray[400]
+                                  fontSize: typography.sizes.xs,
+                                  color: colors.neutral[400]
                                 }}
                               >
                                 {factor}
@@ -483,8 +483,8 @@ export default function MyBetsPage() {
                       {bet.analysis_steps && bet.analysis_steps.length > 0 && (
                         <div>
                           <div style={{
-                            fontSize: typography.fontSize.sm,
-                            color: colors.gray[400],
+                            fontSize: typography.sizes.sm,
+                            color: colors.neutral[400],
                             marginBottom: spacing[3]
                           }}>
                             📊 Detailed Analysis Flow
@@ -507,10 +507,10 @@ export default function MyBetsPage() {
                                   style={{
                                     display: 'flex',
                                     gap: spacing[3],
-                                    background: colors.background,
+                                    background: colors.background.card,
                                     padding: spacing[3],
                                     borderRadius: radius.md,
-                                    borderLeft: `3px solid ${colors.gray[700]}`
+                                    borderLeft: `3px solid ${colors.neutral[700]}`
                                   }}
                                 >
                                   {/* Step Number */}
@@ -518,14 +518,14 @@ export default function MyBetsPage() {
                                     minWidth: '32px',
                                     height: '32px',
                                     borderRadius: '50%',
-                                    background: colors.gray[900],
+                                    background: colors.neutral[900],
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontSize: typography.fontSize.sm,
-                                    fontWeight: typography.fontWeight.bold,
-                                    color: colors.gray[400],
-                                    fontFamily: typography.fontMono,
+                                    fontSize: typography.sizes.sm,
+                                    fontWeight: typography.weights.bold,
+                                    color: colors.neutral[400],
+                                    fontFamily: typography.fonts.mono,
                                     flexShrink: 0
                                   }}>
                                     {stepNumber}
@@ -534,16 +534,16 @@ export default function MyBetsPage() {
                                   {/* Step Content */}
                                   <div style={{ flex: 1 }}>
                                     <div style={{
-                                      fontSize: typography.fontSize.sm,
-                                      fontWeight: typography.fontWeight.semibold,
-                                      color: colors.foreground,
+                                      fontSize: typography.sizes.sm,
+                                      fontWeight: typography.weights.semibold,
+                                      color: colors.text.primary,
                                       marginBottom: spacing[1]
                                     }}>
                                       {stepTitle}
                                     </div>
                                     <div style={{
-                                      fontSize: typography.fontSize.sm,
-                                      color: colors.gray[400],
+                                      fontSize: typography.sizes.sm,
+                                      color: colors.neutral[400],
                                       lineHeight: 1.6,
                                       marginBottom: stepNumber === '2' ? spacing[3] : 0
                                     }}>
@@ -713,15 +713,15 @@ export default function MyBetsPage() {
                                           <div style={{
                                             marginTop: spacing[4],
                                             padding: spacing[6],
-                                            background: bet.result === 'win' ? `${colors.positive}10` : `${colors.negative}10`,
-                                            border: `2px solid ${bet.result === 'win' ? colors.positive : colors.negative}`,
+                                            background: bet.result === 'win' ? `${colors.betting.positive}10` : `${colors.betting.negative}10`,
+                                            border: `2px solid ${bet.result === 'win' ? colors.betting.positive : colors.betting.negative}`,
                                             borderRadius: radius.md,
-                                            boxShadow: `0 0 20px ${bet.result === 'win' ? colors.positive : colors.negative}20`
+                                            boxShadow: `0 0 20px ${bet.result === 'win' ? colors.betting.positive : colors.betting.negative}20`
                                           }}>
                                             {/* Header */}
                                             <div style={{
-                                              fontSize: typography.fontSize.xs,
-                                              color: colors.gray[400],
+                                              fontSize: typography.sizes.xs,
+                                              color: colors.neutral[400],
                                               marginBottom: spacing[4],
                                               textTransform: 'uppercase',
                                               letterSpacing: '0.05em',
@@ -736,19 +736,19 @@ export default function MyBetsPage() {
                                               marginBottom: spacing[6]
                                             }}>
                                               <div style={{
-                                                fontSize: typography.fontSize['4xl'],
-                                                fontWeight: typography.fontWeight.bold,
-                                                color: bet.result === 'win' ? colors.positive : colors.negative,
-                                                fontFamily: typography.fontMono,
+                                                fontSize: typography.sizes['4xl'],
+                                                fontWeight: typography.weights.bold,
+                                                color: bet.result === 'win' ? colors.betting.positive : colors.betting.negative,
+                                                fontFamily: typography.fonts.mono,
                                                 marginBottom: spacing[2]
                                               }}>
                                                 {bet.result === 'win' ? '✅ WON' : '❌ LOST'}
                                               </div>
                                               <div style={{
-                                                fontSize: typography.fontSize['2xl'],
-                                                color: colors.foreground,
-                                                fontFamily: typography.fontMono,
-                                                fontWeight: typography.fontWeight.semibold
+                                                fontSize: typography.sizes['2xl'],
+                                                color: colors.text.primary,
+                                                fontFamily: typography.fonts.mono,
+                                                fontWeight: typography.weights.semibold
                                               }}>
                                                 {Number(bet.actual_total).toFixed(1)} points
                                               </div>
@@ -761,13 +761,13 @@ export default function MyBetsPage() {
                                               gap: spacing[4],
                                               marginBottom: spacing[4],
                                               paddingBottom: spacing[4],
-                                              borderBottom: `1px solid ${colors.gray[900]}`
+                                              borderBottom: `1px solid ${colors.neutral[900]}`
                                             }}>
                                               {/* Betting Line */}
                                               <div style={{ textAlign: 'center' }}>
                                                 <div style={{
-                                                  fontSize: typography.fontSize.xs,
-                                                  color: colors.gray[400],
+                                                  fontSize: typography.sizes.xs,
+                                                  color: colors.neutral[400],
                                                   marginBottom: spacing[1],
                                                   textTransform: 'uppercase',
                                                   letterSpacing: '0.05em'
@@ -775,10 +775,10 @@ export default function MyBetsPage() {
                                                   Line
                                                 </div>
                                                 <div style={{
-                                                  fontSize: typography.fontSize['2xl'],
-                                                  fontWeight: typography.fontWeight.bold,
-                                                  color: colors.foreground,
-                                                  fontFamily: typography.fontMono
+                                                  fontSize: typography.sizes['2xl'],
+                                                  fontWeight: typography.weights.bold,
+                                                  color: colors.text.primary,
+                                                  fontFamily: typography.fonts.mono
                                                 }}>
                                                   {Number(bet.line_value).toFixed(1)}
                                                 </div>
@@ -787,8 +787,8 @@ export default function MyBetsPage() {
                                               {/* Actual Total */}
                                               <div style={{ textAlign: 'center' }}>
                                                 <div style={{
-                                                  fontSize: typography.fontSize.xs,
-                                                  color: colors.gray[400],
+                                                  fontSize: typography.sizes.xs,
+                                                  color: colors.neutral[400],
                                                   marginBottom: spacing[1],
                                                   textTransform: 'uppercase',
                                                   letterSpacing: '0.05em'
@@ -796,10 +796,10 @@ export default function MyBetsPage() {
                                                   Actual
                                                 </div>
                                                 <div style={{
-                                                  fontSize: typography.fontSize['2xl'],
-                                                  fontWeight: typography.fontWeight.bold,
-                                                  color: bet.result === 'win' ? colors.positive : colors.negative,
-                                                  fontFamily: typography.fontMono
+                                                  fontSize: typography.sizes['2xl'],
+                                                  fontWeight: typography.weights.bold,
+                                                  color: bet.result === 'win' ? colors.betting.positive : colors.betting.negative,
+                                                  fontFamily: typography.fonts.mono
                                                 }}>
                                                   {Number(bet.actual_total).toFixed(1)}
                                                 </div>
@@ -808,8 +808,8 @@ export default function MyBetsPage() {
                                               {/* Difference */}
                                               <div style={{ textAlign: 'center' }}>
                                                 <div style={{
-                                                  fontSize: typography.fontSize.xs,
-                                                  color: colors.gray[400],
+                                                  fontSize: typography.sizes.xs,
+                                                  color: colors.neutral[400],
                                                   marginBottom: spacing[1],
                                                   textTransform: 'uppercase',
                                                   letterSpacing: '0.05em'
@@ -817,10 +817,10 @@ export default function MyBetsPage() {
                                                   Difference
                                                 </div>
                                                 <div style={{
-                                                  fontSize: typography.fontSize['2xl'],
-                                                  fontWeight: typography.fontWeight.bold,
-                                                  color: bet.result === 'win' ? colors.positive : colors.negative,
-                                                  fontFamily: typography.fontMono
+                                                  fontSize: typography.sizes['2xl'],
+                                                  fontWeight: typography.weights.bold,
+                                                  color: bet.result === 'win' ? colors.betting.positive : colors.betting.negative,
+                                                  fontFamily: typography.fonts.mono
                                                 }}>
                                                   {Number(bet.actual_total) > Number(bet.line_value) ? '+' : ''}
                                                   {(Number(bet.actual_total) - Number(bet.line_value)).toFixed(1)}
@@ -831,19 +831,19 @@ export default function MyBetsPage() {
                                             {/* Profit/Loss Summary */}
                                             <div style={{
                                               textAlign: 'center',
-                                              fontSize: typography.fontSize.sm,
-                                              color: colors.gray[400],
+                                              fontSize: typography.sizes.sm,
+                                              color: colors.neutral[400],
                                               lineHeight: 1.6
                                             }}>
                                               {bet.result === 'win' ? (
                                                 <>
-                                                  Bet <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>WON</span>
+                                                  Bet <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>WON</span>
                                                   {' '}with profit of{' '}
                                                   <span style={{
-                                                    color: colors.positive,
-                                                    fontFamily: typography.fontMono,
-                                                    fontWeight: typography.fontWeight.bold,
-                                                    fontSize: typography.fontSize.lg
+                                                    color: colors.betting.positive,
+                                                    fontFamily: typography.fonts.mono,
+                                                    fontWeight: typography.weights.bold,
+                                                    fontSize: typography.sizes.lg
                                                   }}>
                                                     +{Number(bet.profit_loss).toFixed(2)}€
                                                   </span>
@@ -851,18 +851,18 @@ export default function MyBetsPage() {
                                                 </>
                                               ) : (
                                                 <>
-                                                  Bet <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>LOST</span>
+                                                  Bet <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>LOST</span>
                                                   {'. '}Game went{' '}
-                                                  <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>
+                                                  <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>
                                                     {Number(bet.actual_total) > Number(bet.line_value) ? 'OVER' : 'UNDER'}
                                                   </span>
                                                   {' '}the line by {Math.abs(Number(bet.actual_total) - Number(bet.line_value)).toFixed(1)} points.
                                                   {' '}Loss of{' '}
                                                   <span style={{
-                                                    color: colors.negative,
-                                                    fontFamily: typography.fontMono,
-                                                    fontWeight: typography.fontWeight.bold,
-                                                    fontSize: typography.fontSize.lg
+                                                    color: colors.betting.negative,
+                                                    fontFamily: typography.fonts.mono,
+                                                    fontWeight: typography.weights.bold,
+                                                    fontSize: typography.sizes.lg
                                                   }}>
                                                     {Number(bet.profit_loss).toFixed(2)}€
                                                   </span>

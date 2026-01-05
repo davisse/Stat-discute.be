@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useEffect, useState } from 'react'
 
-interface GameDay {
+export interface GameDay {
   game_id: string
   game_date: string | Date
   played: boolean

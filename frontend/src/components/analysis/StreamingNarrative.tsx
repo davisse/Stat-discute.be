@@ -83,7 +83,7 @@ export function StreamingNarrative({
             display: 'inline-block',
             width: '2px',
             height: '1em',
-            backgroundColor: colors.foreground,
+            backgroundColor: colors.text.primary,
             marginLeft: '2px',
             verticalAlign: 'text-bottom',
           }}
@@ -145,7 +145,7 @@ export function NarrativeBlock({
       {title && (
         <h3
           className="text-xl font-bold mb-3"
-          style={{ color: colors.foreground }}
+          style={{ color: colors.text.primary }}
         >
           {title}
         </h3>
@@ -191,14 +191,14 @@ export function VerdictBadge({
       case 'UNDER':
         return 'rgb(239, 45, 44)' // Red
       case 'PASS':
-        return colors.gray[500]
+        return colors.neutral[500]
     }
   }
 
   const getConfidenceColor = () => {
     if (confidence >= 70) return 'rgb(29, 193, 0)'
     if (confidence >= 50) return 'rgb(255, 193, 7)'
-    return colors.gray[500]
+    return colors.neutral[500]
   }
 
   return (
@@ -207,13 +207,13 @@ export function VerdictBadge({
         className="px-6 py-2 rounded-lg font-bold text-lg"
         style={{
           backgroundColor: getVerdictColor(),
-          color: verdict === 'PASS' ? colors.foreground : '#000',
+          color: verdict === 'PASS' ? colors.text.primary : '#000',
         }}
       >
         {verdict}
       </div>
       <div className="flex items-center gap-2">
-        <span style={{ color: colors.gray[500] }}>Confiance:</span>
+        <span style={{ color: colors.neutral[500] }}>Confiance:</span>
         <span
           className="font-mono font-bold"
           style={{ color: getConfidenceColor() }}
@@ -262,13 +262,13 @@ export function ReasoningList({ reasons, isLoading = false }: ReasoningListProps
         <li
           key={index}
           className="flex items-start gap-2"
-          style={{ color: colors.gray[400] }}
+          style={{ color: colors.neutral[400] }}
         >
           <span
             className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              color: colors.foreground,
+              color: colors.text.primary,
             }}
           >
             {index + 1}

@@ -50,9 +50,9 @@ export function OddsMovement({
   }
 
   const getMovementColor = () => {
-    if (isLineDown) return colors.positive  // Good for UNDER bet
-    if (lineMovement > 0) return colors.negative
-    return colors.gray[400]
+    if (isLineDown) return colors.betting.positive  // Good for UNDER bet
+    if (lineMovement > 0) return colors.betting.negative
+    return colors.neutral[400]
   }
 
   return (
@@ -66,14 +66,14 @@ export function OddsMovement({
       }}>
         {/* Opening Line */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -81,17 +81,17 @@ export function OddsMovement({
             OPENING LINE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {openingLineNum.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             @ {openingOddsNum.toFixed(2)} odds
           </div>
@@ -99,14 +99,14 @@ export function OddsMovement({
 
         {/* Current Line */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
           border: `2px solid ${getMovementColor()}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -114,17 +114,17 @@ export function OddsMovement({
             CURRENT LINE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
             color: getMovementColor(),
-            fontFamily: typography.fontMono,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {currentLineNum.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             @ {currentOddsNum.toFixed(2)} odds
           </div>
@@ -132,14 +132,14 @@ export function OddsMovement({
 
         {/* Movement Indicator */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
           border: `1px solid ${getMovementColor()}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -153,24 +153,24 @@ export function OddsMovement({
             marginBottom: spacing[1]
           }}>
             <div style={{
-              fontSize: typography.fontSize['3xl'],
-              fontWeight: typography.fontWeight.bold,
+              fontSize: typography.sizes['3xl'],
+              fontWeight: typography.weights.bold,
               color: getMovementColor(),
-              fontFamily: typography.fontMono
+              fontFamily: typography.fonts.mono
             }}>
               {lineMovement > 0 ? '+' : ''}{lineMovement.toFixed(1)}
             </div>
             <div style={{
-              fontSize: typography.fontSize.sm,
+              fontSize: typography.sizes.sm,
               color: getMovementColor(),
-              fontFamily: typography.fontMono
+              fontFamily: typography.fonts.mono
             }}>
               ({lineMovementPercent > 0 ? '+' : ''}{lineMovementPercent.toFixed(2)}%)
             </div>
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             {getMovementLabel()}
           </div>
@@ -179,16 +179,16 @@ export function OddsMovement({
 
       {/* Movement Visualization */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[4],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Line Movement Tracker
         </div>
@@ -206,7 +206,7 @@ export function OddsMovement({
             right: 0,
             top: '50%',
             height: '2px',
-            background: colors.gray[800],
+            background: colors.neutral[800],
             transform: 'translateY(-50%)'
           }} />
 
@@ -221,8 +221,8 @@ export function OddsMovement({
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              background: colors.gray[700],
-              border: `2px solid ${colors.foreground}`,
+              background: colors.neutral[700],
+              border: `2px solid ${colors.text.primary}`,
               marginBottom: spacing[2]
             }} />
             <div style={{
@@ -234,17 +234,17 @@ export function OddsMovement({
               textAlign: 'center'
             }}>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[400],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Opening
               </div>
               <div style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.bold,
-                color: colors.foreground,
-                fontFamily: typography.fontMono
+                fontSize: typography.sizes.lg,
+                fontWeight: typography.weights.bold,
+                color: colors.text.primary,
+                fontFamily: typography.fonts.mono
               }}>
                 {openingLineNum.toFixed(1)}
               </div>
@@ -297,7 +297,7 @@ export function OddsMovement({
               height: '20px',
               borderRadius: '50%',
               background: getMovementColor(),
-              border: `3px solid ${colors.background}`,
+              border: `3px solid ${colors.background.card}`,
               boxShadow: `0 0 0 2px ${getMovementColor()}`,
               marginBottom: spacing[2]
             }} />
@@ -310,17 +310,17 @@ export function OddsMovement({
               textAlign: 'center'
             }}>
               <div style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[400],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[400],
                 marginBottom: spacing[1]
               }}>
                 Current
               </div>
               <div style={{
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.bold,
+                fontSize: typography.sizes.lg,
+                fontWeight: typography.weights.bold,
                 color: getMovementColor(),
-                fontFamily: typography.fontMono
+                fontFamily: typography.fonts.mono
               }}>
                 {currentLineNum.toFixed(1)}
               </div>
@@ -340,8 +340,8 @@ export function OddsMovement({
         }}>
           <div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
@@ -349,8 +349,8 @@ export function OddsMovement({
               Market Sentiment
             </div>
             <div style={{
-              fontSize: typography.fontSize.lg,
-              fontWeight: typography.fontWeight.semibold,
+              fontSize: typography.sizes.lg,
+              fontWeight: typography.weights.semibold,
               color: getMovementColor()
             }}>
               {getMovementLabel()}
@@ -361,15 +361,15 @@ export function OddsMovement({
             textAlign: 'right'
           }}>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1]
             }}>
               Direction
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
               color: getMovementColor()
             }}>
               {isLineDown ? '↓' : lineMovement > 0 ? '↑' : '→'}
@@ -381,10 +381,10 @@ export function OddsMovement({
       {/* Odds Movement Detail */}
       <div style={{
         marginTop: spacing[4],
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
           display: 'flex',
@@ -393,8 +393,8 @@ export function OddsMovement({
         }}>
           <div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
@@ -402,22 +402,22 @@ export function OddsMovement({
               Odds Movement
             </div>
             <div style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400]
+              fontSize: typography.sizes.sm,
+              color: colors.neutral[400]
             }}>
               {openingOddsNum.toFixed(2)} → {currentOddsNum.toFixed(2)}
             </div>
           </div>
           <div style={{
-            fontSize: typography.fontSize['2xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: isOddsUp ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['2xl'],
+            fontWeight: typography.weights.bold,
+            color: isOddsUp ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono
           }}>
             {oddsMovement > 0 ? '+' : ''}{oddsMovement.toFixed(2)}
             <span style={{
-              fontSize: typography.fontSize.sm,
-              color: colors.gray[400],
+              fontSize: typography.sizes.sm,
+              color: colors.neutral[400],
               marginLeft: spacing[2]
             }}>
               ({oddsMovementPercent > 0 ? '+' : ''}{oddsMovementPercent.toFixed(1)}%)
@@ -430,21 +430,21 @@ export function OddsMovement({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Market Analysis:</strong> The line has moved from{' '}
-        <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {openingLineNum.toFixed(1)}
         </span>
         {' '}to{' '}
         <span style={{
           color: getMovementColor(),
-          fontFamily: typography.fontMono,
-          fontWeight: typography.fontWeight.bold
+          fontFamily: typography.fonts.mono,
+          fontWeight: typography.weights.bold
         }}>
           {currentLineNum.toFixed(1)}
         </span>
@@ -452,7 +452,7 @@ export function OddsMovement({
         {lineMovementPercent > 0 ? '+' : ''}{lineMovementPercent.toFixed(2)}%), indicating{' '}
         <span style={{
           color: getMovementColor(),
-          fontWeight: typography.fontWeight.semibold
+          fontWeight: typography.weights.semibold
         }}>
           {getMovementLabel().toLowerCase()}
         </span>
@@ -460,18 +460,18 @@ export function OddsMovement({
         {isLineDown ? (
           <>
             This downward movement suggests sharp money is betting the UNDER, creating{' '}
-            <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>
               increased value for UNDER bettors
             </span>
             {' '}as the odds have improved to{' '}
-            <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+            <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
               {currentOddsNum.toFixed(2)}
             </span>.
           </>
         ) : lineMovement > 0 ? (
           <>
             This upward movement suggests public money is betting the OVER, which may indicate{' '}
-            <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>
               potential value on the UNDER
             </span>
             {' '}as contrarian bet.

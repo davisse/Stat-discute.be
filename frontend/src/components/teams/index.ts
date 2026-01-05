@@ -1,4 +1,5 @@
 export { TeamPPGRankingChart } from './TeamPPGRankingChart'
 export { TeamOppPPGRankingChart } from './TeamOppPPGRankingChart'
 export { TeamRankingDualChart } from './TeamRankingDualChart'
+export { TeamQuadrantChart, type TeamQuadrantData } from './TeamQuadrantChart'
 export { TeamPresenceCalendar, type TeamGameDay } from './TeamPresenceCalendar'

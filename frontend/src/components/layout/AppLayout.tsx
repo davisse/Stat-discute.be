@@ -143,7 +143,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#000000' }}>
+    <div className="min-h-screen relative overscroll-none" style={{ backgroundColor: '#000000' }}>
       {/* Fond pointillé (Dots Grid Background) */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -162,7 +162,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Header fixe avec logo et navbar */}
-      <header ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800/50">
+      <header ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-black lg:bg-black/90 lg:backdrop-blur-md border-b border-zinc-800/50">
         {/* Navigation horizontale - Desktop only */}
         <nav
           className="hidden lg:flex justify-between items-center py-4 px-6 relative"

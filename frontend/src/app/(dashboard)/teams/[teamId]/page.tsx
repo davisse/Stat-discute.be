@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
-import { TeamRankingDualChart, TeamPresenceCalendar, type TeamGameDay } from '@/components/teams'
+import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, type TeamGameDay } from '@/components/teams'
 
 interface TeamStats {
   team_id: number
@@ -38,9 +38,9 @@ interface TeamRankingData {
 
 function StatCard({ label, value, small = false }: { label: string; value: string; small?: boolean }) {
   return (
-    <div className={`${small ? 'p-3' : 'p-4'} bg-zinc-900/50 border border-zinc-800 rounded-lg`}>
-      <p className="text-[10px] uppercase tracking-wider text-zinc-500 mb-1">{label}</p>
-      <p className={`${small ? 'text-xl' : 'text-2xl'} font-bold text-white font-mono`}>{value}</p>
+    <div className={`${small ? 'p-2 sm:p-3' : 'p-2 sm:p-4'} bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg`}>
+      <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-500 mb-0.5 sm:mb-1">{label}</p>
+      <p className={`${small ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold text-white font-mono`}>{value}</p>
     </div>
   )
 }
@@ -94,7 +94,7 @@ export default function TeamPage() {
 
   return (
     <AppLayout>
-      <div className="px-8 pt-8 max-w-7xl mx-auto pb-16">
+      <div className="px-2 sm:px-6 md:px-8 pt-4 sm:pt-8 max-w-7xl mx-auto pb-16">
         {/* Back Button */}
         <Link
           href="/teams"
@@ -149,9 +149,9 @@ export default function TeamPage() {
             </div>
 
             {/* Team Stats Grid - Compact */}
-            <div className="mt-8 grid gap-3">
+            <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0 grid gap-2 sm:gap-3">
               {/* Main Stats Row */}
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-1 sm:gap-2 px-2 sm:px-0">
                 <StatCard label="PPG" value={parseFloat(teamStats.ppg).toFixed(1)} />
                 <StatCard label="OPP PPG" value={parseFloat(teamStats.opp_ppg).toFixed(1)} />
                 <StatCard label="PACE" value={parseFloat(teamStats.pace).toFixed(1)} />
@@ -161,47 +161,47 @@ export default function TeamPage() {
               </div>
 
               {/* Totals + Recent Form - Side by Side */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                 {/* Totals Section */}
-                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-lg">
-                  <h3 className="text-[10px] uppercase tracking-wider text-zinc-500 mb-3">Totaux</h3>
-                  <div className="grid grid-cols-4 gap-3">
+                <div className="p-3 sm:p-4 bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg">
+                  <h3 className="text-[10px] uppercase tracking-wider text-zinc-500 mb-2 sm:mb-3">Totaux</h3>
+                  <div className="grid grid-cols-4 gap-2 sm:gap-3">
                     <div>
                       <p className="text-[10px] text-zinc-500">Moyenne</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.avg_total).toFixed(1)}</p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.avg_total).toFixed(1)}</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-zinc-500">Écart-type</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.stddev_total).toFixed(1)}</p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.stddev_total).toFixed(1)}</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-zinc-500">Min/Max</p>
-                      <p className="text-lg font-bold text-white font-mono">{teamStats.min_total}-{teamStats.max_total}</p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{teamStats.min_total}-{teamStats.max_total}</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-zinc-500">Over 220.5</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.over_rate).toFixed(0)}%</p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.over_rate).toFixed(0)}%</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Recent Form */}
-                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-lg">
-                  <h3 className="text-[10px] uppercase tracking-wider text-zinc-500 mb-3">Forme récente</h3>
-                  <div className="grid grid-cols-3 gap-3">
+                <div className="p-3 sm:p-4 bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg">
+                  <h3 className="text-[10px] uppercase tracking-wider text-zinc-500 mb-2 sm:mb-3">Forme récente</h3>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
                     <div>
                       <p className="text-[10px] text-zinc-500 mb-1">L3</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.l3_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.l3_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
                       <p className="text-sm text-zinc-400 font-mono">{parseFloat(teamStats.l3_total).toFixed(1)} <span className="text-[10px] text-zinc-500">Tot</span></p>
                     </div>
                     <div>
                       <p className="text-[10px] text-zinc-500 mb-1">L5</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.l5_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.l5_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
                       <p className="text-sm text-zinc-400 font-mono">{parseFloat(teamStats.l5_total).toFixed(1)} <span className="text-[10px] text-zinc-500">Tot</span></p>
                     </div>
                     <div>
                       <p className="text-[10px] text-zinc-500 mb-1">L10</p>
-                      <p className="text-lg font-bold text-white font-mono">{parseFloat(teamStats.l10_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
+                      <p className="text-base sm:text-lg font-bold text-white font-mono">{parseFloat(teamStats.l10_ppg).toFixed(1)} <span className="text-xs text-zinc-500">PPG</span></p>
                       <p className="text-sm text-zinc-400 font-mono">{parseFloat(teamStats.l10_total).toFixed(1)} <span className="text-[10px] text-zinc-500">Tot</span></p>
                     </div>
                   </div>
@@ -209,9 +209,19 @@ export default function TeamPage() {
               </div>
             </div>
 
+            {/* Team Quadrant Chart - full width on mobile */}
+            {allTeamsRanking.length > 0 && (
+              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
+                <TeamQuadrantChart
+                  data={allTeamsRanking}
+                  selectedTeamId={teamStats.team_id}
+                />
+              </div>
+            )}
+
             {/* Team Ranking Charts */}
             {allTeamsRanking.length > 0 && (
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
                 <TeamRankingDualChart
                   data={allTeamsRanking}
                   selectedTeamId={teamStats.team_id}
@@ -221,7 +231,7 @@ export default function TeamPage() {
 
             {/* Season Calendar */}
             {teamGames.length > 0 && (
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
                 <TeamPresenceCalendar
                   games={teamGames}
                   seasonStart="2025-10-22"

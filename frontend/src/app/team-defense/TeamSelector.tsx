@@ -20,8 +20,7 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
   // Filter teams based on search
   const filteredTeams = teams.filter(team =>
     team.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    team.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    team.city.toLowerCase().includes(searchTerm.toLowerCase())
+    team.abbreviation.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   // Close dropdown when clicking outside
@@ -68,24 +67,24 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
           width: '100%',
           padding: spacing[4],
           background: 'transparent',
-          border: `1px solid ${colors.gray[800]}`,
+          border: `1px solid ${colors.neutral[800]}`,
           borderRadius: radius.md,
-          color: colors.foreground,
-          fontSize: typography.fontSize.base,
-          fontFamily: typography.fontSans,
-          transition: transitions.normal,
+          color: colors.text.primary,
+          fontSize: typography.sizes.base,
+          fontFamily: typography.fonts.sans,
+          transition: transitions.presets.default,
           outline: 'none'
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = colors.foreground
+          e.currentTarget.style.borderColor = colors.text.primary
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = colors.gray[800]
+          e.currentTarget.style.borderColor = colors.neutral[800]
         }}
         onFocus={(e) => {
           setIsOpen(true)
-          e.currentTarget.style.borderColor = colors.foreground
-          e.currentTarget.style.boxShadow = `0 0 0 1px ${colors.foreground}`
+          e.currentTarget.style.borderColor = colors.text.primary
+          e.currentTarget.style.boxShadow = `0 0 0 1px ${colors.text.primary}`
         }}
         onBlur={(e) => {
           e.currentTarget.style.boxShadow = 'none'
@@ -101,8 +100,8 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
           right: 0,
           maxHeight: '400px',
           overflowY: 'auto',
-          background: colors.background,
-          border: `1px solid ${colors.gray[800]}`,
+          background: colors.background.primary,
+          border: `1px solid ${colors.neutral[800]}`,
           borderRadius: radius.lg,
           zIndex: 50,
           boxShadow: '0 0 24px rgba(255, 255, 255, 0.12)'
@@ -111,8 +110,8 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
             <div style={{
               padding: spacing[4],
               textAlign: 'center',
-              color: colors.gray[500],
-              fontSize: typography.fontSize.sm
+              color: colors.neutral[500],
+              fontSize: typography.sizes.sm
             }}>
               No teams found
             </div>
@@ -124,21 +123,21 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
                 style={{
                   width: '100%',
                   padding: spacing[4],
-                  background: team.team_id === selectedTeamId ? colors.foreground : 'transparent',
-                  color: team.team_id === selectedTeamId ? colors.background : colors.foreground,
+                  background: team.team_id === selectedTeamId ? colors.text.primary : 'transparent',
+                  color: team.team_id === selectedTeamId ? colors.background.primary : colors.text.primary,
                   border: 'none',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  fontSize: typography.fontSize.base,
-                  fontFamily: typography.fontSans,
-                  transition: transitions.fast,
+                  fontSize: typography.sizes.base,
+                  fontFamily: typography.fonts.sans,
+                  transition: transitions.presets.fast,
                   display: 'flex',
                   alignItems: 'center',
                   gap: spacing[3]
                 }}
                 onMouseEnter={(e) => {
                   if (team.team_id !== selectedTeamId) {
-                    e.currentTarget.style.background = colors.gray[900]
+                    e.currentTarget.style.background = colors.neutral[900]
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -148,9 +147,9 @@ export function TeamSelector({ teams, selectedTeamId, onTeamSelect }: TeamSelect
                 }}
               >
                 <span style={{
-                  fontWeight: typography.fontWeight.semibold,
-                  fontFamily: typography.fontMono,
-                  fontSize: typography.fontSize.sm
+                  fontWeight: typography.weights.semibold,
+                  fontFamily: typography.fonts.mono,
+                  fontSize: typography.sizes.sm
                 }}>
                   {team.abbreviation}
                 </span>

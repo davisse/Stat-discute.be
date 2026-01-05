@@ -70,11 +70,11 @@ export function RecentGamesTrend({
   if (isLoading) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         Loading recent games trend...
       </div>
@@ -84,11 +84,11 @@ export function RecentGamesTrend({
   if (games.length === 0) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         No games found without {playerName}
       </div>
@@ -119,14 +119,14 @@ export function RecentGamesTrend({
       }}>
         {/* Average Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -134,17 +134,17 @@ export function RecentGamesTrend({
             AVERAGE (LAST {games.length} GAMES)
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: average < bettingLine ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: average < bettingLine ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {average.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Combined Total
           </div>
@@ -152,14 +152,14 @@ export function RecentGamesTrend({
 
         {/* Hit Rate Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -167,17 +167,17 @@ export function RecentGamesTrend({
             UNDER HIT RATE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: hitRate >= 70 ? colors.positive : hitRate >= 50 ? colors.foreground : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: hitRate >= 70 ? colors.betting.positive : hitRate >= 50 ? colors.text.primary : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {hitRate.toFixed(0)}%
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             {gamesUnder}/{games.length} games under {Number(bettingLine).toFixed(1)}
           </div>
@@ -186,16 +186,16 @@ export function RecentGamesTrend({
 
       {/* Line Chart */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[4],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Recent Form Without {playerName} {location ? `(${location === 'HOME' ? 'Home' : 'Away'} Games)` : ''}
         </div>
@@ -213,7 +213,7 @@ export function RecentGamesTrend({
             right: 0,
             bottom: `${((bettingLine - minValue) / range) * 100}%`,
             height: '2px',
-            background: colors.gray[700],
+            background: colors.neutral[700],
             opacity: 0.5,
             zIndex: 1
           }} />
@@ -222,10 +222,10 @@ export function RecentGamesTrend({
             right: spacing[2],
             bottom: `${((bettingLine - minValue) / range) * 100}%`,
             transform: 'translateY(50%)',
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
-            fontFamily: typography.fontMono,
-            background: colors.background,
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
+            fontFamily: typography.fonts.mono,
+            background: colors.background.card,
             padding: `${spacing[1]} ${spacing[2]}`,
             borderRadius: radius.sm,
             zIndex: 2
@@ -240,10 +240,10 @@ export function RecentGamesTrend({
             right: 0,
             bottom: `${((average - minValue) / range) * 100}%`,
             height: '1px',
-            background: average < bettingLine ? colors.positive : colors.negative,
+            background: average < bettingLine ? colors.betting.positive : colors.betting.negative,
             opacity: 0.3,
             zIndex: 1,
-            borderTop: `1px dashed ${average < bettingLine ? colors.positive : colors.negative}`
+            borderTop: `1px dashed ${average < bettingLine ? colors.betting.positive : colors.betting.negative}`
           }} />
 
           {/* Data Points and Line */}
@@ -271,7 +271,7 @@ export function RecentGamesTrend({
                   y1={`${y1}%`}
                   x2={`${x2}%`}
                   y2={`${y2}%`}
-                  stroke={colors.foreground}
+                  stroke={colors.text.primary}
                   strokeWidth="2"
                   opacity="0.5"
                 />
@@ -290,18 +290,18 @@ export function RecentGamesTrend({
                     cx={`${x}%`}
                     cy={`${y}%`}
                     r="6"
-                    fill={isUnder ? colors.positive : colors.negative}
-                    stroke={colors.background}
+                    fill={isUnder ? colors.betting.positive : colors.betting.negative}
+                    stroke={colors.background.card}
                     strokeWidth="2"
                   />
                   <text
                     x={`${x}%`}
                     y={`${y - 3}%`}
                     textAnchor="middle"
-                    fontSize={typography.fontSize.xs}
-                    fill={colors.foreground}
-                    fontFamily={typography.fontMono}
-                    fontWeight={typography.fontWeight.bold}
+                    fontSize={typography.sizes.xs}
+                    fill={colors.text.primary}
+                    fontFamily={typography.fonts.mono}
+                    fontWeight={typography.weights.bold}
                   >
                     {game.combined_total}
                   </text>
@@ -327,22 +327,22 @@ export function RecentGamesTrend({
                 key={index}
                 style={{
                   textAlign: 'center',
-                  fontSize: typography.fontSize.xs,
-                  color: colors.gray[400]
+                  fontSize: typography.sizes.xs,
+                  color: colors.neutral[400]
                 }}
               >
                 <div style={{ marginBottom: spacing[1] }}>{monthDay}</div>
                 <div style={{
-                  fontSize: typography.fontSize.xs,
-                  color: isUnder ? colors.positive : colors.negative,
-                  fontWeight: typography.fontWeight.semibold
+                  fontSize: typography.sizes.xs,
+                  color: isUnder ? colors.betting.positive : colors.betting.negative,
+                  fontWeight: typography.weights.semibold
                 }}>
                   {game.home_team_abbr} vs {game.away_team_abbr}
                 </div>
                 <div style={{
-                  fontSize: typography.fontSize.xs,
-                  color: colors.gray[500],
-                  fontFamily: typography.fontMono
+                  fontSize: typography.sizes.xs,
+                  color: colors.neutral[500],
+                  fontFamily: typography.fonts.mono
                 }}>
                   {game.home_team_score}-{game.away_team_score}
                 </div>
@@ -356,30 +356,30 @@ export function RecentGamesTrend({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Recent Form Analysis:</strong> {location === 'HOME' ? 'At home' : location === 'AWAY' ? 'Away' : ''} without {playerName},
         {' '}{teamAbbreviation} averaged{' '}
-        <span style={{ color: colors.foreground, fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ color: colors.text.primary, fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {average.toFixed(1)} combined points
         </span>
         {' '}over the last {games.length} games.
         {' '}{gamesUnder}/{games.length} games went UNDER{' '}
-        <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {Number(bettingLine).toFixed(1)}
         </span>
         {' '}({hitRate.toFixed(0)}% hit rate).
         {' '}
         {hitRate >= 70 ? (
-          <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>Strong UNDER trend</span>
+          <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>Strong UNDER trend</span>
         ) : hitRate >= 50 ? (
-          <span style={{ color: colors.foreground, fontWeight: typography.fontWeight.semibold }}>Moderate UNDER lean</span>
+          <span style={{ color: colors.text.primary, fontWeight: typography.weights.semibold }}>Moderate UNDER lean</span>
         ) : (
-          <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>Favors OVER</span>
+          <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>Favors OVER</span>
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
-  getPlayerPropsStats,
+  getPlayerPropsStatsByNames,
   getTeamDefensiveStats,
   getTeamOffensiveSplits,
   getLeagueAverages,
@@ -292,10 +292,10 @@ export async function POST(request: NextRequest) {
     const playerNames = [...new Set(player_props.map((p) => p.player_name))]
 
     // Fetch all player statistics
-    const playerStats = await getPlayerPropsStats(playerNames, currentSeason)
+    const playerStats = await getPlayerPropsStatsByNames(playerNames, currentSeason)
 
     // Fetch league averages
-    const leagueAvg = await getLeagueAverages(currentSeason)
+    const leagueAvg = await getLeagueAverages()
 
     // Process each prop
     const analyses: AnalysisResult[] = []

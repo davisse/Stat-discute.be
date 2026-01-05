@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { query } from '@/lib/db'
 import { getCurrentSeason, getPlayerStatsWithRankings, getPlayerGamelogs } from '@/lib/queries'
 import { AppLayout } from '@/components/layout'
-import { PlayerPresenceCalendar, PlayerGamelogsTable } from '@/components/player'
+import { PlayerPresenceCalendar, PlayerGamelogsTable, type GameDay, type GamelogEntry } from '@/components/player'
 import AdvancedStatsRadar from '@/components/player/AdvancedStatsRadar'
 import { PropPerformanceBarChart } from '@/components/player-props'
 import { notFound } from 'next/navigation'
@@ -329,9 +329,9 @@ async function getPlayerData(playerId: number) {
     teammates: teammatesResult.rows,
     playerProps: playerPropsResult.rows,
     propsAvg: propsAvgResult.rows,
-    seasonGames: seasonGamesResult.rows,
+    seasonGames: seasonGamesResult.rows as GameDay[],
     playerStatsWithRankings,
-    playerGamelogs,
+    playerGamelogs: playerGamelogs as GamelogEntry[],
     currentSeason
   }
 }

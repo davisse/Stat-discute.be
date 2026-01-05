@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getQ1ValueAnalysis, getQ1Leaderboard, getQ1TeamStats, Q1TeamStats } from '@/lib/queries'
+import { getQ1TodayGames, getQ1Leaderboard, getQ1TeamStats, Q1TeamStats, Q1TodayGame } from '@/lib/queries'
 import { AppLayout } from '@/components/layout/AppLayout'
 
 export const metadata: Metadata = {
@@ -109,23 +109,7 @@ function Q1StatsTable({ team, q1Avg, q1Allowed, q1WinPct, gamesPlayed, label }: 
 }
 
 // Game card component
-function GameCard({ game }: { game: {
-  game_id: string
-  home_abbr: string
-  away_abbr: string
-  home_q1_avg: number
-  home_q1_allowed: number
-  home_q1_win_pct: number
-  away_q1_avg: number
-  away_q1_allowed: number
-  away_q1_win_pct: number
-  home_games_played: number
-  away_games_played: number
-  projected_home_q1: number
-  projected_away_q1: number
-  home_model_win_prob: number
-  away_model_win_prob: number
-}}) {
+function GameCard({ game }: { game: Q1TodayGame }) {
   const projectedMargin = game.projected_home_q1 - game.projected_away_q1
   const favoredTeam = projectedMargin > 0 ? game.home_abbr : game.away_abbr
   const favoredProb = Math.max(game.home_model_win_prob, game.away_model_win_prob)
@@ -245,7 +229,7 @@ function Leaderboard({ title, data, metric, format }: {
 
 export default async function Q1ValuePage() {
   const [todayGames, leaderboard, allTeamStats] = await Promise.all([
-    getQ1ValueAnalysis(),
+    getQ1TodayGames(),
     getQ1Leaderboard(10),
     getQ1TeamStats()
   ])

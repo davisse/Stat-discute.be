@@ -57,7 +57,7 @@ export function BetPlayerImpactAnalysis({
   const getMetrics = (gamesList: PlayerImpactGame[]) => {
     if (gamesList.length === 0) return { avg: 0, count: 0 }
 
-    const values = gamesList.map(g => g.team_score + g.opponent_score)
+    const values = gamesList.map(g => g.team_points + g.opponent_points)
     const avg = values.reduce((sum, v) => sum + v, 0) / values.length
     return { avg, count: gamesList.length }
   }
@@ -69,11 +69,11 @@ export function BetPlayerImpactAnalysis({
   if (isLoading) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         Loading player impact data...
       </div>
@@ -84,11 +84,11 @@ export function BetPlayerImpactAnalysis({
   if (filteredGames.length === 0) {
     return (
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
         textAlign: 'center',
-        color: colors.gray[500]
+        color: colors.neutral[500]
       }}>
         No games found for analysis
       </div>
@@ -106,15 +106,15 @@ export function BetPlayerImpactAnalysis({
       }}>
         {/* With Player Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.positive}20`,
-          borderLeft: `4px solid ${colors.positive}`
+          border: `1px solid ${colors.betting.positive}20`,
+          borderLeft: `4px solid ${colors.betting.positive}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -122,23 +122,23 @@ export function BetPlayerImpactAnalysis({
             WITH {playerName.toUpperCase()}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.positive,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.betting.positive,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {withPlayerMetrics.avg.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Avg Combined Total
           </div>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginTop: spacing[2]
           }}>
             {withPlayerMetrics.count} games
@@ -147,15 +147,15 @@ export function BetPlayerImpactAnalysis({
 
         {/* Without Player Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.negative}20`,
-          borderLeft: `4px solid ${colors.negative}`
+          border: `1px solid ${colors.betting.negative}20`,
+          borderLeft: `4px solid ${colors.betting.negative}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -163,23 +163,23 @@ export function BetPlayerImpactAnalysis({
             WITHOUT {playerName.toUpperCase()}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {withoutPlayerMetrics.count > 0 ? withoutPlayerMetrics.avg.toFixed(1) : 'N/A'}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Avg Combined Total
           </div>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginTop: spacing[2]
           }}>
             {withoutPlayerMetrics.count} games
@@ -188,14 +188,14 @@ export function BetPlayerImpactAnalysis({
 
         {/* Impact Difference Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -203,12 +203,12 @@ export function BetPlayerImpactAnalysis({
             IMPACT
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
             color: withoutPlayerMetrics.count > 0
-              ? (withoutPlayerMetrics.avg - withPlayerMetrics.avg > 0 ? colors.negative : colors.positive)
-              : colors.gray[400],
-            fontFamily: typography.fontMono,
+              ? (withoutPlayerMetrics.avg - withPlayerMetrics.avg > 0 ? colors.betting.negative : colors.betting.positive)
+              : colors.neutral[400],
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {withoutPlayerMetrics.count > 0
@@ -216,18 +216,18 @@ export function BetPlayerImpactAnalysis({
               : 'N/A'}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Points difference
           </div>
           {withoutPlayerMetrics.count < 3 && withoutPlayerMetrics.count > 0 && (
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[500],
               marginTop: spacing[2],
               padding: spacing[1],
-              background: colors.gray[900],
+              background: colors.neutral[900],
               borderRadius: radius.sm,
               textAlign: 'center'
             }}>
@@ -240,16 +240,16 @@ export function BetPlayerImpactAnalysis({
       {/* Simple Bar Chart */}
       {withoutPlayerMetrics.count > 0 && (
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.sm,
-            color: colors.gray[400],
+            fontSize: typography.sizes.sm,
+            color: colors.neutral[400],
             marginBottom: spacing[4],
-            fontWeight: typography.fontWeight.medium
+            fontWeight: typography.weights.medium
           }}>
             Average Combined Total Comparison
           </div>
@@ -257,10 +257,10 @@ export function BetPlayerImpactAnalysis({
           {/* Betting Line Reference (if provided) */}
           {bettingLine && (
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[500],
               marginBottom: spacing[2],
-              fontFamily: typography.fontMono
+              fontFamily: typography.fonts.mono
             }}>
               Betting Line: {Number(bettingLine).toFixed(1)} points
             </div>
@@ -278,7 +278,7 @@ export function BetPlayerImpactAnalysis({
               <div style={{
                 width: '100%',
                 height: `${(withPlayerMetrics.avg / 250) * 100}%`,
-                background: colors.positive,
+                background: colors.betting.positive,
                 borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                 minHeight: '40px',
                 position: 'relative',
@@ -287,18 +287,18 @@ export function BetPlayerImpactAnalysis({
                 justifyContent: 'center'
               }}>
                 <div style={{
-                  fontSize: typography.fontSize.sm,
-                  fontWeight: typography.fontWeight.bold,
-                  color: colors.background,
-                  fontFamily: typography.fontMono
+                  fontSize: typography.sizes.sm,
+                  fontWeight: typography.weights.bold,
+                  color: colors.background.primary,
+                  fontFamily: typography.fonts.mono
                 }}>
                   {withPlayerMetrics.avg.toFixed(1)}
                 </div>
               </div>
               <div style={{
                 marginTop: spacing[2],
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[400],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[400],
                 textAlign: 'center'
               }}>
                 WITH
@@ -310,7 +310,7 @@ export function BetPlayerImpactAnalysis({
               <div style={{
                 width: '100%',
                 height: `${(withoutPlayerMetrics.avg / 250) * 100}%`,
-                background: colors.negative,
+                background: colors.betting.negative,
                 borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                 minHeight: '40px',
                 position: 'relative',
@@ -319,18 +319,18 @@ export function BetPlayerImpactAnalysis({
                 justifyContent: 'center'
               }}>
                 <div style={{
-                  fontSize: typography.fontSize.sm,
-                  fontWeight: typography.fontWeight.bold,
-                  color: colors.background,
-                  fontFamily: typography.fontMono
+                  fontSize: typography.sizes.sm,
+                  fontWeight: typography.weights.bold,
+                  color: colors.background.primary,
+                  fontFamily: typography.fonts.mono
                 }}>
                   {withoutPlayerMetrics.avg.toFixed(1)}
                 </div>
               </div>
               <div style={{
                 marginTop: spacing[2],
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[400],
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[400],
                 textAlign: 'center'
               }}>
                 WITHOUT
@@ -343,7 +343,7 @@ export function BetPlayerImpactAnalysis({
                 <div style={{
                   width: '100%',
                   height: `${(Number(bettingLine) / 250) * 100}%`,
-                  background: colors.gray[700],
+                  background: colors.neutral[700],
                   borderRadius: `${radius.sm} ${radius.sm} 0 0`,
                   minHeight: '40px',
                   position: 'relative',
@@ -353,18 +353,18 @@ export function BetPlayerImpactAnalysis({
                   opacity: 0.5
                 }}>
                   <div style={{
-                    fontSize: typography.fontSize.sm,
-                    fontWeight: typography.fontWeight.bold,
-                    color: colors.foreground,
-                    fontFamily: typography.fontMono
+                    fontSize: typography.sizes.sm,
+                    fontWeight: typography.weights.bold,
+                    color: colors.text.primary,
+                    fontFamily: typography.fonts.mono
                   }}>
                     {Number(bettingLine).toFixed(1)}
                   </div>
                 </div>
                 <div style={{
                   marginTop: spacing[2],
-                  fontSize: typography.fontSize.xs,
-                  color: colors.gray[400],
+                  fontSize: typography.sizes.xs,
+                  color: colors.neutral[400],
                   textAlign: 'center'
                 }}>
                   LINE
@@ -380,22 +380,22 @@ export function BetPlayerImpactAnalysis({
         <div style={{
           marginTop: spacing[4],
           padding: spacing[3],
-          background: colors.background,
+          background: colors.background.card,
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`,
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400]
+          border: `1px solid ${colors.neutral[900]}`,
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400]
         }}>
           <strong>Analysis:</strong> {location === 'HOME' ? 'At home' : location === 'AWAY' ? 'Away' : ''} without {playerName},
           {' '}{teamAbbreviation} games average{' '}
-          <span style={{ color: colors.foreground, fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+          <span style={{ color: colors.text.primary, fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
             {withoutPlayerMetrics.avg.toFixed(1)} combined points
           </span>
           {' '}({withoutPlayerMetrics.count} games).
           {' '}
           {withoutPlayerMetrics.avg < Number(bettingLine)
-            ? <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>Strong UNDER indicator</span>
-            : <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>Favors OVER</span>
+            ? <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>Strong UNDER indicator</span>
+            : <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>Favors OVER</span>
           }
           {' '}at {Number(bettingLine).toFixed(1)} line.
         </div>

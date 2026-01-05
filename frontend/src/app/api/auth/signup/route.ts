@@ -228,7 +228,7 @@ export async function POST(request: NextRequest) {
 
     const strengthCheck = validatePasswordStrength(password)
 
-    if (!strengthCheck.isValid) {
+    if (!strengthCheck.valid) {
       return NextResponse.json<SignupErrorResponse>(
         {
           error: 'Le mot de passe ne respecte pas les critères de sécurité',

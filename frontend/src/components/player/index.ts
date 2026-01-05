@@ -6,3 +6,4 @@ export { default as PlayerGamelogsTable } from './PlayerGamelogsTable'
 // Re-export types
 export type { PlayerStatsData } from './PlayerStatsBento'
 export type { GamelogEntry } from './PlayerGamelogsTable'
+export type { GameDay } from './PlayerPresenceCalendar'

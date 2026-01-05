@@ -2,36 +2,15 @@
 
 import { useState, useMemo } from 'react'
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import type { PaceRanking } from '@/lib/queries'
+import { safeNum } from '@/lib/utils'
 
 type SortDirection = 'asc' | 'desc' | null
-
-interface PaceRanking {
-  team_id: number
-  team: string
-  pace: number | string
-  rank: number | string
-  ppg: number | string
-  opp_ppg: number | string
-  l3_ppg: number | string
-  l10_ppg: number | string
-  avg_total: number | string
-  l3_total: number | string
-  l10_total: number | string
-  off_rtg: number | string
-  games: number
-}
 
 interface PaceRankingsTableProps {
   data: PaceRanking[]
   leagueAvgPace: number
   leagueAvgTotal: number
-}
-
-// Helper to safely format numbers (handles PostgreSQL numeric type)
-const safeNum = (val: number | string | null | undefined): number => {
-  if (val === null || val === undefined) return 0
-  const num = typeof val === 'string' ? parseFloat(val) : val
-  return isNaN(num) ? 0 : num
 }
 
 const getPaceTier = (pace: number) => {
@@ -40,25 +19,26 @@ const getPaceTier = (pace: number) => {
   return { label: 'FAST', color: 'text-orange-600', bg: 'bg-orange-100' }
 }
 
-type SortKey = 'rank' | 'team' | 'pace' | 'ppg' | 'l3_ppg' | 'l10_ppg' | 'avg_total' | 'l3_total' | 'l10_total' | 'off_rtg'
+type SortKey = 'team' | 'pace' | 'ppg' | 'l3_ppg' | 'l10_ppg' | 'avg_total' | 'l3_total' | 'l10_total' | 'off_rtg'
 
 interface Column {
-  key: SortKey
+  key: SortKey | null
   label: string
   align: 'left' | 'center'
+  sortable: boolean
 }
 
 const columns: Column[] = [
-  { key: 'rank', label: 'Rk', align: 'left' },
-  { key: 'team', label: 'Team', align: 'left' },
-  { key: 'pace', label: 'Pace', align: 'center' },
-  { key: 'ppg', label: 'PPG', align: 'center' },
-  { key: 'l3_ppg', label: 'L3', align: 'center' },
-  { key: 'l10_ppg', label: 'L10', align: 'center' },
-  { key: 'avg_total', label: 'Avg Tot', align: 'center' },
-  { key: 'l3_total', label: 'L3 Tot', align: 'center' },
-  { key: 'l10_total', label: 'L10 Tot', align: 'center' },
-  { key: 'off_rtg', label: 'ORTG', align: 'center' },
+  { key: null, label: 'Rk', align: 'left', sortable: false },
+  { key: 'team', label: 'Team', align: 'left', sortable: true },
+  { key: 'pace', label: 'Pace', align: 'center', sortable: true },
+  { key: 'ppg', label: 'PPG', align: 'center', sortable: true },
+  { key: 'l3_ppg', label: 'L3', align: 'center', sortable: true },
+  { key: 'l10_ppg', label: 'L10', align: 'center', sortable: true },
+  { key: 'avg_total', label: 'Avg Tot', align: 'center', sortable: true },
+  { key: 'l3_total', label: 'L3 Tot', align: 'center', sortable: true },
+  { key: 'l10_total', label: 'L10 Tot', align: 'center', sortable: true },
+  { key: 'off_rtg', label: 'ORTG', align: 'center', sortable: true },
 ]
 
 export function PaceRankingsTable({ data, leagueAvgPace, leagueAvgTotal }: PaceRankingsTableProps) {
@@ -107,8 +87,8 @@ export function PaceRankingsTable({ data, leagueAvgPace, leagueAvgTotal }: PaceR
     })
   }, [data, sortKey, sortDirection])
 
-  const SortIcon = ({ columnKey }: { columnKey: SortKey }) => {
-    if (sortKey !== columnKey) {
+  const SortIcon = ({ columnKey }: { columnKey: SortKey | null }) => {
+    if (!columnKey || sortKey !== columnKey) {
       return <ChevronsUpDown className="h-3 w-3 opacity-30" />
     }
     if (sortDirection === 'asc') {
@@ -128,17 +108,17 @@ export function PaceRankingsTable({ data, leagueAvgPace, leagueAvgTotal }: PaceR
             <tr className="border-b bg-muted/50">
               {columns.map((col) => (
                 <th
-                  key={col.key}
-                  className={`py-2 px-2 cursor-pointer hover:bg-muted select-none ${
-                    col.align === 'center' ? 'text-center' : 'text-left'
-                  }`}
-                  onClick={() => handleSort(col.key)}
+                  key={col.label}
+                  className={`py-2 px-2 select-none ${
+                    col.sortable ? 'cursor-pointer hover:bg-muted' : ''
+                  } ${col.align === 'center' ? 'text-center' : 'text-left'}`}
+                  onClick={() => col.sortable && col.key && handleSort(col.key)}
                 >
                   <div className={`flex items-center gap-1 ${
                     col.align === 'center' ? 'justify-center' : 'justify-start'
                   }`}>
                     {col.label}
-                    <SortIcon columnKey={col.key} />
+                    {col.sortable && <SortIcon columnKey={col.key} />}
                   </div>
                 </th>
               ))}

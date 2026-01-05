@@ -50,14 +50,14 @@ export function PaceAnalysis({
       }}>
         {/* Pace WITH Player */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -65,17 +65,17 @@ export function PaceAnalysis({
             WITH {playerName.split(' ')[1] || playerName}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {paceWithPlayerNum.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Possessions/48 min
           </div>
@@ -83,14 +83,14 @@ export function PaceAnalysis({
 
         {/* Pace WITHOUT Player */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${isSlower ? colors.positive : colors.negative}`
+          border: `1px solid ${isSlower ? colors.betting.positive : colors.betting.negative}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -98,17 +98,17 @@ export function PaceAnalysis({
             WITHOUT {playerName.split(' ')[1] || playerName}
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: isSlower ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: isSlower ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {paceWithoutPlayerNum.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Possessions/48 min
           </div>
@@ -116,14 +116,14 @@ export function PaceAnalysis({
 
         {/* Difference */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${isSlower ? colors.positive : colors.negative}`
+          border: `1px solid ${isSlower ? colors.betting.positive : colors.betting.negative}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -131,17 +131,17 @@ export function PaceAnalysis({
             DIFFERENCE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: isSlower ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: isSlower ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {possessionDifferenceNum > 0 ? '+' : ''}{possessionDifferenceNum.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             {percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(1)}% change
           </div>
@@ -150,17 +150,17 @@ export function PaceAnalysis({
 
       {/* Pace Visualization */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
+        border: `1px solid ${colors.neutral[900]}`,
         marginBottom: spacing[4]
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[4],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Pace Factor Impact for {teamAbbr}
         </div>
@@ -180,31 +180,31 @@ export function PaceAnalysis({
               marginBottom: spacing[2]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.foreground,
-                fontWeight: typography.fontWeight.medium
+                fontSize: typography.sizes.sm,
+                color: colors.text.primary,
+                fontWeight: typography.weights.medium
               }}>
                 WITH {playerName.split(' ')[1] || playerName}
               </div>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.foreground,
-                fontFamily: typography.fontMono,
-                fontWeight: typography.fontWeight.bold
+                fontSize: typography.sizes.sm,
+                color: colors.text.primary,
+                fontFamily: typography.fonts.mono,
+                fontWeight: typography.weights.bold
               }}>
                 {paceWithPlayerNum.toFixed(1)}
               </div>
             </div>
             <div style={{
               height: '32px',
-              background: colors.gray[900],
+              background: colors.neutral[900],
               borderRadius: radius.md,
               overflow: 'hidden'
             }}>
               <div style={{
                 height: '100%',
                 width: `${(paceWithPlayerNum / 110) * 100}%`,
-                background: colors.foreground,
+                background: colors.text.primary,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
@@ -222,31 +222,31 @@ export function PaceAnalysis({
               marginBottom: spacing[2]
             }}>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: colors.foreground,
-                fontWeight: typography.fontWeight.medium
+                fontSize: typography.sizes.sm,
+                color: colors.text.primary,
+                fontWeight: typography.weights.medium
               }}>
                 WITHOUT {playerName.split(' ')[1] || playerName}
               </div>
               <div style={{
-                fontSize: typography.fontSize.sm,
-                color: isSlower ? colors.positive : colors.negative,
-                fontFamily: typography.fontMono,
-                fontWeight: typography.fontWeight.bold
+                fontSize: typography.sizes.sm,
+                color: isSlower ? colors.betting.positive : colors.betting.negative,
+                fontFamily: typography.fonts.mono,
+                fontWeight: typography.weights.bold
               }}>
                 {paceWithoutPlayerNum.toFixed(1)}
               </div>
             </div>
             <div style={{
               height: '32px',
-              background: colors.gray[900],
+              background: colors.neutral[900],
               borderRadius: radius.md,
               overflow: 'hidden'
             }}>
               <div style={{
                 height: '100%',
                 width: `${(paceWithoutPlayerNum / 110) * 100}%`,
-                background: `linear-gradient(to right, ${isSlower ? colors.positive : colors.negative}, ${isSlower ? colors.positive : colors.negative}dd)`,
+                background: `linear-gradient(to right, ${isSlower ? colors.betting.positive : colors.betting.negative}, ${isSlower ? colors.betting.positive : colors.betting.negative}dd)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
@@ -259,17 +259,17 @@ export function PaceAnalysis({
         {/* Impact Indicator */}
         <div style={{
           padding: spacing[4],
-          background: `${isSlower ? colors.positive : colors.negative}10`,
+          background: `${isSlower ? colors.betting.positive : colors.betting.negative}10`,
           borderRadius: radius.md,
-          border: `1px solid ${isSlower ? colors.positive : colors.negative}`,
+          border: `1px solid ${isSlower ? colors.betting.positive : colors.betting.negative}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
           <div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1],
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
@@ -277,18 +277,18 @@ export function PaceAnalysis({
               Pace Impact Assessment
             </div>
             <div style={{
-              fontSize: typography.fontSize.lg,
-              fontWeight: typography.fontWeight.semibold,
-              color: isSlower ? colors.positive : colors.negative
+              fontSize: typography.sizes.lg,
+              fontWeight: typography.weights.semibold,
+              color: isSlower ? colors.betting.positive : colors.betting.negative
             }}>
               {impactLevel} {isSlower ? 'Slowdown' : 'Speedup'}
             </div>
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: isSlower ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: isSlower ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono
           }}>
             {possessionDifferenceNum > 0 ? '+' : ''}{possessionDifferenceNum.toFixed(1)}
           </div>
@@ -297,16 +297,16 @@ export function PaceAnalysis({
 
       {/* Projected Impact */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[4],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[3],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Scoring Impact Projection
         </div>
@@ -318,17 +318,17 @@ export function PaceAnalysis({
         }}>
           <div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1]
             }}>
               Projected Possessions (48 min)
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: colors.foreground,
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
+              color: colors.text.primary,
+              fontFamily: typography.fonts.mono
             }}>
               {projectedPossessionsNum.toFixed(1)}
             </div>
@@ -337,17 +337,17 @@ export function PaceAnalysis({
             textAlign: 'right'
           }}>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400],
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400],
               marginBottom: spacing[1]
             }}>
               Estimated Point Impact
             </div>
             <div style={{
-              fontSize: typography.fontSize['2xl'],
-              fontWeight: typography.fontWeight.bold,
-              color: isSlower ? colors.positive : colors.negative,
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes['2xl'],
+              fontWeight: typography.weights.bold,
+              color: isSlower ? colors.betting.positive : colors.betting.negative,
+              fontFamily: typography.fonts.mono
             }}>
               {(possessionDifferenceNum * 1.1).toFixed(1)} pts
             </div>
@@ -359,38 +359,38 @@ export function PaceAnalysis({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Pace Analysis:</strong> Without {playerName}, {teamAbbr} averages{' '}
         <span style={{
-          color: isSlower ? colors.positive : colors.negative,
-          fontFamily: typography.fontMono,
-          fontWeight: typography.fontWeight.bold
+          color: isSlower ? colors.betting.positive : colors.betting.negative,
+          fontFamily: typography.fonts.mono,
+          fontWeight: typography.weights.bold
         }}>
           {paceWithoutPlayerNum.toFixed(1)} possessions per 48 minutes
         </span>
         {' '}compared to{' '}
-        <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {paceWithPlayerNum.toFixed(1)}
         </span>
         {' '}with him ({possessionDifferenceNum > 0 ? '+' : ''}{possessionDifferenceNum.toFixed(1)} possessions,{' '}
         {percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(1)}%).
         {' '}This{' '}
         <span style={{
-          color: isSlower ? colors.positive : colors.negative,
-          fontWeight: typography.fontWeight.semibold
+          color: isSlower ? colors.betting.positive : colors.betting.negative,
+          fontWeight: typography.weights.semibold
         }}>
           {impactLevel.toLowerCase()} {isSlower ? 'slowdown' : 'speedup'}
         </span>
         {' '}translates to approximately{' '}
         <span style={{
-          color: isSlower ? colors.positive : colors.negative,
-          fontFamily: typography.fontMono,
-          fontWeight: typography.fontWeight.bold
+          color: isSlower ? colors.betting.positive : colors.betting.negative,
+          fontFamily: typography.fonts.mono,
+          fontWeight: typography.weights.bold
         }}>
           {Math.abs(possessionDifferenceNum * 1.1).toFixed(1)} fewer points
         </span>

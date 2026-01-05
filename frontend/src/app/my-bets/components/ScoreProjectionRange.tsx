@@ -45,14 +45,14 @@ export function ScoreProjectionRange({
       }}>
         {/* Projected Range Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -60,17 +60,17 @@ export function ScoreProjectionRange({
             PROJECTED RANGE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {projectedMin} - {projectedMax}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             Average: {rangeAverage.toFixed(1)} points
           </div>
@@ -78,14 +78,14 @@ export function ScoreProjectionRange({
 
         {/* Cushion Card */}
         <div style={{
-          background: colors.background,
+          background: colors.background.card,
           padding: spacing[4],
           borderRadius: radius.md,
-          border: `1px solid ${colors.gray[900]}`
+          border: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
             marginBottom: spacing[1],
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
@@ -93,17 +93,17 @@ export function ScoreProjectionRange({
             CUSHION BELOW LINE
           </div>
           <div style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: isUnderSupported ? colors.positive : colors.negative,
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: isUnderSupported ? colors.betting.positive : colors.betting.negative,
+            fontFamily: typography.fonts.mono,
             marginBottom: spacing[1]
           }}>
             {cushionMin.toFixed(1)} - {cushionMax.toFixed(1)}
           </div>
           <div style={{
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500]
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500]
           }}>
             vs {Number(bettingLine).toFixed(1)} line
           </div>
@@ -112,16 +112,16 @@ export function ScoreProjectionRange({
 
       {/* Range Visualization */}
       <div style={{
-        background: colors.background,
+        background: colors.background.card,
         padding: spacing[6],
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`
+        border: `1px solid ${colors.neutral[900]}`
       }}>
         <div style={{
-          fontSize: typography.fontSize.sm,
-          color: colors.gray[400],
+          fontSize: typography.sizes.sm,
+          color: colors.neutral[400],
           marginBottom: spacing[6],
-          fontWeight: typography.fontWeight.medium
+          fontWeight: typography.weights.medium
         }}>
           Score Projection vs Betting Line
         </div>
@@ -139,7 +139,7 @@ export function ScoreProjectionRange({
             right: 0,
             top: '50%',
             height: '2px',
-            background: colors.gray[800],
+            background: colors.neutral[800],
             transform: 'translateY(-50%)'
           }} />
 
@@ -154,16 +154,16 @@ export function ScoreProjectionRange({
             transform: 'translateY(calc(-50% + 16px))'
           }}>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[500],
+              fontFamily: typography.fonts.mono
             }}>
               {scaleMin}
             </div>
             <div style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[500],
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[500],
+              fontFamily: typography.fonts.mono
             }}>
               {scaleMax}
             </div>
@@ -176,8 +176,8 @@ export function ScoreProjectionRange({
             top: '50%',
             width: `${rangeWidth}%`,
             height: '32px',
-            background: isUnderSupported ? colors.positiveBg : colors.negativeBg,
-            border: `2px solid ${isUnderSupported ? colors.positive : colors.negative}`,
+            background: isUnderSupported ? `${colors.betting.positive}20` : `${colors.betting.negative}20`,
+            border: `2px solid ${isUnderSupported ? colors.betting.positive : colors.betting.negative}`,
             borderRadius: radius.md,
             transform: 'translateY(-50%)',
             display: 'flex',
@@ -185,10 +185,10 @@ export function ScoreProjectionRange({
             justifyContent: 'center'
           }}>
             <span style={{
-              fontSize: typography.fontSize.sm,
-              fontWeight: typography.fontWeight.bold,
-              color: isUnderSupported ? colors.positive : colors.negative,
-              fontFamily: typography.fontMono
+              fontSize: typography.sizes.sm,
+              fontWeight: typography.weights.bold,
+              color: isUnderSupported ? colors.betting.positive : colors.betting.negative,
+              fontFamily: typography.fonts.mono
             }}>
               {projectedMin}-{projectedMax}
             </span>
@@ -201,7 +201,7 @@ export function ScoreProjectionRange({
             top: 0,
             bottom: 0,
             width: '2px',
-            background: colors.gray[700],
+            background: colors.neutral[700],
             zIndex: 2
           }}>
             {/* Arrow at top */}
@@ -214,7 +214,7 @@ export function ScoreProjectionRange({
               height: 0,
               borderLeft: '8px solid transparent',
               borderRight: '8px solid transparent',
-              borderTop: `8px solid ${colors.gray[700]}`
+              borderTop: `8px solid ${colors.neutral[700]}`
             }} />
 
             {/* Arrow at bottom */}
@@ -227,7 +227,7 @@ export function ScoreProjectionRange({
               height: 0,
               borderLeft: '8px solid transparent',
               borderRight: '8px solid transparent',
-              borderBottom: `8px solid ${colors.gray[700]}`
+              borderBottom: `8px solid ${colors.neutral[700]}`
             }} />
           </div>
 
@@ -237,14 +237,14 @@ export function ScoreProjectionRange({
             left: `${bettingLinePos}%`,
             bottom: '-40px',
             transform: 'translateX(-50%)',
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[400],
-            fontFamily: typography.fontMono,
-            fontWeight: typography.fontWeight.bold,
-            background: colors.background,
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[400],
+            fontFamily: typography.fonts.mono,
+            fontWeight: typography.weights.bold,
+            background: colors.background.card,
             padding: `${spacing[1]} ${spacing[2]}`,
             borderRadius: radius.sm,
-            border: `1px solid ${colors.gray[800]}`,
+            border: `1px solid ${colors.neutral[800]}`,
             whiteSpace: 'nowrap'
           }}>
             LINE: {Number(bettingLine).toFixed(1)}
@@ -256,9 +256,9 @@ export function ScoreProjectionRange({
             left: `${projectedMinPos}%`,
             top: '-30px',
             transform: 'translateX(-50%)',
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
+            fontFamily: typography.fonts.mono,
             whiteSpace: 'nowrap'
           }}>
             Min: {projectedMin}
@@ -270,9 +270,9 @@ export function ScoreProjectionRange({
             left: `${projectedMaxPos}%`,
             top: '-30px',
             transform: 'translateX(-50%)',
-            fontSize: typography.fontSize.xs,
-            color: colors.gray[500],
-            fontFamily: typography.fontMono,
+            fontSize: typography.sizes.xs,
+            color: colors.neutral[500],
+            fontFamily: typography.fonts.mono,
             whiteSpace: 'nowrap'
           }}>
             Max: {projectedMax}
@@ -288,7 +288,7 @@ export function ScoreProjectionRange({
                 top: '50%',
                 width: `${bettingLinePos - projectedMaxPos}%`,
                 height: '4px',
-                background: `linear-gradient(to right, ${colors.positive}20, transparent)`,
+                background: `linear-gradient(to right, ${colors.betting.positive}20, transparent)`,
                 transform: 'translateY(-50%)',
                 pointerEvents: 'none'
               }} />
@@ -302,7 +302,7 @@ export function ScoreProjectionRange({
           gap: spacing[6],
           justifyContent: 'center',
           paddingTop: spacing[4],
-          borderTop: `1px solid ${colors.gray[900]}`
+          borderTop: `1px solid ${colors.neutral[900]}`
         }}>
           <div style={{
             display: 'flex',
@@ -312,13 +312,13 @@ export function ScoreProjectionRange({
             <div style={{
               width: '24px',
               height: '16px',
-              background: isUnderSupported ? colors.positiveBg : colors.negativeBg,
-              border: `2px solid ${isUnderSupported ? colors.positive : colors.negative}`,
+              background: isUnderSupported ? `${colors.betting.positive}20` : `${colors.betting.negative}20`,
+              border: `2px solid ${isUnderSupported ? colors.betting.positive : colors.betting.negative}`,
               borderRadius: radius.sm
             }} />
             <span style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400]
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400]
             }}>
               Projected Range
             </span>
@@ -331,11 +331,11 @@ export function ScoreProjectionRange({
             <div style={{
               width: '2px',
               height: '16px',
-              background: colors.gray[700]
+              background: colors.neutral[700]
             }} />
             <span style={{
-              fontSize: typography.fontSize.xs,
-              color: colors.gray[400]
+              fontSize: typography.sizes.xs,
+              color: colors.neutral[400]
             }}>
               Betting Line
             </span>
@@ -349,11 +349,11 @@ export function ScoreProjectionRange({
               <div style={{
                 width: '24px',
                 height: '4px',
-                background: `${colors.positive}20`
+                background: `${colors.betting.positive}20`
               }} />
               <span style={{
-                fontSize: typography.fontSize.xs,
-                color: colors.gray[400]
+                fontSize: typography.sizes.xs,
+                color: colors.neutral[400]
               }}>
                 Safety Cushion
               </span>
@@ -366,42 +366,42 @@ export function ScoreProjectionRange({
       <div style={{
         marginTop: spacing[4],
         padding: spacing[3],
-        background: colors.background,
+        background: colors.background.card,
         borderRadius: radius.md,
-        border: `1px solid ${colors.gray[900]}`,
-        fontSize: typography.fontSize.sm,
-        color: colors.gray[400]
+        border: `1px solid ${colors.neutral[900]}`,
+        fontSize: typography.sizes.sm,
+        color: colors.neutral[400]
       }}>
         <strong>Projection Analysis:</strong> The projected score range of{' '}
-        <span style={{ color: colors.foreground, fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+        <span style={{ color: colors.text.primary, fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
           {projectedMin}-{projectedMax} points
         </span>
         {' '}(average: {rangeAverage.toFixed(1)}) sits{' '}
         {isUnderSupported ? (
           <>
-            <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>
               {cushionMin.toFixed(1)}-{cushionMax.toFixed(1)} points below
             </span>
             {' '}the betting line of{' '}
-            <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+            <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
               {Number(bettingLine).toFixed(1)}
             </span>.
             {' '}This provides a{' '}
-            <span style={{ color: colors.positive, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.positive, fontWeight: typography.weights.semibold }}>
               comfortable cushion supporting the UNDER
             </span>, as even the worst-case projection (max: {projectedMax}) remains below the line.
           </>
         ) : (
           <>
-            <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>
               above
             </span>
             {' '}the betting line of{' '}
-            <span style={{ fontFamily: typography.fontMono, fontWeight: typography.fontWeight.bold }}>
+            <span style={{ fontFamily: typography.fonts.mono, fontWeight: typography.weights.bold }}>
               {Number(bettingLine).toFixed(1)}
             </span>.
             {' '}This suggests the projection{' '}
-            <span style={{ color: colors.negative, fontWeight: typography.fontWeight.semibold }}>
+            <span style={{ color: colors.betting.negative, fontWeight: typography.weights.semibold }}>
               favors the OVER
             </span>, with the minimum projection ({projectedMin}) exceeding the line.
           </>

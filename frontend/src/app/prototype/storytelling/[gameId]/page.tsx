@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useParams } from 'next/navigation'
 import { colors } from '@/lib/design-tokens'
+import { safeNum } from '@/lib/utils'
 import {
   HorizontalScrollContainer,
   SequenceContent,
@@ -181,11 +182,11 @@ export default function StorytellingPrototype() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: colors.background }}
+        style={{ backgroundColor: colors.background.primary }}
       >
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-white border-t-transparent rounded-full mx-auto mb-4" />
-          <p style={{ color: colors.gray[400] }}>Loading analysis...</p>
+          <p style={{ color: colors.neutral[400] }}>Loading analysis...</p>
         </div>
       </div>
     )
@@ -195,11 +196,11 @@ export default function StorytellingPrototype() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: colors.background }}
+        style={{ backgroundColor: colors.background.primary }}
       >
         <div className="text-center">
-          <p style={{ color: colors.gray[400] }}>{error || 'No data available'}</p>
-          <p className="mt-4 text-sm" style={{ color: colors.gray[600] }}>
+          <p style={{ color: colors.neutral[400] }}>{error || 'No data available'}</p>
+          <p className="mt-4 text-sm" style={{ color: colors.neutral[600] }}>
             Example: /prototype/storytelling?gameId=0022400001
           </p>
         </div>
@@ -266,7 +267,7 @@ export default function StorytellingPrototype() {
     <div
       className="min-h-screen"
       style={{
-        backgroundColor: colors.background,
+        backgroundColor: colors.background.primary,
         backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
         backgroundSize: '30px 30px',
       }}
@@ -328,8 +329,8 @@ function SequenceIntro({
           className="inline-block px-4 py-2 rounded-full text-sm font-medium tracking-wider mb-8"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.08)',
-            color: colors.gray[400],
-            border: `1px solid ${colors.gray[800]}`,
+            color: colors.neutral[400],
+            border: `1px solid ${colors.neutral[800]}`,
             opacity: showBadge ? 1 : 0,
             transform: showBadge ? 'translateY(0)' : 'translateY(-20px)',
             transition: 'all 0.6s ease-out',
@@ -350,7 +351,7 @@ function SequenceIntro({
           <div
             className="font-bold tracking-tighter leading-none"
             style={{
-              color: colors.foreground,
+              color: colors.text.primary,
               fontSize: '140px',
             }}
           >
@@ -359,7 +360,7 @@ function SequenceIntro({
           <div
             className="font-light"
             style={{
-              color: colors.gray[600],
+              color: colors.neutral[600],
               fontSize: '60px',
               marginTop: '-15px',
               marginBottom: '-15px',
@@ -370,7 +371,7 @@ function SequenceIntro({
           <div
             className="font-bold tracking-tighter leading-none"
             style={{
-              color: colors.foreground,
+              color: colors.text.primary,
               fontSize: '140px',
             }}
           >
@@ -402,9 +403,9 @@ function SequenceIntro({
                   <>Deux équipes offensives face à face ce soir.</>
                 )}
               </p>
-              <p className="text-xl leading-relaxed" style={{ color: colors.gray[500] }}>
-                {narrative?.subtext ? (
-                  <StreamingNarrative text={narrative.subtext} />
+              <p className="text-xl leading-relaxed" style={{ color: colors.neutral[500] }}>
+                {narrative?.context ? (
+                  <StreamingNarrative text={narrative.context} />
                 ) : (
                   <>
                     {data.awayTeam.name} ({data.awayTeam.ppg} pts/match) se déplace chez {data.homeTeam.name} ({data.homeTeam.ppg} pts/match).
@@ -462,7 +463,7 @@ function SequenceIntro({
       {/* Indicateur scroll */}
       <div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ color: colors.gray[600] }}
+        style={{ color: colors.neutral[600] }}
       >
         <span className="text-xs uppercase tracking-widest">Scroll</span>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -556,20 +557,20 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="px-4 py-2 rounded-full text-sm font-medium tracking-wider"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              color: colors.gray[400],
-              border: `1px solid ${colors.gray[800]}`,
+              color: colors.neutral[400],
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             LIGNES PINNACLE · {formattedDate}
           </div>
           <h2
             className="text-2xl font-bold"
-            style={{ color: colors.foreground }}
+            style={{ color: colors.text.primary }}
           >
             {data.awayTeam.abbreviation} @ {data.homeTeam.abbreviation} — Cotes & Team Totals
           </h2>
         </div>
-        <p className="text-sm" style={{ color: colors.gray[500] }}>
+        <p className="text-sm" style={{ color: colors.neutral[500] }}>
           <span style={{ color: 'rgb(29, 193, 0)' }}>Vert</span> = OVER · <span style={{ color: 'rgb(239, 45, 44)' }}>Rouge</span> = UNDER
         </p>
       </div>
@@ -591,7 +592,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-4 rounded-xl flex gap-4 overflow-hidden min-w-0"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center gap-3 flex-shrink-0">
@@ -601,19 +602,19 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                 style={{ width: '56px', height: '56px' }}
               />
               <div>
-                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.gray[600] }}>Team Total</div>
-                <div className="text-4xl font-bold font-mono" style={{ color: colors.foreground }}>{teamTotals.away.total.toFixed(1)}</div>
+                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.neutral[600] }}>Team Total</div>
+                <div className="text-4xl font-bold font-mono" style={{ color: colors.text.primary }}>{safeNum(teamTotals.away.total).toFixed(1)}</div>
                 <div className="flex gap-3 text-sm mt-1">
-                  <span style={{ color: 'rgb(29, 193, 0)' }}>O {teamTotals.away.overOdds.toFixed(2)}</span>
-                  <span style={{ color: 'rgb(239, 45, 44)' }}>U {teamTotals.away.underOdds.toFixed(2)}</span>
+                  <span style={{ color: 'rgb(29, 193, 0)' }}>O {safeNum(teamTotals.away.overOdds).toFixed(2)}</span>
+                  <span style={{ color: 'rgb(239, 45, 44)' }}>U {safeNum(teamTotals.away.underOdds).toFixed(2)}</span>
                 </div>
               </div>
             </div>
-            <div className="flex-1 min-w-0 flex flex-col justify-center border-l pl-4" style={{ borderColor: colors.gray[800] }}>
+            <div className="flex-1 min-w-0 flex flex-col justify-center border-l pl-4" style={{ borderColor: colors.neutral[800] }}>
               <p className="text-base leading-relaxed" style={{ color: '#D1D5DB' }}>
-                <strong style={{ color: colors.foreground }}>{data.awayTeam.name.split(' ').pop()}</strong> à <strong style={{ color: colors.foreground }}>{teamTotals.away.total.toFixed(1)} pts</strong> — {teamTotals.away.total > atlAvg ? 'au-dessus' : 'en-dessous'} de la moyenne ({atlAvg.toFixed(1)}).
+                <strong style={{ color: colors.text.primary }}>{data.awayTeam.name.split(' ').pop()}</strong> à <strong style={{ color: colors.text.primary }}>{safeNum(teamTotals.away.total).toFixed(1)} pts</strong> — {teamTotals.away.total > atlAvg ? 'au-dessus' : 'en-dessous'} de la moyenne ({safeNum(atlAvg).toFixed(1)}).
               </p>
-              <p className="text-sm mt-1" style={{ color: colors.gray[500] }}>
+              <p className="text-sm mt-1" style={{ color: colors.neutral[500] }}>
                 <strong style={{ color: atlOverCount >= 4 ? 'rgb(29, 193, 0)' : 'rgb(239, 45, 44)' }}>{atlOverCount}/{atlTeamTotalHistory.length} OVER</strong> cette ligne récemment.
               </p>
             </div>
@@ -624,7 +625,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-4 rounded-xl flex gap-4 overflow-hidden min-w-0"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center gap-3 flex-shrink-0">
@@ -634,19 +635,19 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                 style={{ width: '56px', height: '56px' }}
               />
               <div>
-                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.gray[600] }}>Team Total</div>
-                <div className="text-4xl font-bold font-mono" style={{ color: colors.foreground }}>{teamTotals.home.total.toFixed(1)}</div>
+                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.neutral[600] }}>Team Total</div>
+                <div className="text-4xl font-bold font-mono" style={{ color: colors.text.primary }}>{safeNum(teamTotals.home.total).toFixed(1)}</div>
                 <div className="flex gap-3 text-sm mt-1">
-                  <span style={{ color: 'rgb(29, 193, 0)' }}>O {teamTotals.home.overOdds.toFixed(2)}</span>
-                  <span style={{ color: 'rgb(239, 45, 44)' }}>U {teamTotals.home.underOdds.toFixed(2)}</span>
+                  <span style={{ color: 'rgb(29, 193, 0)' }}>O {safeNum(teamTotals.home.overOdds).toFixed(2)}</span>
+                  <span style={{ color: 'rgb(239, 45, 44)' }}>U {safeNum(teamTotals.home.underOdds).toFixed(2)}</span>
                 </div>
               </div>
             </div>
-            <div className="flex-1 min-w-0 flex flex-col justify-center border-l pl-4" style={{ borderColor: colors.gray[800] }}>
+            <div className="flex-1 min-w-0 flex flex-col justify-center border-l pl-4" style={{ borderColor: colors.neutral[800] }}>
               <p className="text-base leading-relaxed" style={{ color: '#D1D5DB' }}>
-                <strong style={{ color: colors.foreground }}>{data.homeTeam.name.split(' ').pop()}</strong> à <strong style={{ color: colors.foreground }}>{teamTotals.home.total.toFixed(1)} pts</strong> — proche de la moyenne ({chaAvg.toFixed(1)}).
+                <strong style={{ color: colors.text.primary }}>{data.homeTeam.name.split(' ').pop()}</strong> à <strong style={{ color: colors.text.primary }}>{safeNum(teamTotals.home.total).toFixed(1)} pts</strong> — proche de la moyenne ({safeNum(chaAvg).toFixed(1)}).
               </p>
-              <p className="text-sm mt-1" style={{ color: colors.gray[500] }}>
+              <p className="text-sm mt-1" style={{ color: colors.neutral[500] }}>
                 <strong style={{ color: chaOverCount >= 4 ? 'rgb(29, 193, 0)' : 'rgb(239, 45, 44)' }}>{chaOverCount}/{chaTeamTotalHistory.length} OVER</strong> — marché équilibré.
               </p>
             </div>
@@ -667,7 +668,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-4 rounded-xl flex flex-col overflow-hidden min-w-0"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center justify-between mb-2">
@@ -677,22 +678,22 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                   alt={teamTotals.away.abbr}
                   style={{ width: '32px', height: '32px' }}
                 />
-                <span className="font-bold" style={{ color: colors.foreground }}>Historique {data.awayTeam.abbreviation}</span>
+                <span className="font-bold" style={{ color: colors.text.primary }}>Historique {data.awayTeam.abbreviation}</span>
               </div>
               <div className="text-right">
-                <span className="text-xl font-mono font-bold" style={{ color: '#D1D5DB' }}>{atlAvg.toFixed(1)}</span>
-                <span className="text-sm ml-2" style={{ color: colors.gray[600] }}>moy.</span>
+                <span className="text-xl font-mono font-bold" style={{ color: '#D1D5DB' }}>{safeNum(atlAvg).toFixed(1)}</span>
+                <span className="text-sm ml-2" style={{ color: colors.neutral[600] }}>moy.</span>
               </div>
             </div>
-            <p className="text-sm mb-3" style={{ color: colors.gray[500] }}>
-              Chaque point = un match récent. La ligne blanche = seuil de <strong style={{ color: colors.foreground }}>{teamTotals.away.total.toFixed(1)}</strong> pts.
+            <p className="text-sm mb-3" style={{ color: colors.neutral[500] }}>
+              Chaque point = un match récent. La ligne blanche = seuil de <strong style={{ color: colors.text.primary }}>{safeNum(teamTotals.away.total).toFixed(1)}</strong> pts.
             </p>
 
             {/* Curseur */}
             <div className="relative flex-1 min-h-[80px]">
               <div
                 className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-4 rounded-full"
-                style={{ backgroundColor: colors.gray[800] }}
+                style={{ backgroundColor: colors.neutral[800] }}
               />
               {atlTeamTotalHistory.map((game, idx) => {
                 const values = atlTeamTotalHistory.map(g => g.total || 0)
@@ -716,7 +717,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                     }}
                     title={`vs ${(game as { opp?: string; opponent?: string }).opp || (game as { opp?: string; opponent?: string }).opponent}: ${game.total}`}
                   >
-                    {(game.total || 0).toFixed(0)}
+                    {safeNum(game.total).toFixed(0)}
                   </div>
                 )
               })}
@@ -730,14 +731,14 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                     className="absolute top-0 bottom-0 flex flex-col items-center justify-center"
                     style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
                   >
-                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.foreground }} />
+                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.text.primary }} />
                     <span
                       className="text-xs font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded"
-                      style={{ color: colors.background, backgroundColor: colors.foreground }}
+                      style={{ color: colors.background.primary, backgroundColor: colors.text.primary }}
                     >
-                      {teamTotals.away.total.toFixed(1)}
+                      {safeNum(teamTotals.away.total).toFixed(1)}
                     </span>
-                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.foreground }} />
+                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.text.primary }} />
                   </div>
                 )
               })()}
@@ -749,7 +750,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-4 rounded-xl flex flex-col overflow-hidden min-w-0"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center justify-between mb-2">
@@ -759,22 +760,22 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                   alt={teamTotals.home.abbr}
                   style={{ width: '32px', height: '32px' }}
                 />
-                <span className="font-bold" style={{ color: colors.foreground }}>Historique {data.homeTeam.abbreviation}</span>
+                <span className="font-bold" style={{ color: colors.text.primary }}>Historique {data.homeTeam.abbreviation}</span>
               </div>
               <div className="text-right">
-                <span className="text-xl font-mono font-bold" style={{ color: '#D1D5DB' }}>{chaAvg.toFixed(1)}</span>
-                <span className="text-sm ml-2" style={{ color: colors.gray[600] }}>moy.</span>
+                <span className="text-xl font-mono font-bold" style={{ color: '#D1D5DB' }}>{safeNum(chaAvg).toFixed(1)}</span>
+                <span className="text-sm ml-2" style={{ color: colors.neutral[600] }}>moy.</span>
               </div>
             </div>
-            <p className="text-sm mb-3" style={{ color: colors.gray[500] }}>
-              Chaque point = un match récent. La ligne blanche = seuil de <strong style={{ color: colors.foreground }}>{teamTotals.home.total.toFixed(1)}</strong> pts.
+            <p className="text-sm mb-3" style={{ color: colors.neutral[500] }}>
+              Chaque point = un match récent. La ligne blanche = seuil de <strong style={{ color: colors.text.primary }}>{safeNum(teamTotals.home.total).toFixed(1)}</strong> pts.
             </p>
 
             {/* Curseur */}
             <div className="relative flex-1 min-h-[80px]">
               <div
                 className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-4 rounded-full"
-                style={{ backgroundColor: colors.gray[800] }}
+                style={{ backgroundColor: colors.neutral[800] }}
               />
               {chaTeamTotalHistory.map((game, idx) => {
                 const values = chaTeamTotalHistory.map(g => g.total || 0)
@@ -798,7 +799,7 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                     }}
                     title={`vs ${(game as { opp?: string; opponent?: string }).opp || (game as { opp?: string; opponent?: string }).opponent}: ${game.total}`}
                   >
-                    {(game.total || 0).toFixed(0)}
+                    {safeNum(game.total).toFixed(0)}
                   </div>
                 )
               })}
@@ -812,14 +813,14 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
                     className="absolute top-0 bottom-0 flex flex-col items-center justify-center"
                     style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
                   >
-                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.foreground }} />
+                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.text.primary }} />
                     <span
                       className="text-xs font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded"
-                      style={{ color: colors.background, backgroundColor: colors.foreground }}
+                      style={{ color: colors.background.primary, backgroundColor: colors.text.primary }}
                     >
-                      {teamTotals.home.total.toFixed(1)}
+                      {safeNum(teamTotals.home.total).toFixed(1)}
                     </span>
-                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.foreground }} />
+                    <div className="w-0.5 flex-1 rounded" style={{ backgroundColor: colors.text.primary }} />
                   </div>
                 )
               })()}
@@ -833,35 +834,35 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-5 rounded-xl flex items-center justify-between"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
               opacity: showCursors ? 1 : 0,
               transition: 'opacity 0.5s ease-out 0.2s',
             }}
           >
             <div className="flex items-center gap-6">
               <div>
-                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.gray[600] }}>Total du Match</div>
-                <div className="text-5xl font-bold font-mono" style={{ color: colors.foreground }}>{mainLine.total}</div>
+                <div className="text-xs uppercase tracking-widest mb-1" style={{ color: colors.neutral[600] }}>Total du Match</div>
+                <div className="text-5xl font-bold font-mono" style={{ color: colors.text.primary }}>{mainLine.total}</div>
               </div>
               <div className="flex gap-6">
                 <div className="text-center">
                   <div className="text-xs uppercase tracking-wider mb-1" style={{ color: 'rgb(29, 193, 0)' }}>Over</div>
-                  <div className="text-3xl font-bold font-mono" style={{ color: colors.foreground }}>{mainLine.overOdds.toFixed(2)}</div>
+                  <div className="text-3xl font-bold font-mono" style={{ color: colors.text.primary }}>{safeNum(mainLine.overOdds).toFixed(2)}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-xs uppercase tracking-wider mb-1" style={{ color: 'rgb(239, 45, 44)' }}>Under</div>
-                  <div className="text-3xl font-bold font-mono" style={{ color: colors.foreground }}>{mainLine.underOdds.toFixed(2)}</div>
+                  <div className="text-3xl font-bold font-mono" style={{ color: colors.text.primary }}>{safeNum(mainLine.underOdds).toFixed(2)}</div>
                 </div>
               </div>
             </div>
-            <div className="flex-1 max-w-xl pl-8 border-l" style={{ borderColor: colors.gray[800] }}>
+            <div className="flex-1 max-w-xl pl-8 border-l" style={{ borderColor: colors.neutral[800] }}>
               <p className="text-lg leading-relaxed" style={{ color: '#D1D5DB' }}>
-                La ligne combinée à <strong style={{ color: colors.foreground }}>{mainLine.total} points</strong> est l'une des plus élevées de la soirée NBA. Les Team Totals additionnés donnent <strong style={{ color: colors.foreground }}>{(teamTotals.away.total + teamTotals.home.total).toFixed(1)} points</strong> — {teamTotals.away.total + teamTotals.home.total > mainLine.total ? 'légèrement au-dessus' : 'en-dessous'} de cette ligne.
+                La ligne combinée à <strong style={{ color: colors.text.primary }}>{mainLine.total} points</strong> est l'une des plus élevées de la soirée NBA. Les Team Totals additionnés donnent <strong style={{ color: colors.text.primary }}>{(teamTotals.away.total + teamTotals.home.total).toFixed(1)} points</strong> — {teamTotals.away.total + teamTotals.home.total > mainLine.total ? 'légèrement au-dessus' : 'en-dessous'} de cette ligne.
               </p>
             </div>
             <div className="flex items-center gap-3 pl-6">
-              <span className="text-xs uppercase tracking-wider" style={{ color: colors.gray[600] }}>Scroll</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color: colors.gray[600] }}>
+              <span className="text-xs uppercase tracking-wider" style={{ color: colors.neutral[600] }}>Scroll</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color: colors.neutral[600] }}>
                 <path d="M9 5L15 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
@@ -871,12 +872,12 @@ function SequenceOdds({ data, formattedDate }: { data: StorytellingData; formatt
             className="p-5 rounded-xl flex items-center justify-center"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
               opacity: showCursors ? 1 : 0,
               transition: 'opacity 0.5s ease-out 0.2s',
             }}
           >
-            <p className="text-lg" style={{ color: colors.gray[500] }}>
+            <p className="text-lg" style={{ color: colors.neutral[500] }}>
               Ligne de marché non disponible pour ce match
             </p>
           </div>
@@ -919,8 +920,8 @@ function SequenceAccroche({
       contextText={
         isLoading ? (
           <div className="h-16 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-        ) : narrative?.context ? (
-          <StreamingNarrative text={narrative.context} />
+        ) : narrative?.keyStoryline ? (
+          <StreamingNarrative text={narrative.keyStoryline} />
         ) : (
           defaultContext
         )
@@ -928,8 +929,8 @@ function SequenceAccroche({
       reflectionQuestion={
         isLoading ? (
           <div className="h-6 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', width: '80%' }} />
-        ) : narrative?.reflection ? (
-          <StreamingNarrative text={narrative.reflection} />
+        ) : narrative?.hook ? (
+          <StreamingNarrative text={narrative.hook} />
         ) : (
           defaultReflection
         )
@@ -946,7 +947,7 @@ function SequenceAccroche({
         <div className="w-full max-w-md">
           <h3
             className="text-sm uppercase tracking-wider mb-3 text-center"
-            style={{ color: colors.gray[500] }}
+            style={{ color: colors.neutral[500] }}
           >
             Tendance récente ({trendResults.length} matchs)
           </h3>
@@ -982,17 +983,17 @@ function SequenceScoringCombined({
 
   const atlStats = {
     ppg: data.awayTeam.ppg,
-    fgPct: `${data.awayTeam.fgPct.toFixed(1)}%`,
-    threePct: `${data.awayTeam.threePct.toFixed(1)}%`,
-    pace: data.awayTeam.pace.toFixed(1),
+    fgPct: `${safeNum(data.awayTeam.fgPct).toFixed(1)}%`,
+    threePct: `${safeNum(data.awayTeam.threePct).toFixed(1)}%`,
+    pace: safeNum(data.awayTeam.pace).toFixed(1),
     teamTotal: data.awayTeam.teamTotal || data.awayTeam.ppg,
   }
 
   const chaStats = {
     ppg: data.homeTeam.ppg,
-    fgPct: `${data.homeTeam.fgPct.toFixed(1)}%`,
-    threePct: `${data.homeTeam.threePct.toFixed(1)}%`,
-    pace: data.homeTeam.pace.toFixed(1),
+    fgPct: `${safeNum(data.homeTeam.fgPct).toFixed(1)}%`,
+    threePct: `${safeNum(data.homeTeam.threePct).toFixed(1)}%`,
+    pace: safeNum(data.homeTeam.pace).toFixed(1),
     teamTotal: data.homeTeam.teamTotal || data.homeTeam.ppg,
   }
 
@@ -1005,17 +1006,17 @@ function SequenceScoringCombined({
       <div className="flex-shrink-0">
         <div
           className="inline-block px-3 py-1.5 rounded-full text-xs uppercase tracking-widest mb-2"
-          style={{ backgroundColor: colors.gray[900], color: colors.gray[400] }}
+          style={{ backgroundColor: colors.neutral[900], color: colors.neutral[400] }}
         >
           {isLoading ? (
             <span className="animate-pulse">Génération...</span>
-          ) : narrative?.title ? (
-            narrative.title
+          ) : narrative?.headline ? (
+            narrative.headline
           ) : (
             defaultTitle
           )}
         </div>
-        <h2 className="text-2xl font-bold" style={{ color: colors.foreground }}>
+        <h2 className="text-2xl font-bold" style={{ color: colors.text.primary }}>
           {data.awayTeam.abbreviation} @ {data.homeTeam.abbreviation} — Attaques comparées
         </h2>
       </div>
@@ -1031,10 +1032,10 @@ function SequenceScoringCombined({
               className="w-16 h-16"
             />
             <div>
-              <div className="text-3xl font-bold" style={{ color: colors.foreground }}>
-                {atlStats.ppg} <span className="text-lg font-normal" style={{ color: colors.gray[500] }}>pts/match</span>
+              <div className="text-3xl font-bold" style={{ color: colors.text.primary }}>
+                {atlStats.ppg} <span className="text-lg font-normal" style={{ color: colors.neutral[500] }}>pts/match</span>
               </div>
-              <div className="text-sm" style={{ color: colors.gray[400] }}>
+              <div className="text-sm" style={{ color: colors.neutral[400] }}>
                 {data.awayTeam.offensiveRank}{getOrdinalSuffix(data.awayTeam.offensiveRank)} attaque de la ligue · Pace {atlStats.pace}
               </div>
             </div>
@@ -1042,28 +1043,28 @@ function SequenceScoringCombined({
           <p className="text-base leading-relaxed" style={{ color: '#D1D5DB' }}>
             {isLoading ? (
               <span className="block h-12 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-            ) : narrative?.analysis ? (
-              <StreamingNarrative text={narrative.analysis} />
+            ) : narrative?.offensiveAnalysis?.awayTeam ? (
+              <StreamingNarrative text={narrative.offensiveAnalysis.awayTeam} />
             ) : (
               <>
-                <strong style={{ color: colors.foreground }}>{data.awayTeam.name.split(' ').pop()}</strong> score en moyenne{' '}
-                <strong style={{ color: colors.foreground }}>{atlStats.ppg} points</strong> par match.
+                <strong style={{ color: colors.text.primary }}>{data.awayTeam.name.split(' ').pop()}</strong> score en moyenne{' '}
+                <strong style={{ color: colors.text.primary }}>{atlStats.ppg} points</strong> par match.
                 Tempo élevé et jeu offensif.
               </>
             )}
           </p>
           <div className="flex gap-4">
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{atlStats.fgPct}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>FG%</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{atlStats.fgPct}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>FG%</div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{atlStats.threePct}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>3P%</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{atlStats.threePct}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>3P%</div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{atlStats.pace}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>Pace</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{atlStats.pace}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>Pace</div>
             </div>
           </div>
         </div>
@@ -1079,7 +1080,7 @@ function SequenceScoringCombined({
               label="Points"
             />
           ) : (
-            <div className="h-full flex items-center justify-center" style={{ color: colors.gray[500] }}>
+            <div className="h-full flex items-center justify-center" style={{ color: colors.neutral[500] }}>
               No scoring data available
             </div>
           )}
@@ -1087,7 +1088,7 @@ function SequenceScoringCombined({
       </div>
 
       {/* Separator */}
-      <div className="flex-shrink-0 border-t" style={{ borderColor: colors.gray[800] }} />
+      <div className="flex-shrink-0 border-t" style={{ borderColor: colors.neutral[800] }} />
 
       {/* Home Team Row */}
       <div className="flex-1 flex gap-6 min-h-0 overflow-hidden">
@@ -1100,33 +1101,33 @@ function SequenceScoringCombined({
               className="w-16 h-16"
             />
             <div>
-              <div className="text-3xl font-bold" style={{ color: colors.foreground }}>
-                {chaStats.ppg} <span className="text-lg font-normal" style={{ color: colors.gray[500] }}>pts/match</span>
+              <div className="text-3xl font-bold" style={{ color: colors.text.primary }}>
+                {chaStats.ppg} <span className="text-lg font-normal" style={{ color: colors.neutral[500] }}>pts/match</span>
               </div>
-              <div className="text-sm" style={{ color: colors.gray[400] }}>
+              <div className="text-sm" style={{ color: colors.neutral[400] }}>
                 {data.homeTeam.offensiveRank}{getOrdinalSuffix(data.homeTeam.offensiveRank)} attaque de la ligue · Pace {chaStats.pace}
               </div>
             </div>
           </div>
           <p className="text-base leading-relaxed" style={{ color: '#D1D5DB' }}>
-            <strong style={{ color: colors.foreground }}>{data.homeTeam.name.split(' ').pop()}</strong> affiche{' '}
-            <strong style={{ color: colors.foreground }}>{chaStats.ppg} points</strong> de moyenne.
+            <strong style={{ color: colors.text.primary }}>{data.homeTeam.name.split(' ').pop()}</strong> affiche{' '}
+            <strong style={{ color: colors.text.primary }}>{chaStats.ppg} points</strong> de moyenne.
             {data.homeTeam.defensiveRank >= 25 && (
               <> La défense reste un point faible ({data.homeTeam.defensiveRank}{getOrdinalSuffix(data.homeTeam.defensiveRank)} DRTG).</>
             )}
           </p>
           <div className="flex gap-4">
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{chaStats.fgPct}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>FG%</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{chaStats.fgPct}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>FG%</div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{chaStats.threePct}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>3P%</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{chaStats.threePct}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>3P%</div>
             </div>
             <div className="text-center">
-              <div className="text-xl font-bold font-mono" style={{ color: colors.foreground }}>{chaStats.pace}</div>
-              <div className="text-xs uppercase" style={{ color: colors.gray[500] }}>Pace</div>
+              <div className="text-xl font-bold font-mono" style={{ color: colors.text.primary }}>{chaStats.pace}</div>
+              <div className="text-xs uppercase" style={{ color: colors.neutral[500] }}>Pace</div>
             </div>
           </div>
         </div>
@@ -1142,7 +1143,7 @@ function SequenceScoringCombined({
               label="Points"
             />
           ) : (
-            <div className="h-full flex items-center justify-center" style={{ color: colors.gray[500] }}>
+            <div className="h-full flex items-center justify-center" style={{ color: colors.neutral[500] }}>
               No scoring data available
             </div>
           )}
@@ -1183,15 +1184,15 @@ function SequenceCombine({
 
   // Default texts for fallback
   const defaultTitle = 'Dynamique Combinée'
-  const defaultContext = `Ces deux équipes combinent pour un pace projeté de ${data.projectedPace} possessions par match. Leurs ${data.h2h.games.length > 0 ? data.h2h.games.length : 5} dernières confrontations ont produit en moyenne ${avgTotal.toFixed(1)} points${hasLine && diffVsLine > 0 ? `, soit +${diffVsLine.toFixed(1)} au-dessus de la ligne actuelle` : ''}.`
+  const defaultContext = `Ces deux équipes combinent pour un pace projeté de ${data.projectedPace} possessions par match. Leurs ${data.h2h.games.length > 0 ? data.h2h.games.length : 5} dernières confrontations ont produit en moyenne ${safeNum(avgTotal).toFixed(1)} points${hasLine && diffVsLine > 0 ? `, soit +${safeNum(diffVsLine).toFixed(1)} au-dessus de la ligne actuelle` : ''}.`
 
   return (
     <SequenceContent
       title={
         isLoading ? (
           <span className="animate-pulse">Génération...</span>
-        ) : narrative?.title ? (
-          narrative.title
+        ) : narrative?.headline ? (
+          narrative.headline
         ) : (
           defaultTitle
         )
@@ -1199,8 +1200,8 @@ function SequenceCombine({
       contextText={
         isLoading ? (
           <div className="h-16 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-        ) : narrative?.context ? (
-          <StreamingNarrative text={narrative.context} />
+        ) : narrative?.tempoAnalysis ? (
+          <StreamingNarrative text={narrative.tempoAnalysis} />
         ) : (
           defaultContext
         )
@@ -1211,13 +1212,13 @@ function SequenceCombine({
         <div
           className="p-6 rounded-lg"
           style={{
-            backgroundColor: colors.gray[900],
-            border: `1px solid ${colors.gray[800]}`,
+            backgroundColor: colors.neutral[900],
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <h4
             className="text-sm uppercase tracking-wider mb-4"
-            style={{ color: colors.gray[500] }}
+            style={{ color: colors.neutral[500] }}
           >
             Historique des confrontations (scoring combiné)
           </h4>
@@ -1228,45 +1229,45 @@ function SequenceCombine({
           />
           <div
             className="mt-4 text-sm text-center"
-            style={{ color: colors.gray[400] }}
+            style={{ color: colors.neutral[400] }}
           >
-            OVER: {data.h2h.overCount} · UNDER: {data.h2h.underCount} · Moyenne: {avgTotal.toFixed(1)} pts
+            OVER: {data.h2h.overCount} · UNDER: {data.h2h.underCount} · Moyenne: {safeNum(avgTotal).toFixed(1)} pts
           </div>
         </div>
 
         {/* Projections */}
         <div className="grid grid-cols-2 gap-6">
           <AnalysisStatCard
-            value={data.projectedPace.toFixed(1)}
+            value={safeNum(data.projectedPace).toFixed(1)}
             label="PACE PROJETÉ"
             size="lg"
           />
           <AnalysisStatCard
-            value={data.projectedTotal.toFixed(1)}
+            value={safeNum(data.projectedTotal).toFixed(1)}
             label="TOTAL PROJETÉ"
-            variation={hasLine ? `${diffVsLine > 0 ? '+' : ''}${diffVsLine.toFixed(1)} vs ligne` : undefined}
+            variation={hasLine ? `${diffVsLine > 0 ? '+' : ''}${safeNum(diffVsLine).toFixed(1)} vs ligne` : undefined}
             variationType={diffVsLine > 0 ? 'positive' : 'negative'}
             size="lg"
           />
         </div>
 
         {/* AI-Generated Insight */}
-        {(narrative?.insight || isLoading) && (
+        {(narrative?.expectedGameFlow || isLoading) && (
           <div
             className="p-4 rounded-lg border-l-4"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              borderColor: colors.gray[600],
+              borderColor: colors.neutral[600],
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               💡 Insight Clé
             </div>
             <p className="text-base" style={{ color: '#D1D5DB' }}>
               {isLoading ? (
                 <span className="block h-6 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
               ) : (
-                <StreamingNarrative text={narrative!.insight} />
+                <StreamingNarrative text={narrative!.expectedGameFlow} />
               )}
             </p>
           </div>
@@ -1317,15 +1318,15 @@ function SequenceOpponent({
 
   // Default texts for fallback
   const defaultTitle = 'Défenses Adverses · Points Concédés'
-  const defaultContext = `${data.awayTeam.name.split(' ').pop()} fait face à une défense de ${data.homeTeam.name.split(' ').pop()} qui concède ${data.homeTeam.pointsAllowed.toFixed(1)} pts de moyenne (${data.homeTeam.defensiveRank}${getOrdinalSuffix(data.homeTeam.defensiveRank)} de la ligue). De leur côté, ${data.homeTeam.name.split(' ').pop()} affrontera une défense de ${data.awayTeam.name.split(' ').pop()} qui concède ${data.awayTeam.pointsAllowed.toFixed(1)} pts.`
+  const defaultContext = `${data.awayTeam.name.split(' ').pop()} fait face à une défense de ${data.homeTeam.name.split(' ').pop()} qui concède ${safeNum(data.homeTeam.pointsAllowed).toFixed(1)} pts de moyenne (${data.homeTeam.defensiveRank}${getOrdinalSuffix(data.homeTeam.defensiveRank)} de la ligue). De leur côté, ${data.homeTeam.name.split(' ').pop()} affrontera une défense de ${data.awayTeam.name.split(' ').pop()} qui concède ${safeNum(data.awayTeam.pointsAllowed).toFixed(1)} pts.`
 
   return (
     <SequenceContent
       title={
         isLoading ? (
           <span className="animate-pulse">Génération...</span>
-        ) : narrative?.title ? (
-          narrative.title
+        ) : narrative?.headline ? (
+          narrative.headline
         ) : (
           defaultTitle
         )
@@ -1333,8 +1334,8 @@ function SequenceOpponent({
       contextText={
         isLoading ? (
           <div className="h-16 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-        ) : narrative?.context ? (
-          <StreamingNarrative text={narrative.context} />
+        ) : narrative?.impactOnTotal ? (
+          <StreamingNarrative text={narrative.impactOnTotal} />
         ) : (
           defaultContext
         )
@@ -1345,13 +1346,13 @@ function SequenceOpponent({
         <div
           className="p-6 rounded-lg"
           style={{
-            backgroundColor: colors.gray[900],
-            border: `1px solid ${colors.gray[800]}`,
+            backgroundColor: colors.neutral[900],
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <h4
             className="text-sm uppercase tracking-wider mb-4"
-            style={{ color: colors.gray[500] }}
+            style={{ color: colors.neutral[500] }}
           >
             {data.homeTeam.abbreviation} · Points concédés
           </h4>
@@ -1361,7 +1362,7 @@ function SequenceOpponent({
           />
           <div className="mt-4 grid grid-cols-2 gap-4">
             <AnalysisStatCard
-              value={data.homeTeam.pointsAllowed.toFixed(1)}
+              value={safeNum(data.homeTeam.pointsAllowed).toFixed(1)}
               label="Moyenne"
               size="sm"
             />
@@ -1378,13 +1379,13 @@ function SequenceOpponent({
         <div
           className="p-6 rounded-lg"
           style={{
-            backgroundColor: colors.gray[900],
-            border: `1px solid ${colors.gray[800]}`,
+            backgroundColor: colors.neutral[900],
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <h4
             className="text-sm uppercase tracking-wider mb-4"
-            style={{ color: colors.gray[500] }}
+            style={{ color: colors.neutral[500] }}
           >
             {data.awayTeam.abbreviation} · Points concédés
           </h4>
@@ -1394,7 +1395,7 @@ function SequenceOpponent({
           />
           <div className="mt-4 grid grid-cols-2 gap-4">
             <AnalysisStatCard
-              value={data.awayTeam.pointsAllowed.toFixed(1)}
+              value={safeNum(data.awayTeam.pointsAllowed).toFixed(1)}
               label="Moyenne"
               size="sm"
             />
@@ -1408,22 +1409,22 @@ function SequenceOpponent({
         </div>
 
         {/* AI-Generated Edge Analysis */}
-        {(narrative?.edge || isLoading) && (
+        {(narrative?.keyDefensiveMatchup || isLoading) && (
           <div
             className="p-4 rounded-lg border-l-4 mt-6"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              borderColor: colors.gray[600],
+              borderColor: colors.neutral[600],
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               🛡️ Avantage Défensif
             </div>
             <p className="text-base" style={{ color: '#D1D5DB' }}>
               {isLoading ? (
                 <span className="block h-6 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
               ) : (
-                <StreamingNarrative text={narrative!.edge} />
+                <StreamingNarrative text={narrative!.keyDefensiveMatchup!} />
               )}
             </p>
           </div>
@@ -1454,7 +1455,7 @@ function SequenceML({
 
   // Colors based on prediction
   const predictionColor = ml.prediction === 'OVER' ? 'rgb(29, 193, 0)' : 'rgb(239, 45, 44)'
-  const confidenceColor = isHighConfidence ? 'rgb(29, 193, 0)' : colors.gray[400]
+  const confidenceColor = isHighConfidence ? 'rgb(29, 193, 0)' : colors.neutral[400]
   const evColor = hasPositiveEV ? 'rgb(29, 193, 0)' : 'rgb(239, 45, 44)'
 
   // Default texts for fallback
@@ -1466,8 +1467,8 @@ function SequenceML({
       title={
         isLoading ? (
           <span className="animate-pulse">Analyse ML en cours...</span>
-        ) : narrative?.title ? (
-          narrative.title
+        ) : narrative?.headline ? (
+          narrative.headline
         ) : (
           defaultTitle
         )
@@ -1475,8 +1476,8 @@ function SequenceML({
       contextText={
         isLoading ? (
           <div className="h-16 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-        ) : narrative?.analysis ? (
-          <StreamingNarrative text={narrative.analysis} />
+        ) : narrative?.modelPrediction ? (
+          <StreamingNarrative text={narrative.modelPrediction} />
         ) : (
           defaultAnalysis
         )
@@ -1491,7 +1492,7 @@ function SequenceML({
             border: `2px solid ${predictionColor}`,
           }}
         >
-          <div className="text-xs uppercase tracking-widest mb-2" style={{ color: colors.gray[500] }}>
+          <div className="text-xs uppercase tracking-widest mb-2" style={{ color: colors.neutral[500] }}>
             🤖 Prédiction ML
           </div>
           <div
@@ -1500,8 +1501,8 @@ function SequenceML({
           >
             {ml.prediction}
           </div>
-          <div className="text-lg" style={{ color: colors.gray[400] }}>
-            Ligne: <span className="font-mono font-bold" style={{ color: colors.foreground }}>{ml.line}</span>
+          <div className="text-lg" style={{ color: colors.neutral[400] }}>
+            Ligne: <span className="font-mono font-bold" style={{ color: colors.text.primary }}>{ml.line}</span>
           </div>
         </div>
 
@@ -1511,11 +1512,11 @@ function SequenceML({
           <div
             className="p-5 rounded-lg text-center"
             style={{
-              backgroundColor: colors.gray[900],
-              border: `1px solid ${colors.gray[800]}`,
+              backgroundColor: colors.neutral[900],
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               Confiance
             </div>
             <div
@@ -1535,11 +1536,11 @@ function SequenceML({
           <div
             className="p-5 rounded-lg text-center"
             style={{
-              backgroundColor: colors.gray[900],
-              border: `1px solid ${colors.gray[800]}`,
+              backgroundColor: colors.neutral[900],
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               Expected Value
             </div>
             <div
@@ -1548,7 +1549,7 @@ function SequenceML({
             >
               {hasPositiveEV ? '+' : ''}{ml.expectedValue}%
             </div>
-            <div className="text-xs mt-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs mt-2" style={{ color: colors.neutral[500] }}>
               {hasPositiveEV ? 'Valeur positive' : 'Valeur négative'}
             </div>
           </div>
@@ -1557,11 +1558,11 @@ function SequenceML({
           <div
             className="p-5 rounded-lg text-center"
             style={{
-              backgroundColor: colors.gray[900],
-              border: `1px solid ${colors.gray[800]}`,
+              backgroundColor: colors.neutral[900],
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               Accord Modèles
             </div>
             <div
@@ -1570,7 +1571,7 @@ function SequenceML({
             >
               {modelsAgree ? '✓' : '~'}
             </div>
-            <div className="text-xs mt-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs mt-2" style={{ color: colors.neutral[500] }}>
               {modelsAgree ? 'Consensus' : 'Divergence'}
             </div>
           </div>
@@ -1580,21 +1581,21 @@ function SequenceML({
         <div
           className="p-5 rounded-lg"
           style={{
-            backgroundColor: colors.gray[900],
-            border: `1px solid ${colors.gray[800]}`,
+            backgroundColor: colors.neutral[900],
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
-          <div className="text-xs uppercase tracking-wider mb-4" style={{ color: colors.gray[500] }}>
+          <div className="text-xs uppercase tracking-wider mb-4" style={{ color: colors.neutral[500] }}>
             Probabilités par Modèle
           </div>
           <div className="grid grid-cols-2 gap-6">
             {/* Logistic Regression */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm" style={{ color: colors.gray[400] }}>Régression Logistique</span>
-                <span className="font-mono font-bold" style={{ color: colors.foreground }}>{ml.logisticProb}%</span>
+                <span className="text-sm" style={{ color: colors.neutral[400] }}>Régression Logistique</span>
+                <span className="font-mono font-bold" style={{ color: colors.text.primary }}>{ml.logisticProb}%</span>
               </div>
-              <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: colors.gray[800] }}>
+              <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[800] }}>
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -1608,10 +1609,10 @@ function SequenceML({
             {/* XGBoost */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm" style={{ color: colors.gray[400] }}>XGBoost</span>
-                <span className="font-mono font-bold" style={{ color: colors.foreground }}>{ml.xgboostProb}%</span>
+                <span className="text-sm" style={{ color: colors.neutral[400] }}>XGBoost</span>
+                <span className="font-mono font-bold" style={{ color: colors.text.primary }}>{ml.xgboostProb}%</span>
               </div>
-              <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: colors.gray[800] }}>
+              <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[800] }}>
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -1625,7 +1626,7 @@ function SequenceML({
         </div>
 
         {/* AI Insight */}
-        {(narrative?.analysis || isLoading) && (
+        {(narrative?.caveat || isLoading) && (
           <div
             className="p-4 rounded-lg border-l-4"
             style={{
@@ -1633,14 +1634,14 @@ function SequenceML({
               borderColor: predictionColor,
             }}
           >
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
               🧠 Analyse ML
             </div>
             <p className="text-base" style={{ color: '#D1D5DB' }}>
               {isLoading ? (
                 <span className="block h-6 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
               ) : (
-                <StreamingNarrative text={narrative!.analysis} />
+                <StreamingNarrative text={narrative!.caveat!} />
               )}
             </p>
           </div>
@@ -1693,10 +1694,10 @@ function SequenceSynthese({
 
   // Defense rankings
   if (data.homeTeam.defensiveRank >= 25) {
-    overFactors.push(`${data.homeTeam.abbreviation} DEF faible (${data.homeTeam.pointsAllowed.toFixed(1)} pts)`)
+    overFactors.push(`${data.homeTeam.abbreviation} DEF faible (${safeNum(data.homeTeam.pointsAllowed).toFixed(1)} pts)`)
   }
   if (data.awayTeam.defensiveRank >= 25) {
-    overFactors.push(`${data.awayTeam.abbreviation} DEF faible (${data.awayTeam.pointsAllowed.toFixed(1)} pts)`)
+    overFactors.push(`${data.awayTeam.abbreviation} DEF faible (${safeNum(data.awayTeam.pointsAllowed).toFixed(1)} pts)`)
   }
   if (data.homeTeam.defensiveRank <= 10) {
     underFactors.push(`${data.homeTeam.abbreviation} DEF solide (${data.homeTeam.defensiveRank}${getOrdinalSuffix(data.homeTeam.defensiveRank)})`)
@@ -1724,9 +1725,9 @@ function SequenceSynthese({
   const combinedTeamTotals = (data.awayTeam.teamTotal || data.awayTeam.ppg) + (data.homeTeam.teamTotal || data.homeTeam.ppg)
   if (data.betting.total !== null) {
     if (combinedTeamTotals > data.betting.total) {
-      overFactors.push(`Team Totals combinés > ligne (${combinedTeamTotals.toFixed(1)} vs ${data.betting.total})`)
+      overFactors.push(`Team Totals combinés > ligne (${safeNum(combinedTeamTotals).toFixed(1)} vs ${data.betting.total})`)
     } else {
-      underFactors.push(`Team Totals combinés < ligne (${combinedTeamTotals.toFixed(1)} vs ${data.betting.total})`)
+      underFactors.push(`Team Totals combinés < ligne (${safeNum(combinedTeamTotals).toFixed(1)} vs ${data.betting.total})`)
     }
 
     // Line height
@@ -1743,7 +1744,7 @@ function SequenceSynthese({
 
   // Default texts for fallback
   const defaultTitle = `Synthèse · ${data.awayTeam.abbreviation} @ ${data.homeTeam.abbreviation}${hasLine ? ` · O/U ${data.betting.total!}` : ''}`
-  const defaultContext = `Cette confrontation réunit ${data.awayTeam.name.split(' ').pop()} (${data.awayTeam.ppg} pts/m) et ${data.homeTeam.name.split(' ').pop()} (${data.homeTeam.ppg} pts/m). Les Team Totals combinés (${combinedTeamTotals.toFixed(1)} pts) suggèrent ${hasLine && combinedTeamTotals > data.betting.total! ? 'un match à scoring élevé' : 'un match équilibré'}.`
+  const defaultContext = `Cette confrontation réunit ${data.awayTeam.name.split(' ').pop()} (${data.awayTeam.ppg} pts/m) et ${data.homeTeam.name.split(' ').pop()} (${data.homeTeam.ppg} pts/m). Les Team Totals combinés (${safeNum(combinedTeamTotals).toFixed(1)} pts) suggèrent ${hasLine && combinedTeamTotals > data.betting.total! ? 'un match à scoring élevé' : 'un match équilibré'}.`
   const defaultReflection = hasLine ? `Avant de conclure : la ligne à ${data.betting.total!} est-elle correctement calibrée pour ce duel offensif ?` : `Quelle devrait être la ligne idéale pour ce duel offensif ?`
 
   return (
@@ -1751,8 +1752,8 @@ function SequenceSynthese({
       title={
         isLoading ? (
           <span className="animate-pulse">Génération de la synthèse...</span>
-        ) : narrative?.title ? (
-          narrative.title
+        ) : narrative?.headline ? (
+          narrative.headline
         ) : (
           defaultTitle
         )
@@ -1760,8 +1761,8 @@ function SequenceSynthese({
       contextText={
         isLoading ? (
           <div className="h-16 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-        ) : narrative?.context ? (
-          <StreamingNarrative text={narrative.context} />
+        ) : narrative?.summaryAnalysis ? (
+          <StreamingNarrative text={narrative.summaryAnalysis} />
         ) : (
           defaultContext
         )
@@ -1769,8 +1770,8 @@ function SequenceSynthese({
       reflectionQuestion={
         isLoading ? (
           <div className="h-6 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', width: '80%' }} />
-        ) : narrative?.reflection ? (
-          <StreamingNarrative text={narrative.reflection} />
+        ) : narrative?.finalThought ? (
+          <StreamingNarrative text={narrative.finalThought} />
         ) : (
           defaultReflection
         )
@@ -1783,11 +1784,11 @@ function SequenceSynthese({
             className="p-6 rounded-lg"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: `1px solid ${colors.gray[700]}`,
+              border: `1px solid ${colors.neutral[700]}`,
             }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-bold" style={{ color: colors.foreground }}>
+              <h4 className="text-lg font-bold" style={{ color: colors.text.primary }}>
                 🎯 Verdict IA
               </h4>
               {onRegenerate && (
@@ -1796,8 +1797,8 @@ function SequenceSynthese({
                   disabled={isGenerating}
                   className="px-3 py-1.5 rounded text-sm font-medium transition-colors"
                   style={{
-                    backgroundColor: isGenerating ? colors.gray[800] : 'rgba(255, 255, 255, 0.1)',
-                    color: isGenerating ? colors.gray[600] : colors.foreground,
+                    backgroundColor: isGenerating ? colors.neutral[800] : 'rgba(255, 255, 255, 0.1)',
+                    color: isGenerating ? colors.neutral[600] : colors.text.primary,
                     cursor: isGenerating ? 'not-allowed' : 'pointer',
                   }}
                 >
@@ -1818,18 +1819,21 @@ function SequenceSynthese({
                   <div className="h-5 rounded animate-pulse" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', width: '80%' }} />
                 </div>
               </div>
-            ) : narrative?.verdict ? (
+            ) : narrative?.bettingConsiderations?.totalAnalysis ? (
               <div className="space-y-4">
-                <VerdictBadge
-                  verdict={narrative.verdict}
-                  confidence={narrative.confidence}
-                />
-                <div className="mt-4">
-                  <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.gray[500] }}>
-                    Raisonnement
-                  </div>
-                  <ReasoningList reasons={narrative.reasoning} />
+                <div className="text-base" style={{ color: '#D1D5DB' }}>
+                  <StreamingNarrative text={narrative.bettingConsiderations.totalAnalysis} />
                 </div>
+                {narrative.bettingConsiderations.valuePlay && (
+                  <div className="mt-4">
+                    <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.neutral[500] }}>
+                      Value Play
+                    </div>
+                    <p className="text-base" style={{ color: '#D1D5DB' }}>
+                      <StreamingNarrative text={narrative.bettingConsiderations.valuePlay} />
+                    </p>
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
@@ -1845,14 +1849,14 @@ function SequenceSynthese({
         <div
           className="p-6 rounded-lg"
           style={{
-            backgroundColor: colors.gray[900],
-            border: `1px solid ${colors.gray[800]}`,
+            backgroundColor: colors.neutral[900],
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <DistributionBar overPercent={overPercent} />
           <div className="mt-4">
             <ConfidenceIndicator
-              percent={narrative?.confidence ?? Math.min(80, 50 + data.h2h.games.length * 5 + data.trend.recentResults.length * 3)}
+              percent={narrative?.riskLevel ? (narrative.riskLevel === 'low' ? 80 : narrative.riskLevel === 'medium' ? 65 : 50) : Math.min(80, 50 + data.h2h.games.length * 5 + data.trend.recentResults.length * 3)}
               label={narrative ? "Confiance IA" : "Confiance données"}
             />
           </div>
@@ -1886,9 +1890,9 @@ function SequenceRest({ data }: { data: StorytellingData }) {
   const getRestLabel = (days: number): { label: string; color: string } => {
     if (days === 0) return { label: 'Back-to-Back', color: 'rgb(239, 45, 44)' }
     if (days === 1) return { label: 'Peu de repos', color: 'rgb(255, 193, 7)' }
-    if (days === 2) return { label: 'Normal', color: colors.gray[400] }
+    if (days === 2) return { label: 'Normal', color: colors.neutral[400] }
     if (days >= 3) return { label: 'Bien reposé', color: 'rgb(29, 193, 0)' }
-    return { label: `${days} jours`, color: colors.gray[400] }
+    return { label: `${days} jours`, color: colors.neutral[400] }
   }
 
   const awayRestInfo = getRestLabel(rest.awayRestDays)
@@ -1950,7 +1954,7 @@ function SequenceRest({ data }: { data: StorytellingData }) {
             className="p-6 rounded-xl"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center gap-4 mb-4">
@@ -1960,10 +1964,10 @@ function SequenceRest({ data }: { data: StorytellingData }) {
                 className="w-14 h-14"
               />
               <div>
-                <div className="text-sm uppercase tracking-wider" style={{ color: colors.gray[500] }}>
+                <div className="text-sm uppercase tracking-wider" style={{ color: colors.neutral[500] }}>
                   Visiteur
                 </div>
-                <div className="text-xl font-bold" style={{ color: colors.foreground }}>
+                <div className="text-xl font-bold" style={{ color: colors.text.primary }}>
                   {data.awayTeam.abbreviation}
                 </div>
               </div>
@@ -1976,7 +1980,7 @@ function SequenceRest({ data }: { data: StorytellingData }) {
               >
                 {rest.awayRestDays}
               </span>
-              <span className="text-lg" style={{ color: colors.gray[500] }}>
+              <span className="text-lg" style={{ color: colors.neutral[500] }}>
                 jour{rest.awayRestDays !== 1 ? 's' : ''} de repos
               </span>
             </div>
@@ -1991,8 +1995,8 @@ function SequenceRest({ data }: { data: StorytellingData }) {
               {awayRestInfo.label}
             </div>
 
-            <div className="mt-4 text-sm" style={{ color: colors.gray[500] }}>
-              Dernier match: <span style={{ color: colors.foreground }}>{formatDate(rest.awayLastGame)}</span>
+            <div className="mt-4 text-sm" style={{ color: colors.neutral[500] }}>
+              Dernier match: <span style={{ color: colors.text.primary }}>{formatDate(rest.awayLastGame)}</span>
             </div>
           </div>
 
@@ -2001,7 +2005,7 @@ function SequenceRest({ data }: { data: StorytellingData }) {
             className="p-6 rounded-xl"
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: `1px solid ${colors.gray[800]}`,
+              border: `1px solid ${colors.neutral[800]}`,
             }}
           >
             <div className="flex items-center gap-4 mb-4">
@@ -2011,10 +2015,10 @@ function SequenceRest({ data }: { data: StorytellingData }) {
                 className="w-14 h-14"
               />
               <div>
-                <div className="text-sm uppercase tracking-wider" style={{ color: colors.gray[500] }}>
+                <div className="text-sm uppercase tracking-wider" style={{ color: colors.neutral[500] }}>
                   Local
                 </div>
-                <div className="text-xl font-bold" style={{ color: colors.foreground }}>
+                <div className="text-xl font-bold" style={{ color: colors.text.primary }}>
                   {data.homeTeam.abbreviation}
                 </div>
               </div>
@@ -2027,7 +2031,7 @@ function SequenceRest({ data }: { data: StorytellingData }) {
               >
                 {rest.homeRestDays}
               </span>
-              <span className="text-lg" style={{ color: colors.gray[500] }}>
+              <span className="text-lg" style={{ color: colors.neutral[500] }}>
                 jour{rest.homeRestDays !== 1 ? 's' : ''} de repos
               </span>
             </div>
@@ -2042,8 +2046,8 @@ function SequenceRest({ data }: { data: StorytellingData }) {
               {homeRestInfo.label}
             </div>
 
-            <div className="mt-4 text-sm" style={{ color: colors.gray[500] }}>
-              Dernier match: <span style={{ color: colors.foreground }}>{formatDate(rest.homeLastGame)}</span>
+            <div className="mt-4 text-sm" style={{ color: colors.neutral[500] }}>
+              Dernier match: <span style={{ color: colors.text.primary }}>{formatDate(rest.homeLastGame)}</span>
             </div>
           </div>
         </div>
@@ -2053,21 +2057,21 @@ function SequenceRest({ data }: { data: StorytellingData }) {
           className="p-5 rounded-xl flex items-center justify-between"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: `1px solid ${colors.gray[800]}`,
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
           <div className="flex items-center gap-4">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-              style={{ backgroundColor: colors.gray[800] }}
+              style={{ backgroundColor: colors.neutral[800] }}
             >
               {rest.restAdvantage === 'even' ? '⚖️' : '💪'}
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider mb-1" style={{ color: colors.gray[500] }}>
+              <div className="text-xs uppercase tracking-wider mb-1" style={{ color: colors.neutral[500] }}>
                 Avantage Repos
               </div>
-              <div className="text-lg font-medium" style={{ color: colors.foreground }}>
+              <div className="text-lg font-medium" style={{ color: colors.text.primary }}>
                 {getAdvantageText()}
               </div>
             </div>
@@ -2090,10 +2094,10 @@ function SequenceRest({ data }: { data: StorytellingData }) {
           className="p-5 rounded-xl"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: `1px solid ${colors.gray[800]}`,
+            border: `1px solid ${colors.neutral[800]}`,
           }}
         >
-          <div className="text-xs uppercase tracking-wider mb-3" style={{ color: colors.gray[500] }}>
+          <div className="text-xs uppercase tracking-wider mb-3" style={{ color: colors.neutral[500] }}>
             🔍 Impact sur les Totaux
           </div>
           <ul className="space-y-2">
@@ -2103,7 +2107,7 @@ function SequenceRest({ data }: { data: StorytellingData }) {
                 className="flex items-start gap-2 text-base"
                 style={{ color: '#D1D5DB' }}
               >
-                <span style={{ color: colors.gray[600] }}>•</span>
+                <span style={{ color: colors.neutral[600] }}>•</span>
                 {impact}
               </li>
             ))}
@@ -2126,9 +2130,9 @@ function SequenceRest({ data }: { data: StorytellingData }) {
               {rest.isBackToBack.away && rest.isBackToBack.home ? (
                 <>Les deux équipes jouent un back-to-back — situation rare avec fatigue mutuelle.</>
               ) : rest.isBackToBack.away ? (
-                <><strong style={{ color: colors.foreground }}>{data.awayTeam.name}</strong> joue le deuxième match d'un back-to-back en déplacement — facteur de fatigue majeur.</>
+                <><strong style={{ color: colors.text.primary }}>{data.awayTeam.name}</strong> joue le deuxième match d'un back-to-back en déplacement — facteur de fatigue majeur.</>
               ) : (
-                <><strong style={{ color: colors.foreground }}>{data.homeTeam.name}</strong> joue le deuxième match d'un back-to-back à domicile.</>
+                <><strong style={{ color: colors.text.primary }}>{data.homeTeam.name}</strong> joue le deuxième match d'un back-to-back à domicile.</>
               )}
             </p>
           </div>

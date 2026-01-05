@@ -2,20 +2,12 @@
 
 import { useState, useMemo } from 'react'
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import type { MatchupTypeStats } from '@/lib/queries'
 
 type SortDirection = 'asc' | 'desc' | null
 
-interface MatchupType {
-  matchup_type: string
-  games: number | string
-  avg_total: number | string
-  min_total: number | string
-  max_total: number | string
-  stddev: number | string
-}
-
 interface MatchupTypesTableProps {
-  data: MatchupType[]
+  data: MatchupTypeStats[]
 }
 
 // Helper to safely format numbers (handles PostgreSQL numeric type)

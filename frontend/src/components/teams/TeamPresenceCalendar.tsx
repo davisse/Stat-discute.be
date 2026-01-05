@@ -213,8 +213,8 @@ export function TeamPresenceCalendar({
   }, [fullSize, weeks.length])
 
   const containerClass = fullSize
-    ? "bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 md:p-6 w-full h-full flex flex-col"
-    : "bg-zinc-900/50 border border-zinc-800 rounded-lg p-4"
+    ? "bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg p-2 sm:p-3 md:p-6 w-full h-full flex flex-col"
+    : "bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg p-2 sm:p-4"
 
   const headerClass = fullSize
     ? "flex flex-row items-center justify-between mb-3 md:mb-4 gap-2"

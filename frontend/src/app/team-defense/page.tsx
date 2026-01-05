@@ -73,16 +73,16 @@ export default function TeamDefensePage() {
         {/* Page Header */}
         <div style={{ marginBottom: spacing[8] }}>
           <h1 style={{
-            fontSize: typography.fontSize['3xl'],
-            fontWeight: typography.fontWeight.bold,
-            color: colors.foreground,
+            fontSize: typography.sizes['3xl'],
+            fontWeight: typography.weights.bold,
+            color: colors.text.primary,
             marginBottom: spacing[2]
           }}>
             Team Defensive Performance
           </h1>
           <p style={{
-            fontSize: typography.fontSize.base,
-            color: colors.gray[400]
+            fontSize: typography.sizes.base,
+            color: colors.neutral[400]
           }}>
             Analyze how opponents score against selected teams throughout the season
           </p>
@@ -102,8 +102,8 @@ export default function TeamDefensePage() {
           <div style={{
             textAlign: 'center',
             padding: spacing[12],
-            fontSize: typography.fontSize.lg,
-            color: colors.gray[500]
+            fontSize: typography.sizes.lg,
+            color: colors.neutral[500]
           }}>
             Loading defensive performance data...
           </div>
@@ -130,7 +130,7 @@ export default function TeamDefensePage() {
             {/* Opponent Scoring Section with its own filters */}
             <OpponentScoringSection
               games={games}
-              avgOpponentPpg={parseFloat(metrics.avg_opponent_ppg)}
+              avgOpponentPpg={Number(metrics.avg_points_allowed)}
             />
           </>
         )}
@@ -140,16 +140,16 @@ export default function TeamDefensePage() {
           <div style={{
             textAlign: 'center',
             padding: spacing[24],
-            color: colors.gray[500]
+            color: colors.neutral[500]
           }}>
             <div style={{ fontSize: '64px', marginBottom: spacing[4] }}>🏀</div>
             <div style={{
-              fontSize: typography.fontSize.xl,
+              fontSize: typography.sizes.xl,
               marginBottom: spacing[2]
             }}>
               Select a team to view defensive performance
             </div>
-            <div style={{ fontSize: typography.fontSize.sm }}>
+            <div style={{ fontSize: typography.sizes.sm }}>
               Use the selector above to choose a team and analyze how their opponents score
             </div>
           </div>

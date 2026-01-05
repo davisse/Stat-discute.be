@@ -33,42 +33,18 @@ export function OddsLineChart({ data, marketName }: OddsLineChartProps) {
     )
   }
 
-  // Group data by selection (team/player name)
-  const selectionGroups = data.reduce((acc, point) => {
-    if (!acc[point.selection]) {
-      acc[point.selection] = []
-    }
-    acc[point.selection].push(point)
-    return acc
-  }, {} as Record<string, OddsDataPoint[]>)
+  // Transform data for recharts format - single line per market
+  const sortedData = [...data].sort((a, b) =>
+    new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  )
 
-  // Get unique selections for legend
-  const selections = Object.keys(selectionGroups)
-
-  // Transform data for recharts format
-  // Create a timeline with all unique timestamps
-  const timestamps = Array.from(new Set(data.map((d) => d.recorded_at))).sort()
-
-  const chartData = timestamps.map((timestamp) => {
-    const dataPoint: any = {
-      time: new Date(timestamp).toLocaleTimeString('fr-FR', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    }
-
-    // Add odds for each selection at this timestamp
-    selections.forEach((selection) => {
-      const point = data.find(
-        (d) => d.recorded_at === timestamp && d.selection === selection
-      )
-      if (point) {
-        dataPoint[selection] = parseFloat(point.odds_decimal)
-      }
-    })
-
-    return dataPoint
-  })
+  const chartData = sortedData.map((point) => ({
+    time: new Date(point.timestamp).toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    }),
+    odds: point.odds
+  }))
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -112,48 +88,36 @@ export function OddsLineChart({ data, marketName }: OddsLineChartProps) {
               }}
               labelStyle={{ color: '#111827', fontWeight: 600, marginBottom: '8px' }}
             />
-            <Legend
-              wrapperStyle={{ paddingTop: '20px' }}
-              iconType="line"
+            <Line
+              type="monotone"
+              dataKey="odds"
+              stroke={COLORS[0]}
+              strokeWidth={2}
+              dot={{ fill: COLORS[0], r: 3 }}
+              activeDot={{ r: 5 }}
+              name="Cote"
             />
-            {selections.map((selection, idx) => (
-              <Line
-                key={selection}
-                type="monotone"
-                dataKey={selection}
-                stroke={COLORS[idx % COLORS.length]}
-                strokeWidth={2}
-                dot={{ fill: COLORS[idx % COLORS.length], r: 3 }}
-                activeDot={{ r: 5 }}
-                name={selection}
-              />
-            ))}
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {selections.map((selection, idx) => {
-            const selectionData = selectionGroups[selection]
-            const latestOdds = selectionData[selectionData.length - 1]
-            const firstOdds = selectionData[0]
-            const change =
-              parseFloat(latestOdds.odds_decimal) - parseFloat(firstOdds.odds_decimal)
-            const changePercent = (change / parseFloat(firstOdds.odds_decimal)) * 100
-
-            return (
-              <div key={selection} className="text-sm">
-                <div className="flex items-center gap-2 mb-1">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: COLORS[idx % COLORS.length] }}
-                  />
-                  <span className="font-medium text-gray-900">{selection}</span>
-                </div>
-                <div className="text-xs text-gray-600">
-                  Actuel: {parseFloat(latestOdds.odds_decimal).toFixed(2)}
-                </div>
+      {sortedData.length >= 2 && (
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="text-sm">
+            <div className="flex items-center gap-2 mb-1">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: COLORS[0] }}
+              />
+              <span className="font-medium text-gray-900">Évolution</span>
+            </div>
+            <div className="text-xs text-gray-600">
+              Actuel: {sortedData[sortedData.length - 1].odds.toFixed(2)}
+            </div>
+            {(() => {
+              const change = sortedData[sortedData.length - 1].odds - sortedData[0].odds
+              const changePercent = (change / sortedData[0].odds) * 100
+              return (
                 <div
                   className={`text-xs font-medium ${
                     change > 0
@@ -166,11 +130,11 @@ export function OddsLineChart({ data, marketName }: OddsLineChartProps) {
                   {change > 0 ? '+' : ''}
                   {change.toFixed(2)} ({changePercent.toFixed(1)}%)
                 </div>
-              </div>
-            )
-          })}
+              )
+            })()}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

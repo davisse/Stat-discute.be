@@ -109,33 +109,29 @@ export function AbsenceImpactSection({ teams }: AbsenceImpactSectionProps) {
                   <TableHead className="text-gray-400 text-right">USG% Without</TableHead>
                   <TableHead className="text-gray-400 text-right">USG Delta</TableHead>
                   <TableHead className="text-gray-400 text-right">PTS Delta</TableHead>
-                  <TableHead className="text-gray-400 text-right">AST Delta</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {absenceData.slice(0, 20).map((row, index) => (
-                  <TableRow key={`${row.player_id}-${row.teammate_id}-${index}`} className="border-gray-700 hover:bg-gray-800/50">
+                  <TableRow key={`${row.player_id}-${row.absent_teammate_id}-${index}`} className="border-gray-700 hover:bg-gray-800/50">
                     <TableCell className="font-medium text-white">{row.player_name}</TableCell>
-                    <TableCell className="text-orange-400">{row.teammate_name}</TableCell>
+                    <TableCell className="text-orange-400">{row.absent_teammate_name}</TableCell>
                     <TableCell className="text-center text-gray-400">
                       <span className="text-green-500">{row.games_with}</span>
                       {' / '}
                       <span className="text-red-500">{row.games_without}</span>
                     </TableCell>
                     <TableCell className="text-right text-gray-300">
-                      {row.usg_with.toFixed(1)}%
+                      {row.usage_with?.toFixed(1) ?? '0.0'}%
                     </TableCell>
                     <TableCell className="text-right text-gray-300">
-                      {row.usg_without.toFixed(1)}%
+                      {row.usage_without?.toFixed(1) ?? '0.0'}%
                     </TableCell>
-                    <TableCell className={`text-right font-semibold ${getDeltaColor(row.usg_delta)}`}>
-                      {getDeltaIcon(row.usg_delta)} {row.usg_delta > 0 ? '+' : ''}{row.usg_delta.toFixed(1)}%
+                    <TableCell className={`text-right font-semibold ${getDeltaColor(row.usage_diff ?? 0)}`}>
+                      {getDeltaIcon(row.usage_diff ?? 0)} {(row.usage_diff ?? 0) > 0 ? '+' : ''}{row.usage_diff?.toFixed(1) ?? '0.0'}%
                     </TableCell>
-                    <TableCell className={`text-right ${getDeltaColor(row.pts_delta)}`}>
-                      {getDeltaIcon(row.pts_delta)} {row.pts_delta > 0 ? '+' : ''}{row.pts_delta.toFixed(1)}
-                    </TableCell>
-                    <TableCell className={`text-right ${getDeltaColor(row.ast_delta)}`}>
-                      {getDeltaIcon(row.ast_delta)} {row.ast_delta > 0 ? '+' : ''}{row.ast_delta.toFixed(1)}
+                    <TableCell className={`text-right ${getDeltaColor(row.pts_diff ?? 0)}`}>
+                      {getDeltaIcon(row.pts_diff ?? 0)} {(row.pts_diff ?? 0) > 0 ? '+' : ''}{row.pts_diff?.toFixed(1) ?? '0.0'}
                     </TableCell>
                   </TableRow>
                 ))}
