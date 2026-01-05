@@ -531,9 +531,10 @@ export async function getTeamDetailedStats(teamId: number) {
 }
 
 /**
- * Get team game history
+ * Get team game history for season calendar
+ * Returns all season games (completed and upcoming)
  */
-export async function getTeamGameHistory(teamId: number, limit = 10) {
+export async function getTeamGameHistory(teamId: number) {
   const currentSeason = await getCurrentSeason()
 
   const result = await query(`
@@ -541,24 +542,29 @@ export async function getTeamGameHistory(teamId: number, limit = 10) {
       g.game_id,
       g.game_date,
       g.game_status,
-      CASE WHEN g.home_team_id = $1 THEN 'HOME' ELSE 'AWAY' END as location,
       CASE WHEN g.home_team_id = $1 THEN at.abbreviation ELSE ht.abbreviation END as opponent,
-      CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END as team_score,
-      CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END as opponent_score,
+      (g.home_team_id = $1) as is_home,
+      CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END as team_pts,
+      CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END as opp_pts,
       CASE
+        WHEN g.game_status = 'Scheduled' THEN 'Scheduled'
         WHEN g.home_team_id = $1 AND g.home_team_score > g.away_team_score THEN 'W'
         WHEN g.away_team_id = $1 AND g.away_team_score > g.home_team_score THEN 'W'
         ELSE 'L'
-      END as result
+      END as result,
+      CASE
+        WHEN g.game_status = 'Final' THEN
+          (CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END) -
+          (CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END)
+        ELSE NULL
+      END as point_diff
     FROM games g
     JOIN teams ht ON g.home_team_id = ht.team_id
     JOIN teams at ON g.away_team_id = at.team_id
     WHERE (g.home_team_id = $1 OR g.away_team_id = $1)
       AND g.season = $2
-      AND g.game_status = 'Final'
-    ORDER BY g.game_date DESC
-    LIMIT $3
-  `, [teamId, currentSeason, limit])
+    ORDER BY g.game_date ASC
+  `, [teamId, currentSeason])
 
   return result.rows
 }
@@ -870,7 +876,7 @@ export async function getPlayerPropsStats(playerId: number, games = 10) {
       pgs.points,
       pgs.rebounds,
       pgs.assists,
-      pgs.three_pointers_made,
+      pgs.fg3_made,
       pgs.minutes,
       CASE WHEN g.home_team_id = pgs.team_id THEN 'HOME' ELSE 'AWAY' END as location
     FROM player_game_stats pgs
@@ -906,7 +912,7 @@ export async function getPlayerPropsStatsByNames(playerNames: string[], season?:
         pgs.points,
         pgs.rebounds,
         pgs.assists,
-        pgs.three_pointers_made,
+        pgs.fg3_made,
         pgs.points + pgs.rebounds + pgs.assists as pra,
         CASE WHEN g.home_team_id = pgs.team_id THEN 'HOME' ELSE 'AWAY' END as location,
         ROW_NUMBER() OVER (PARTITION BY p.player_id ORDER BY g.game_date DESC) as game_num
@@ -927,25 +933,25 @@ export async function getPlayerPropsStatsByNames(playerNames: string[], season?:
       ROUND(AVG(points), 1) as season_ppg,
       ROUND(AVG(rebounds), 1) as season_rpg,
       ROUND(AVG(assists), 1) as season_apg,
-      ROUND(AVG(three_pointers_made), 1) as season_three_pg,
+      ROUND(AVG(fg3_made), 1) as season_three_pg,
       ROUND(AVG(pra), 1) as season_pra,
       -- Last 5 games
       ROUND(AVG(CASE WHEN game_num <= 5 THEN points END), 1) as last_5_ppg,
       ROUND(AVG(CASE WHEN game_num <= 5 THEN rebounds END), 1) as last_5_rpg,
       ROUND(AVG(CASE WHEN game_num <= 5 THEN assists END), 1) as last_5_apg,
-      ROUND(AVG(CASE WHEN game_num <= 5 THEN three_pointers_made END), 1) as last_5_three_pg,
+      ROUND(AVG(CASE WHEN game_num <= 5 THEN fg3_made END), 1) as last_5_three_pg,
       ROUND(AVG(CASE WHEN game_num <= 5 THEN pra END), 1) as last_5_pra,
       -- Home stats
       ROUND(AVG(CASE WHEN location = 'HOME' THEN points END), 1) as home_ppg,
       ROUND(AVG(CASE WHEN location = 'HOME' THEN rebounds END), 1) as home_rpg,
       ROUND(AVG(CASE WHEN location = 'HOME' THEN assists END), 1) as home_apg,
-      ROUND(AVG(CASE WHEN location = 'HOME' THEN three_pointers_made END), 1) as home_three_pg,
+      ROUND(AVG(CASE WHEN location = 'HOME' THEN fg3_made END), 1) as home_three_pg,
       ROUND(AVG(CASE WHEN location = 'HOME' THEN pra END), 1) as home_pra,
       -- Away stats
       ROUND(AVG(CASE WHEN location = 'AWAY' THEN points END), 1) as away_ppg,
       ROUND(AVG(CASE WHEN location = 'AWAY' THEN rebounds END), 1) as away_rpg,
       ROUND(AVG(CASE WHEN location = 'AWAY' THEN assists END), 1) as away_apg,
-      ROUND(AVG(CASE WHEN location = 'AWAY' THEN three_pointers_made END), 1) as away_three_pg,
+      ROUND(AVG(CASE WHEN location = 'AWAY' THEN fg3_made END), 1) as away_three_pg,
       ROUND(AVG(CASE WHEN location = 'AWAY' THEN pra END), 1) as away_pra
     FROM player_games
     GROUP BY player_id, full_name, team
@@ -1089,7 +1095,7 @@ export async function getPlayerVsOpponent(playerName: string, opponentAbbreviati
       ROUND(AVG(pgs.points), 1) as ppg,
       ROUND(AVG(pgs.rebounds), 1) as rpg,
       ROUND(AVG(pgs.assists), 1) as apg,
-      ROUND(AVG(pgs.three_pointers_made), 1) as three_pg,
+      ROUND(AVG(pgs.fg3_made), 1) as three_pg,
       ROUND(AVG(pgs.points + pgs.rebounds + pgs.assists), 1) as pra
     FROM players p
     JOIN player_game_stats pgs ON p.player_id = pgs.player_id
@@ -1583,13 +1589,13 @@ export async function getTeamAbsenceImpact(
         pgs.points,
         pgs.minutes,
         CASE WHEN pgs.minutes > 0 AND (
-          SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+          SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
           FROM player_game_stats pgs2
           JOIN games g2 ON pgs2.game_id = g2.game_id
           WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = tp.team_id AND pgs2.minutes > 0
         ) > 0 THEN
-          (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted + pgs.turnovers) /
-          (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+          (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers) /
+          (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
            FROM player_game_stats pgs2
            JOIN games g2 ON pgs2.game_id = g2.game_id
            WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = tp.team_id AND pgs2.minutes > 0)
@@ -1669,8 +1675,8 @@ export async function getTeammateAbsenceImpact(
     WITH player_games AS (
       SELECT g.game_id, pgs.points, pgs.minutes,
              CASE WHEN pgs.minutes > 0 THEN
-               (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted + pgs.turnovers) /
-               (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+               (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers) /
+               (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
                 FROM player_game_stats pgs2
                 WHERE pgs2.game_id = g.game_id AND pgs2.team_id = $1 AND pgs2.minutes > 0)
              ELSE 0 END as usage_pct
@@ -1726,23 +1732,23 @@ export async function getUsageLeaders(minGames = 5, limit = 30): Promise<PlayerA
       COUNT(pgs.game_id) as games_played,
       ROUND(AVG(pgs.points), 1) as ppg,
       ROUND(AVG(
-        CASE WHEN (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+        CASE WHEN (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
                    FROM player_game_stats pgs2
                    WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = pgs.team_id AND pgs2.minutes > 0) > 0
-        THEN (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted + pgs.turnovers) /
-             (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+        THEN (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers) /
+             (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
               FROM player_game_stats pgs2
               WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = pgs.team_id AND pgs2.minutes > 0) * 100
         ELSE 0 END
       ), 1) as avg_usage,
       ROUND(AVG(
-        CASE WHEN (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted) > 0
-        THEN pgs.points / (2 * (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted))
+        CASE WHEN (pgs.fg_attempted + 0.44 * pgs.ft_attempted) > 0
+        THEN pgs.points / (2 * (pgs.fg_attempted + 0.44 * pgs.ft_attempted))
         ELSE 0 END
       ), 3) as avg_ts,
       ROUND(AVG(
-        CASE WHEN pgs.field_goals_attempted > 0
-        THEN (pgs.field_goals_made + 0.5 * pgs.three_pointers_made) / pgs.field_goals_attempted
+        CASE WHEN pgs.fg_attempted > 0
+        THEN (pgs.fg_made + 0.5 * pgs.fg3_made) / pgs.fg_attempted
         ELSE 0 END
       ), 3) as avg_efg
     FROM players p
@@ -1773,23 +1779,23 @@ export async function getEfficiencyLeaders(minGames = 5, limit = 30): Promise<Pl
       COUNT(pgs.game_id) as games_played,
       ROUND(AVG(pgs.points), 1) as ppg,
       ROUND(AVG(
-        CASE WHEN (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+        CASE WHEN (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
                    FROM player_game_stats pgs2
                    WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = pgs.team_id AND pgs2.minutes > 0) > 0
-        THEN (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted + pgs.turnovers) /
-             (SELECT SUM(field_goals_attempted + 0.44 * free_throws_attempted + turnovers)
+        THEN (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers) /
+             (SELECT SUM(fg_attempted + 0.44 * ft_attempted + turnovers)
               FROM player_game_stats pgs2
               WHERE pgs2.game_id = pgs.game_id AND pgs2.team_id = pgs.team_id AND pgs2.minutes > 0) * 100
         ELSE 0 END
       ), 1) as avg_usage,
       ROUND(AVG(
-        CASE WHEN (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted) > 0
-        THEN pgs.points / (2 * (pgs.field_goals_attempted + 0.44 * pgs.free_throws_attempted))
+        CASE WHEN (pgs.fg_attempted + 0.44 * pgs.ft_attempted) > 0
+        THEN pgs.points / (2 * (pgs.fg_attempted + 0.44 * pgs.ft_attempted))
         ELSE 0 END
       ), 3) as avg_ts,
       ROUND(AVG(
-        CASE WHEN pgs.field_goals_attempted > 0
-        THEN (pgs.field_goals_made + 0.5 * pgs.three_pointers_made) / pgs.field_goals_attempted
+        CASE WHEN pgs.fg_attempted > 0
+        THEN (pgs.fg_made + 0.5 * pgs.fg3_made) / pgs.fg_attempted
         ELSE 0 END
       ), 3) as avg_efg
     FROM players p
@@ -1820,7 +1826,7 @@ export async function getBestDefensesAgainstPosition(position: string, limit = 5
       $1 as position,
       ROUND(AVG(pgs.points), 1) as points_allowed_per_game,
       RANK() OVER (ORDER BY AVG(pgs.points) ASC) as points_allowed_rank,
-      ROUND(AVG(CASE WHEN pgs.field_goals_attempted > 0 THEN pgs.field_goals_made::numeric / pgs.field_goals_attempted * 100 ELSE 0 END), 1) as fg_pct_allowed,
+      ROUND(AVG(CASE WHEN pgs.fg_attempted > 0 THEN pgs.fg_made::numeric / pgs.fg_attempted * 100 ELSE 0 END), 1) as fg_pct_allowed,
       ROUND(AVG(pgs.rebounds), 1) as rebounds_allowed_per_game,
       ROUND(AVG(pgs.assists), 1) as assists_allowed_per_game
     FROM player_game_stats pgs
@@ -1850,7 +1856,7 @@ export async function getWorstDefensesAgainstPosition(position: string, limit = 
       $1 as position,
       ROUND(AVG(pgs.points), 1) as points_allowed_per_game,
       RANK() OVER (ORDER BY AVG(pgs.points) DESC) as points_allowed_rank,
-      ROUND(AVG(CASE WHEN pgs.field_goals_attempted > 0 THEN pgs.field_goals_made::numeric / pgs.field_goals_attempted * 100 ELSE 0 END), 1) as fg_pct_allowed,
+      ROUND(AVG(CASE WHEN pgs.fg_attempted > 0 THEN pgs.fg_made::numeric / pgs.fg_attempted * 100 ELSE 0 END), 1) as fg_pct_allowed,
       ROUND(AVG(pgs.rebounds), 1) as rebounds_allowed_per_game,
       ROUND(AVG(pgs.assists), 1) as assists_allowed_per_game
     FROM player_game_stats pgs
@@ -2054,37 +2060,84 @@ export async function getTodayInjuryReport(): Promise<InjuryReport[]> {
 // ============================================
 
 /**
- * Get player stats with rankings
+ * Get player stats with league-wide rankings
  */
 export async function getPlayerStatsWithRankings(playerId: number) {
   const currentSeason = await getCurrentSeason()
 
   const result = await query(`
-    SELECT
-      p.player_id,
-      p.full_name,
-      p.position,
-      t.abbreviation as team_abbreviation,
-      t.full_name as team_name,
-      COUNT(pgs.game_id) as games_played,
-      ROUND(AVG(pgs.points), 1) as ppg,
-      ROUND(AVG(pgs.rebounds), 1) as rpg,
-      ROUND(AVG(pgs.assists), 1) as apg,
-      ROUND(AVG(pgs.steals), 1) as spg,
-      ROUND(AVG(pgs.blocks), 1) as bpg,
-      ROUND(AVG(pgs.minutes), 1) as mpg,
-      ROUND(AVG(CASE WHEN pgs.field_goals_attempted > 0 THEN pgs.field_goals_made::numeric / pgs.field_goals_attempted * 100 ELSE 0 END), 1) as fg_pct,
-      ROUND(AVG(CASE WHEN pgs.three_pointers_attempted > 0 THEN pgs.three_pointers_made::numeric / pgs.three_pointers_attempted * 100 ELSE 0 END), 1) as fg3_pct,
-      ROUND(AVG(CASE WHEN pgs.free_throws_attempted > 0 THEN pgs.free_throws_made::numeric / pgs.free_throws_attempted * 100 ELSE 0 END), 1) as ft_pct
-    FROM players p
-    JOIN player_game_stats pgs ON p.player_id = pgs.player_id
-    JOIN games g ON pgs.game_id = g.game_id
-    JOIN teams t ON pgs.team_id = t.team_id
-    WHERE p.player_id = $1 AND g.season = $2
-    GROUP BY p.player_id, p.full_name, p.position, t.abbreviation, t.full_name
+    WITH player_stats AS (
+      SELECT
+        p.player_id,
+        p.full_name,
+        p.position,
+        t.abbreviation as team_abbreviation,
+        t.full_name as team_name,
+        COUNT(pgs.game_id) as games_played,
+        ROUND(AVG(pgs.points), 1) as ppg,
+        ROUND(AVG(pgs.rebounds), 1) as rpg,
+        ROUND(AVG(pgs.assists), 1) as apg,
+        ROUND(AVG(pgs.steals), 1) as spg,
+        ROUND(AVG(pgs.blocks), 1) as bpg,
+        ROUND(AVG(pgs.minutes), 1) as mpg,
+        ROUND(AVG(CASE WHEN pgs.fg_attempted > 0 THEN pgs.fg_made::numeric / pgs.fg_attempted * 100 ELSE 0 END), 1) as fg_pct,
+        ROUND(AVG(CASE WHEN pgs.fg3_attempted > 0 THEN pgs.fg3_made::numeric / pgs.fg3_attempted * 100 ELSE 0 END), 1) as fg3_pct,
+        ROUND(AVG(CASE WHEN pgs.ft_attempted > 0 THEN pgs.ft_made::numeric / pgs.ft_attempted * 100 ELSE 0 END), 1) as ft_pct
+      FROM players p
+      JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+      JOIN games g ON pgs.game_id = g.game_id
+      JOIN teams t ON pgs.team_id = t.team_id
+      WHERE g.season = $2
+      GROUP BY p.player_id, p.full_name, p.position, t.abbreviation, t.full_name
+      HAVING COUNT(pgs.game_id) >= 5
+    ),
+    ranked_stats AS (
+      SELECT
+        *,
+        RANK() OVER (ORDER BY ppg DESC) as ppg_rank,
+        RANK() OVER (ORDER BY rpg DESC) as rpg_rank,
+        RANK() OVER (ORDER BY apg DESC) as apg_rank,
+        RANK() OVER (ORDER BY spg DESC) as spg_rank,
+        RANK() OVER (ORDER BY bpg DESC) as bpg_rank,
+        RANK() OVER (ORDER BY mpg DESC) as mpg_rank,
+        RANK() OVER (ORDER BY fg_pct DESC) as fg_pct_rank,
+        RANK() OVER (ORDER BY fg3_pct DESC) as fg3_pct_rank,
+        RANK() OVER (ORDER BY ft_pct DESC) as ft_pct_rank
+      FROM player_stats
+    )
+    SELECT * FROM ranked_stats WHERE player_id = $1
   `, [playerId, currentSeason])
 
-  return result.rows[0] || null
+  const row = result.rows[0]
+  if (!row) return null
+
+  // Parse numeric values to JavaScript numbers
+  return {
+    player_id: row.player_id,
+    full_name: row.full_name,
+    position: row.position,
+    team_abbreviation: row.team_abbreviation,
+    team_name: row.team_name,
+    games_played: parseInt(row.games_played) || 0,
+    ppg: parseFloat(row.ppg) || 0,
+    rpg: parseFloat(row.rpg) || 0,
+    apg: parseFloat(row.apg) || 0,
+    spg: parseFloat(row.spg) || 0,
+    bpg: parseFloat(row.bpg) || 0,
+    mpg: parseFloat(row.mpg) || 0,
+    fg_pct: parseFloat(row.fg_pct) || 0,
+    fg3_pct: parseFloat(row.fg3_pct) || 0,
+    ft_pct: parseFloat(row.ft_pct) || 0,
+    ppg_rank: parseInt(row.ppg_rank) || 0,
+    rpg_rank: parseInt(row.rpg_rank) || 0,
+    apg_rank: parseInt(row.apg_rank) || 0,
+    spg_rank: parseInt(row.spg_rank) || 0,
+    bpg_rank: parseInt(row.bpg_rank) || 0,
+    mpg_rank: parseInt(row.mpg_rank) || 0,
+    fg_pct_rank: parseInt(row.fg_pct_rank) || 0,
+    fg3_pct_rank: parseInt(row.fg3_pct_rank) || 0,
+    ft_pct_rank: parseInt(row.ft_pct_rank) || 0,
+  }
 }
 
 /**
@@ -2098,7 +2151,8 @@ export async function getPlayerGamelogs(playerId: number, limit = 20) {
       g.game_id,
       g.game_date,
       CASE WHEN g.home_team_id = pgs.team_id THEN at.abbreviation ELSE ht.abbreviation END as opponent,
-      CASE WHEN g.home_team_id = pgs.team_id THEN 'vs' ELSE '@' END as location,
+      CASE WHEN g.home_team_id = pgs.team_id THEN true ELSE false END as is_home,
+      true as played,
       pgs.minutes,
       pgs.points,
       pgs.rebounds,
@@ -2106,19 +2160,19 @@ export async function getPlayerGamelogs(playerId: number, limit = 20) {
       pgs.steals,
       pgs.blocks,
       pgs.turnovers,
-      pgs.field_goals_made,
-      pgs.field_goals_attempted,
-      pgs.three_pointers_made,
-      pgs.three_pointers_attempted,
-      pgs.free_throws_made,
-      pgs.free_throws_attempted,
+      pgs.fg_made,
+      pgs.fg_attempted,
+      pgs.fg3_made as three_made,
+      pgs.fg3_attempted as three_attempted,
+      pgs.ft_made,
+      pgs.ft_attempted,
       CASE
         WHEN g.home_team_id = pgs.team_id AND g.home_team_score > g.away_team_score THEN 'W'
         WHEN g.away_team_id = pgs.team_id AND g.away_team_score > g.home_team_score THEN 'W'
         ELSE 'L'
       END as result,
       CASE WHEN g.home_team_id = pgs.team_id THEN g.home_team_score ELSE g.away_team_score END as team_score,
-      CASE WHEN g.home_team_id = pgs.team_id THEN g.away_team_score ELSE g.home_team_score END as opp_score
+      CASE WHEN g.home_team_id = pgs.team_id THEN g.away_team_score ELSE g.home_team_score END as opponent_score
     FROM player_game_stats pgs
     JOIN games g ON pgs.game_id = g.game_id
     JOIN teams ht ON g.home_team_id = ht.team_id

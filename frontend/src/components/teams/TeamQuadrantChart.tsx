@@ -12,8 +12,73 @@ import { cn, safeNum } from '@/lib/utils'
  * 3. Efficiency (Eff): ORTG vs DRTG - Pace-adjusted ratings
  * 4. Stability (Stable): Totals Avg vs Std Dev - Consistency
  *
- * Mobile-first responsive design with touch-friendly pill selector
+ * Features:
+ * - Conference/Division filtering (keeps all logos visible, dims non-matching)
+ * - Mobile-first responsive design with collapsible filters
+ * - Touch-friendly pill selector
  */
+
+// Conference and Division mapping for all 30 NBA teams
+type Conference = 'Eastern' | 'Western'
+type Division = 'Atlantic' | 'Central' | 'Southeast' | 'Northwest' | 'Pacific' | 'Southwest'
+
+interface TeamClassification {
+  conference: Conference
+  division: Division
+}
+
+const TEAM_CLASSIFICATIONS: Record<string, TeamClassification> = {
+  // Eastern Conference - Atlantic
+  BOS: { conference: 'Eastern', division: 'Atlantic' },
+  BKN: { conference: 'Eastern', division: 'Atlantic' },
+  NYK: { conference: 'Eastern', division: 'Atlantic' },
+  PHI: { conference: 'Eastern', division: 'Atlantic' },
+  TOR: { conference: 'Eastern', division: 'Atlantic' },
+  // Eastern Conference - Central
+  CHI: { conference: 'Eastern', division: 'Central' },
+  CLE: { conference: 'Eastern', division: 'Central' },
+  DET: { conference: 'Eastern', division: 'Central' },
+  IND: { conference: 'Eastern', division: 'Central' },
+  MIL: { conference: 'Eastern', division: 'Central' },
+  // Eastern Conference - Southeast
+  ATL: { conference: 'Eastern', division: 'Southeast' },
+  CHA: { conference: 'Eastern', division: 'Southeast' },
+  MIA: { conference: 'Eastern', division: 'Southeast' },
+  ORL: { conference: 'Eastern', division: 'Southeast' },
+  WAS: { conference: 'Eastern', division: 'Southeast' },
+  // Western Conference - Northwest
+  DEN: { conference: 'Western', division: 'Northwest' },
+  MIN: { conference: 'Western', division: 'Northwest' },
+  OKC: { conference: 'Western', division: 'Northwest' },
+  POR: { conference: 'Western', division: 'Northwest' },
+  UTA: { conference: 'Western', division: 'Northwest' },
+  // Western Conference - Pacific
+  GSW: { conference: 'Western', division: 'Pacific' },
+  LAC: { conference: 'Western', division: 'Pacific' },
+  LAL: { conference: 'Western', division: 'Pacific' },
+  PHX: { conference: 'Western', division: 'Pacific' },
+  SAC: { conference: 'Western', division: 'Pacific' },
+  // Western Conference - Southwest
+  DAL: { conference: 'Western', division: 'Southwest' },
+  HOU: { conference: 'Western', division: 'Southwest' },
+  MEM: { conference: 'Western', division: 'Southwest' },
+  NOP: { conference: 'Western', division: 'Southwest' },
+  SAS: { conference: 'Western', division: 'Southwest' },
+}
+
+const DIVISIONS_BY_CONFERENCE: Record<Conference, Division[]> = {
+  Eastern: ['Atlantic', 'Central', 'Southeast'],
+  Western: ['Northwest', 'Pacific', 'Southwest'],
+}
+
+const DIVISION_ABBREVS: Record<Division, string> = {
+  Atlantic: 'ATL',
+  Central: 'CEN',
+  Southeast: 'SE',
+  Northwest: 'NW',
+  Pacific: 'PAC',
+  Southwest: 'SW',
+}
 
 // Extended interface for all scenario stats
 export interface TeamQuadrantData {
@@ -178,6 +243,53 @@ export function TeamQuadrantChart({
   const [selectedScenario, setSelectedScenario] = React.useState<string>('score')
   const scenario = SCENARIOS.find((s) => s.id === selectedScenario) || SCENARIOS[0]
 
+  // Filter states
+  const [activeConference, setActiveConference] = React.useState<'all' | Conference>('all')
+  const [activeDivision, setActiveDivision] = React.useState<'all' | Division>('all')
+  const [filtersExpanded, setFiltersExpanded] = React.useState(false)
+
+  // Get available divisions based on selected conference
+  const availableDivisions = React.useMemo(() => {
+    if (activeConference === 'all') {
+      return [...DIVISIONS_BY_CONFERENCE.Eastern, ...DIVISIONS_BY_CONFERENCE.Western]
+    }
+    return DIVISIONS_BY_CONFERENCE[activeConference]
+  }, [activeConference])
+
+  // Reset division when conference changes and current division is not in new conference
+  React.useEffect(() => {
+    if (activeDivision !== 'all' && !availableDivisions.includes(activeDivision)) {
+      setActiveDivision('all')
+    }
+  }, [activeConference, activeDivision, availableDivisions])
+
+  // Check if a team matches current filters
+  const teamMatchesFilter = React.useCallback(
+    (team: TeamQuadrantData) => {
+      const classification = TEAM_CLASSIFICATIONS[team.abbreviation]
+      if (!classification) return true // Unknown teams always show
+
+      if (activeConference !== 'all' && classification.conference !== activeConference) {
+        return false
+      }
+      if (activeDivision !== 'all' && classification.division !== activeDivision) {
+        return false
+      }
+      return true
+    },
+    [activeConference, activeDivision]
+  )
+
+  // Count teams matching current filter
+  const filterStats = React.useMemo(() => {
+    const matching = data.filter(teamMatchesFilter)
+    return {
+      matchingCount: matching.length,
+      totalCount: data.length,
+      isFiltered: activeConference !== 'all' || activeDivision !== 'all',
+    }
+  }, [data, teamMatchesFilter, activeConference, activeDivision])
+
   // Check if scenario has valid data
   const hasScenarioData = React.useCallback(
     (scenarioId: string) => {
@@ -250,14 +362,14 @@ export function TeamQuadrantChart({
       // X position (left = low, right = high)
       const x = ((xVal - stats.minX) / (stats.maxX - stats.minX)) * 100
 
-      // Y position - may be inverted based on scenario
+      // Y position - CSS top:0% is at TOP, top:100% is at BOTTOM
       let y = ((yVal - stats.minY) / (stats.maxY - stats.minY)) * 100
-      // If inverted, flip the Y axis (so lower values appear at bottom)
+      // For inverted metrics (opp_ppg, drtg, std_dev): lower is better, should be at BOTTOM
+      // For non-inverted metrics (net_rtg): higher is better, should be at TOP
       if (scenario.yAxis.inverted) {
-        y = y // Keep as is - high values at top
-      } else {
-        y = 100 - y // Invert - high values at top for non-inverted (like net rating where high is good)
+        y = 100 - y // Flip: low values → bottom, high values → top
       }
+      // For non-inverted (net_rtg): high values already at low y%, which means top:low% = near TOP ✓
 
       return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) }
     },
@@ -268,8 +380,8 @@ export function TeamQuadrantChart({
   const centerLines = React.useMemo(() => {
     const avgX = ((stats.avgX - stats.minX) / (stats.maxX - stats.minX)) * 100
     let avgY = ((stats.avgY - stats.minY) / (stats.maxY - stats.minY)) * 100
-    if (!scenario.yAxis.inverted) {
-      avgY = 100 - avgY
+    if (scenario.yAxis.inverted) {
+      avgY = 100 - avgY // Same flip as getPosition for consistency
     }
     return { x: avgX, y: avgY }
   }, [stats, scenario])
@@ -290,16 +402,21 @@ export function TeamQuadrantChart({
       return null
     }
 
-    // Calculate rankings (1 = best)
+    // Determine data set for rankings (filtered or all teams)
+    const rankingDataSet = filterStats.isFiltered
+      ? data.filter(teamMatchesFilter)
+      : data
+
+    // Calculate rankings (1 = best) within the current data set
     // For X: higher is usually better (ppg, pace, ortg, total_avg)
-    const xSorted = [...data]
+    const xSorted = [...rankingDataSet]
       .filter((t) => t[xKey] !== undefined && t[xKey] !== null)
       .sort((a, b) => safeNum(b[xKey] as number) - safeNum(a[xKey] as number))
     const xRank = xSorted.findIndex((t) => t.team_id === selectedTeamId) + 1
 
     // For Y: depends on scenario (lower opp_ppg/drtg/std_dev is better, higher net_rtg is better)
     const yHigherIsBetter = !scenario.yAxis.inverted
-    const ySorted = [...data]
+    const ySorted = [...rankingDataSet]
       .filter((t) => t[yKey] !== undefined && t[yKey] !== null)
       .sort((a, b) => {
         const diff = safeNum(b[yKey] as number) - safeNum(a[yKey] as number)
@@ -324,14 +441,32 @@ export function TeamQuadrantChart({
         : (aboveAvgX ? 'bottomRight' : 'bottomLeft')
     }
 
+    // Build filter context label
+    let filterContext = ''
+    if (filterStats.isFiltered) {
+      if (activeDivision !== 'all') {
+        filterContext = ` in ${activeDivision}`
+      } else if (activeConference !== 'all') {
+        filterContext = ` in ${activeConference} Conference`
+      }
+    }
+
+    // Check if selected team is in the filtered set
+    const selectedTeamInFilter = teamMatchesFilter(selectedTeam)
+
     return {
       team: selectedTeam,
       quadrant,
-      xRank,
-      yRank,
-      insight: scenario.insights[quadrant](selectedTeam.abbreviation, { x: xRank, y: yRank }),
+      xRank: selectedTeamInFilter ? xRank : 0,
+      yRank: selectedTeamInFilter ? yRank : 0,
+      totalInSet: rankingDataSet.length,
+      insight: selectedTeamInFilter
+        ? scenario.insights[quadrant](selectedTeam.abbreviation, { x: xRank, y: yRank })
+        : `${selectedTeam.abbreviation} is not in the current filter selection.`,
+      filterContext,
+      isInFilter: selectedTeamInFilter,
     }
-  }, [data, selectedTeamId, scenario, stats])
+  }, [data, selectedTeamId, scenario, stats, filterStats.isFiltered, teamMatchesFilter, activeConference, activeDivision])
 
   // Get tooltip text for a team
   const getTooltip = React.useCallback(
@@ -408,6 +543,121 @@ export function TeamQuadrantChart({
         </div>
       </div>
 
+      {/* Filter Bar - Collapsible on mobile */}
+      <div className="mb-3 sm:mb-4 px-1">
+        {/* Mobile: Collapsible header */}
+        <button
+          onClick={() => setFiltersExpanded(!filtersExpanded)}
+          className="sm:hidden w-full flex items-center justify-between py-2 px-3 bg-zinc-800/30 rounded-lg border border-zinc-700/50"
+        >
+          <div className="flex items-center gap-2">
+            <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            <span className="text-zinc-400 text-sm">
+              Filters
+              {filterStats.isFiltered && (
+                <span className="ml-2 text-white">
+                  ({filterStats.matchingCount}/{filterStats.totalCount})
+                </span>
+              )}
+            </span>
+          </div>
+          <svg
+            className={cn(
+              'w-4 h-4 text-zinc-500 transition-transform',
+              filtersExpanded && 'rotate-180'
+            )}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {/* Filter content - always visible on desktop, collapsible on mobile */}
+        <div className={cn(
+          'sm:block',
+          filtersExpanded ? 'block mt-2' : 'hidden'
+        )}>
+          <div className="p-3 sm:p-0 bg-zinc-800/30 sm:bg-transparent rounded-lg sm:rounded-none border border-zinc-700/50 sm:border-0">
+            {/* Conference Filter */}
+            <div className="mb-3 sm:mb-2">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-500">Conference</span>
+                {filterStats.isFiltered && (
+                  <button
+                    onClick={() => {
+                      setActiveConference('all')
+                      setActiveDivision('all')
+                    }}
+                    className="text-[10px] text-zinc-500 hover:text-white underline"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {(['all', 'Eastern', 'Western'] as const).map((conf) => (
+                  <button
+                    key={conf}
+                    onClick={() => setActiveConference(conf)}
+                    className={cn(
+                      'px-3 py-1.5 text-xs font-medium rounded-full transition-all min-w-[44px]',
+                      activeConference === conf
+                        ? 'bg-white text-black'
+                        : 'bg-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-600/50'
+                    )}
+                  >
+                    {conf === 'all' ? 'All' : conf === 'Eastern' ? 'East' : 'West'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Division Filter */}
+            <div>
+              <span className="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-500 block mb-2">Division</span>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                <button
+                  onClick={() => setActiveDivision('all')}
+                  className={cn(
+                    'px-3 py-1.5 text-xs font-medium rounded-full transition-all min-w-[44px]',
+                    activeDivision === 'all'
+                      ? 'bg-white text-black'
+                      : 'bg-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-600/50'
+                  )}
+                >
+                  All
+                </button>
+                {availableDivisions.map((div) => (
+                  <button
+                    key={div}
+                    onClick={() => setActiveDivision(div)}
+                    className={cn(
+                      'px-3 py-1.5 text-xs font-medium rounded-full transition-all min-w-[44px]',
+                      activeDivision === div
+                        ? 'bg-white text-black'
+                        : 'bg-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-600/50'
+                    )}
+                  >
+                    {DIVISION_ABBREVS[div]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Filter stats on desktop */}
+            {filterStats.isFiltered && (
+              <div className="hidden sm:block mt-2 text-[10px] text-zinc-500">
+                Showing {filterStats.matchingCount} of {filterStats.totalCount} teams
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Scenario Description */}
       <div className="mb-3 sm:mb-4 px-1">
         <h3 className="text-white text-sm sm:text-base font-medium mb-1 text-center">
@@ -423,8 +673,24 @@ export function TeamQuadrantChart({
 
       {/* Dynamic Team Insight */}
       {selectedTeamInfo && (
-        <div className="mb-3 sm:mb-4 px-2 py-2 bg-zinc-800/30 rounded-lg border border-zinc-700/50">
-          <p className="text-white text-xs sm:text-sm text-center leading-relaxed">
+        <div className={cn(
+          'mb-3 sm:mb-4 px-2 py-2 rounded-lg border',
+          selectedTeamInfo.isInFilter
+            ? 'bg-zinc-800/30 border-zinc-700/50'
+            : 'bg-amber-900/20 border-amber-700/30'
+        )}>
+          {/* Filter context badge */}
+          {filterStats.isFiltered && selectedTeamInfo.isInFilter && (
+            <div className="flex justify-center mb-1">
+              <span className="text-[10px] px-2 py-0.5 bg-zinc-700/50 rounded-full text-zinc-400">
+                Ranking{selectedTeamInfo.filterContext} ({selectedTeamInfo.totalInSet} teams)
+              </span>
+            </div>
+          )}
+          <p className={cn(
+            'text-xs sm:text-sm text-center leading-relaxed',
+            selectedTeamInfo.isInFilter ? 'text-white' : 'text-amber-200/80'
+          )}>
             {selectedTeamInfo.insight}
           </p>
         </div>
@@ -452,6 +718,33 @@ export function TeamQuadrantChart({
           <div
             className="relative bg-zinc-900 sm:border sm:border-zinc-800 rounded h-[320px] sm:h-[360px] md:h-[480px]"
           >
+            {/* Mobile axis edge labels - compact indicators at chart edges */}
+            <div className="sm:hidden">
+              {/* Top edge - Y high label */}
+              <div className="absolute top-1 left-1/2 -translate-x-1/2 z-30">
+                <span className="text-[9px] px-1.5 py-0.5 bg-zinc-800/90 rounded text-zinc-400 whitespace-nowrap">
+                  ↑ {scenario.yAxis.labelHigh}
+                </span>
+              </div>
+              {/* Bottom edge - Y low label */}
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 z-30">
+                <span className="text-[9px] px-1.5 py-0.5 bg-zinc-800/90 rounded text-zinc-400 whitespace-nowrap">
+                  ↓ {scenario.yAxis.labelLow}
+                </span>
+              </div>
+              {/* Left edge - X low label */}
+              <div className="absolute left-1 top-1/2 -translate-y-1/2 z-30">
+                <span className="text-[9px] px-1.5 py-0.5 bg-zinc-800/90 rounded text-zinc-400 whitespace-nowrap">
+                  ← {scenario.xAxis.labelLow.split(' ')[0]}
+                </span>
+              </div>
+              {/* Right edge - X high label */}
+              <div className="absolute right-1 top-1/2 -translate-y-1/2 z-30">
+                <span className="text-[9px] px-1.5 py-0.5 bg-zinc-800/90 rounded text-zinc-400 whitespace-nowrap">
+                  {scenario.xAxis.labelHigh.split(' ')[0]} →
+                </span>
+              </div>
+            </div>
 
             {/* Center lines */}
             <div
@@ -471,56 +764,58 @@ export function TeamQuadrantChart({
               }}
             />
 
-            {/* Quadrant labels - smaller on mobile */}
+            {/* Quadrant labels - visible on all sizes, compact on mobile */}
             <div
               className={cn(
-                'absolute text-[10px] sm:text-xs pointer-events-none hidden sm:block',
-                scenario.quadrants.eliteCorner === 'topLeft' ? 'text-emerald-600 font-medium' : 'text-zinc-600'
+                'absolute text-[8px] sm:text-xs pointer-events-none',
+                scenario.quadrants.eliteCorner === 'topLeft' ? 'text-emerald-500 font-medium' : 'text-zinc-600'
               )}
-              style={{ left: '4px', top: '4px' }}
+              style={{ left: '4px', top: '20px' }}
             >
-              {scenario.quadrants.topLeft}
+{scenario.quadrants.topLeft}
             </div>
             <div
               className={cn(
-                'absolute text-[10px] sm:text-xs pointer-events-none hidden sm:block',
-                scenario.quadrants.eliteCorner === 'topRight' ? 'text-emerald-600 font-medium' : 'text-zinc-600'
+                'absolute text-[8px] sm:text-xs pointer-events-none',
+                scenario.quadrants.eliteCorner === 'topRight' ? 'text-emerald-500 font-medium' : 'text-zinc-600'
               )}
-              style={{ right: '4px', top: '4px' }}
+              style={{ right: '4px', top: '20px' }}
             >
-              {scenario.quadrants.topRight}
+{scenario.quadrants.topRight}
             </div>
             <div
               className={cn(
-                'absolute text-[10px] sm:text-xs pointer-events-none hidden sm:block',
-                scenario.quadrants.eliteCorner === 'bottomLeft' ? 'text-emerald-600 font-medium' : 'text-zinc-600'
+                'absolute text-[8px] sm:text-xs pointer-events-none',
+                scenario.quadrants.eliteCorner === 'bottomLeft' ? 'text-emerald-500 font-medium' : 'text-zinc-600'
               )}
-              style={{ left: '4px', bottom: '4px' }}
+              style={{ left: '4px', bottom: '20px' }}
             >
-              {scenario.quadrants.bottomLeft}
+{scenario.quadrants.bottomLeft}
             </div>
             <div
               className={cn(
-                'absolute text-[10px] sm:text-xs pointer-events-none hidden sm:block',
-                scenario.quadrants.eliteCorner === 'bottomRight' ? 'text-emerald-600 font-medium' : 'text-zinc-600'
+                'absolute text-[8px] sm:text-xs pointer-events-none',
+                scenario.quadrants.eliteCorner === 'bottomRight' ? 'text-emerald-500 font-medium' : 'text-zinc-600'
               )}
-              style={{ right: '4px', bottom: '4px' }}
+              style={{ right: '4px', bottom: '20px' }}
             >
-              {scenario.quadrants.bottomRight}
+{scenario.quadrants.bottomRight}
             </div>
 
             {/* Team logos */}
             {validTeams.map((team) => {
               const pos = getPosition(team)
               const isSelected = team.team_id === selectedTeamId
+              const matchesFilter = teamMatchesFilter(team)
+              const isDimmed = filterStats.isFiltered && !matchesFilter
 
               return (
                 <div
                   key={team.team_id}
                   className={cn(
-                    'absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-200',
+                    'absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300',
                     'flex items-center justify-center',
-                    isSelected ? 'z-20' : 'z-10 hover:z-20'
+                    isSelected ? 'z-20' : isDimmed ? 'z-5' : 'z-10 hover:z-20'
                   )}
                   style={{
                     left: `${pos.x}%`,
@@ -531,10 +826,12 @@ export function TeamQuadrantChart({
                   {/* Team logo */}
                   <div
                     className={cn(
-                      'rounded-full bg-zinc-800 transition-all duration-200 overflow-hidden',
+                      'rounded-full bg-zinc-800 transition-all duration-300 overflow-hidden',
                       isSelected
                         ? 'w-8 h-8 sm:w-10 sm:h-10 ring-2 ring-white/50'
-                        : 'w-6 h-6 sm:w-8 sm:h-8 opacity-80 hover:opacity-100 hover:w-8 hover:h-8 sm:hover:w-10 sm:hover:h-10'
+                        : isDimmed
+                          ? 'w-4 h-4 sm:w-5 sm:h-5 opacity-25 grayscale hover:opacity-50 hover:grayscale-0'
+                          : 'w-6 h-6 sm:w-8 sm:h-8 opacity-80 hover:opacity-100 hover:w-8 hover:h-8 sm:hover:w-10 sm:hover:h-10'
                     )}
                   >
                     <img

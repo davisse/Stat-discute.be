@@ -31,6 +31,11 @@
 45 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_betting_trends.py >> /app/logs/etl.log 2>&1
 
 # -----------------------------------------------------------------------------
+# Odds Pipeline - Every 20 minutes (live odds updates from Pinnacle)
+# -----------------------------------------------------------------------------
+*/20 * * * * cd /app && /usr/local/bin/python3 etl/betting/fetch_pinnacle_odds.py >> /app/logs/odds.log 2>&1
+
+# -----------------------------------------------------------------------------
 # Hourly updates during game days (Optional - uncomment if needed)
 # -----------------------------------------------------------------------------
 # Update scores every hour from 11 PM to 3 AM UTC (game time)

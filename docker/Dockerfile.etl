@@ -73,7 +73,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # 2. Starts cron in foreground
 RUN echo '#!/bin/bash\n\
 # Export environment variables for cron jobs\n\
-printenv | grep -E "^(DB_|NBA_|ENVIRONMENT)" >> /etc/environment\n\
+printenv | grep -E "^(DB_|DATABASE_|NBA_|ENVIRONMENT)" >> /etc/environment\n\
 \n\
 echo "Starting ETL service..."\n\
 echo "Cron jobs scheduled:"\n\

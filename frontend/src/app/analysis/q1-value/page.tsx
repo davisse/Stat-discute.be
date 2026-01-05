@@ -2,6 +2,9 @@ import { Metadata } from 'next'
 import { getQ1TodayGames, getQ1Leaderboard, getQ1TeamStats, Q1TeamStats, Q1TodayGame } from '@/lib/queries'
 import { AppLayout } from '@/components/layout/AppLayout'
 
+// Force dynamic rendering to avoid SSG database connection during build
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Q1 Moneyline Value Finder | Stat Discute',
   description: 'Find value in first quarter moneyline betting using statistical analysis'

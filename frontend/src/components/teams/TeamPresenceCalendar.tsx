@@ -32,15 +32,10 @@ function toDateKey(date: string | Date): string {
   return date.split('T')[0]
 }
 
-// Generate all weeks from season start to 7 days from now (to show upcoming games)
-function generateCalendarWeeks(start: string) {
+// Generate all weeks from season start to season end
+function generateCalendarWeeks(start: string, end: string) {
   const startDate = new Date(start)
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  // End date is 7 days from now to show upcoming week
-  const endDate = new Date(today)
-  endDate.setDate(endDate.getDate() + 7)
+  const endDate = new Date(end)
 
   // Adjust to start on Sunday
   const calendarStart = new Date(startDate)
@@ -90,10 +85,11 @@ function getWeekLabels(weeks: Date[][]): { label: string; isFirstOfMonth: boolea
 function getSquareColor(
   game: TeamGameDay | undefined,
   isSeasonDate: boolean,
-  isFutureDate: boolean
+  isFutureDate: boolean,
+  isNextWeek: boolean
 ): string {
-  // Scheduled games are handled separately with special styling
-  if (game && game.game_status === 'Scheduled') {
+  // Only show hatched styling for scheduled games within the next 7 days
+  if (game && game.game_status === 'Scheduled' && isNextWeek) {
     return 'scheduled'  // Special marker for hatched styling
   }
 
@@ -155,8 +151,26 @@ export function TeamPresenceCalendar({
     return map
   }, [games])
 
-  // Generate calendar structure (only up to today)
-  const weeks = useMemo(() => generateCalendarWeeks(seasonStart), [seasonStart])
+  // Generate calendar structure - show past games + 8 weeks ahead
+  const weeks = useMemo(() => {
+    const now = new Date()
+    now.setHours(0, 0, 0, 0)
+    const seasonStartDate = new Date(seasonStart)
+    const seasonEndDate = new Date(seasonEnd)
+
+    // Start from season start to show past games
+    const calendarStartDate = seasonStartDate
+
+    // End 8 weeks from today (or season end, whichever is earlier)
+    const eightWeeksFromNow = new Date(now)
+    eightWeeksFromNow.setDate(eightWeeksFromNow.getDate() + 56) // 8 weeks from today
+    const calendarEndDate = eightWeeksFromNow < seasonEndDate ? eightWeeksFromNow : seasonEndDate
+
+    return generateCalendarWeeks(
+      calendarStartDate.toISOString().split('T')[0],
+      calendarEndDate.toISOString().split('T')[0]
+    )
+  }, [seasonStart, seasonEnd])
   const weekLabels = useMemo(() => getWeekLabels(weeks), [weeks])
 
   const seasonStartDate = new Date(seasonStart)
@@ -238,45 +252,51 @@ export function TeamPresenceCalendar({
 
   return (
     <div ref={containerRef} className={cn(containerClass, className)}>
-      {/* Header */}
-      <div className={headerClass}>
-        <div className="flex items-center gap-3">
-          <h3 className={titleClass}>
-            Season Calendar
-          </h3>
-          <span className="text-zinc-500 font-mono text-sm">
-            {wins}W-{losses}L
-          </span>
-        </div>
-        <div className={`flex items-center gap-4 ${fullSize ? 'gap-6' : 'gap-4'}`}>
-          <span className={legendBadgeClass}>
-            <span className={`${legendSquareClass} bg-emerald-600`} />
-            Win
-          </span>
-          <span className={legendBadgeClass}>
-            <span className={`${legendSquareClass} bg-red-600`} />
-            Loss
-          </span>
-          <span className={legendBadgeClass}>
-            <span
-              className={legendSquareClass}
-              style={{
-                border: '1px solid rgba(255, 255, 255, 0.6)',
-                background: `repeating-linear-gradient(
-                  45deg,
-                  transparent,
-                  transparent 2px,
-                  rgba(255, 255, 255, 0.15) 2px,
-                  rgba(255, 255, 255, 0.15) 4px
-                )`
-              }}
-            />
-            Upcoming
-          </span>
-          <span className={legendBadgeClass}>
-            <span className={`${legendSquareClass} bg-zinc-900/50 border border-zinc-800`} />
-            Off
-          </span>
+      {/* Header - Cinematic Title */}
+      <div className={`${fullSize ? 'mb-6' : 'mb-4'}`}>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+              Season Journey
+            </h2>
+            <p className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] uppercase mt-1">
+              {wins}W-{losses}L • {totalGames} Games Played
+            </p>
+          </div>
+          <div className={`flex items-center gap-4 ${fullSize ? 'gap-5' : 'gap-3'}`}>
+            <span className={legendBadgeClass}>
+              <span className={`${legendSquareClass} bg-emerald-600`} />
+              Win
+            </span>
+            <span className={legendBadgeClass}>
+              <span className={`${legendSquareClass} bg-red-600`} />
+              Loss
+            </span>
+            <span className={legendBadgeClass}>
+              <span
+                className={legendSquareClass}
+                style={{
+                  border: '1px solid rgba(255, 255, 255, 0.6)',
+                  background: `repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.15) 2px,
+                    rgba(255, 255, 255, 0.15) 4px
+                  )`
+                }}
+              />
+              This Week
+            </span>
+            <span className={legendBadgeClass}>
+              <span className={`${legendSquareClass} bg-zinc-900/50 border border-zinc-800`} />
+              Rest
+            </span>
+            <span className={legendBadgeClass}>
+              <span className={`${legendSquareClass} bg-zinc-800 ring-2 ring-amber-400 ring-offset-1 ring-offset-black`} />
+              Today
+            </span>
+          </div>
         </div>
       </div>
 
@@ -344,10 +364,16 @@ export function TeamPresenceCalendar({
                 <div key={weekIndex} className="flex flex-col" style={{ gap: `${gapSize}px` }}>
                   {week.map((date, dayIndex) => {
                     const dateKey = date.toISOString().split('T')[0]
+                    const todayKey = today.toISOString().split('T')[0]
                     const game = gameMap.get(dateKey)
                     const isSeasonDate = date >= seasonStartDate && date <= seasonEndDate
                     const isFutureDate = date > today
-                    const color = getSquareColor(game, isSeasonDate, isFutureDate)
+                    const isToday = dateKey === todayKey
+                    // Check if date is within next 7 days
+                    const nextWeekEnd = new Date(today)
+                    nextWeekEnd.setDate(today.getDate() + 7)
+                    const isNextWeek = date > today && date <= nextWeekEnd
+                    const color = getSquareColor(game, isSeasonDate, isFutureDate, isNextWeek)
 
                     // Build tooltip
                     let tooltip = ''
@@ -362,7 +388,10 @@ export function TeamPresenceCalendar({
                         tooltip = `vs ${game.opponent} (${homeAway}) - ${game.result} ${game.team_pts}-${game.opp_pts} (${diffSign}${game.point_diff})`
                       }
                     } else if (isSeasonDate) {
-                      tooltip = dateKey
+                      tooltip = isToday ? 'Today' : dateKey
+                    }
+                    if (isToday) {
+                      tooltip = `TODAY${tooltip ? ' — ' + tooltip : ''}`
                     }
 
                     const isScheduled = color === 'scheduled'
@@ -370,7 +399,7 @@ export function TeamPresenceCalendar({
                     return (
                       <div
                         key={dayIndex}
-                        className={`rounded-sm transition-colors cursor-default hover:ring-2 hover:ring-white/20 ${isScheduled ? '' : color}`}
+                        className={`rounded-sm transition-colors cursor-default hover:ring-2 hover:ring-white/20 ${isScheduled ? '' : color} ${isToday ? 'ring-2 ring-amber-400 ring-offset-1 ring-offset-black' : ''}`}
                         style={{
                           width: `${squareSize}px`,
                           height: `${squareSize}px`,
@@ -396,41 +425,43 @@ export function TeamPresenceCalendar({
         </div>
       </div>
 
-      {/* Footer */}
-      <div className={`flex items-center justify-between border-t border-zinc-800 ${fullSize ? 'mt-4 pt-4' : 'mt-4 pt-4'}`}>
-        <div className={`flex items-center gap-2 text-zinc-500 ${fullSize ? 'text-sm' : 'text-[10px]'}`}>
-          <span>Blow-out</span>
-          <div className="flex" style={{ gap: fullSize ? '3px' : '2px' }}>
-            {['bg-emerald-800', 'bg-emerald-700', 'bg-emerald-600', 'bg-emerald-500', 'bg-emerald-400'].map((bg, i) => (
-              <span
-                key={i}
-                className={`rounded-sm ${bg}`}
-                style={{
-                  width: fullSize ? '16px' : '10px',
-                  height: fullSize ? '16px' : '10px'
-                }}
-              />
-            ))}
+      {/* Footer - Stats Summary */}
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-zinc-800 ${fullSize ? 'mt-6 pt-4' : 'mt-4 pt-3'}`}>
+        <div className={`flex items-center gap-2 text-zinc-500 ${fullSize ? 'text-xs' : 'text-[10px]'}`}>
+          <span className="text-zinc-600">Margin:</span>
+          <div className="flex items-center gap-1">
+            <span className="text-zinc-600">Close</span>
+            <div className="flex" style={{ gap: '2px' }}>
+              {['bg-emerald-800', 'bg-emerald-700', 'bg-emerald-600', 'bg-emerald-500', 'bg-emerald-400'].map((bg, i) => (
+                <span key={i} className={`rounded-sm ${bg}`} style={{ width: '12px', height: '12px' }} />
+              ))}
+            </div>
+            <span className="text-zinc-600">Blowout</span>
           </div>
-          <span className="mx-1">|</span>
-          <div className="flex" style={{ gap: fullSize ? '3px' : '2px' }}>
-            {['bg-red-800', 'bg-red-700', 'bg-red-600', 'bg-red-500', 'bg-red-400'].map((bg, i) => (
-              <span
-                key={i}
-                className={`rounded-sm ${bg}`}
-                style={{
-                  width: fullSize ? '16px' : '10px',
-                  height: fullSize ? '16px' : '10px'
-                }}
-              />
-            ))}
+          <span className="text-zinc-700 mx-1">|</span>
+          <div className="flex items-center gap-1">
+            <span className="text-zinc-600">Close</span>
+            <div className="flex" style={{ gap: '2px' }}>
+              {['bg-red-800', 'bg-red-700', 'bg-red-600', 'bg-red-500', 'bg-red-400'].map((bg, i) => (
+                <span key={i} className={`rounded-sm ${bg}`} style={{ width: '12px', height: '12px' }} />
+              ))}
+            </div>
+            <span className="text-zinc-600">Blowout</span>
           </div>
-          <span>Blow-out</span>
         </div>
 
-        <div className={`text-zinc-400 font-mono ${fullSize ? 'text-sm' : 'text-[10px]'}`}>
-          {totalGames} games • {homeWins}-{homeLosses} (H) • {awayWins}-{awayLosses} (A) • {avgPointDiff >= 0 ? '+' : ''}{avgPointDiff.toFixed(1)} avg
-          {upcomingGames.length > 0 && <span className="text-zinc-300"> • {upcomingGames.length} upcoming</span>}
+        <div className={`text-zinc-500 font-mono ${fullSize ? 'text-xs' : 'text-[10px]'}`}>
+          <span className="text-zinc-400">{homeWins}-{homeLosses}</span> Home
+          <span className="text-zinc-700 mx-2">•</span>
+          <span className="text-zinc-400">{awayWins}-{awayLosses}</span> Away
+          <span className="text-zinc-700 mx-2">•</span>
+          <span className={avgPointDiff >= 0 ? 'text-emerald-500' : 'text-red-500'}>{avgPointDiff >= 0 ? '+' : ''}{avgPointDiff.toFixed(1)}</span> Avg Margin
+          {upcomingGames.length > 0 && (
+            <>
+              <span className="text-zinc-700 mx-2">•</span>
+              <span className="text-zinc-300">{upcomingGames.length}</span> <span className="text-zinc-500">Scheduled</span>
+            </>
+          )}
         </div>
       </div>
     </div>
