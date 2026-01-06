@@ -8,6 +8,9 @@
 #   VPS_USER        - SSH user (e.g., root or deploy)
 #   VPS_SSH_KEY     - Private SSH key for authentication
 #   VPS_DEPLOY_PATH - Deployment path (e.g., /opt/stat-discute)
+#   DB_PASSWORD     - PostgreSQL database password
+#   JWT_PRIVATE_KEY - Ed25519 private key for JWT signing (with \n for newlines)
+#   JWT_PUBLIC_KEY  - Ed25519 public key for JWT verification (with \n for newlines)
 #
 # Optional Secrets:
 #   SLACK_WEBHOOK   - Slack webhook URL for notifications
@@ -66,8 +69,10 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "echo 'DB_PASSWORD=$DB_PASSWORD' > $DEPLOY_PATH/docker/.env && echo 'DB_USER=nba_admin' >> $DEPLOY_PATH/docker/.env && echo 'DB_NAME=nba_stats' >> $DEPLOY_PATH/docker/.env"
+          ssh $VPS_USER@$VPS_HOST "echo 'DB_PASSWORD=$DB_PASSWORD' > $DEPLOY_PATH/docker/.env && echo 'DB_USER=nba_admin' >> $DEPLOY_PATH/docker/.env && echo 'DB_NAME=nba_stats' >> $DEPLOY_PATH/docker/.env && echo 'JWT_PRIVATE_KEY=\"$JWT_PRIVATE_KEY\"' >> $DEPLOY_PATH/docker/.env && echo 'JWT_PUBLIC_KEY=\"$JWT_PUBLIC_KEY\"' >> $DEPLOY_PATH/docker/.env"
 
       - name: Stop existing containers
         env:
