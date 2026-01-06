@@ -60,7 +60,7 @@ export default function TeamsPage() {
 
   return (
     <AppLayout>
-      <div className="px-8 pt-8 max-w-7xl mx-auto pb-16">
+      <div className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 max-w-7xl mx-auto pb-16">
         {/* Main Title */}
         <h1 className="text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-tighter leading-[0.9] text-white">
           ÉQUIPES

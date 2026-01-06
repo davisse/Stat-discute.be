@@ -132,17 +132,6 @@ export default function BurgerMenu() {
                       →
                     </span>
                   </Link>
-                  <Link
-                    href="/signup"
-                    onClick={closeMenu}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white hover:bg-white/10 transition-colors group"
-                  >
-                    <span className="text-lg">✨</span>
-                    <span className="font-medium">Créer un compte</span>
-                    <span className="ml-auto text-gray-500 group-hover:text-white transition-colors text-xs">
-                      →
-                    </span>
-                  </Link>
                 </>
               )}
             </nav>

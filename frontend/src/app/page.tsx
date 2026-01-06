@@ -73,10 +73,10 @@ interface StickyTitleItem {
 }
 
 const stickyNavItems: StickyTitleItem[] = [
-  { id: 'statistiques', number: '01', title: 'STATISTIQUES' },
-  { id: 'props-joueurs', number: '02', title: 'PROPS JOUEURS' },
-  { id: 'paris-sportifs', number: '03', title: 'PARIS SPORTIFS' },
-  { id: 'analyse', number: '04', title: 'ANALYSE' },
+  { id: 'teams', number: '01', title: 'ÉQUIPES' },
+  { id: 'players', number: '02', title: 'JOUEURS' },
+  { id: 'betting', number: '03', title: 'PARIS' },
+  { id: 'analysis', number: '04', title: 'ANALYSE' },
 ]
 
 // ============================================================================
@@ -445,60 +445,45 @@ function FooterSection() {
 
 const sections: SectionProps[] = [
   {
-    id: 'statistiques',
+    id: 'teams',
     number: '01',
-    title: 'STATISTIQUES',
-    description: 'Explorez les performances individuelles et collectives. Analyse complète des joueurs, équipes, et matchs avec statistiques avancées et métriques de pace.',
+    title: 'ÉQUIPES',
+    description: 'Explorez les statistiques des équipes NBA, les standings, et les performances avec des métriques avancées et le calendrier des matchs.',
     showDots: true,
     links: [
-      { href: '/players', label: 'Joueurs' },
-      { href: '/teams', label: 'Équipes' },
-      { href: '/games', label: 'Matchs' },
-      { href: '/advanced-stats', label: 'Avancées' },
-      { href: '/team-defense', label: 'Défense' },
-      { href: '/pace-analysis', label: 'Pace' },
-      { href: '/lineups', label: 'Lineups' },
+      { href: '/teams', label: 'Toutes les Équipes' },
+      { href: '/games', label: 'Calendrier & Résultats' },
     ],
   },
   {
-    id: 'props-joueurs',
+    id: 'players',
     number: '02',
-    title: ['PROPS', 'JOUEURS'],
-    description: 'Analyse des player props avec rankings défensifs, projections Monte Carlo, et identification des meilleures opportunités pour les paris sur les performances individuelles.',
+    title: 'JOUEURS',
+    description: 'Analyse approfondie des statistiques individuelles, moyennes de performance, et métriques avancées pour chaque joueur NBA.',
     showDots: false,
     links: [
-      { href: '/player-props/tonight', label: 'Props Ce Soir', badge: 'LIVE', badgeColor: 'bg-red-600' },
-      { href: '/player-props', label: 'Recherche Props' },
+      { href: '/players', label: 'Tous les Joueurs' },
     ],
   },
   {
-    id: 'paris-sportifs',
+    id: 'betting',
     number: '03',
-    title: ['PARIS', 'SPORTIFS'],
-    description: 'Outils de betting intelligence: analyse des totaux Over/Under avec simulations Monte Carlo, expected value, critère de Kelly, et suivi des mouvements de cotes en temps réel.',
+    title: 'PARIS',
+    description: 'Outils de betting intelligence: analyse des totaux Over/Under avec simulations Monte Carlo, expected value, et identification des opportunités de value.',
     showDots: true,
     links: [
-      { href: '/betting/totals', label: 'Totaux O/U', badge: 'MC', badgeColor: 'bg-emerald-600' },
-      { href: '/betting/odds-terminal', label: 'Terminal' },
-      { href: '/betting/odds-movement', label: 'Mouvements' },
+      { href: '/betting/totals', label: 'Analyse Totaux', badge: 'MC', badgeColor: 'bg-emerald-600' },
       { href: '/betting/value-finder', label: 'Value Finder' },
-      { href: '/my-bets', label: 'Mes Paris' },
     ],
   },
   {
-    id: 'analyse',
+    id: 'analysis',
     number: '04',
     title: 'ANALYSE',
-    description: 'Deep-dive analytique: verdicts O/U, analyse par quart-temps, dispersion des performances, head-to-head matchups, et modèles ML pour prédictions avancées. Chat IA pour exploration conversationnelle.',
+    description: 'Analyse statistique avancée du premier quart-temps pour identifier les opportunités de value betting sur le Q1 moneyline.',
     showDots: false,
     links: [
-      { href: '/analysis', label: 'Hub Analyse' },
-      { href: '/analysis/quarters', label: 'Quarts' },
-      { href: '/analysis/q1-value', label: 'Value Q1' },
-      { href: '/analysis/dispersion', label: 'Dispersion' },
-      { href: '/matchups', label: 'Matchups' },
-      { href: '/ml-analysis', label: 'ML Analysis', badge: 'Beta', badgeColor: 'bg-purple-600' },
-      { href: '/chat', label: 'Chat IA', badge: 'IA', badgeColor: 'bg-blue-600' },
+      { href: '/analysis/q1-value', label: 'Q1 Value Finder' },
     ],
   },
 ]

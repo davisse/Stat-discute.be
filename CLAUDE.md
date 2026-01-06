@@ -10,9 +10,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 1. **PostgreSQL 18 Database** (`1.DATABASE/`) - 28 normalized tables with 155+ indexes
 2. **Next.js 16 Frontend** (`frontend/`) - React 19 dashboard with Server Components and Tailwind v4
 3. **Python ETL Pipeline** (`1.DATABASE/etl/`) - NBA.com data collection and analytics
-4. **Legacy Flask API** (`nba-schedule-api/`) - Being phased out, not for new development
+4. **Docker Deployment** (`docker/`) - PostgreSQL + Next.js + ETL containerized stack
+5. **Legacy Flask API** (`nba-schedule-api/`) - Being phased out, not for new development
 
 **Current Season**: 2025-26 (auto-detected from database)
+**Production URL**: https://stats.defendini.be (Traefik reverse proxy with Let's Encrypt)
 
 ## Common Commands
 
@@ -30,7 +32,7 @@ npm run lint       # ESLint with Next.js config
 # Connect to database
 psql nba_stats
 
-# Run all migrations (execute in order)
+# Run core migrations (execute in order)
 cd 1.DATABASE
 psql nba_stats < migrations/001_poc_minimal.sql
 psql nba_stats < migrations/002_fix_integer_types.sql
@@ -39,7 +41,8 @@ psql nba_stats < migrations/004_advanced_game_stats.sql
 psql nba_stats < migrations/005_betting_intelligence.sql
 psql nba_stats < migrations/006_analytics_system_operations.sql
 psql nba_stats < migrations/007_indexes_constraints.sql
-psql nba_stats < migrations/008_sync_logs.sql
+psql nba_stats < migrations/008_authentication_system.sql   # Users, sessions, login_attempts
+psql nba_stats < migrations/016_seed_demo_users.sql         # Demo accounts
 
 # Quick health checks
 psql nba_stats -c "SELECT season_id, is_current FROM seasons WHERE is_current=true"
@@ -75,6 +78,22 @@ headers = {
 ```
 Without these headers, NBA API returns 403 Forbidden. See `1.DATABASE/etl/fetch_player_stats_direct.py:35-47` for reference.
 
+### Docker Deployment (Production)
+```bash
+# Deploy to production (from project root)
+cd docker
+docker compose up -d --build
+
+# View logs
+docker compose logs -f frontend
+
+# Rebuild after changes
+docker compose build --no-cache
+docker compose up -d
+```
+
+**Production URL**: https://stats.defendini.be (via Traefik reverse proxy)
+
 ## Architecture
 
 ### Database Schema (PostgreSQL 18)
@@ -103,6 +122,13 @@ player_advanced_stats - eFG%, TS%, Usage%, etc.
 team_standings        - Win/loss records, streaks
 ats_performance       - Against the spread stats
 game_predictions      - ML model predictions
+```
+
+**Authentication Tables** (migration 008):
+```
+users              - User accounts (Argon2id password hashes)
+user_sessions      - Active sessions with device fingerprinting
+login_attempts     - Rate limiting and security audit log
 ```
 
 **Critical Database Rules**:
@@ -204,6 +230,77 @@ export default function MyClientPage() {
 - Y-axis positioning: Use absolute positioning with percentage-based `bottom` values calculated from data scale
 - Gridlines: Position at exact Y-axis label values, not evenly spaced
 - Bar heights: Calculate as `((value - minValue) / range) * 100` for proportional alignment with Y-axis
+
+### Authentication System
+
+**Security Stack**:
+| Component | Technology | Notes |
+|-----------|------------|-------|
+| Password Hashing | Argon2id | OWASP 2025 recommended, 300x GPU-resistant vs bcrypt |
+| JWT Tokens | EdDSA (Ed25519) | Via `jose` library, compact signatures |
+| Rate Limiting | IP + Account based | 10/IP, 5/account per 15 minutes |
+| Session Management | PostgreSQL | Device fingerprinting, refresh tokens |
+
+**Key Files**:
+```
+frontend/src/lib/auth/
+├── jwt.ts           # JWT generation/verification + normalizeKey()
+├── password.ts      # Argon2id hashing configuration
+└── rate-limit.ts    # IP and account rate limiting
+
+frontend/src/app/api/auth/
+├── login/route.ts   # POST /api/auth/login endpoint
+├── logout/route.ts  # POST /api/auth/logout endpoint
+└── signup/route.ts  # POST /api/auth/signup endpoint
+```
+
+**Rate Limiting Configuration** (`rate-limit.ts`):
+```typescript
+const RATE_LIMIT_CONFIG = {
+  maxAttemptsPerIp: 10,        // 10 attempts per 15 minutes
+  ipWindowMinutes: 15,
+  maxAttemptsPerAccount: 5,    // 5 attempts per 15 minutes
+  accountWindowMinutes: 15,
+  lockoutDurationMinutes: 30,  // Account lockout after threshold
+  lockoutThreshold: 5,
+}
+```
+
+**Demo Accounts** (seeded by migration 016):
+```
+Admin: admin@stat-discute.be / Admin123!
+User:  demo@stat-discute.be / Demo123!
+```
+
+**CRITICAL: JWT Keys in Docker** (`.env` format):
+```bash
+# ✅ CORRECT: Escaped newlines as literal \n strings
+JWT_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMC4CAQAw...\n-----END PRIVATE KEY-----
+JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMCowBQYD...\n-----END PUBLIC KEY-----
+
+# ❌ WRONG: Real newlines (breaks in Docker Compose)
+JWT_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+MC4CAQAw...
+-----END PRIVATE KEY-----
+```
+
+The `normalizeKey()` function in `jwt.ts` converts `\n` strings to real newlines at runtime:
+```typescript
+function normalizeKey(pem: string): string {
+  return pem.replace(/\\n/g, '\n')
+}
+```
+
+**Generate New JWT Keys**:
+```bash
+# Generate EdDSA key pair
+openssl genpkey -algorithm ed25519 -out private.pem
+openssl pkey -in private.pem -pubout -out public.pem
+
+# Convert to single-line with escaped newlines for .env
+cat private.pem | tr '\n' '\\' | sed 's/\\/\\n/g' | sed 's/\\n$//'
+cat public.pem | tr '\n' '\\' | sed 's/\\/\\n/g' | sed 's/\\n$//'
+```
 
 ### Season-Aware Query Pattern (Required)
 **Every query must filter by current season** to avoid mixing data from multiple years:
@@ -362,7 +459,7 @@ GROUP BY p.player_id, p.full_name;
 ```
 stat-discute.be/
 ├── 1.DATABASE/                  # Database migrations and ETL pipeline
-│   ├── migrations/              # SQL migrations (001-008)
+│   ├── migrations/              # SQL migrations (001-016+)
 │   ├── etl/                     # Python ETL scripts
 │   │   ├── reference_data/      # Season, venue sync scripts
 │   │   ├── analytics/           # Stats calculation scripts
@@ -372,12 +469,20 @@ stat-discute.be/
 ├── frontend/                    # Next.js 16 application
 │   ├── src/
 │   │   ├── app/                 # Next.js 13+ App Router
+│   │   │   └── api/auth/        # Authentication endpoints
 │   │   ├── components/          # React components
 │   │   │   ├── layout/          # AppLayout and layout components
 │   │   │   └── ui/              # UI component library
-│   │   └── lib/                 # Database and utilities
+│   │   └── lib/
+│   │       ├── auth/            # JWT, password, rate-limiting
+│   │       └── db.ts            # PostgreSQL connection pool
 │   ├── public/                  # Static assets (logo-v5.png)
-│   └── .env.local               # Database credentials (not committed)
+│   └── .env.local               # Database + JWT credentials (not committed)
+│
+├── docker/                      # Docker deployment configuration
+│   ├── docker-compose.yml       # PostgreSQL + Frontend + ETL services
+│   ├── Dockerfile.frontend      # Multi-stage Next.js build (~150MB)
+│   └── Dockerfile.etl           # Python ETL container
 │
 ├── 3.ACTIVE_PLANS/              # Current implementation plans
 │   └── 2025_26_season_setup.md  # Current season setup status
@@ -385,8 +490,8 @@ stat-discute.be/
 ├── 4.BETTING/                   # Betting documentation
 │   └── json_structure_mapping.md # Pinnacle JSON structure reference
 │
-├── claudedocs/                  # Implementation reports
-│   └── session-applayout-integration-2025-11-19.md
+├── claudedocs/                  # Implementation reports and guides
+│   └── production-login-deployment-guide.md  # Authentication deployment docs
 │
 ├── nba-schedule-api/            # ⚠️ LEGACY Flask API (being phased out)
 │   └── (do not use for new development)
@@ -400,13 +505,18 @@ stat-discute.be/
 |------|---------|-------|
 | `frontend/src/lib/queries.ts` | All database query functions | Every query must filter by season |
 | `frontend/src/lib/db.ts` | PostgreSQL connection pool | Configured via `.env.local` |
+| `frontend/src/lib/auth/jwt.ts` | JWT token generation/verification | Contains critical `normalizeKey()` for Docker |
+| `frontend/src/lib/auth/rate-limit.ts` | Login rate limiting | IP (10/15min) + Account (5/15min) limits |
 | `frontend/src/components/layout/AppLayout.tsx` | Main app layout wrapper | Logo, nav, dotted background |
-| `1.DATABASE/etl/fetch_player_stats_direct.py` | Player box score fetcher | Working NBA API implementation with headers |
+| `docker/docker-compose.yml` | Production deployment stack | PostgreSQL + Frontend + ETL + Traefik |
+| `docker/Dockerfile.frontend` | Multi-stage Next.js build | Final image ~150MB |
+| `1.DATABASE/migrations/008_authentication_system.sql` | Auth tables schema | users, sessions, login_attempts |
+| `1.DATABASE/migrations/016_seed_demo_users.sql` | Demo account seeding | admin@stat-discute.be, demo@stat-discute.be |
+| `1.DATABASE/etl/fetch_player_stats_direct.py` | Player box score fetcher | Working NBA API with required headers |
 | `1.DATABASE/etl/sync_season_2025_26.py` | Games and scores fetcher | Current season data collection |
 | `1.DATABASE/etl/analytics/run_all_analytics.py` | Analytics orchestrator | Runs all analytics scripts in order |
-| `1.DATABASE/IMPLEMENTATION_PLAN.md` | Database schema guide | Complete 42-table plan with examples |
+| `claudedocs/production-login-deployment-guide.md` | Auth deployment guide | JWT Docker config, troubleshooting |
 | `4.BETTING/json_structure_mapping.md` | Betting data structure | Corrected Pinnacle JSON mapping v2.0 |
-| `3.ACTIVE_PLANS/2025_26_season_setup.md` | Season setup status | Current season implementation log |
 
 ## Environment Configuration
 

@@ -199,7 +199,7 @@ export function PlayerSearch() {
                         <div className="hidden sm:flex items-center gap-6">
                           <div className="text-right">
                             <p className="text-2xl font-black font-mono text-white">
-                              {(player.points_avg ?? 0).toFixed(1)}
+                              {parseFloat(String(player.points_avg ?? 0)).toFixed(1)}
                             </p>
                             <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">
                               PPG
@@ -207,7 +207,7 @@ export function PlayerSearch() {
                           </div>
                           <div className="text-right">
                             <p className="text-lg font-bold font-mono text-zinc-400">
-                              {(player.rebounds_avg ?? 0).toFixed(1)}
+                              {parseFloat(String(player.rebounds_avg ?? 0)).toFixed(1)}
                             </p>
                             <p className="text-[10px] font-medium text-zinc-600 uppercase tracking-wider">
                               RPG
@@ -215,7 +215,7 @@ export function PlayerSearch() {
                           </div>
                           <div className="text-right">
                             <p className="text-lg font-bold font-mono text-zinc-400">
-                              {(player.assists_avg ?? 0).toFixed(1)}
+                              {parseFloat(String(player.assists_avg ?? 0)).toFixed(1)}
                             </p>
                             <p className="text-[10px] font-medium text-zinc-600 uppercase tracking-wider">
                               APG

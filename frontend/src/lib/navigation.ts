@@ -26,9 +26,8 @@ export const navSections: NavSection[] = [
     label: 'Teams',
     description: 'Explore team statistics, standings, and performance metrics across the NBA.',
     links: [
-      { href: '/teams', label: 'Standings' },
-      { href: '/teams/stats', label: 'Team Stats' },
-      { href: '/teams/comparison', label: 'Compare Teams' },
+      { href: '/teams', label: 'All Teams' },
+      { href: '/games', label: 'Games Schedule' },
     ]
   },
   {
@@ -37,9 +36,7 @@ export const navSections: NavSection[] = [
     label: 'Players',
     description: 'Deep dive into player statistics, averages, and advanced metrics.',
     links: [
-      { href: '/players', label: 'Player Stats' },
-      { href: '/players/leaders', label: 'League Leaders' },
-      { href: '/players/comparison', label: 'Compare Players' },
+      { href: '/players', label: 'All Players' },
     ]
   },
   {
@@ -48,10 +45,8 @@ export const navSections: NavSection[] = [
     label: 'Betting',
     description: 'Betting analytics, odds tracking, and value opportunities.',
     links: [
-      { href: '/betting', label: 'Today\'s Lines' },
-      { href: '/betting/props', label: 'Player Props' },
-      { href: '/betting/trends', label: 'Betting Trends' },
-      { href: '/player-props', label: 'Props Analysis', badge: 'NEW', badgeColor: 'bg-emerald-500' },
+      { href: '/betting/totals', label: 'Totals Analysis' },
+      { href: '/betting/value-finder', label: 'Value Finder' },
     ]
   },
   {
@@ -60,8 +55,6 @@ export const navSections: NavSection[] = [
     label: 'Analysis',
     description: 'Game previews, matchup analysis, and predictive insights.',
     links: [
-      { href: '/analysis', label: 'Totals Analysis' },
-      { href: '/analysis/quarters', label: 'Quarter Stats' },
       { href: '/analysis/q1-value', label: 'Q1 Value' },
     ]
   },

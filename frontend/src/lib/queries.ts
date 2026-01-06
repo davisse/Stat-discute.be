@@ -456,19 +456,28 @@ export async function searchPlayers(searchQuery: string, limit = 10) {
       p.first_name,
       p.last_name,
       p.full_name,
-      t.abbreviation as team_abbr,
+      p.position,
+      p.jersey_number,
+      t.abbreviation as team_abbreviation,
       t.full_name as team_name,
-      COUNT(pgs.game_id) as games_played,
-      ROUND(AVG(pgs.points), 1) as avg_points,
-      ROUND(AVG(pgs.rebounds), 1) as avg_rebounds,
-      ROUND(AVG(pgs.assists), 1) as avg_assists
+      COALESCE(stats.games_played, 0) as games_played,
+      COALESCE(stats.points_avg, 0) as points_avg,
+      COALESCE(stats.rebounds_avg, 0) as rebounds_avg,
+      COALESCE(stats.assists_avg, 0) as assists_avg
     FROM players p
-    LEFT JOIN player_game_stats pgs ON p.player_id = pgs.player_id
-    LEFT JOIN games g ON pgs.game_id = g.game_id AND g.season = $2
-    LEFT JOIN teams t ON pgs.team_id = t.team_id
+    LEFT JOIN teams t ON p.current_team_id = t.team_id
+    LEFT JOIN LATERAL (
+      SELECT
+        COUNT(pgs.game_id)::int as games_played,
+        ROUND(AVG(pgs.points), 1)::numeric as points_avg,
+        ROUND(AVG(pgs.rebounds), 1)::numeric as rebounds_avg,
+        ROUND(AVG(pgs.assists), 1)::numeric as assists_avg
+      FROM player_game_stats pgs
+      JOIN games g ON pgs.game_id = g.game_id AND g.season = $2
+      WHERE pgs.player_id = p.player_id
+    ) stats ON true
     WHERE p.full_name ILIKE $1
-    GROUP BY p.player_id, p.first_name, p.last_name, p.full_name, t.abbreviation, t.full_name
-    ORDER BY COUNT(pgs.game_id) DESC, p.full_name
+    ORDER BY stats.games_played DESC NULLS LAST, p.full_name
     LIMIT $3
   `, [`%${searchQuery}%`, currentSeason, limit])
 

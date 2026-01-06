@@ -7,7 +7,7 @@ export default async function PlayersPage() {
   return (
     <AppLayout>
       {/* Search Section - Positioned right below header */}
-      <section className="px-8 pb-12">
+      <section className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 pb-12">
         <div className="max-w-4xl mx-auto w-full">
           {/* Section identifier */}
           <div className="mb-6 flex items-center gap-4">

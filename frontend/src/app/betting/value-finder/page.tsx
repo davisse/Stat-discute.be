@@ -59,7 +59,7 @@ export default async function ValueFinderPage() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 500px), 1fr))',
             gap: '24px'
           }}>
             {recommendations.map((rec) => (
