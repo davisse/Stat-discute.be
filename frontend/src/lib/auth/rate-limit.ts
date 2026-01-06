@@ -241,7 +241,7 @@ async function getRecentAttemptsByIp(ipAddress: string): Promise<number> {
       `SELECT COUNT(*) as count
        FROM login_attempts
        WHERE ip_address = $1
-         AND attempt_time > NOW() - INTERVAL '${RATE_LIMIT_CONFIG.ipWindowMinutes} minutes'
+         AND attempted_at > NOW() - INTERVAL '${RATE_LIMIT_CONFIG.ipWindowMinutes} minutes'
          AND success = false`,
       [ipAddress]
     )
@@ -261,8 +261,9 @@ async function getRecentAttemptsByEmail(email: string): Promise<number> {
     const result = await query(
       `SELECT COUNT(*) as count
        FROM login_attempts
-       WHERE email = $1
-         AND attempt_time > NOW() - INTERVAL '${RATE_LIMIT_CONFIG.accountWindowMinutes} minutes'
+       WHERE identifier = $1
+         AND identifier_type = 'email'
+         AND attempted_at > NOW() - INTERVAL '${RATE_LIMIT_CONFIG.accountWindowMinutes} minutes'
          AND success = false`,
       [email.toLowerCase()]
     )
@@ -286,8 +287,8 @@ async function logLoginAttempt(
 ): Promise<void> {
   try {
     await query(
-      `INSERT INTO login_attempts (email, ip_address, user_agent, success, failure_reason, attempt_time)
-       VALUES ($1, $2, $3, $4, $5, NOW())`,
+      `INSERT INTO login_attempts (identifier, identifier_type, ip_address, user_agent, success, failure_reason, attempted_at)
+       VALUES ($1, 'email', $2, $3, $4, $5, NOW())`,
       [email.toLowerCase(), ipAddress, userAgent, success, failureReason]
     )
   } catch (error) {
