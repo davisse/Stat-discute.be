@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stat Discute - UI Component Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Colors - Monochrome */
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-card: #111111;
+      --bg-card-hover: #1a1a1a;
+      --border-color: #222222;
+      --border-subtle: #1a1a1a;
+
+      /* Text */
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666666;
+
+      /* Semantic Colors (for data only) */
+      --positive: #10b981;
+      --positive-bg: rgba(16, 185, 129, 0.1);
+      --negative: #ef4444;
+      --negative-bg: rgba(239, 68, 68, 0.1);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --info: #3b82f6;
+      --info-bg: rgba(59, 130, 246, 0.1);
+
+      /* Chart colors */
+      --chart-1: #10b981;
+      --chart-2: #ef4444;
+      --chart-3: #3b82f6;
+      --chart-4: #f59e0b;
+      --chart-5: #8b5cf6;
+
+      /* Spacing */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+
+      /* Border radius */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+
+      /* Typography */
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: var(--space-12) var(--space-6);
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-2);
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+    }
+
+    .header .version {
+      display: inline-block;
+      background: var(--bg-card);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: var(--space-4);
+    }
+
+    /* Main container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-8);
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: var(--space-12);
+    }
+
+    .section-header {
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--chart-1);
+      border-radius: 2px;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-4);
+    }
+
+    /* Card base */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-label {
+      position: absolute;
+      top: var(--space-2);
+      right: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .card-title {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Stat Card */
+    .stat-card {
+      grid-column: span 3;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+
+    .stat-trend {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .stat-trend.positive { color: var(--positive); }
+    .stat-trend.negative { color: var(--negative); }
+    .stat-trend.neutral { color: var(--text-muted); }
+
+    /* Bar Chart */
+    .bar-chart-container {
+      grid-column: span 6;
+      min-height: 200px;
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 160px;
+      padding-top: var(--space-4);
+      position: relative;
+    }
+
+    .bar-chart-threshold {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--warning);
+      top: 60%;
+    }
+
+    .bar-chart-threshold::after {
+      content: '22.0';
+      position: absolute;
+      right: 0;
+      top: -8px;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--warning);
+    }
+
+    .bar {
+      width: 48px;
+      background: linear-gradient(180deg, var(--chart-1) 0%, rgba(16, 185, 129, 0.6) 100%);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .bar:hover {
+      filter: brightness(1.1);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .bar-value {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    /* Feature Importance Chart */
+    .feature-chart {
+      grid-column: span 6;
+    }
+
+    .feature-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-3);
+      gap: var(--space-3);
+    }
+
+    .feature-label {
+      width: 80px;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-bar-container {
+      flex: 1;
+      height: 20px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .feature-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--chart-3) 0%, rgba(59, 130, 246, 0.6) 100%);
+      border-radius: var(--radius-sm);
+      transition: width 0.3s ease;
+    }
+
+    .feature-value {
+      width: 40px;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-primary);
+    }
+
+    /* Team Scoring Trend Chart */
+    .trend-chart {
+      grid-column: span 12;
+    }
+
+    .trend-tabs {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+
+    .trend-tab {
+      padding: var(--space-2) var(--space-4);
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .trend-tab.active {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-color: var(--text-primary);
+    }
+
+    .trend-chart-area {
+      display: flex;
+      gap: var(--space-6);
+    }
+
+    .trend-bars {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-2);
+      height: 180px;
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .trend-bar-group {
+      flex: 1;
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .trend-bar {
+      width: 16px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .trend-bar.offense { background: var(--chart-1); }
+    .trend-bar.defense { background: var(--chart-2); }
+
+    .trend-insights {
+      width: 220px;
+      padding: var(--space-4);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+    }
+
+    .trend-insight-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-3);
+    }
+
+    .trend-insight-item {
+      font-size: 0.8125rem;
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+      padding-left: var(--space-3);
+      position: relative;
+    }
+
+    .trend-insight-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 6px;
+      height: 6px;
+      background: var(--chart-1);
+      border-radius: 50%;
+    }
+
+    /* Radar Chart */
+    .radar-chart {
+      grid-column: span 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 250px;
+    }
+
+    .radar-svg {
+      width: 200px;
+      height: 200px;
+    }
+
+    /* Mini Sparklines */
+    .sparklines-container {
+      grid-column: span 8;
+    }
+
+    .sparkline-row {
+      display: flex;
+      align-items: center;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .sparkline-row:last-child {
+      border-bottom: none;
+    }
+
+    .sparkline-label {
+      width: 80px;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .sparkline-chart {
+      flex: 1;
+      height: 24px;
+      padding: 0 var(--space-4);
+    }
+
+    .sparkline-value {
+      width: 60px;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+
+    /* Calendar */
+    .calendar {
+      grid-column: span 12;
+    }
+
+    .calendar-header {
+      display: flex;
+      margin-bottom: var(--space-3);
+    }
+
+    .calendar-month {
+      flex: 1;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .calendar-grid {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+    }
+
+    .calendar-cell {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: var(--bg-secondary);
+    }
+
+    .calendar-cell.level-1 { background: rgba(16, 185, 129, 0.2); }
+    .calendar-cell.level-2 { background: rgba(16, 185, 129, 0.4); }
+    .calendar-cell.level-3 { background: rgba(16, 185, 129, 0.6); }
+    .calendar-cell.level-4 { background: rgba(16, 185, 129, 0.8); }
+    .calendar-cell.level-5 { background: var(--chart-1); }
+
+    .calendar-cell.loss { background: rgba(239, 68, 68, 0.4); }
+    .calendar-cell.win { background: rgba(16, 185, 129, 0.4); }
+    .calendar-cell.blowout { background: var(--chart-1); }
+
+    .calendar-legend {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* Betting Cards */
+    .totals-card {
+      grid-column: span 4;
+    }
+
+    .totals-line {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: var(--space-4);
+    }
+
+    .totals-bar {
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--space-3);
+    }
+
+    .totals-bar-fill {
+      height: 100%;
+      background: var(--chart-1);
+      border-radius: 4px;
+    }
+
+    .totals-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+    }
+
+    .totals-over { color: var(--positive); }
+    .totals-under { color: var(--text-secondary); }
+
+    .moneyline-card {
+      grid-column: span 4;
+    }
+
+    .moneyline-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .moneyline-row:last-child {
+      border-bottom: none;
+    }
+
+    .moneyline-team {
+      font-weight: 500;
+    }
+
+    .moneyline-odds {
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    .moneyline-american {
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+    }
+
+    .moneyline-decimal {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    /* Court Zone Defense */
+    .court-zone {
+      grid-column: span 8;
+    }
+
+    .court-svg {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+    }
+
+    /* Tables */
+    .table-container {
+      grid-column: span 12;
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .data-table th:hover {
+      color: var(--text-primary);
+    }
+
+    .data-table th.sorted::after {
+      content: ' ▼';
+      font-size: 0.625rem;
+    }
+
+    .data-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .data-table tr:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .data-table .numeric {
+      font-family: var(--font-mono);
+      text-align: right;
+    }
+
+    .data-table .positive { color: var(--positive); }
+    .data-table .negative { color: var(--negative); }
+
+    /* Game Log Mobile Cards */
+    .game-log-cards {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .bento-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .stat-card { grid-column: span 2; }
+      .bar-chart-container { grid-column: span 4; }
+      .feature-chart { grid-column: span 4; }
+      .trend-chart { grid-column: span 4; }
+      .radar-chart { grid-column: span 4; }
+      .sparklines-container { grid-column: span 4; }
+      .calendar { grid-column: span 4; }
+      .totals-card { grid-column: span 2; }
+      .moneyline-card { grid-column: span 2; }
+      .court-zone { grid-column: span 4; }
+      .table-container { grid-column: span 4; }
+
+      .game-log-cards {
+        display: block;
+      }
+
+      .game-log-table {
+        display: none;
+      }
+    }
+
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+
+    .game-card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .game-card-date {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .game-card-result {
+      font-weight: 500;
+    }
+
+    .game-card-result.win { color: var(--positive); }
+    .game-card-result.loss { color: var(--negative); }
+
+    .game-card-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-2);
+      text-align: center;
+    }
+
+    .game-card-stat-label {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .game-card-stat-value {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: var(--space-8);
+      border-top: 1px solid var(--border-color);
+      margin-top: var(--space-12);
+    }
+
+    .footer-tokens {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .token-group {
+      text-align: left;
+    }
+
+    .token-group-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-2);
+    }
+
+    .token-item {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .token-item code {
+      font-family: var(--font-mono);
+      background: var(--bg-card);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Stat Discute</h1>
+    <p>UI Component Library</p>
+    <span class="version">Design System v1.0</span>
+  </header>
+
+  <main class="container">
+    <!-- SECTION: Stat Cards -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Stat Cards</h2>
+        <p class="section-desc">Quick KPIs at a glance with trend indicators. Used for primary metrics on player and team dashboards. Trend arrows show change from previous period.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card stat-card">
+          <span class="card-label">3x2</span>
+          <div class="card-title">Points Per Game</div>
+          <div class="stat-value">28.4</div>
+          <div class="stat-trend positive">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 4l4 4H9v4H7V8H4l4-4z"/>
+            </svg>
+            +2.3 vs L10
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <span class="card-label">3x2</span>
+          <div class="card-title">Rebounds Per Game</div>
+          <div class="stat-value">12.1</div>
+          <div class="stat-trend negative">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 12l-4-4h3V4h2v4h3l-4 4z"/>
+            </svg>
+            -0.8 vs L10
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <span class="card-label">3x2</span>
+          <div class="card-title">Assists Per Game</div>
+          <div class="stat-value">8.7</div>
+          <div class="stat-trend neutral">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4 8h8v1H4z"/>
+            </svg>
+            0.0 vs L10
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <span class="card-label">3x2</span>
+          <div class="card-title">True Shooting %</div>
+          <div class="stat-value">62.4%</div>
+          <div class="stat-trend positive">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 4l4 4H9v4H7V8H4l4-4z"/>
+            </svg>
+            +1.2% vs L10
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Data Visualization -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Data Visualization</h2>
+        <p class="section-desc">Complex charts for trend analysis and performance comparison. Bar charts include draggable threshold lines. Feature importance shows ML model weights.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card bar-chart-container">
+          <span class="card-label">6x4</span>
+          <div class="card-title">Points by Period</div>
+          <div class="bar-chart">
+            <div class="bar-chart-threshold"></div>
+            <div class="bar" style="height: 80%;">
+              <span class="bar-value">26.2</span>
+              <span class="bar-label">L5</span>
+            </div>
+            <div class="bar" style="height: 95%;">
+              <span class="bar-value">28.4</span>
+              <span class="bar-label">L10</span>
+            </div>
+            <div class="bar" style="height: 70%;">
+              <span class="bar-value">24.1</span>
+              <span class="bar-label">L15</span>
+            </div>
+            <div class="bar" style="height: 75%;">
+              <span class="bar-value">25.0</span>
+              <span class="bar-label">Season</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card feature-chart">
+          <span class="card-label">6x8</span>
+          <div class="card-title">Feature Importance (ML Model)</div>
+          <div class="feature-row">
+            <span class="feature-label">Pace</span>
+            <div class="feature-bar-container">
+              <div class="feature-bar" style="width: 84%;"></div>
+            </div>
+            <span class="feature-value">0.42</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label">eFG%</span>
+            <div class="feature-bar-container">
+              <div class="feature-bar" style="width: 70%;"></div>
+            </div>
+            <span class="feature-value">0.35</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label">TOV%</span>
+            <div class="feature-bar-container">
+              <div class="feature-bar" style="width: 42%;"></div>
+            </div>
+            <span class="feature-value">0.21</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label">OREB%</span>
+            <div class="feature-bar-container">
+              <div class="feature-bar" style="width: 36%;"></div>
+            </div>
+            <span class="feature-value">0.18</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-label">FT Rate</span>
+            <div class="feature-bar-container">
+              <div class="feature-bar" style="width: 24%;"></div>
+            </div>
+            <span class="feature-value">0.12</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Team Scoring Trend -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Team Scoring Trend Chart</h2>
+        <p class="section-desc">Tabbed recharts component showing offense/defense splits with sidebar insights. The composed chart uses bar + area elements for visual depth.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card trend-chart">
+          <span class="card-label">12x5</span>
+          <div class="trend-tabs">
+            <button class="trend-tab active">Offense</button>
+            <button class="trend-tab">Defense</button>
+            <button class="trend-tab">Total O/U</button>
+          </div>
+          <div class="trend-chart-area">
+            <div class="trend-bars">
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 65%;"></div>
+                <div class="trend-bar defense" style="height: 55%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 85%;"></div>
+                <div class="trend-bar defense" style="height: 60%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 70%;"></div>
+                <div class="trend-bar defense" style="height: 75%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 90%;"></div>
+                <div class="trend-bar defense" style="height: 50%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 75%;"></div>
+                <div class="trend-bar defense" style="height: 65%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 80%;"></div>
+                <div class="trend-bar defense" style="height: 70%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 95%;"></div>
+                <div class="trend-bar defense" style="height: 45%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 60%;"></div>
+                <div class="trend-bar defense" style="height: 80%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 85%;"></div>
+                <div class="trend-bar defense" style="height: 55%;"></div>
+              </div>
+              <div class="trend-bar-group">
+                <div class="trend-bar offense" style="height: 70%;"></div>
+                <div class="trend-bar defense" style="height: 60%;"></div>
+              </div>
+            </div>
+            <div class="trend-insights">
+              <div class="trend-insight-title">Key Insights</div>
+              <div class="trend-insight-item">3-game win streak</div>
+              <div class="trend-insight-item">+5.2 pts vs season avg</div>
+              <div class="trend-insight-item">Defense improving L5</div>
+              <div class="trend-insight-item">8-2 ATS last 10 games</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Radar & Sparklines -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Radar & Sparklines</h2>
+        <p class="section-desc">Multi-dimensional stats visualization and inline trend indicators. Radar charts animate on mount. Sparklines fit inline with stat labels.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card radar-chart">
+          <span class="card-label">4x4</span>
+          <svg class="radar-svg" viewBox="0 0 200 200">
+            <!-- Background circles -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#222" stroke-width="1"/>
+            <circle cx="100" cy="100" r="60" fill="none" stroke="#222" stroke-width="1"/>
+            <circle cx="100" cy="100" r="40" fill="none" stroke="#222" stroke-width="1"/>
+            <circle cx="100" cy="100" r="20" fill="none" stroke="#222" stroke-width="1"/>
+
+            <!-- Axes -->
+            <line x1="100" y1="20" x2="100" y2="180" stroke="#333" stroke-width="1"/>
+            <line x1="23" y1="60" x2="177" y2="140" stroke="#333" stroke-width="1"/>
+            <line x1="23" y1="140" x2="177" y2="60" stroke="#333" stroke-width="1"/>
+
+            <!-- Data polygon -->
+            <polygon
+              points="100,30 165,75 150,155 50,155 35,75"
+              fill="rgba(16, 185, 129, 0.2)"
+              stroke="#10b981"
+              stroke-width="2"/>
+
+            <!-- Labels -->
+            <text x="100" y="12" text-anchor="middle" fill="#a0a0a0" font-size="10">PTS</text>
+            <text x="185" y="75" text-anchor="start" fill="#a0a0a0" font-size="10">AST</text>
+            <text x="165" y="170" text-anchor="middle" fill="#a0a0a0" font-size="10">STL</text>
+            <text x="35" y="170" text-anchor="middle" fill="#a0a0a0" font-size="10">BLK</text>
+            <text x="15" y="75" text-anchor="end" fill="#a0a0a0" font-size="10">REB</text>
+          </svg>
+        </div>
+
+        <div class="card sparklines-container">
+          <span class="card-label">8x4</span>
+          <div class="card-title">Performance Trends (L10)</div>
+          <div class="sparkline-row">
+            <span class="sparkline-label">Points</span>
+            <div class="sparkline-chart">
+              <svg width="100%" height="24" viewBox="0 0 200 24" preserveAspectRatio="none">
+                <polyline
+                  points="0,18 20,12 40,20 60,8 80,14 100,6 120,16 140,10 160,4 180,12 200,8"
+                  fill="none"
+                  stroke="#10b981"
+                  stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="sparkline-value" style="color: var(--positive);">27.4</span>
+          </div>
+          <div class="sparkline-row">
+            <span class="sparkline-label">Assists</span>
+            <div class="sparkline-chart">
+              <svg width="100%" height="24" viewBox="0 0 200 24" preserveAspectRatio="none">
+                <polyline
+                  points="0,12 20,14 40,10 60,16 80,8 100,12 120,6 140,14 160,10 180,8 200,12"
+                  fill="none"
+                  stroke="#3b82f6"
+                  stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="sparkline-value">8.2</span>
+          </div>
+          <div class="sparkline-row">
+            <span class="sparkline-label">Rebounds</span>
+            <div class="sparkline-chart">
+              <svg width="100%" height="24" viewBox="0 0 200 24" preserveAspectRatio="none">
+                <polyline
+                  points="0,8 20,12 40,6 60,14 80,10 100,16 120,8 140,12 160,18 180,14 200,16"
+                  fill="none"
+                  stroke="#f59e0b"
+                  stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="sparkline-value" style="color: var(--negative);">12.1</span>
+          </div>
+          <div class="sparkline-row">
+            <span class="sparkline-label">eFG%</span>
+            <div class="sparkline-chart">
+              <svg width="100%" height="24" viewBox="0 0 200 24" preserveAspectRatio="none">
+                <polyline
+                  points="0,16 20,14 40,12 60,10 80,12 100,8 120,6 140,8 160,6 180,4 200,6"
+                  fill="none"
+                  stroke="#8b5cf6"
+                  stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="sparkline-value" style="color: var(--positive);">58.2%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Calendars -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Presence Calendars</h2>
+        <p class="section-desc">GitHub-style contribution calendars adapted for basketball. Player calendar shows points intensity. Team calendar shows W/L with margin intensity.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card calendar">
+          <span class="card-label">12x3</span>
+          <div class="card-title">Player Presence Calendar</div>
+          <div class="calendar-header">
+            <span class="calendar-month">Oct</span>
+            <span class="calendar-month">Nov</span>
+            <span class="calendar-month">Dec</span>
+            <span class="calendar-month">Jan</span>
+            <span class="calendar-month">Feb</span>
+            <span class="calendar-month">Mar</span>
+            <span class="calendar-month">Apr</span>
+          </div>
+          <div class="calendar-grid" id="player-calendar"></div>
+          <div class="calendar-legend">
+            <span class="legend-item">
+              <span class="legend-box" style="background: var(--bg-secondary);"></span> DNP
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: rgba(16, 185, 129, 0.2);"></span> &lt;15
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: rgba(16, 185, 129, 0.4);"></span> 15-25
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: rgba(16, 185, 129, 0.6);"></span> 25-35
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: var(--chart-1);"></span> 35+
+            </span>
+          </div>
+        </div>
+
+        <div class="card calendar">
+          <span class="card-label">12x4</span>
+          <div class="card-title">Team Season Calendar</div>
+          <div class="calendar-header">
+            <span class="calendar-month">Oct</span>
+            <span class="calendar-month">Nov</span>
+            <span class="calendar-month">Dec</span>
+            <span class="calendar-month">Jan</span>
+            <span class="calendar-month">Feb</span>
+            <span class="calendar-month">Mar</span>
+            <span class="calendar-month">Apr</span>
+          </div>
+          <div class="calendar-grid" id="team-calendar"></div>
+          <div class="calendar-legend">
+            <span class="legend-item">
+              <span class="legend-box" style="background: var(--bg-secondary);"></span> No game
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: rgba(239, 68, 68, 0.4);"></span> Loss
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: rgba(16, 185, 129, 0.4);"></span> Win
+            </span>
+            <span class="legend-item">
+              <span class="legend-box" style="background: var(--chart-1);"></span> Blowout
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Betting Cards -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Betting Cards</h2>
+        <p class="section-desc">Odds and lines display for betting analysis. All odds shown in decimal format. Over/Under shows historical hit rate with visual bar.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card totals-card">
+          <span class="card-label">4x6</span>
+          <div class="card-title">Game Totals</div>
+          <div class="totals-line">O/U 224.5</div>
+          <div class="totals-bar">
+            <div class="totals-bar-fill" style="width: 58%;"></div>
+          </div>
+          <div class="totals-labels">
+            <span class="totals-over">OVER 58%</span>
+            <span class="totals-under">UNDER 42%</span>
+          </div>
+          <div style="margin-top: var(--space-4); font-size: 0.8125rem; color: var(--text-secondary);">
+            Avg margin: <span style="color: var(--positive); font-family: var(--font-mono);">+6.2</span>
+          </div>
+        </div>
+
+        <div class="card moneyline-card">
+          <span class="card-label">4x4</span>
+          <div class="card-title">Moneylines</div>
+          <div class="moneyline-row">
+            <span class="moneyline-team">LAL</span>
+            <div class="moneyline-odds">
+              <span class="moneyline-american" style="color: var(--positive);">-145</span>
+              <span class="moneyline-decimal">1.69</span>
+            </div>
+          </div>
+          <div class="moneyline-row">
+            <span class="moneyline-team">BOS</span>
+            <div class="moneyline-odds">
+              <span class="moneyline-american" style="color: var(--negative);">+125</span>
+              <span class="moneyline-decimal">2.25</span>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-3); font-size: 0.8125rem; color: var(--text-muted);">
+            Spread: LAL <span style="font-family: var(--font-mono);">-3.5</span>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: span 4;">
+          <span class="card-label">4x4</span>
+          <div class="card-title">ATS Performance</div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-4);">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Overall ATS</div>
+              <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--positive);">32-18</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Home ATS</div>
+              <div style="font-family: var(--font-mono); font-size: 1.25rem;">18-7</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Away ATS</div>
+              <div style="font-family: var(--font-mono); font-size: 1.25rem;">14-11</div>
+            </div>
+          </div>
+          <div style="font-size: 0.8125rem; color: var(--text-secondary);">
+            Cover rate: <span style="color: var(--positive); font-family: var(--font-mono);">64%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Court Zone -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Specialized Visualizations</h2>
+        <p class="section-desc">Domain-specific basketball visualizations. Court zone defense shows opponent FG% by zone with heatmap colors.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card court-zone">
+          <span class="card-label">8x6</span>
+          <div class="card-title">Court Zone Defense</div>
+          <svg class="court-svg" viewBox="0 0 400 280">
+            <!-- Court outline -->
+            <rect x="50" y="20" width="300" height="240" fill="none" stroke="#333" stroke-width="2"/>
+
+            <!-- Three point arc -->
+            <path d="M 50 100 Q 200 200 350 100" fill="none" stroke="#333" stroke-width="1"/>
+
+            <!-- Key/paint area -->
+            <rect x="140" y="20" width="120" height="160" fill="none" stroke="#333" stroke-width="1"/>
+
+            <!-- Zone overlays with FG% -->
+            <!-- Left corner 3 -->
+            <rect x="50" y="140" width="90" height="120" fill="rgba(239, 68, 68, 0.3)" stroke="none"/>
+            <text x="95" y="200" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">42%</text>
+            <text x="95" y="218" text-anchor="middle" fill="#a0a0a0" font-size="10">Corner 3</text>
+
+            <!-- Right corner 3 -->
+            <rect x="260" y="140" width="90" height="120" fill="rgba(16, 185, 129, 0.3)" stroke="none"/>
+            <text x="305" y="200" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">32%</text>
+            <text x="305" y="218" text-anchor="middle" fill="#a0a0a0" font-size="10">Corner 3</text>
+
+            <!-- Paint area -->
+            <rect x="140" y="20" width="120" height="160" fill="rgba(239, 68, 68, 0.5)" stroke="none"/>
+            <text x="200" y="95" text-anchor="middle" fill="#fff" font-size="16" font-weight="600">58%</text>
+            <text x="200" y="115" text-anchor="middle" fill="#a0a0a0" font-size="10">Paint</text>
+
+            <!-- Mid-range left -->
+            <rect x="50" y="20" width="90" height="120" fill="rgba(245, 158, 11, 0.3)" stroke="none"/>
+            <text x="95" y="75" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">44%</text>
+            <text x="95" y="93" text-anchor="middle" fill="#a0a0a0" font-size="10">Mid Left</text>
+
+            <!-- Mid-range right -->
+            <rect x="260" y="20" width="90" height="120" fill="rgba(16, 185, 129, 0.3)" stroke="none"/>
+            <text x="305" y="75" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">38%</text>
+            <text x="305" y="93" text-anchor="middle" fill="#a0a0a0" font-size="10">Mid Right</text>
+
+            <!-- Legend -->
+            <text x="200" y="270" text-anchor="middle" fill="#666" font-size="10">Opponent FG% by Zone (Lower = Better Defense)</text>
+          </svg>
+        </div>
+
+        <div class="card" style="grid-column: span 4;">
+          <span class="card-label">4x6</span>
+          <div class="card-title">Zone Defense Summary</div>
+          <div style="margin-top: var(--space-3);">
+            <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--text-secondary);">Paint</span>
+              <span style="font-family: var(--font-mono); color: var(--negative);">58%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--text-secondary);">Mid-Range L</span>
+              <span style="font-family: var(--font-mono); color: var(--warning);">44%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--text-secondary);">Corner 3 L</span>
+              <span style="font-family: var(--font-mono); color: var(--warning);">42%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--text-secondary);">Mid-Range R</span>
+              <span style="font-family: var(--font-mono); color: var(--positive);">38%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0;">
+              <span style="color: var(--text-secondary);">Corner 3 R</span>
+              <span style="font-family: var(--font-mono); color: var(--positive);">32%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Data Tables -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Data Tables</h2>
+        <p class="section-desc">Sortable, responsive data tables for detailed stats. Click column headers to sort. On mobile, tables transform into stacked cards for better readability.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="card table-container">
+          <span class="card-label">12xN</span>
+          <div class="card-title">Player Leaders - Sortable Table</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="sorted">Player</th>
+                <th>Team</th>
+                <th>PPG</th>
+                <th>RPG</th>
+                <th>APG</th>
+                <th>FG%</th>
+                <th>TS%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L. James</td>
+                <td>LAL</td>
+                <td class="numeric">27.4</td>
+                <td class="numeric">8.2</td>
+                <td class="numeric">8.1</td>
+                <td class="numeric">54.2%</td>
+                <td class="numeric positive">62.1%</td>
+              </tr>
+              <tr>
+                <td>S. Curry</td>
+                <td>GSW</td>
+                <td class="numeric">26.8</td>
+                <td class="numeric">4.5</td>
+                <td class="numeric">5.2</td>
+                <td class="numeric">47.8%</td>
+                <td class="numeric positive">64.3%</td>
+              </tr>
+              <tr>
+                <td>G. Antetokounmpo</td>
+                <td>MIL</td>
+                <td class="numeric">31.2</td>
+                <td class="numeric">11.8</td>
+                <td class="numeric">5.8</td>
+                <td class="numeric">55.4%</td>
+                <td class="numeric">60.8%</td>
+              </tr>
+              <tr>
+                <td>L. Doncic</td>
+                <td>DAL</td>
+                <td class="numeric">33.1</td>
+                <td class="numeric">9.2</td>
+                <td class="numeric">9.8</td>
+                <td class="numeric">48.7%</td>
+                <td class="numeric positive">61.2%</td>
+              </tr>
+              <tr>
+                <td>J. Embiid</td>
+                <td>PHI</td>
+                <td class="numeric">34.7</td>
+                <td class="numeric">11.0</td>
+                <td class="numeric">5.6</td>
+                <td class="numeric">52.9%</td>
+                <td class="numeric positive">65.5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card table-container">
+          <span class="card-label">12xN</span>
+          <div class="card-title">Game Log - Responsive Table</div>
+          <table class="data-table game-log-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>OPP</th>
+                <th>W/L</th>
+                <th>PTS</th>
+                <th>REB</th>
+                <th>AST</th>
+                <th>+/-</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Jan 15</td>
+                <td>@BOS</td>
+                <td class="positive">W</td>
+                <td class="numeric">32</td>
+                <td class="numeric">10</td>
+                <td class="numeric">8</td>
+                <td class="numeric positive">+12</td>
+                <td>LAL 118 - BOS 106</td>
+              </tr>
+              <tr>
+                <td>Jan 13</td>
+                <td>PHX</td>
+                <td class="negative">L</td>
+                <td class="numeric">28</td>
+                <td class="numeric">7</td>
+                <td class="numeric">11</td>
+                <td class="numeric negative">-4</td>
+                <td>LAL 112 - PHX 116</td>
+              </tr>
+              <tr>
+                <td>Jan 11</td>
+                <td>@DEN</td>
+                <td class="positive">W</td>
+                <td class="numeric">36</td>
+                <td class="numeric">9</td>
+                <td class="numeric">7</td>
+                <td class="numeric positive">+8</td>
+                <td>LAL 124 - DEN 116</td>
+              </tr>
+              <tr>
+                <td>Jan 9</td>
+                <td>MIA</td>
+                <td class="positive">W</td>
+                <td class="numeric">24</td>
+                <td class="numeric">12</td>
+                <td class="numeric">9</td>
+                <td class="numeric positive">+15</td>
+                <td>LAL 108 - MIA 93</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Mobile cards version -->
+          <div class="game-log-cards">
+            <div class="game-card">
+              <div class="game-card-header">
+                <span class="game-card-date">Jan 15 @BOS</span>
+                <span class="game-card-result win">W 118-106</span>
+              </div>
+              <div class="game-card-stats">
+                <div>
+                  <div class="game-card-stat-label">PTS</div>
+                  <div class="game-card-stat-value">32</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">REB</div>
+                  <div class="game-card-stat-value">10</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">AST</div>
+                  <div class="game-card-stat-value">8</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">+/-</div>
+                  <div class="game-card-stat-value" style="color: var(--positive);">+12</div>
+                </div>
+              </div>
+            </div>
+            <div class="game-card">
+              <div class="game-card-header">
+                <span class="game-card-date">Jan 13 PHX</span>
+                <span class="game-card-result loss">L 112-116</span>
+              </div>
+              <div class="game-card-stats">
+                <div>
+                  <div class="game-card-stat-label">PTS</div>
+                  <div class="game-card-stat-value">28</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">REB</div>
+                  <div class="game-card-stat-value">7</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">AST</div>
+                  <div class="game-card-stat-value">11</div>
+                </div>
+                <div>
+                  <div class="game-card-stat-label">+/-</div>
+                  <div class="game-card-stat-value" style="color: var(--negative);">-4</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-tokens">
+      <div class="token-group">
+        <div class="token-group-title">Typography</div>
+        <div class="token-item">UI: <code>Inter</code></div>
+        <div class="token-item">Data: <code>JetBrains Mono</code></div>
+      </div>
+      <div class="token-group">
+        <div class="token-group-title">Colors</div>
+        <div class="token-item">Positive: <code>#10b981</code></div>
+        <div class="token-item">Negative: <code>#ef4444</code></div>
+        <div class="token-item">Warning: <code>#f59e0b</code></div>
+      </div>
+      <div class="token-group">
+        <div class="token-group-title">Spacing</div>
+        <div class="token-item">Base: <code>8px</code></div>
+        <div class="token-item">Scale: <code>4, 8, 12, 16, 20, 24, 32, 40, 48</code></div>
+      </div>
+      <div class="token-group">
+        <div class="token-group-title">Border Radius</div>
+        <div class="token-item">Scale: <code>8, 12, 16, 24px</code></div>
+      </div>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.8125rem;">
+      Stat Discute Design System v1.0 &mdash; Updated January 2026
+    </p>
+  </footer>
+
+  <script>
+    // Generate calendar cells
+    function generateCalendar(containerId, type) {
+      const container = document.getElementById(containerId);
+      const levels = type === 'player'
+        ? ['', 'level-1', 'level-2', 'level-3', 'level-4', 'level-5']
+        : ['', 'loss', 'win', 'blowout'];
+
+      // Generate ~180 cells for roughly 6 months
+      for (let i = 0; i < 180; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+
+        // Random chance of having a game
+        if (Math.random() > 0.4) {
+          const levelIndex = Math.floor(Math.random() * (levels.length - 1)) + 1;
+          cell.classList.add(levels[levelIndex]);
+        }
+
+        container.appendChild(cell);
+      }
+    }
+
+    generateCalendar('player-calendar', 'player');
+    generateCalendar('team-calendar', 'team');
+  </script>
+</body>
+</html>

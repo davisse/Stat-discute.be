@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { PageTransition } from "@/components/page-transition";
+import { TransitionProvider } from "@/contexts/TransitionContext";
+import { RevealOverlay } from "@/components/transitions/RevealOverlay";
 import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
 
@@ -38,7 +39,10 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased`}
       >
         <AuthProvider>
-          <PageTransition>{children}</PageTransition>
+          <TransitionProvider>
+            {children}
+            <RevealOverlay />
+          </TransitionProvider>
         </AuthProvider>
       </body>
     </html>

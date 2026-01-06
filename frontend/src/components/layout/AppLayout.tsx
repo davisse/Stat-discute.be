@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import BurgerMenu from '@/components/mobile/BurgerMenu'
 import { navSections, NavSection } from '@/lib/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { useTransitionReady } from '@/hooks/useTransitionReady'
 
 /**
  * NavDropdown Component
@@ -115,6 +116,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
   const [openSection, setOpenSection] = useState<string | null>(null)
   const navRef = useRef<HTMLElement>(null)
+
+  // Signal that the page is ready for reveal animation
+  useTransitionReady()
 
   // Close dropdown when clicking outside
   useEffect(() => {
