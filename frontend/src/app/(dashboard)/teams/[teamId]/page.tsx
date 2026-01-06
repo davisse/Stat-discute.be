@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
-import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, type TeamGameDay } from '@/components/teams'
+import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, type TeamGameDay } from '@/components/teams'
 
 interface TeamStats {
   team_id: number
@@ -226,6 +226,14 @@ export default function TeamPage() {
                   data={allTeamsRanking}
                   selectedTeamId={teamStats.team_id}
                 />
+              </div>
+            )}
+
+            {/* Historic Scoring Charts */}
+            {teamGames.length > 0 && (
+              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0 grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-4">
+                <TeamPointDiffChart games={teamGames} />
+                <TeamScoringTrendChart games={teamGames} />
               </div>
             )}
 
