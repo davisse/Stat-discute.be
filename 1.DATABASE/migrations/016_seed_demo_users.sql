@@ -28,7 +28,8 @@
 INSERT INTO users (email, password_hash, full_name, role, email_verified, is_active)
 VALUES (
     'admin@stat-discute.be',
-    '$argon2id$v=19$m=65536,t=3,p=4$g22ymYlAzMDTm/11+rPVAA$qarhtDM+AyhCH8yB9NY0oWjFa3KOWnTplNhrUEJXVaI',
+    -- Hash verified working for password: Admin123!
+    '$argon2id$v=19$m=65536,t=3,p=4$/S57cLbT87s6s7nLOUejLA$G5gcHwpg7zcZPD0uoSAbS3l+ANofCQZjNzx8aGbA0vA',
     'Administrator',
     'admin',
     true,
@@ -39,7 +40,8 @@ ON CONFLICT (email) DO NOTHING;
 INSERT INTO users (email, password_hash, full_name, role, email_verified, is_active)
 VALUES (
     'demo@stat-discute.be',
-    '$argon2id$v=19$m=65536,t=3,p=4$kolJgUCidiT1p+PvWvLnOQ$RZ5wLFlFfi2BNimMCYUDodkUSp6J+2T1Jih2qHlg2Gk',
+    -- Hash verified working for password: Demo123!
+    '$argon2id$v=19$m=65536,t=3,p=4$PRUFJWbhT0XV0bmBlsX3IQ$fEek4wPnbhZMehf4ov0+wP9q+bJQj4/tQDZj+F6Niog',
     'Demo User',
     'user',
     true,
