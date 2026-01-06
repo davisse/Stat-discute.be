@@ -61,6 +61,7 @@ def calculate_defensive_stats_by_position(conn, season):
     query = """
     WITH position_stats AS (
         SELECT
+            g.game_id,
             g.season,
             g.home_team_id as defending_team_id,
             g.away_team_id as opposing_team_id,
@@ -89,6 +90,7 @@ def calculate_defensive_stats_by_position(conn, season):
         UNION ALL
 
         SELECT
+            g.game_id,
             g.season,
             g.away_team_id as defending_team_id,
             g.home_team_id as opposing_team_id,
@@ -119,7 +121,7 @@ def calculate_defensive_stats_by_position(conn, season):
             season,
             defending_team_id as team_id,
             opponent_position,
-            COUNT(DISTINCT CONCAT(defending_team_id, '-', opposing_team_id)) as games_played,
+            COUNT(DISTINCT game_id) as games_played,
             SUM(points) as total_points_allowed,
             SUM(rebounds) as total_rebounds_allowed,
             SUM(assists) as total_assists_allowed,

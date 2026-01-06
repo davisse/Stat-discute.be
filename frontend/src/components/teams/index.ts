@@ -5,3 +5,9 @@ export { TeamQuadrantChart, type TeamQuadrantData } from './TeamQuadrantChart'
 export { TeamPresenceCalendar, type TeamGameDay } from './TeamPresenceCalendar'
 export { TeamPointDiffChart } from './TeamPointDiffChart'
 export { TeamScoringTrendChart } from './TeamScoringTrendChart'
+export { DefenseVsPositionHeatmap } from './DefenseVsPositionHeatmap'
+
+// DvP Team Profile (Radar + Bars dual visualization)
+export { DvPRadarChart, type DvPRadarData, type DvPRadarChartProps } from './DvPRadarChart'
+export { DvPPositionBars, type DvPBarData, type DvPPositionBarsProps } from './DvPPositionBars'
+export { DvPTeamProfile, type DvPTeamProfileProps } from './DvPTeamProfile'

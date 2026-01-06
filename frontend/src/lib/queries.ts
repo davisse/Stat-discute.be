@@ -283,6 +283,23 @@ export interface DefensiveStatsByPosition {
   assists_allowed_per_game: number
 }
 
+export interface DvPHeatmapCell {
+  team_id: number
+  team_abbreviation: string
+  position: string
+  points_allowed_per_game: number
+  points_allowed_rank: number
+  fg_pct_allowed: number
+  league_avg: number
+  diff_from_avg: number
+}
+
+export interface DvPHeatmapData {
+  cells: DvPHeatmapCell[]
+  league_averages: { position: string; avg_points: number }[]
+  positions: string[]
+}
+
 // ============================================
 // CORE FUNCTIONS
 // ============================================
@@ -2192,4 +2209,71 @@ export async function getPlayerGamelogs(playerId: number, limit = 20) {
   `, [playerId, currentSeason, limit])
 
   return result.rows
+}
+
+// ============================================
+// DEFENSE VS POSITION (DvP) FUNCTIONS
+// ============================================
+
+/**
+ * Get Defense vs Position heatmap data
+ * Returns all teams x all positions matrix with rankings and league averages
+ * Reads from pre-calculated defensive_stats_by_position table (populated by ETL)
+ */
+export async function getDefenseVsPositionHeatmap(): Promise<DvPHeatmapData> {
+  const currentSeason = await getCurrentSeason()
+  const positions = ['PG', 'SG', 'SF', 'PF', 'C']
+
+  // Get league averages by position from pre-calculated table
+  const leagueAvgResult = await query(`
+    SELECT
+      opponent_position as position,
+      ROUND(AVG(points_allowed_per_game), 2) as avg_points
+    FROM defensive_stats_by_position
+    WHERE season = $1
+      AND opponent_position IN ('PG', 'SG', 'SF', 'PF', 'C')
+    GROUP BY opponent_position
+    ORDER BY opponent_position
+  `, [currentSeason])
+
+  const leagueAvgMap = new Map(
+    leagueAvgResult.rows.map(r => [r.position, parseFloat(r.avg_points)])
+  )
+
+  // Get all teams x positions defensive stats from pre-calculated table
+  const result = await query(`
+    SELECT
+      ds.team_id,
+      t.abbreviation as team_abbreviation,
+      ds.opponent_position as position,
+      ds.points_allowed_per_game,
+      ds.points_allowed_rank,
+      ds.fg_pct_allowed,
+      ds.games_played
+    FROM defensive_stats_by_position ds
+    JOIN teams t ON ds.team_id = t.team_id
+    WHERE ds.season = $1
+      AND ds.opponent_position IN ('PG', 'SG', 'SF', 'PF', 'C')
+    ORDER BY t.abbreviation, ds.opponent_position
+  `, [currentSeason])
+
+  const cells: DvPHeatmapCell[] = result.rows.map(row => ({
+    team_id: parseInt(row.team_id),
+    team_abbreviation: row.team_abbreviation,
+    position: row.position,
+    points_allowed_per_game: parseFloat(row.points_allowed_per_game),
+    points_allowed_rank: parseInt(row.points_allowed_rank),
+    fg_pct_allowed: parseFloat(row.fg_pct_allowed || '0'),
+    league_avg: leagueAvgMap.get(row.position) || 0,
+    diff_from_avg: parseFloat(row.points_allowed_per_game) - (leagueAvgMap.get(row.position) || 0)
+  }))
+
+  return {
+    cells,
+    league_averages: leagueAvgResult.rows.map(r => ({
+      position: r.position,
+      avg_points: parseFloat(r.avg_points)
+    })),
+    positions
+  }
 }
