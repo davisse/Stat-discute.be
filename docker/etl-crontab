@@ -30,6 +30,9 @@
 # 6:45 AM - Calculate betting trends (ATS, O/U)
 45 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_betting_trends.py >> /app/logs/etl.log 2>&1
 
+# 6:50 AM - Calculate defensive stats by position (DvP)
+50 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_defensive_stats_by_position.py >> /app/logs/etl.log 2>&1
+
 # -----------------------------------------------------------------------------
 # Odds Pipeline - Every 20 minutes (live odds updates from Pinnacle)
 # -----------------------------------------------------------------------------
