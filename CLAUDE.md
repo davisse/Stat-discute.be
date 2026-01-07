@@ -16,6 +16,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Current Season**: 2025-26 (auto-detected from database)
 **Production URL**: https://stats.defendini.be (Traefik reverse proxy with Let's Encrypt)
 
+## Slash Commands (Claude Code)
+
+| Command | Description |
+|---------|-------------|
+| `/sync` | Full ETL pipeline: games → player stats → analytics |
+| `/sync --games-only` | Only sync games, skip player stats and analytics |
+| `/sync --analytics-only` | Only run analytics (assumes data already synced) |
+| `/odds` | Fetch Pinnacle betting odds and show summary |
+| `/odds --summary` | Show current odds without fetching new data |
+| `/run-dev` | Start Next.js dev server at localhost:3000 |
+
 ## Common Commands
 
 ### Frontend Development
@@ -131,13 +142,31 @@ user_sessions      - Active sessions with device fingerprinting
 login_attempts     - Rate limiting and security audit log
 ```
 
+**Team Analysis Table** (migration 017):
+```
+team_analysis      - Daily generated French narrative analysis per team
+  - analysis_data JSONB     - Structured data for analysis generation
+  - analysis_html TEXT      - Pre-rendered French narrative
+  - data_as_of DATE         - Prevents duplicate daily runs
+```
+
 **Critical Database Rules**:
 1. **Season Filtering**: ALL queries joining `games` must filter by `season` column
 2. **Type Casting**: PostgreSQL `ROUND()` returns `numeric` type → node-postgres sees it as string → use `parseFloat()` before `.toFixed()` in TypeScript
 3. **ID Types**: `team_id` and `player_id` are BIGINT, `game_id` is VARCHAR(10)
 4. **Indexes**: 155+ indexes optimize common query patterns (see migration 007)
 
-### Frontend Stack (Next.js 16 + React 19 + Tailwind v4)
+### Frontend Stack (Next.js 16 + React 19.2 + Tailwind v4)
+
+**React 19.2 Features in Use**:
+- Server Components (default for all pages)
+- Concurrent rendering features
+- Framer Motion integration for animations
+
+**Next.js 16 Features**:
+- App Router with route groups (e.g., `(dashboard)/`)
+- Turbopack for fast development builds
+- Server Actions via `'use server'` directive
 
 **Data Flow**:
 ```
@@ -147,18 +176,17 @@ PostgreSQL → lib/db.ts (pg pool) → lib/queries.ts → Server Components → 
 **Directory Structure**:
 ```
 frontend/src/
-├── app/
+├── app/                    # 37+ pages organized by feature
 │   ├── (dashboard)/        # Dashboard layout group
 │   │   ├── players/        # Player stats pages
-│   │   ├── teams/          # Team standings pages
+│   │   ├── teams/          # Team standings + team detail pages
 │   │   └── betting/        # Betting analytics pages
 │   ├── admin/              # Admin dashboard (Server Component)
 │   ├── api/                # API route handlers
+│   ├── analysis/           # H2H, quarters, dispersion, pace analysis
+│   ├── betting/            # Odds terminal, value finder, totals
 │   ├── player-props/       # Player props analysis
-│   ├── prototype/          # Prototype pages
-│   ├── design-tokens-test/ # Design system test page
-│   ├── ui-components-test/ # UI components test page
-│   ├── stats-components-test/ # Stats components test
+│   ├── prototype/          # Prototype pages (storytelling)
 │   ├── layout.tsx          # Root layout
 │   ├── page.tsx            # Homepage
 │   └── globals.css         # Tailwind v4 imports
@@ -166,11 +194,18 @@ frontend/src/
 │   ├── layout/             # Layout components
 │   │   ├── AppLayout.tsx   # Main app layout wrapper
 │   │   └── index.ts        # Layout exports
+│   ├── teams/              # Team visualization components
+│   │   ├── DvP*.tsx        # Defense vs Position system
+│   │   ├── TeamAnalysis.tsx # French narrative analysis
+│   │   ├── TeamQuadrantChart.tsx
+│   │   ├── TeamPresenceCalendar.tsx
+│   │   └── TeamRankingDualChart.tsx
 │   └── ui/                 # UI component library
 └── lib/
     ├── db.ts              # PostgreSQL connection pool
     ├── queries.ts         # All database query functions
     ├── design-tokens.ts   # Design system tokens
+    ├── team-colors.ts     # NBA team color mappings
     └── utils.ts           # Utility functions
 ```
 
@@ -458,20 +493,24 @@ GROUP BY p.player_id, p.full_name;
 ### Key Directories
 ```
 stat-discute.be/
+├── .claude/                     # Claude Code configuration
+│   └── commands/                # Slash commands (/sync, /odds, /run-dev)
+│
 ├── 1.DATABASE/                  # Database migrations and ETL pipeline
-│   ├── migrations/              # SQL migrations (001-016+)
+│   ├── migrations/              # SQL migrations (001-017+)
 │   ├── etl/                     # Python ETL scripts
 │   │   ├── reference_data/      # Season, venue sync scripts
-│   │   ├── analytics/           # Stats calculation scripts
+│   │   ├── analytics/           # Stats calculation + team analysis
 │   │   └── betting/             # Betting odds collection
 │   └── config/                  # Database configuration
 │
 ├── frontend/                    # Next.js 16 application
 │   ├── src/
-│   │   ├── app/                 # Next.js 13+ App Router
+│   │   ├── app/                 # Next.js App Router (37+ pages)
 │   │   │   └── api/auth/        # Authentication endpoints
 │   │   ├── components/          # React components
 │   │   │   ├── layout/          # AppLayout and layout components
+│   │   │   ├── teams/           # Team visualization (DvP, Analysis, Charts)
 │   │   │   └── ui/              # UI component library
 │   │   └── lib/
 │   │       ├── auth/            # JWT, password, rate-limiting
@@ -507,14 +546,20 @@ stat-discute.be/
 | `frontend/src/lib/db.ts` | PostgreSQL connection pool | Configured via `.env.local` |
 | `frontend/src/lib/auth/jwt.ts` | JWT token generation/verification | Contains critical `normalizeKey()` for Docker |
 | `frontend/src/lib/auth/rate-limit.ts` | Login rate limiting | IP (10/15min) + Account (5/15min) limits |
+| `frontend/src/lib/team-colors.ts` | NBA team color mappings | Primary/secondary colors per team |
 | `frontend/src/components/layout/AppLayout.tsx` | Main app layout wrapper | Logo, nav, dotted background |
+| `frontend/src/components/teams/index.ts` | Team component exports | DvP, Analysis, Calendar, Charts |
 | `docker/docker-compose.yml` | Production deployment stack | PostgreSQL + Frontend + ETL + Traefik |
 | `docker/Dockerfile.frontend` | Multi-stage Next.js build | Final image ~150MB |
 | `1.DATABASE/migrations/008_authentication_system.sql` | Auth tables schema | users, sessions, login_attempts |
 | `1.DATABASE/migrations/016_seed_demo_users.sql` | Demo account seeding | admin@stat-discute.be, demo@stat-discute.be |
+| `1.DATABASE/migrations/017_team_analysis.sql` | Team analysis table | Daily French narrative generation |
 | `1.DATABASE/etl/fetch_player_stats_direct.py` | Player box score fetcher | Working NBA API with required headers |
 | `1.DATABASE/etl/sync_season_2025_26.py` | Games and scores fetcher | Current season data collection |
 | `1.DATABASE/etl/analytics/run_all_analytics.py` | Analytics orchestrator | Runs all analytics scripts in order |
+| `1.DATABASE/etl/analytics/generate_team_analysis.py` | Team analysis generator | Creates French narratives per team |
+| `.claude/commands/sync.md` | /sync command definition | Full ETL pipeline execution |
+| `.claude/commands/odds.md` | /odds command definition | Pinnacle odds fetching |
 | `claudedocs/production-login-deployment-guide.md` | Auth deployment guide | JWT Docker config, troubleshooting |
 | `4.BETTING/json_structure_mapping.md` | Betting data structure | Corrected Pinnacle JSON mapping v2.0 |
 
@@ -531,6 +576,11 @@ DB_PASSWORD=
 
 # Next.js
 NEXT_PUBLIC_API_URL=http://localhost:3000
+
+# JWT Authentication (EdDSA Ed25519 keys)
+# Use escaped \n for Docker, normalizeKey() converts at runtime
+JWT_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMC4CAQAw...\n-----END PRIVATE KEY-----
+JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMCowBQYD...\n-----END PUBLIC KEY-----
 ```
 
 ### ETL (1.DATABASE/config/.env)
@@ -549,16 +599,19 @@ DB_PASSWORD=
 **Season**: 2025-26 (set as current, auto-detected by frontend)
 
 **Database State**:
-- 28 tables with 155+ indexes
-- 8 migrations applied (001-008)
+- 30+ tables with 155+ indexes
+- 17+ migrations available (001-017)
+  - Core: 001-008 (schema, auth system)
+  - Extended: 009-017 (lineups, betting, team analysis)
 - Current season games and player stats loaded
 - Analytics and standings calculated
 
 **Frontend State**:
-- Next.js 16 + React 19 + Tailwind v4
+- Next.js 16 + React 19.2 + Tailwind v4
+- 37+ pages organized by feature
 - Server Components for data fetching
-- AppLayout applied across all pages (homepage, admin, test pages)
-- Dashboard pages: players, teams, betting
+- AppLayout applied across all pages
+- Team visualization components (DvP, quadrant, calendar, analysis)
 - Full season-aware query integration
 
 **ETL Pipeline**:

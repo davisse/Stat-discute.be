@@ -4,12 +4,18 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
-import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, type TeamGameDay } from '@/components/teams'
+import { StadiumSpotlightHero } from '@/components/hero'
+import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, type TeamGameDay } from '@/components/teams'
 
 interface TeamStats {
   team_id: number
   abbreviation: string
   full_name: string
+  conference: 'East' | 'West'
+  conference_rank: number
+  wins: number
+  losses: number
+  streak: string
   pace: string
   ppg: string
   opp_ppg: string
@@ -125,28 +131,40 @@ export default function TeamPage() {
         {/* Team Stats */}
         {!isLoading && !error && teamStats && (
           <>
-            {/* Team Name with Logo Watermark */}
-            <div className="relative">
-              {/* Team Logo Watermark */}
-              <div
-                className="absolute -right-8 top-1/2 -translate-y-1/2 w-[400px] h-[400px] opacity-20 pointer-events-none"
-                style={{
-                  backgroundImage: `url(https://cdn.nba.com/logos/nba/${teamStats.team_id}/primary/L/logo.svg)`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  filter: 'brightness(1.2)',
-                }}
+            {/* Stadium Spotlight Hero Section */}
+            <div className="-mx-2 sm:mx-0 mb-6 sm:mb-8">
+              <StadiumSpotlightHero
+                teamId={teamStats.team_id}
+                abbreviation={teamStats.abbreviation}
+                fullName={teamStats.full_name}
+                conferenceRank={teamStats.conference_rank}
+                conference={teamStats.conference}
+                wins={teamStats.wins}
+                losses={teamStats.losses}
+                streak={teamStats.streak}
+                netRating={parseFloat(teamStats.ortg) - parseFloat(teamStats.drtg)}
               />
-
-              {/* Team Name as Title */}
-              <h1 className="text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-tighter leading-[0.9] text-white relative z-10">
-                {teamStats.full_name}
-              </h1>
-
-              {/* Team Abbreviation */}
-              <p className="mt-4 text-2xl text-zinc-500 font-mono relative z-10">{teamStats.abbreviation}</p>
             </div>
+
+            {/* Season Calendar / Journey */}
+            {teamGames.length > 0 && (
+              <div className="-mx-2 sm:mx-0 mb-6 sm:mb-8">
+                <TeamPresenceCalendar
+                  games={teamGames}
+                  seasonStart="2025-10-22"
+                  seasonEnd="2026-04-13"
+                  teamAbbr={teamStats.abbreviation}
+                  fullSize={true}
+                />
+              </div>
+            )}
+
+            {/* Point Differential Chart */}
+            {teamGames.length > 0 && (
+              <div className="-mx-2 sm:mx-0 mb-6 sm:mb-8">
+                <TeamPointDiffChart games={teamGames} />
+              </div>
+            )}
 
             {/* Team Stats Grid - Compact */}
             <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0 grid gap-2 sm:gap-3">
@@ -229,10 +247,9 @@ export default function TeamPage() {
               </div>
             )}
 
-            {/* Historic Scoring Charts */}
+            {/* Scoring Trend Chart */}
             {teamGames.length > 0 && (
-              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0 grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-4">
-                <TeamPointDiffChart games={teamGames} />
+              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
                 <TeamScoringTrendChart games={teamGames} />
               </div>
             )}
@@ -245,18 +262,13 @@ export default function TeamPage() {
               />
             </div>
 
-            {/* Season Calendar */}
-            {teamGames.length > 0 && (
-              <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
-                <TeamPresenceCalendar
-                  games={teamGames}
-                  seasonStart="2025-10-22"
-                  seasonEnd="2026-04-13"
-                  teamAbbr={teamStats.abbreviation}
-                  fullSize={true}
-                />
-              </div>
-            )}
+            {/* Team Analysis (French narrative) */}
+            <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
+              <TeamAnalysis
+                teamId={teamStats.team_id}
+                teamAbbreviation={teamStats.abbreviation}
+              />
+            </div>
           </>
         )}
       </div>

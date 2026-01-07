@@ -102,6 +102,12 @@ function NavDropdown({
   )
 }
 
+interface AppLayoutProps {
+  children: React.ReactNode
+  /** Hide the header for full-screen hero sections */
+  hideHeader?: boolean
+}
+
 /**
  * AppLayout Component
  *
@@ -111,7 +117,7 @@ function NavDropdown({
  * - Navigation horizontale avec dropdowns (desktop)
  * - Menu burger (mobile)
  */
-export function AppLayout({ children }: { children: React.ReactNode }) {
+export function AppLayout({ children, hideHeader = false }: AppLayoutProps) {
   const pathname = usePathname()
   const { user, isLoading, isAuthenticated, logout } = useAuth()
   const [openSection, setOpenSection] = useState<string | null>(null)
@@ -160,13 +166,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         }}
       />
 
-      {/* Burger Menu - Mobile Only */}
-      <div className="lg:hidden">
-        <BurgerMenu />
-      </div>
+      {/* Burger Menu - Mobile Only (hidden when hideHeader) */}
+      {!hideHeader && (
+        <div className="lg:hidden">
+          <BurgerMenu />
+        </div>
+      )}
 
-      {/* Header fixe avec logo et navbar */}
-      <header ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-black lg:bg-black/90 lg:backdrop-blur-md border-b border-zinc-800/50">
+      {/* Header fixe avec logo et navbar (hidden when hideHeader) */}
+      <header ref={navRef} className={cn(
+        "fixed top-0 left-0 right-0 z-50 bg-black lg:bg-black/90 lg:backdrop-blur-md border-b border-zinc-800/50 transition-transform duration-300",
+        hideHeader && "-translate-y-full"
+      )}>
         {/* Navigation horizontale - Desktop only */}
         <nav
           className="hidden lg:flex justify-between items-center py-4 px-6 relative"
@@ -263,7 +274,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Contenu principal avec padding-top pour compenser le header fixe */}
-      <main className="relative z-10 pt-16 lg:pt-20">
+      <main className={cn(
+        "relative z-10",
+        hideHeader ? "pt-0" : "pt-16 lg:pt-20"
+      )}>
         {children}
       </main>
     </div>

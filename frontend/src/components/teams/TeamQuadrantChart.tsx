@@ -363,13 +363,11 @@ export function TeamQuadrantChart({
       const x = ((xVal - stats.minX) / (stats.maxX - stats.minX)) * 100
 
       // Y position - CSS top:0% is at TOP, top:100% is at BOTTOM
+      // We always want: labelHigh at visual TOP, labelLow at visual BOTTOM
+      // Without flip: high value → high% → top:high% → BOTTOM (wrong)
+      // With flip: high value → high% → flip → low% → top:low% → TOP (correct)
       let y = ((yVal - stats.minY) / (stats.maxY - stats.minY)) * 100
-      // For inverted metrics (opp_ppg, drtg, std_dev): lower is better, should be at BOTTOM
-      // For non-inverted metrics (net_rtg): higher is better, should be at TOP
-      if (scenario.yAxis.inverted) {
-        y = 100 - y // Flip: low values → bottom, high values → top
-      }
-      // For non-inverted (net_rtg): high values already at low y%, which means top:low% = near TOP ✓
+      y = 100 - y // Always flip: high values → TOP, low values → BOTTOM
 
       return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) }
     },
@@ -380,9 +378,7 @@ export function TeamQuadrantChart({
   const centerLines = React.useMemo(() => {
     const avgX = ((stats.avgX - stats.minX) / (stats.maxX - stats.minX)) * 100
     let avgY = ((stats.avgY - stats.minY) / (stats.maxY - stats.minY)) * 100
-    if (scenario.yAxis.inverted) {
-      avgY = 100 - avgY // Same flip as getPosition for consistency
-    }
+    avgY = 100 - avgY // Same flip as getPosition for consistency
     return { x: avgX, y: avgY }
   }, [stats, scenario])
 
@@ -505,13 +501,13 @@ export function TeamQuadrantChart({
         className
       )}
     >
-      {/* Component Title - Cinematic */}
-      <div className="mb-4 sm:mb-6 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+      {/* Cinematic Header */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
           QUADRANT
         </h2>
-        <p className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] uppercase mt-1">
-          Team Analysis
+        <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+          Analyse des Équipes
         </p>
       </div>
 

@@ -68,30 +68,54 @@ export function TeamPointDiffChart({ games, className = '' }: TeamPointDiffChart
 
   if (chartData.length === 0) {
     return (
-      <div className={`p-4 bg-zinc-900/50 border border-zinc-800 rounded-lg ${className}`}>
-        <p className="text-zinc-500 text-sm text-center">Aucune donnée disponible</p>
+      <div className={`bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 sm:p-8 ${className}`}>
+        <div className="text-center mb-6">
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+            MOMENTUM
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+            Écart de Points par Match
+          </p>
+        </div>
+        <p className="text-zinc-500 text-sm text-center py-8">Aucune donnée disponible</p>
       </div>
     )
   }
 
   return (
-    <div className={`p-3 sm:p-4 bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg ${className}`}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2">
-        <h3 className="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-500">
-          Écart de points par match
-        </h3>
+    <div className={`bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 sm:p-8 ${className}`}>
+      {/* Cinematic Header */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+          MOMENTUM
+        </h2>
+        <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+          Écart de Points par Match
+        </p>
+
+        {/* Stats Pills */}
         {stats && (
-          <div className="flex gap-3 sm:gap-4 text-[10px] sm:text-xs">
-            <span className="text-emerald-400">{stats.wins}W</span>
-            <span className="text-red-400">{stats.losses}L</span>
-            <span className={stats.avgDiff >= 0 ? 'text-emerald-400' : 'text-red-400'}>
-              Moy: {stats.avgDiff >= 0 ? '+' : ''}{stats.avgDiff.toFixed(1)}
-            </span>
+          <div className="flex justify-center gap-3 sm:gap-4 mt-4">
+            <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+              <span className="text-emerald-400 text-sm font-bold">{stats.wins}W</span>
+            </div>
+            <div className="px-3 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
+              <span className="text-red-400 text-sm font-bold">{stats.losses}L</span>
+            </div>
+            <div className={`px-3 py-1.5 rounded-full ${
+              stats.avgDiff >= 0
+                ? 'bg-emerald-500/10 border border-emerald-500/30'
+                : 'bg-red-500/10 border border-red-500/30'
+            }`}>
+              <span className={`text-sm font-bold font-mono ${stats.avgDiff >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                {stats.avgDiff >= 0 ? '+' : ''}{stats.avgDiff.toFixed(1)} MOY
+              </span>
+            </div>
           </div>
         )}
       </div>
 
-      <div className="h-48 sm:h-64">
+      <div className="h-56 sm:h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
@@ -161,16 +185,25 @@ export function TeamPointDiffChart({ games, className = '' }: TeamPointDiffChart
         </ResponsiveContainer>
       </div>
 
-      {/* Legend */}
-      <div className="flex justify-center gap-4 mt-2 text-[10px] text-zinc-500">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
-          <span>Victoire</span>
+      {/* Footer */}
+      <div className="mt-6 pt-5 border-t border-zinc-700/50">
+        <div className="flex justify-center gap-6 text-xs text-zinc-500">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-sm bg-emerald-500" />
+            <span>Victoire</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-sm bg-red-500" />
+            <span>Défaite</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-sm bg-red-500" />
-          <span>Défaite</span>
-        </div>
+        {stats && (
+          <p className="text-xs text-zinc-500 text-center mt-3">
+            Plus grande victoire: <span className="text-emerald-400 font-mono">+{stats.maxWin}</span>
+            {' '}&bull;{' '}
+            Plus lourde défaite: <span className="text-red-400 font-mono">{stats.maxLoss}</span>
+          </p>
+        )}
       </div>
     </div>
   )

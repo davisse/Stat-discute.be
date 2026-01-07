@@ -49,6 +49,7 @@ def main():
         'calculate_advanced_stats.py',
         'calculate_standings.py',
         'calculate_period_stats.py',  # Quarter & half averages
+        'generate_team_analysis.py',  # French narrative analysis (after standings)
         'refresh_materialized_views.py'
     ]
 

@@ -87,7 +87,7 @@ export default function LoginPage() {
                 required
                 autoComplete="email"
                 className="w-full px-4 py-3 bg-black border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all"
-                placeholder="admin@stat-discute.be"
+                placeholder="votre@email.com"
                 disabled={isSubmitting}
               />
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 required
                 autoComplete="current-password"
                 className="w-full px-4 py-3 bg-black border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all"
-                placeholder="Admin@StatDiscute2025!"
+                placeholder="••••••••"
                 disabled={isSubmitting}
               />
             </div>

@@ -346,8 +346,16 @@ export function TeamScoringTrendChart({ games, className = '' }: TeamScoringTren
   // ============================================
   if (chartData.length === 0) {
     return (
-      <div className={`p-4 bg-zinc-900/50 border border-zinc-800 rounded-lg ${className}`}>
-        <p className="text-zinc-500 text-sm text-center">Aucune donnée disponible</p>
+      <div className={`bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 sm:p-8 ${className}`}>
+        <div className="text-center mb-6">
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+            TENDANCES
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+            Évolution des Scores
+          </p>
+        </div>
+        <p className="text-zinc-500 text-sm text-center py-8">Aucune donnée disponible</p>
       </div>
     )
   }
@@ -356,29 +364,37 @@ export function TeamScoringTrendChart({ games, className = '' }: TeamScoringTren
   // MAIN RENDER
   // ============================================
   return (
-    <div className={`p-3 sm:p-4 bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg ${className}`}>
-      {/* ========== HEADER with Net Rating ========== */}
-      <div className="flex flex-col gap-2 mb-3 sm:mb-4">
-        <h3 className="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-500">
-          Évolution des scores
-        </h3>
+    <div className={`bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 sm:p-8 ${className}`}>
+      {/* Cinematic Header */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+          TENDANCES
+        </h2>
+        <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+          Évolution des Scores
+        </p>
+
+        {/* Stats Pills */}
         {seasonStats && (
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            {/* Net Rating Badge */}
-            <div className={`px-2 py-0.5 rounded-full text-xs font-mono font-medium ${
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-4">
+            <div className={`px-3 py-1.5 rounded-full ${
               seasonStats.netRating >= 0
-                ? 'bg-emerald-500/20 text-emerald-400'
-                : 'bg-red-500/20 text-red-400'
+                ? 'bg-emerald-500/10 border border-emerald-500/30'
+                : 'bg-red-500/10 border border-red-500/30'
             }`}>
-              Net: {seasonStats.netRating >= 0 ? '+' : ''}{seasonStats.netRating.toFixed(1)}
+              <span className={`text-sm font-bold font-mono ${seasonStats.netRating >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                Net: {seasonStats.netRating >= 0 ? '+' : ''}{seasonStats.netRating.toFixed(1)}
+              </span>
             </div>
-            {/* Trend Arrow */}
-            <div className="text-xs text-zinc-400">
-              {getTrendArrow(seasonStats.last5Trend)} L5
+            <div className="px-3 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-full">
+              <span className="text-zinc-300 text-sm font-bold">
+                {getTrendArrow(seasonStats.last5Trend)} L5
+              </span>
             </div>
-            {/* Record */}
-            <div className="text-xs font-mono text-zinc-300">
-              {seasonStats.wins}-{seasonStats.losses}
+            <div className="px-3 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-full">
+              <span className="text-zinc-300 text-sm font-bold font-mono">
+                {seasonStats.wins}-{seasonStats.losses}
+              </span>
             </div>
           </div>
         )}

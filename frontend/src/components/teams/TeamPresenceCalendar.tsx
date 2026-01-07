@@ -252,52 +252,68 @@ export function TeamPresenceCalendar({
 
   return (
     <div ref={containerRef} className={cn(containerClass, className)}>
-      {/* Header - Cinematic Title */}
-      <div className={`${fullSize ? 'mb-6' : 'mb-4'}`}>
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
-              Season Journey
-            </h2>
-            <p className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] uppercase mt-1">
-              {wins}W-{losses}L • {totalGames} Games Played
-            </p>
+      {/* Cinematic Header */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+          PARCOURS
+        </h2>
+        <p className="text-zinc-400 text-sm sm:text-base tracking-[0.2em] uppercase mt-2">
+          Calendrier de la Saison
+        </p>
+
+        {/* Stats Pills */}
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-4">
+          <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+            <span className="text-emerald-400 text-sm font-bold">{wins}W</span>
           </div>
-          <div className={`flex items-center gap-4 ${fullSize ? 'gap-5' : 'gap-3'}`}>
-            <span className={legendBadgeClass}>
-              <span className={`${legendSquareClass} bg-emerald-600`} />
-              Win
-            </span>
-            <span className={legendBadgeClass}>
-              <span className={`${legendSquareClass} bg-red-600`} />
-              Loss
-            </span>
-            <span className={legendBadgeClass}>
-              <span
-                className={legendSquareClass}
-                style={{
-                  border: '1px solid rgba(255, 255, 255, 0.6)',
-                  background: `repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(255, 255, 255, 0.15) 2px,
-                    rgba(255, 255, 255, 0.15) 4px
-                  )`
-                }}
-              />
-              This Week
-            </span>
-            <span className={legendBadgeClass}>
-              <span className={`${legendSquareClass} bg-zinc-900/50 border border-zinc-800`} />
-              Rest
-            </span>
-            <span className={legendBadgeClass}>
-              <span className={`${legendSquareClass} bg-zinc-800 ring-2 ring-amber-400 ring-offset-1 ring-offset-black`} />
-              Today
-            </span>
+          <div className="px-3 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
+            <span className="text-red-400 text-sm font-bold">{losses}L</span>
           </div>
+          <div className="px-3 py-1.5 bg-zinc-800/50 border border-zinc-700 rounded-full">
+            <span className="text-zinc-300 text-sm font-bold font-mono">{totalGames} matchs</span>
+          </div>
+          {upcomingGames.length > 0 && (
+            <div className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-full">
+              <span className="text-amber-400 text-sm font-bold">{upcomingGames.length} à venir</span>
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* Legend Row */}
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+        <span className={legendBadgeClass}>
+          <span className={`${legendSquareClass} bg-emerald-600`} />
+          Victoire
+        </span>
+        <span className={legendBadgeClass}>
+          <span className={`${legendSquareClass} bg-red-600`} />
+          Défaite
+        </span>
+        <span className={legendBadgeClass}>
+          <span
+            className={legendSquareClass}
+            style={{
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              background: `repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.15) 2px,
+                rgba(255, 255, 255, 0.15) 4px
+              )`
+            }}
+          />
+          Cette semaine
+        </span>
+        <span className={legendBadgeClass}>
+          <span className={`${legendSquareClass} bg-zinc-900/50 border border-zinc-800`} />
+          Repos
+        </span>
+        <span className={legendBadgeClass}>
+          <span className={`${legendSquareClass} bg-zinc-800 ring-2 ring-amber-400 ring-offset-1 ring-offset-black`} />
+          Aujourd'hui
+        </span>
       </div>
 
       {/* Calendar Grid */}

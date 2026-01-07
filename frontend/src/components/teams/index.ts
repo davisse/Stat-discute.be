@@ -11,3 +11,6 @@ export { DefenseVsPositionHeatmap } from './DefenseVsPositionHeatmap'
 export { DvPRadarChart, type DvPRadarData, type DvPRadarChartProps } from './DvPRadarChart'
 export { DvPPositionBars, type DvPBarData, type DvPPositionBarsProps } from './DvPPositionBars'
 export { DvPTeamProfile, type DvPTeamProfileProps } from './DvPTeamProfile'
+
+// Team Analysis (French narrative analysis)
+export { TeamAnalysis, type TeamAnalysisProps } from './TeamAnalysis'

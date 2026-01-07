@@ -530,6 +530,10 @@ export async function getTeamDetailedStats(teamId: number) {
       t.abbreviation,
       t.full_name,
       ts.conference,
+      COALESCE(ts.conference_rank, 15) as conference_rank,
+      COALESCE(ts.wins, 0) as wins,
+      COALESCE(ts.losses, 0) as losses,
+      COALESCE(ts.streak, '-') as streak,
       (SELECT COUNT(*) FROM team_games) as games_played,
       ROUND((SELECT AVG(team_score) FROM team_games), 1) as ppg,
       ROUND((SELECT AVG(opp_score) FROM team_games), 1) as opp_ppg,
@@ -550,7 +554,7 @@ export async function getTeamDetailedStats(teamId: number) {
     FROM teams t
     LEFT JOIN team_standings ts ON t.team_id = ts.team_id AND ts.season_id = $2
     WHERE t.team_id = $1
-    GROUP BY t.team_id, t.abbreviation, t.full_name, ts.conference
+    GROUP BY t.team_id, t.abbreviation, t.full_name, ts.conference, ts.conference_rank, ts.wins, ts.losses, ts.streak
   `, [teamId, currentSeason])
 
   return result.rows[0] || null
@@ -2275,5 +2279,48 @@ export async function getDefenseVsPositionHeatmap(): Promise<DvPHeatmapData> {
       avg_points: parseFloat(r.avg_points)
     })),
     positions
+  }
+}
+
+// ============================================
+// Team Analysis Queries
+// ============================================
+
+export interface TeamAnalysis {
+  analysis_data: Record<string, unknown>
+  analysis_html: string
+  generated_at: string
+  games_included: number
+}
+
+/**
+ * Get team analysis for a specific team
+ * Returns the most recent French narrative analysis
+ */
+export async function getTeamAnalysis(teamId: number): Promise<TeamAnalysis | null> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      analysis_data,
+      analysis_html,
+      generated_at,
+      games_included
+    FROM team_analysis
+    WHERE team_id = $1 AND season = $2
+    ORDER BY generated_at DESC
+    LIMIT 1
+  `, [teamId, currentSeason])
+
+  if (result.rows.length === 0) {
+    return null
+  }
+
+  const row = result.rows[0]
+  return {
+    analysis_data: row.analysis_data,
+    analysis_html: row.analysis_html,
+    generated_at: row.generated_at,
+    games_included: parseInt(row.games_included)
   }
 }
