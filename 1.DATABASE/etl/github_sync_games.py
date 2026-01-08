@@ -18,6 +18,17 @@ import pandas as pd
 # Configuration
 SEASON = '2025-26'
 SEASON_START = datetime(2025, 10, 20)
+MAX_RETRIES = 3
+RETRY_DELAY = 10  # seconds
+
+# Custom headers for NBA API
+CUSTOM_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'Referer': 'https://www.nba.com/',
+    'Origin': 'https://www.nba.com',
+    'Accept': 'application/json',
+    'Accept-Language': 'en-US,en;q=0.9',
+}
 
 def escape_sql(value):
     """Escape single quotes for SQL"""
@@ -27,23 +38,39 @@ def escape_sql(value):
         return "'" + value.replace("'", "''") + "'"
     return str(value)
 
+def fetch_games_with_retry():
+    """Fetch games with retry logic"""
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            print(f"-- Attempt {attempt}/{MAX_RETRIES}...", file=sys.stderr)
+            gamefinder = leaguegamefinder.LeagueGameFinder(
+                season_nullable=SEASON,
+                league_id_nullable='00',
+                season_type_nullable='Regular Season',
+                headers=CUSTOM_HEADERS,
+                timeout=60  # Longer timeout
+            )
+            return gamefinder.get_data_frames()[0]
+        except Exception as e:
+            print(f"-- Attempt {attempt} failed: {e}", file=sys.stderr)
+            if attempt < MAX_RETRIES:
+                print(f"-- Retrying in {RETRY_DELAY} seconds...", file=sys.stderr)
+                time.sleep(RETRY_DELAY)
+            else:
+                raise
+
 def main():
     print("-- GitHub Actions: NBA Games Sync", file=sys.stderr)
     print(f"-- Season: {SEASON}", file=sys.stderr)
     print(f"-- Started: {datetime.now().isoformat()}", file=sys.stderr)
 
-    # Fetch games from NBA API
+    # Fetch games from NBA API with retry
     print(f"-- Fetching games from NBA API...", file=sys.stderr)
 
     try:
-        gamefinder = leaguegamefinder.LeagueGameFinder(
-            season_nullable=SEASON,
-            league_id_nullable='00',
-            season_type_nullable='Regular Season'
-        )
-        games_df = gamefinder.get_data_frames()[0]
+        games_df = fetch_games_with_retry()
     except Exception as e:
-        print(f"-- ERROR: Failed to fetch games: {e}", file=sys.stderr)
+        print(f"-- ERROR: Failed to fetch games after {MAX_RETRIES} attempts: {e}", file=sys.stderr)
         sys.exit(1)
 
     if games_df.empty:
