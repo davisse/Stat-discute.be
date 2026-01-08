@@ -11,16 +11,30 @@ Usage:
 
 import sys
 import time
+import requests
 from datetime import datetime, timedelta
-from nba_api.stats.endpoints import leaguegamefinder
 import pandas as pd
 
 # Configuration
 SEASON = '2025-26'
 SEASON_START = datetime(2025, 10, 20)
-NBA_API_TIMEOUT = 120  # Increased timeout for reliability
+NBA_API_TIMEOUT = 60
 MAX_RETRIES = 3
-RETRY_DELAY = 10  # seconds
+RETRY_DELAY = 5  # seconds
+
+# Use CDN endpoint (more reliable than stats.nba.com)
+CDN_SCHEDULE_URL = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json"
+
+# Required headers
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0',
+    'Accept': 'application/json',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Referer': 'https://www.nba.com/',
+    'Origin': 'https://www.nba.com'
+}
 
 def escape_sql(value):
     """Escape single quotes for SQL"""
@@ -30,88 +44,115 @@ def escape_sql(value):
         return "'" + value.replace("'", "''") + "'"
     return str(value)
 
-def main():
-    print("-- GitHub Actions: NBA Games Sync", file=sys.stderr)
-    print(f"-- Season: {SEASON}", file=sys.stderr)
-    print(f"-- Started: {datetime.now().isoformat()}", file=sys.stderr)
-
-    # Fetch games from NBA API with retry logic
-    print(f"-- Fetching games from NBA API (timeout={NBA_API_TIMEOUT}s)...", file=sys.stderr)
-
-    games_df = None
+def fetch_schedule_from_cdn():
+    """Fetch game schedule from CDN endpoint with retry logic"""
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            print(f"-- Attempt {attempt}/{MAX_RETRIES}...", file=sys.stderr)
-            gamefinder = leaguegamefinder.LeagueGameFinder(
-                season_nullable=SEASON,
-                league_id_nullable='00',
-                season_type_nullable='Regular Season',
-                timeout=NBA_API_TIMEOUT
-            )
-            games_df = gamefinder.get_data_frames()[0]
+            print(f"-- Attempt {attempt}/{MAX_RETRIES} fetching from CDN...", file=sys.stderr)
+            response = requests.get(CDN_SCHEDULE_URL, headers=HEADERS, timeout=NBA_API_TIMEOUT)
+            response.raise_for_status()
+            data = response.json()
             print(f"-- Success on attempt {attempt}", file=sys.stderr)
-            break
+            return data
         except Exception as e:
             print(f"-- Attempt {attempt} failed: {e}", file=sys.stderr)
             if attempt < MAX_RETRIES:
                 print(f"-- Waiting {RETRY_DELAY}s before retry...", file=sys.stderr)
                 time.sleep(RETRY_DELAY)
-            else:
-                print(f"-- ERROR: All {MAX_RETRIES} attempts failed", file=sys.stderr)
-                sys.exit(1)
+    return None
 
-    if games_df.empty:
+def main():
+    print("-- GitHub Actions: NBA Games Sync", file=sys.stderr)
+    print(f"-- Season: {SEASON}", file=sys.stderr)
+    print(f"-- Started: {datetime.now().isoformat()}", file=sys.stderr)
+
+    # Fetch schedule from CDN
+    print(f"-- Fetching schedule from CDN (timeout={NBA_API_TIMEOUT}s)...", file=sys.stderr)
+
+    schedule_data = fetch_schedule_from_cdn()
+    if not schedule_data:
+        print(f"-- ERROR: Failed to fetch schedule from CDN", file=sys.stderr)
+        sys.exit(1)
+
+    # Parse games from schedule
+    games = []
+    try:
+        league_schedule = schedule_data.get('leagueSchedule', {})
+        schedule_season = league_schedule.get('seasonYear', '')
+        game_dates = league_schedule.get('gameDates', [])
+
+        print(f"-- Schedule season: {schedule_season}", file=sys.stderr)
+
+        for game_date_obj in game_dates:
+            # Parse date from "MM/DD/YYYY HH:MM:SS" format
+            raw_date = game_date_obj.get('gameDate', '')
+            try:
+                # Handle "10/02/2025 00:00:00" format
+                parsed_date = datetime.strptime(raw_date.split()[0], '%m/%d/%Y')
+                game_date = parsed_date.strftime('%Y-%m-%d')
+            except:
+                # Try ISO format as fallback
+                game_date = raw_date[:10]
+
+            for game in game_date_obj.get('games', []):
+                game_id = game.get('gameId', '')
+                home_team = game.get('homeTeam', {})
+                away_team = game.get('awayTeam', {})
+
+                # Only include regular season games (gameId starts with '002')
+                if not game_id.startswith('002'):
+                    continue
+
+                games.append({
+                    'game_id': game_id,
+                    'game_date': game_date,
+                    'home_team_id': home_team.get('teamId'),
+                    'away_team_id': away_team.get('teamId'),
+                    'home_score': home_team.get('score'),
+                    'away_score': away_team.get('score'),
+                    'game_status': 'Final' if game.get('gameStatus') == 3 else 'Scheduled'
+                })
+
+        print(f"-- Parsed {len(games)} regular season games from schedule", file=sys.stderr)
+    except Exception as e:
+        print(f"-- ERROR: Failed to parse schedule: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    if not games:
         print(f"-- No games found for {SEASON}", file=sys.stderr)
         print("-- SQL output empty (no games to sync)")
         sys.exit(0)
 
     # Filter to current date + 7 days ahead
     current_date = datetime.now() + timedelta(days=7)
-    games_df['GAME_DATE'] = pd.to_datetime(games_df['GAME_DATE'])
-    games_df = games_df[games_df['GAME_DATE'] <= current_date]
+    current_date_str = current_date.strftime('%Y-%m-%d')
+    filtered_games = [g for g in games if g['game_date'] <= current_date_str]
 
-    unique_game_ids = games_df['GAME_ID'].unique()
-    print(f"-- Found {len(unique_game_ids)} unique games", file=sys.stderr)
+    print(f"-- Found {len(filtered_games)} games within date range", file=sys.stderr)
 
     # Output SQL header
     print("-- NBA Games Sync SQL")
     print(f"-- Generated: {datetime.now().isoformat()}")
     print(f"-- Season: {SEASON}")
-    print(f"-- Games: {len(unique_game_ids)}")
+    print(f"-- Games: {len(filtered_games)}")
     print("")
     print("BEGIN;")
     print("")
 
     # Process each game
-    processed = set()
-    for game_id in unique_game_ids:
-        if game_id in processed:
+    processed = 0
+    for game in filtered_games:
+        game_id = game['game_id']
+        game_date = game['game_date']
+        home_team_id = game['home_team_id']
+        away_team_id = game['away_team_id']
+        home_score = game['home_score'] if game['home_score'] else 'NULL'
+        away_score = game['away_score'] if game['away_score'] else 'NULL'
+        game_status = game['game_status']
+
+        # Skip games with missing team IDs
+        if not home_team_id or not away_team_id:
             continue
-        processed.add(game_id)
-
-        game_rows = games_df[games_df['GAME_ID'] == game_id]
-        if len(game_rows) != 2:
-            continue
-
-        # Determine home/away teams
-        home_row = game_rows[game_rows['MATCHUP'].str.contains(' vs. ')].iloc[0] if len(game_rows[game_rows['MATCHUP'].str.contains(' vs. ')]) > 0 else None
-        away_row = game_rows[game_rows['MATCHUP'].str.contains(' @ ')].iloc[0] if len(game_rows[game_rows['MATCHUP'].str.contains(' @ ')]) > 0 else None
-
-        if home_row is None or away_row is None:
-            continue
-
-        game_date = home_row['GAME_DATE'].strftime('%Y-%m-%d')
-        home_team_id = int(home_row['TEAM_ID'])
-        away_team_id = int(away_row['TEAM_ID'])
-        home_score = int(home_row['PTS']) if pd.notna(home_row['PTS']) else 'NULL'
-        away_score = int(away_row['PTS']) if pd.notna(away_row['PTS']) else 'NULL'
-
-        # Determine game status
-        wl = home_row.get('WL', None)
-        if pd.notna(wl) and wl in ['W', 'L']:
-            game_status = 'Final'
-        else:
-            game_status = 'Scheduled'
 
         # Output INSERT with ON CONFLICT
         print(f"""INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
@@ -122,10 +163,11 @@ ON CONFLICT (game_id) DO UPDATE SET
     game_status = EXCLUDED.game_status,
     updated_at = EXCLUDED.updated_at;""")
         print("")
+        processed += 1
 
     print("COMMIT;")
     print("")
-    print(f"-- Processed {len(processed)} games")
+    print(f"-- Processed {processed} games")
 
     print(f"-- Completed: {datetime.now().isoformat()}", file=sys.stderr)
 
