@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
 import { StadiumSpotlightHero } from '@/components/hero'
-import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, type TeamGameDay } from '@/components/teams'
+import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, ShotDistributionProfile, type TeamGameDay } from '@/components/teams'
 
 interface TeamStats {
   team_id: number
@@ -253,6 +253,14 @@ export default function TeamPage() {
                 <TeamScoringTrendChart games={teamGames} />
               </div>
             )}
+
+            {/* Shot Distribution Profile - How defense reshapes opponent shots */}
+            <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
+              <ShotDistributionProfile
+                teamId={teamStats.team_id}
+                teamAbbreviation={teamStats.abbreviation}
+              />
+            </div>
 
             {/* Defense vs Position Profile (Radar + Bars) */}
             <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">

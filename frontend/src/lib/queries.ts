@@ -2324,3 +2324,182 @@ export async function getTeamAnalysis(teamId: number): Promise<TeamAnalysis | nu
     games_included: parseInt(row.games_included)
   }
 }
+
+// ============================================
+// SHOT DISTRIBUTION PROFILE
+// ============================================
+
+export interface ShotDistributionPosition {
+  position: string
+  fga: number
+  fgm: number
+  fgPct: number
+  fgaPct: number
+  leagueAvgPct: number
+  deviation: number
+}
+
+export interface ShotDistributionData {
+  teamId: number
+  teamAbbreviation: string
+  gamesPlayed: number
+  profile: 'GUARDS-KILLER' | 'FORWARDS-FOCUSED' | 'CENTER-FOCUSED' | 'BALANCED'
+  positions: ShotDistributionPosition[]
+  insights: {
+    forcesTo: { position: string; deviation: number }[]
+    blocksFrom: { position: string; deviation: number }[]
+    bettingTip: string
+  }
+}
+
+/**
+ * Get shot distribution profile for a specific team
+ * Shows how the defense forces opponents to redistribute their shots by position
+ */
+export async function getTeamShotDistribution(teamId: number): Promise<ShotDistributionData | null> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    WITH team_position_shots AS (
+      SELECT
+        t.team_id,
+        t.abbreviation,
+        p.position,
+        SUM(pgs.fg_attempted) as fga,
+        SUM(pgs.fg_made) as fgm,
+        COUNT(DISTINCT g.game_id) as games
+      FROM teams t
+      JOIN games g ON (g.home_team_id = t.team_id OR g.away_team_id = t.team_id)
+      JOIN player_game_stats pgs ON g.game_id = pgs.game_id AND pgs.team_id != t.team_id
+      JOIN players p ON pgs.player_id = p.player_id
+      WHERE g.season = $1 AND g.game_status = 'Final'
+        AND p.position IN ('PG', 'SG', 'SF', 'PF', 'C')
+        AND t.team_id = $2
+      GROUP BY t.team_id, t.abbreviation, p.position
+    ),
+    team_totals AS (
+      SELECT team_id, SUM(fga) as total_fga, MAX(games) as games_played
+      FROM team_position_shots
+      GROUP BY team_id
+    ),
+    league_position_totals AS (
+      SELECT
+        p.position,
+        SUM(pgs.fg_attempted) as total_fga
+      FROM player_game_stats pgs
+      JOIN games g ON pgs.game_id = g.game_id
+      JOIN players p ON pgs.player_id = p.player_id
+      WHERE g.season = $1 AND g.game_status = 'Final'
+        AND p.position IN ('PG', 'SG', 'SF', 'PF', 'C')
+      GROUP BY p.position
+    ),
+    league_total AS (
+      SELECT SUM(total_fga) as grand_total FROM league_position_totals
+    ),
+    league_avg AS (
+      SELECT
+        lpt.position,
+        ROUND(lpt.total_fga::numeric / lt.grand_total * 100, 1) as avg_pct
+      FROM league_position_totals lpt
+      CROSS JOIN league_total lt
+    )
+    SELECT
+      tps.team_id,
+      tps.abbreviation,
+      tt.games_played,
+      tps.position,
+      tps.fga,
+      tps.fgm,
+      ROUND(tps.fgm::numeric / NULLIF(tps.fga, 0) * 100, 1) as fg_pct,
+      ROUND(tps.fga::numeric / tt.total_fga * 100, 1) as fga_pct,
+      COALESCE(la.avg_pct, 20.0) as league_avg_pct,
+      ROUND(tps.fga::numeric / tt.total_fga * 100 - COALESCE(la.avg_pct, 20.0), 1) as deviation
+    FROM team_position_shots tps
+    JOIN team_totals tt ON tps.team_id = tt.team_id
+    LEFT JOIN league_avg la ON tps.position = la.position
+    ORDER BY
+      CASE tps.position
+        WHEN 'PG' THEN 1
+        WHEN 'SG' THEN 2
+        WHEN 'SF' THEN 3
+        WHEN 'PF' THEN 4
+        WHEN 'C' THEN 5
+      END
+  `, [currentSeason, teamId])
+
+  if (result.rows.length === 0) return null
+
+  const positions: ShotDistributionPosition[] = result.rows.map(row => ({
+    position: row.position,
+    fga: parseInt(row.fga),
+    fgm: parseInt(row.fgm),
+    fgPct: parseFloat(row.fg_pct) || 0,
+    fgaPct: parseFloat(row.fga_pct) || 0,
+    leagueAvgPct: parseFloat(row.league_avg_pct) || 20,
+    deviation: parseFloat(row.deviation) || 0
+  }))
+
+  // Determine profile
+  const profile = determineDefensiveProfile(positions)
+
+  // Generate insights
+  const insights = generateDefensiveInsights(positions, result.rows[0].abbreviation)
+
+  return {
+    teamId: parseInt(result.rows[0].team_id),
+    teamAbbreviation: result.rows[0].abbreviation,
+    gamesPlayed: parseInt(result.rows[0].games_played),
+    profile,
+    positions,
+    insights
+  }
+}
+
+function determineDefensiveProfile(positions: ShotDistributionPosition[]): 'GUARDS-KILLER' | 'FORWARDS-FOCUSED' | 'CENTER-FOCUSED' | 'BALANCED' {
+  const guards = positions.filter(p => ['PG', 'SG'].includes(p.position))
+  const forwards = positions.filter(p => ['SF', 'PF'].includes(p.position))
+  const center = positions.find(p => p.position === 'C')
+
+  const maxGuardDev = Math.max(...guards.map(p => Math.abs(p.deviation)), 0)
+  const maxForwardDev = Math.max(...forwards.map(p => Math.abs(p.deviation)), 0)
+  const centerDev = Math.abs(center?.deviation || 0)
+
+  if (maxGuardDev >= 2.5 && maxGuardDev > maxForwardDev && maxGuardDev > centerDev) {
+    return 'GUARDS-KILLER'
+  }
+  if (maxForwardDev >= 2.5 && maxForwardDev > maxGuardDev && maxForwardDev > centerDev) {
+    return 'FORWARDS-FOCUSED'
+  }
+  if (centerDev >= 2.5 && centerDev > maxGuardDev && centerDev > maxForwardDev) {
+    return 'CENTER-FOCUSED'
+  }
+  return 'BALANCED'
+}
+
+function generateDefensiveInsights(positions: ShotDistributionPosition[], abbr: string) {
+  const forcesTo = positions
+    .filter(p => p.deviation >= 2)
+    .sort((a, b) => b.deviation - a.deviation)
+    .map(p => ({ position: p.position, deviation: p.deviation }))
+
+  const blocksFrom = positions
+    .filter(p => p.deviation <= -2)
+    .sort((a, b) => a.deviation - b.deviation)
+    .map(p => ({ position: p.position, deviation: p.deviation }))
+
+  // Generate betting tip
+  let bettingTip = ''
+  if (forcesTo.length > 0) {
+    const forcedPositions = forcesTo.map(p => p.position).join(' et ')
+    bettingTip = `Miser sur les ${forcedPositions} contre ${abbr}. `
+  }
+  if (blocksFrom.length > 0) {
+    const blockedPositions = blocksFrom.map(p => p.position).join('/')
+    bettingTip += `Éviter les ${blockedPositions} (volume limité).`
+  }
+  if (!bettingTip) {
+    bettingTip = `Défense équilibrée, pas de matchup évident à exploiter.`
+  }
+
+  return { forcesTo, blocksFrom, bettingTip }
+}

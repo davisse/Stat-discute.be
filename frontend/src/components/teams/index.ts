@@ -14,3 +14,7 @@ export { DvPTeamProfile, type DvPTeamProfileProps } from './DvPTeamProfile'
 
 // Team Analysis (French narrative analysis)
 export { TeamAnalysis, type TeamAnalysisProps } from './TeamAnalysis'
+
+// Shot Distribution Profile (How defense reshapes opponent shot selection)
+export { ShotDistributionProfile, type ShotDistributionProfileProps } from './ShotDistributionProfile'
+export { ShotDistributionChart, type ShotDistributionChartProps } from './ShotDistributionChart'
