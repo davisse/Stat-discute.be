@@ -63,6 +63,14 @@ jobs:
           python 1.DATABASE/etl/github_sync_player_stats.py > /tmp/player_stats.sql
           echo "Player stats SQL generated: $(wc -l < /tmp/player_stats.sql) lines"
 
+      - name: Test SSH Connection
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          echo "Testing SSH connection..."
+          ssh -v $VPS_USER@$VPS_HOST "echo 'SSH connection successful'" 2>&1 | head -50
+
       - name: Import Games to Production
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
         env:
