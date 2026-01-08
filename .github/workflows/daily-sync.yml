@@ -63,21 +63,25 @@ jobs:
           python 1.DATABASE/etl/github_sync_player_stats.py > /tmp/player_stats.sql
           echo "Player stats SQL generated: $(wc -l < /tmp/player_stats.sql) lines"
 
-      - name: Test SSH Connection
+      - name: Copy SQL files to VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          echo "Testing SSH connection..."
-          ssh -v $VPS_USER@$VPS_HOST "echo 'SSH connection successful'" 2>&1 | head -50
+          echo "Copying SQL files to VPS..."
+          scp /tmp/games.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/games.sql
+          scp /tmp/player_stats.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/player_stats.sql
+          echo "Files copied successfully"
 
       - name: Import Games to Production
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/games.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/games.sql | docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}"
           echo "Games imported successfully"
 
       - name: Import Player Stats to Production
@@ -85,8 +89,9 @@ jobs:
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/player_stats.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/player_stats.sql | docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}"
           echo "Player stats imported successfully"
 
       - name: Run Analytics on Production
@@ -94,10 +99,12 @@ jobs:
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
           # Generate and run analytics SQL
           python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
-          ssh $VPS_USER@$VPS_HOST "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/analytics.sql
+          scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}"
           echo "Analytics calculated successfully"
 
       - name: Verify Sync
@@ -110,6 +117,15 @@ jobs:
             SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';
             SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';
           \""
+
+      - name: Cleanup SQL files on VPS
+        if: always()
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql" || true
 
       - name: Report Status
         if: always()
