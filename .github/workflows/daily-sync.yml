@@ -18,7 +18,8 @@ on:
 
 env:
   SEASON: '2025-26'
-  DB_NAME: 'statdiscute'
+  DB_NAME: 'nba_stats'
+  DB_USER: 'nba_admin'
   DB_CONTAINER: 'postgres'
 
 jobs:
@@ -82,7 +83,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/games.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U postgres -d ${{ env.DB_NAME }}"
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/games.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Games imported successfully"
 
       - name: Import Player Stats to Production
@@ -92,7 +93,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/player_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U postgres -d ${{ env.DB_NAME }}"
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/player_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Player stats imported successfully"
 
       - name: Run Analytics on Production
@@ -105,7 +106,7 @@ jobs:
           # Generate and run analytics SQL
           python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
           scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql
-          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U postgres -d ${{ env.DB_NAME }}"
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Analytics calculated successfully"
 
       - name: Verify Sync
@@ -113,7 +114,7 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "docker exec ${{ env.DB_CONTAINER }} psql -U postgres -d ${{ env.DB_NAME }} -c \"
+          ssh $VPS_USER@$VPS_HOST "docker exec ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -c \"
             SELECT 'Games: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}';
             SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';
             SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';
