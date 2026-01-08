@@ -1,0 +1,101 @@
+name: Daily NBA Data Sync
+
+on:
+  schedule:
+    # Run at 12:00 UTC (7:00 AM EST) - after all NBA games finish
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      sync_type:
+        description: 'Type of sync to run'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - games-only
+          - analytics-only
+
+env:
+  SEASON: '2025-26'
+
+jobs:
+  sync-nba-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: '1.DATABASE/etl/requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install nba_api pandas requests python-dotenv psycopg2-binary
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Fetch NBA Games and Generate SQL
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        run: |
+          python 1.DATABASE/etl/github_sync_games.py > /tmp/games.sql
+          echo "Games SQL generated: $(wc -l < /tmp/games.sql) lines"
+
+      - name: Fetch Player Stats and Generate SQL
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        run: |
+          python 1.DATABASE/etl/github_sync_player_stats.py > /tmp/player_stats.sql
+          echo "Player stats SQL generated: $(wc -l < /tmp/player_stats.sql) lines"
+
+      - name: Import Games to Production
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "docker exec -i postgres psql -U \$POSTGRES_USER -d statdiscute" < /tmp/games.sql
+          echo "Games imported successfully"
+
+      - name: Import Player Stats to Production
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "docker exec -i postgres psql -U \$POSTGRES_USER -d statdiscute" < /tmp/player_stats.sql
+          echo "Player stats imported successfully"
+
+      - name: Run Analytics on Production
+        if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        run: |
+          # Generate and run analytics SQL
+          python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "docker exec -i postgres psql -U \$POSTGRES_USER -d statdiscute" < /tmp/analytics.sql
+          echo "Analytics calculated successfully"
+
+      - name: Verify Sync
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "docker exec postgres psql -U \$POSTGRES_USER -d statdiscute -c \"
+              SELECT 'Games: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}';
+              SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';
+              SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';
+            \""
+
+      - name: Report Status
+        if: always()
+        run: |
+          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Season**: ${{ env.SEASON }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Sync Type**: ${{ github.event.inputs.sync_type || 'full' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
