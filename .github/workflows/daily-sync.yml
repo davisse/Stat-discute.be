@@ -64,14 +64,14 @@ jobs:
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "docker exec -i postgres psql -U \$POSTGRES_USER -d ${{ env.DB_NAME }}" < /tmp/games.sql
+            "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/games.sql
           echo "Games imported successfully"
 
       - name: Import Player Stats to Production
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "docker exec -i postgres psql -U \$POSTGRES_USER -d ${{ env.DB_NAME }}" < /tmp/player_stats.sql
+            "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/player_stats.sql
           echo "Player stats imported successfully"
 
       - name: Run Analytics on Production
@@ -80,13 +80,13 @@ jobs:
           # Generate and run analytics SQL
           python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "docker exec -i postgres psql -U \$POSTGRES_USER -d ${{ env.DB_NAME }}" < /tmp/analytics.sql
+            "docker exec -i postgres psql -U nba_admin -d ${{ env.DB_NAME }}" < /tmp/analytics.sql
           echo "Analytics calculated successfully"
 
       - name: Verify Sync
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "docker exec postgres psql -U \$POSTGRES_USER -d ${{ env.DB_NAME }} -c \"
+            "docker exec postgres psql -U nba_admin -d ${{ env.DB_NAME }} -c \"
               SELECT 'Games: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}';
               SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';
               SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';
