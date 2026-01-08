@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   // Form state - DEV: Prefilled for development convenience
   const [email, setEmail] = useState('admin@stat-discute.be')
-  const [password, setPassword] = useState('Admin@StatDiscute2025!')
+  const [password, setPassword] = useState('Admin123!')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
