@@ -6,6 +6,7 @@
  */
 
 import { query } from '@/lib/db'
+import type { TeamSearchResult, PlayerSearchResult, GameSearchResult } from '@/types/search'
 
 // ============================================
 // TYPES
@@ -3250,4 +3251,127 @@ export async function getTodayGamesWithOdds(): Promise<GameWithOdds[]> {
   `, [currentSeason])
 
   return result.rows as GameWithOdds[]
+}
+
+// ============================================
+// SEARCH FUNCTIONS
+// ============================================
+
+/**
+ * Get teams formatted for search (cached on client)
+ */
+export async function getTeamsForSearch(): Promise<TeamSearchResult[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      t.team_id,
+      t.abbreviation,
+      t.full_name,
+      t.city,
+      ts.conference,
+      COALESCE(ts.wins, 0) as wins,
+      COALESCE(ts.losses, 0) as losses,
+      COALESCE(ts.conference_rank, 0) as conference_rank
+    FROM teams t
+    LEFT JOIN team_standings ts ON t.team_id = ts.team_id AND ts.season_id = $1
+    ORDER BY t.full_name
+  `, [currentSeason])
+
+  return result.rows.map(row => ({
+    type: 'team' as const,
+    id: row.team_id,
+    title: row.full_name,
+    subtitle: row.city,
+    url: `/teams/${row.team_id}`,
+    abbreviation: row.abbreviation,
+    record: `${row.wins}-${row.losses}`,
+    conferenceRank: row.conference_rank || 0,
+    conference: row.conference || 'East'
+  }))
+}
+
+/**
+ * Search players by name for search bar (server-side, ILIKE search)
+ */
+export async function searchPlayersQuick(searchQuery: string): Promise<PlayerSearchResult[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      p.player_id,
+      p.full_name,
+      p.position,
+      t.abbreviation as team_abbreviation,
+      COALESCE(ROUND(AVG(pgs.points)::numeric, 1), 0) as ppg
+    FROM players p
+    JOIN player_game_stats pgs ON p.player_id = pgs.player_id
+    JOIN games g ON pgs.game_id = g.game_id
+    JOIN teams t ON pgs.team_id = t.team_id
+    WHERE g.season = $1
+      AND p.full_name ILIKE '%' || $2 || '%'
+    GROUP BY p.player_id, p.full_name, p.position, t.abbreviation
+    HAVING COUNT(pgs.game_id) >= 3
+    ORDER BY AVG(pgs.points) DESC NULLS LAST
+    LIMIT 10
+  `, [currentSeason, searchQuery])
+
+  return result.rows.map(row => ({
+    type: 'player' as const,
+    id: row.player_id,
+    title: row.full_name,
+    subtitle: row.position,
+    url: `/players/${row.player_id}`,
+    teamAbbreviation: row.team_abbreviation,
+    ppg: parseFloat(row.ppg) || 0,
+    position: row.position
+  }))
+}
+
+/**
+ * Search games by team name or abbreviation (server-side)
+ */
+export async function searchGames(searchQuery: string): Promise<GameSearchResult[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date,
+      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      TO_CHAR(g.game_date, 'DD/MM') as formatted_date,
+      ht.full_name as home_team,
+      ht.abbreviation as home_abbr,
+      at.full_name as away_team,
+      at.abbreviation as away_abbr,
+      DATE(g.game_date) = CURRENT_DATE as is_today
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    WHERE g.season = $1
+      AND g.game_date >= CURRENT_DATE
+      AND (
+        ht.full_name ILIKE '%' || $2 || '%'
+        OR at.full_name ILIKE '%' || $2 || '%'
+        OR ht.abbreviation ILIKE '%' || $2 || '%'
+        OR at.abbreviation ILIKE '%' || $2 || '%'
+      )
+    ORDER BY g.game_date ASC
+    LIMIT 5
+  `, [currentSeason, searchQuery])
+
+  return result.rows.map(row => ({
+    type: 'game' as const,
+    id: row.game_id,
+    title: `${row.away_team} @ ${row.home_team}`,
+    subtitle: row.is_today ? 'Aujourd\'hui' : row.formatted_date,
+    url: `/games/${row.game_id}`,
+    homeTeam: row.home_team,
+    homeAbbr: row.home_abbr,
+    awayTeam: row.away_team,
+    awayAbbr: row.away_abbr,
+    gameTime: row.game_time || '',
+    gameDate: row.formatted_date,
+    isToday: row.is_today
+  }))
 }
