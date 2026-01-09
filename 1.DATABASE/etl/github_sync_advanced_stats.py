@@ -87,16 +87,16 @@ SELECT
     pgs.game_id,
     pgs.player_id,
     pgs.team_id,
-    -- True Shooting % = PTS / (2 * (FGA + 0.44 * FTA))
+    -- True Shooting % = PTS / (2 * (FGA + 0.44 * FTA)) - capped at 99.9 for NUMERIC(5,3)
     CASE
         WHEN (pgs.fg_attempted + 0.44 * pgs.ft_attempted) > 0
-        THEN ROUND((pgs.points::numeric / (2 * (pgs.fg_attempted + 0.44 * pgs.ft_attempted))) * 100, 1)
+        THEN LEAST(99.9, ROUND((pgs.points::numeric / (2 * (pgs.fg_attempted + 0.44 * pgs.ft_attempted))) * 100, 1))
         ELSE NULL
     END as true_shooting_pct,
-    -- Effective FG% = (FGM + 0.5 * 3PM) / FGA
+    -- Effective FG% = (FGM + 0.5 * 3PM) / FGA - capped at 99.9 for NUMERIC(5,3)
     CASE
         WHEN pgs.fg_attempted > 0
-        THEN ROUND(((pgs.fg_made + 0.5 * pgs.fg3_made)::numeric / pgs.fg_attempted) * 100, 1)
+        THEN LEAST(99.9, ROUND(((pgs.fg_made + 0.5 * pgs.fg3_made)::numeric / pgs.fg_attempted) * 100, 1))
         ELSE NULL
     END as effective_fg_pct,
     -- Usage Rate = 100 * ((FGA + 0.44 * FTA + TOV) * (Team Minutes / 5)) / (Minutes * Team Possessions)
