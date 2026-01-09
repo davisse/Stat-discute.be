@@ -1,0 +1,81 @@
+name: Run Database Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration_file:
+        description: 'Migration file number (e.g., 018 for 018_fix_password_hashes.sql)'
+        required: true
+        default: '018'
+        type: string
+
+env:
+  DB_NAME: 'nba_stats'
+  DB_USER: 'nba_admin'
+  DB_CONTAINER: 'stat-discute-db'
+
+jobs:
+  run-migration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Find migration file
+        id: find_migration
+        run: |
+          MIGRATION_NUM="${{ github.event.inputs.migration_file }}"
+          MIGRATION_FILE=$(ls -1 1.DATABASE/migrations/${MIGRATION_NUM}*.sql 2>/dev/null | head -1)
+          if [ -z "$MIGRATION_FILE" ]; then
+            echo "Error: No migration file found matching ${MIGRATION_NUM}*.sql"
+            exit 1
+          fi
+          echo "migration_file=$MIGRATION_FILE" >> $GITHUB_OUTPUT
+          echo "Found migration file: $MIGRATION_FILE"
+
+      - name: Copy migration to VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          echo "Copying ${{ steps.find_migration.outputs.migration_file }} to VPS..."
+          scp "${{ steps.find_migration.outputs.migration_file }}" $VPS_USER@$VPS_HOST:$DEPLOY_PATH/migration.sql
+          echo "File copied successfully"
+
+      - name: Run migration
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          echo "Running migration..."
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/migration.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Migration complete!"
+
+      - name: Cleanup
+        if: always()
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/migration.sql" || true
+
+      - name: Report
+        run: |
+          echo "## Migration Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- **File**: ${{ steps.find_migration.outputs.migration_file }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: Success" >> $GITHUB_STEP_SUMMARY
