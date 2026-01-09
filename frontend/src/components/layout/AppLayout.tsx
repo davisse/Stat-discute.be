@@ -10,6 +10,7 @@ import BurgerMenu from '@/components/mobile/BurgerMenu'
 import { navSections, NavSection } from '@/lib/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTransitionReady } from '@/hooks/useTransitionReady'
+import { SearchBar, SearchModal, useSearch } from '@/components/search'
 
 /**
  * NavDropdown Component
@@ -122,6 +123,7 @@ export function AppLayout({ children, hideHeader = false }: AppLayoutProps) {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
   const [openSection, setOpenSection] = useState<string | null>(null)
   const navRef = useRef<HTMLElement>(null)
+  const search = useSearch()
 
   // Signal that the page is ready for reveal animation
   useTransitionReady()
@@ -230,6 +232,11 @@ export function AppLayout({ children, hideHeader = false }: AppLayoutProps) {
             })}
           </div>
 
+          {/* Search Bar - Between nav and auth */}
+          <div className="mx-4">
+            <SearchBar onClick={search.open} />
+          </div>
+
           {/* Auth Status - Right side */}
           <div className="w-48 flex items-center justify-end gap-3">
             {isLoading ? (
@@ -280,6 +287,9 @@ export function AppLayout({ children, hideHeader = false }: AppLayoutProps) {
       )}>
         {children}
       </main>
+
+      {/* Search Modal (uses Portal, renders at document.body) */}
+      <SearchModal search={search} />
     </div>
   )
 }

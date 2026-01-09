@@ -34,9 +34,10 @@
 50 6 * * * cd /app && /usr/local/bin/python3 etl/analytics/calculate_defensive_stats_by_position.py >> /app/logs/etl.log 2>&1
 
 # -----------------------------------------------------------------------------
-# Odds Pipeline - Every 10 minutes (live odds updates from Pinnacle)
+# Odds Pipeline - Every hour (reduced from 10 min to avoid Cloudflare rate limiting)
+# Error 1015 occurs with too frequent requests from same IP
 # -----------------------------------------------------------------------------
-*/10 * * * * cd /app && /usr/local/bin/python3 etl/betting/fetch_pinnacle_odds.py >> /app/logs/odds.log 2>&1
+0 * * * * cd /app && /usr/local/bin/python3 etl/betting/fetch_pinnacle_odds.py >> /app/logs/odds.log 2>&1
 
 # -----------------------------------------------------------------------------
 # Hourly updates during game days (Optional - uncomment if needed)

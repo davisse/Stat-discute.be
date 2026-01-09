@@ -24,7 +24,9 @@ Usage:
 
 import json
 import time
+import random
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Any
 from pathlib import Path
@@ -35,6 +37,24 @@ from urllib3.util.retry import Retry
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+# User-Agent rotation pool (realistic browser signatures)
+USER_AGENTS = [
+    # Chrome on macOS
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    # Chrome on Windows
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    # Firefox on macOS
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:133.0) Gecko/20100101 Firefox/133.0",
+    # Firefox on Windows
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
+    # Safari on macOS
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
+    # Edge on Windows
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+]
 
 
 class PinnacleSession:
@@ -52,27 +72,57 @@ class PinnacleSession:
     BASE_URL = "https://www.ps3838.com"
     API_BASE = f"{BASE_URL}/sports-service/sv/compact/events"
 
-    # Rate limiting
-    MIN_REQUEST_INTERVAL = 3.0  # Minimum seconds between requests
+    # Rate limiting - INCREASED to avoid Cloudflare 1015 errors
+    MIN_REQUEST_INTERVAL = 10.0  # Minimum seconds between requests (was 3.0)
+    MAX_JITTER = 5.0  # Random jitter added to interval (0-5 seconds)
     MAX_RETRIES = 3
-    RETRY_BACKOFF_BASE = 2
+    RETRY_BACKOFF_BASE = 3  # Increased from 2
+    CLOUDFLARE_BACKOFF = 300  # 5 minutes wait on Cloudflare 1015 error
 
     # Session expiration (conservative estimate)
     SESSION_LIFETIME_HOURS = 3
 
-    def __init__(self, session_file: str = 'pinnacle_session.json'):
+    # Browser-like headers to avoid fingerprinting detection
+    BROWSER_HEADERS = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9,fr;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Ch-Ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"macOS"',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+    }
+
+    def __init__(self, session_file: str = 'pinnacle_session.json', proxy: Optional[str] = None):
         """
         Initialize session manager.
 
         Args:
             session_file: Path to session persistence file
+            proxy: Optional HTTP/HTTPS proxy URL (e.g., 'http://user:pass@host:port')
+                   Can also be set via PINNACLE_PROXY environment variable
         """
         self.session_file = Path(session_file)
         self.session = requests.Session()
         self.auth_data = None
         self.last_request_time = None
+        self.cloudflare_blocked_until = None  # Track Cloudflare rate limit cooldown
 
-        # Configure retry strategy
+        # Configure proxy if provided
+        self.proxy = proxy or os.environ.get('PINNACLE_PROXY')
+        if self.proxy:
+            self.session.proxies = {
+                'http': self.proxy,
+                'https': self.proxy,
+            }
+            logger.info(f"🔀 Proxy configured: {self.proxy.split('@')[-1] if '@' in self.proxy else self.proxy}")
+
+        # Configure retry strategy with increased backoff
         retry_strategy = Retry(
             total=self.MAX_RETRIES,
             backoff_factor=self.RETRY_BACKOFF_BASE,
@@ -83,8 +133,20 @@ class PinnacleSession:
         self.session.mount("https://", adapter)
         self.session.mount("http://", adapter)
 
+        # Apply browser-like headers to avoid fingerprinting
+        self.session.headers.update(self.BROWSER_HEADERS)
+
+        # Set initial random User-Agent
+        self._rotate_user_agent()
+
         # Try to load existing session
         self.load_session()
+
+    def _rotate_user_agent(self):
+        """Rotate to a random User-Agent to avoid fingerprinting."""
+        ua = random.choice(USER_AGENTS)
+        self.session.headers['User-Agent'] = ua
+        logger.debug(f"User-Agent rotated: {ua[:50]}...")
 
     def load_session(self) -> bool:
         """
@@ -180,17 +242,30 @@ class PinnacleSession:
         logger.info("✅ Session updated from external source")
 
     def _enforce_rate_limit(self):
-        """Enforce minimum time between requests."""
+        """
+        Enforce minimum time between requests with random jitter.
+        Also respects Cloudflare cooldown period if we were rate limited.
+        """
+        # Check if we're in Cloudflare cooldown
+        if self.cloudflare_blocked_until:
+            remaining = self.cloudflare_blocked_until - time.time()
+            if remaining > 0:
+                logger.warning(f"⏳ Cloudflare cooldown active, waiting {remaining:.0f}s...")
+                time.sleep(remaining)
+            self.cloudflare_blocked_until = None
+
+        # Enforce minimum interval with random jitter
         if self.last_request_time is not None:
             elapsed = time.time() - self.last_request_time
-            if elapsed < self.MIN_REQUEST_INTERVAL:
-                sleep_time = self.MIN_REQUEST_INTERVAL - elapsed
-                logger.debug(f"Rate limiting: sleeping {sleep_time:.1f}s")
+            min_wait = self.MIN_REQUEST_INTERVAL + random.uniform(0, self.MAX_JITTER)
+            if elapsed < min_wait:
+                sleep_time = min_wait - elapsed
+                logger.debug(f"Rate limiting: sleeping {sleep_time:.1f}s (with jitter)")
                 time.sleep(sleep_time)
 
     def _make_request(self, url: str, params: Optional[Dict] = None) -> Optional[Dict]:
         """
-        Make rate-limited request with retry logic.
+        Make rate-limited request with retry logic and anti-fingerprinting measures.
 
         Args:
             url: URL to fetch
@@ -201,35 +276,59 @@ class PinnacleSession:
         """
         self._enforce_rate_limit()
 
+        # Rotate User-Agent before each request to avoid fingerprinting
+        self._rotate_user_agent()
+
         try:
             logger.debug(f"Fetching: {url}")
-            response = self.session.get(url, params=params, timeout=10)
+            response = self.session.get(url, params=params, timeout=15)
             self.last_request_time = time.time()
 
+            # Check for Cloudflare 1015 error in response body (returns 403 with HTML)
+            if response.status_code == 403:
+                if 'Error 1015' in response.text or 'rate limited' in response.text.lower():
+                    logger.error(f"🚫 Cloudflare Error 1015 - Rate limited! Entering {self.CLOUDFLARE_BACKOFF}s cooldown")
+                    self.cloudflare_blocked_until = time.time() + self.CLOUDFLARE_BACKOFF
+                    return None
+                else:
+                    logger.error("❌ 403 Forbidden - Access denied (not rate limit)")
+                    return None
+
             if response.status_code == 200:
-                return response.json()
+                try:
+                    return response.json()
+                except json.JSONDecodeError:
+                    # Sometimes Cloudflare returns HTML even with 200 status
+                    if 'cloudflare' in response.text.lower() or 'Error 1015' in response.text:
+                        logger.error(f"🚫 Cloudflare protection detected in response body")
+                        self.cloudflare_blocked_until = time.time() + self.CLOUDFLARE_BACKOFF
+                    else:
+                        logger.error(f"JSON parse error, response: {response.text[:200]}")
+                    return None
+
             elif response.status_code == 401:
                 logger.error("❌ 401 Unauthorized - Session expired")
                 return None
-            elif response.status_code == 403:
-                logger.error("❌ 403 Forbidden - Access denied")
-                return None
             elif response.status_code == 429:
-                logger.warning("⚠️ 429 Rate limited by server")
-                time.sleep(60)  # Wait 1 minute
+                logger.warning("⚠️ 429 Rate limited by server - waiting 2 minutes")
+                time.sleep(120)  # Wait 2 minutes (increased from 1)
+                return None
+            elif response.status_code == 503:
+                logger.warning("⚠️ 503 Service unavailable (possibly Cloudflare challenge)")
+                self.cloudflare_blocked_until = time.time() + 60  # Wait 1 minute
                 return None
             else:
                 logger.warning(f"HTTP {response.status_code}: {response.text[:200]}")
                 return None
 
         except requests.exceptions.Timeout:
-            logger.warning("Request timeout")
+            logger.warning("⏱️ Request timeout (15s)")
+            return None
+        except requests.exceptions.ProxyError as e:
+            logger.error(f"❌ Proxy error: {e}")
             return None
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed: {e}")
-            return None
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON parse error: {e}")
+            logger.error(f"❌ Request failed: {e}")
             return None
 
     def get_upcoming_events(self, league_id: int = 487, sport_id: int = 4) -> List[Dict[str, Any]]:
