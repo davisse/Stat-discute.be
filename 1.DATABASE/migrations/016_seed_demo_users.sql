@@ -25,29 +25,39 @@
 --   2. Existing users (and their changed passwords) are NOT overwritten
 --   3. Safe to run multiple times (idempotent)
 
+-- IMPORTANT: These hashes were generated using the @node-rs/argon2 library
+-- with the same configuration as frontend/src/lib/auth/password.ts
+-- To regenerate: cd frontend && npx tsx scripts/generate-password-hashes.ts
+
 INSERT INTO users (email, password_hash, full_name, role, email_verified, is_active)
 VALUES (
     'admin@stat-discute.be',
     -- Hash verified working for password: Admin123!
-    '$argon2id$v=19$m=65536,t=3,p=4$/S57cLbT87s6s7nLOUejLA$G5gcHwpg7zcZPD0uoSAbS3l+ANofCQZjNzx8aGbA0vA',
+    -- Generated 2026-01-09 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
+    '$argon2id$v=19$m=65536,t=3,p=4$EY+SXQQZ3KOY0n51cUIlAQ$j64zXBTlZ0VoAwqD/VloE3QkhWuqRm2wirSxAisvmYI',
     'Administrator',
     'admin',
     true,
     true
 )
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    updated_at = NOW();
 
 INSERT INTO users (email, password_hash, full_name, role, email_verified, is_active)
 VALUES (
     'demo@stat-discute.be',
     -- Hash verified working for password: Demo123!
-    '$argon2id$v=19$m=65536,t=3,p=4$PRUFJWbhT0XV0bmBlsX3IQ$fEek4wPnbhZMehf4ov0+wP9q+bJQj4/tQDZj+F6Niog',
+    -- Generated 2026-01-09 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
+    '$argon2id$v=19$m=65536,t=3,p=4$5+2uhaKVOfAviHMsDK/kYA$qgLd7tG8c4qdFyWDaX57gCO2E9FcKV1wSvE0OxF+lYo',
     'Demo User',
     'user',
     true,
     true
 )
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    updated_at = NOW();
 
 -- ============================================
 -- VERIFICATION
