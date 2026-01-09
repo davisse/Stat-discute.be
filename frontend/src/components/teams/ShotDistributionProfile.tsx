@@ -3,19 +3,15 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getTeamColors } from '@/lib/team-colors'
-import { ShotDistributionChart } from './ShotDistributionChart'
-import { ChevronDown } from 'lucide-react'
+import { BarChart3, TrendingUp, TrendingDown, AlertCircle, Shield } from 'lucide-react'
 import type { ShotDistributionData, ShotDistributionPosition } from '@/lib/queries'
 
 /**
- * ShotDistributionProfile - Container component for Shot Distribution visualization
+ * ShotDistributionProfile - Compact Dual Cards Layout
  *
  * Shows how a defense forces opponents to redistribute their shots by position.
- * Complements DvPTeamProfile (efficiency) with a focus on shot DISTRIBUTION.
- *
- * Layout:
- * - Desktop (lg+): Side-by-side (Chart left, Insights right)
- * - Mobile: Stacked (Chart top, Insights bottom)
+ * Left: Distribution data with inline bars
+ * Right: Analysis (Forces To / Blocks From)
  */
 
 export interface ShotDistributionProfileProps {
@@ -24,28 +20,103 @@ export interface ShotDistributionProfileProps {
   className?: string
 }
 
-// Profile badge labels and emojis
-const PROFILE_CONFIG: Record<string, { label: string; emoji: string; description: string }> = {
+// Profile badge configuration
+const PROFILE_CONFIG: Record<string, { label: string; bgClass: string; textClass: string }> = {
   'GUARDS-KILLER': {
     label: 'Guards Killer',
-    emoji: '🎯',
-    description: 'Limite les tirs des guards',
+    bgClass: 'bg-green-500/20',
+    textClass: 'text-green-400',
   },
   'FORWARDS-FOCUSED': {
     label: 'Forwards Focused',
-    emoji: '🏋️',
-    description: 'Force le jeu vers les ailiers',
+    bgClass: 'bg-orange-500/20',
+    textClass: 'text-orange-400',
   },
   'CENTER-FOCUSED': {
     label: 'Center Focused',
-    emoji: '🗼',
-    description: 'Force le jeu vers le pivot',
+    bgClass: 'bg-purple-500/20',
+    textClass: 'text-purple-400',
   },
   'BALANCED': {
-    label: 'Balanced',
-    emoji: '⚖️',
-    description: 'Distribution équilibrée',
+    label: 'Équilibré',
+    bgClass: 'bg-zinc-500/20',
+    textClass: 'text-zinc-400',
   },
+}
+
+function ProfileBadge({ profile }: { profile: string }) {
+  const config = PROFILE_CONFIG[profile] || PROFILE_CONFIG['BALANCED']
+
+  return (
+    <span
+      className={cn(
+        'px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide',
+        config.bgClass,
+        config.textClass
+      )}
+    >
+      {config.label}
+    </span>
+  )
+}
+
+function PositionRow({
+  position,
+  teamColor,
+}: {
+  position: ShotDistributionPosition
+  teamColor: string
+}) {
+  const isForced = position.deviation >= 2
+  const isBlocked = position.deviation <= -2
+
+  return (
+    <div className="flex items-center gap-2 py-1">
+      {/* Position label */}
+      <span className="w-8 text-xs text-zinc-400 font-bold">{position.position}</span>
+
+      {/* Distribution bar */}
+      <div className="flex-1 h-4 bg-zinc-800 rounded overflow-hidden relative">
+        {/* Team bar */}
+        <div
+          className="absolute inset-y-0 left-0 rounded"
+          style={{
+            width: `${Math.min(position.fgaPct * 3, 100)}%`,
+            backgroundColor: teamColor,
+            opacity: 0.7,
+          }}
+        />
+        {/* League average line */}
+        <div
+          className="absolute inset-y-0 w-0.5 bg-white/50 z-10"
+          style={{
+            left: `${Math.min(position.leagueAvgPct * 3, 100)}%`,
+          }}
+        />
+        <span className="absolute inset-0 flex items-center px-1.5 text-[10px] font-mono text-white/90">
+          {position.fgaPct.toFixed(1)}%
+        </span>
+      </div>
+
+      {/* Deviation */}
+      <span
+        className={cn(
+          'w-12 text-right text-[10px] font-mono font-bold',
+          isForced && 'text-red-400',
+          isBlocked && 'text-emerald-400',
+          !isForced && !isBlocked && 'text-zinc-500'
+        )}
+      >
+        {position.deviation > 0 ? '+' : ''}
+        {position.deviation.toFixed(1)}
+      </span>
+
+      {/* Status indicator */}
+      {isForced && <AlertCircle className="w-3 h-3 text-red-400 flex-shrink-0" />}
+      {isBlocked && <Shield className="w-3 h-3 text-emerald-400 flex-shrink-0" />}
+      {!isForced && !isBlocked && <span className="w-3" />}
+    </div>
+  )
 }
 
 export function ShotDistributionProfile({
@@ -56,7 +127,6 @@ export function ShotDistributionProfile({
   const [data, setData] = React.useState<ShotDistributionData | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
-  const [tableExpanded, setTableExpanded] = React.useState(false)
 
   const teamColors = getTeamColors(teamAbbreviation)
 
@@ -85,10 +155,10 @@ export function ShotDistributionProfile({
   // Loading state
   if (isLoading) {
     return (
-      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-6', className)}>
-        <div className="flex items-center justify-center gap-3 text-zinc-500 py-12">
-          <div className="w-5 h-5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
-          <span>Loading shot distribution profile...</span>
+      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-4', className)}>
+        <div className="flex items-center justify-center gap-3 text-zinc-500 py-8">
+          <div className="w-4 h-4 border-2 border-zinc-500 border-t-amber-400 rounded-full animate-spin" />
+          <span className="text-sm">Chargement...</span>
         </div>
       </div>
     )
@@ -97,8 +167,11 @@ export function ShotDistributionProfile({
   // Error state
   if (error) {
     return (
-      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-6', className)}>
-        <p className="text-red-400 text-center py-8">{error}</p>
+      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-4', className)}>
+        <div className="text-center py-6">
+          <BarChart3 className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
+          <p className="text-sm text-zinc-400">{error}</p>
+        </div>
       </div>
     )
   }
@@ -106,65 +179,101 @@ export function ShotDistributionProfile({
   // No data state
   if (!data) {
     return (
-      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-6', className)}>
-        <p className="text-zinc-500 text-center py-8">No shot distribution data available</p>
+      <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl p-4', className)}>
+        <div className="text-center py-6">
+          <BarChart3 className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
+          <p className="text-sm text-zinc-500">Aucune donnée disponible</p>
+        </div>
       </div>
     )
   }
 
-  const profileConfig = PROFILE_CONFIG[data.profile] || PROFILE_CONFIG['BALANCED']
-
   return (
     <div className={cn('bg-zinc-900/50 border border-zinc-800 rounded-xl', className)}>
-      {/* Header Cinématique */}
-      <div className="text-center pt-6 pb-4 sm:pt-8 sm:pb-6 px-4">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-          SHOT DISTRIBUTION
-        </h2>
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white -mt-1">
-          PROFILE
-        </h3>
-        <p className="text-xs sm:text-sm tracking-[0.2em] uppercase text-zinc-400 mt-3">
-          How this defense reshapes opponent shot selection
-        </p>
-
-        {/* Badge Profil Défensif */}
-        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-zinc-800/80 border border-zinc-700 rounded-full">
-          <span className="text-lg">{profileConfig.emoji}</span>
-          <span className="text-sm font-bold tracking-wider text-white uppercase">
-            {profileConfig.label}
-          </span>
+      {/* Compact Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
+        <div>
+          <h2 className="text-lg sm:text-xl font-black tracking-tight text-white">
+            SHOT DISTRIBUTION
+          </h2>
+          <p className="text-[10px] tracking-[0.15em] uppercase text-zinc-500">
+            Comment cette défense redistribue les tirs adverses
+          </p>
         </div>
+        <ProfileBadge profile={data.profile} />
       </div>
 
-      {/* Content - Stack mobile, Side-by-side desktop */}
-      <div className="px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-6 lg:items-start">
-          {/* Chart - 7 colonnes sur desktop */}
-          <div className="lg:col-span-7">
-            <ShotDistributionChart
-              positions={data.positions}
-              teamColor={teamColors.primary}
-            />
+      {/* Dual Cards Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-zinc-800">
+        {/* Left: Distribution by Position */}
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <BarChart3 className="w-4 h-4" style={{ color: teamColors.primary }} />
+            <span className="text-xs font-bold uppercase tracking-wide text-white">
+              Distribution par position
+            </span>
+          </div>
+          <p className="text-[10px] text-zinc-500 mb-2">
+            Répartition des FGA adverses vs moyenne ligue
+          </p>
+
+          {/* Column headers */}
+          <div className="flex items-center gap-2 pb-1 mb-1 border-b border-zinc-800/50 text-[9px] text-zinc-600 uppercase tracking-wide">
+            <span className="w-8">Pos</span>
+            <span className="flex-1">FGA%</span>
+            <span className="w-12 text-right">vs Avg</span>
+            <span className="w-3"></span>
           </div>
 
-          {/* Insights - 5 colonnes sur desktop */}
-          <div className="lg:col-span-5 space-y-3">
+          <div className="space-y-0.5">
+            {data.positions.map((pos) => (
+              <PositionRow key={pos.position} position={pos} teamColor={teamColors.primary} />
+            ))}
+          </div>
+
+          {/* Legend */}
+          <div className="mt-3 pt-2 border-t border-zinc-800 flex items-center gap-4 text-[9px] text-zinc-500">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-2 rounded-sm" style={{ backgroundColor: teamColors.primary, opacity: 0.7 }} />
+              <span>FGA%</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-0.5 h-3 bg-white/50" />
+              <span>Moy. Ligue</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Defensive Analysis */}
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <Shield className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-bold uppercase tracking-wide text-white">
+              Analyse défensive
+            </span>
+          </div>
+          <p className="text-[10px] text-zinc-500 mb-3">
+            Impact sur la sélection de tirs adverses
+          </p>
+
+          <div className="space-y-3">
             {/* Forces To Section */}
             {data.insights.forcesTo.length > 0 && (
-              <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                <h4 className="text-[10px] uppercase tracking-wider text-red-400 mb-2 font-semibold">
-                  Force les tirs vers
-                </h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingUp className="w-3.5 h-3.5 text-red-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-red-400">
+                    Force vers (expose)
+                  </span>
+                </div>
+                <div className="space-y-1">
                   {data.insights.forcesTo.map((item) => (
-                    <span
-                      key={item.position}
-                      className="px-3 py-1.5 bg-red-500/20 rounded-full text-sm font-mono text-white"
-                    >
-                      {item.position}{' '}
-                      <span className="text-red-400 font-bold">+{item.deviation.toFixed(1)}%</span>
-                    </span>
+                    <div key={item.position} className="flex items-center justify-between text-xs">
+                      <span className="text-zinc-300">{item.position}</span>
+                      <span className="font-mono font-bold text-red-400">
+                        +{item.deviation.toFixed(1)}%
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -172,135 +281,52 @@ export function ShotDistributionProfile({
 
             {/* Blocks From Section */}
             {data.insights.blocksFrom.length > 0 && (
-              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
-                <h4 className="text-[10px] uppercase tracking-wider text-green-400 mb-2 font-semibold">
-                  Bloque les tirs de
-                </h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingDown className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-400">
+                    Bloque (protège)
+                  </span>
+                </div>
+                <div className="space-y-1">
                   {data.insights.blocksFrom.map((item) => (
-                    <span
-                      key={item.position}
-                      className="px-3 py-1.5 bg-green-500/20 rounded-full text-sm font-mono text-white"
-                    >
-                      {item.position}{' '}
-                      <span className="text-green-400 font-bold">{item.deviation.toFixed(1)}%</span>
-                    </span>
+                    <div key={item.position} className="flex items-center justify-between text-xs">
+                      <span className="text-zinc-300">{item.position}</span>
+                      <span className="font-mono font-bold text-emerald-400">
+                        {item.deviation.toFixed(1)}%
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Betting Tip */}
-            <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-              <div className="flex items-start gap-3">
-                <span className="text-xl flex-shrink-0">💡</span>
-                <div className="min-w-0">
-                  <h4 className="text-[10px] uppercase tracking-wider text-amber-400 mb-1 font-semibold">
-                    Tip Paris
-                  </h4>
-                  <p className="text-sm text-zinc-300 leading-relaxed">
-                    {data.insights.bettingTip}
-                  </p>
-                </div>
+            {/* Neutral message if both empty */}
+            {data.insights.forcesTo.length === 0 && data.insights.blocksFrom.length === 0 && (
+              <div className="p-3 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+                <p className="text-xs text-zinc-400 text-center">
+                  Distribution proche de la moyenne ligue
+                </p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Table - Expandable sur mobile */}
-        <div className="mt-6">
-          {/* Toggle button - Mobile only */}
-          <button
-            className="lg:hidden w-full flex items-center justify-between p-3 bg-zinc-800/50 rounded-lg text-zinc-400 hover:text-white transition-colors"
-            onClick={() => setTableExpanded(!tableExpanded)}
-          >
-            <span className="text-sm uppercase tracking-wider">Stats détaillées</span>
-            <ChevronDown
-              className={cn('w-5 h-5 transition-transform', tableExpanded && 'rotate-180')}
-            />
-          </button>
-
-          {/* Table - Always visible on desktop, expandable on mobile */}
-          <div
-            className={cn(
-              'overflow-hidden transition-all duration-300',
-              'lg:max-h-none lg:opacity-100 lg:mt-4',
-              tableExpanded
-                ? 'max-h-96 opacity-100 mt-3'
-                : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'
             )}
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-700">
-                    <th className="py-2.5 px-4 text-left text-[10px] text-zinc-500 uppercase tracking-wider font-semibold w-16">
-                      Pos
-                    </th>
-                    <th className="py-2.5 px-4 text-right text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-                      FGA
-                    </th>
-                    <th className="py-2.5 px-4 text-right text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-                      FGM
-                    </th>
-                    <th className="py-2.5 px-4 text-right text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-                      FG%
-                    </th>
-                    <th className="py-2.5 px-4 text-right text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-                      FGA%
-                    </th>
-                    <th className="py-2.5 px-4 text-right text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-                      vs LIG
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.positions.map((pos: ShotDistributionPosition) => (
-                    <tr
-                      key={pos.position}
-                      className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors"
-                    >
-                      <td className="py-2.5 px-4 font-bold text-white">{pos.position}</td>
-                      <td className="py-2.5 px-4 text-right font-mono text-zinc-300 tabular-nums">
-                        {pos.fga.toLocaleString()}
-                      </td>
-                      <td className="py-2.5 px-4 text-right font-mono text-zinc-300 tabular-nums">
-                        {pos.fgm.toLocaleString()}
-                      </td>
-                      <td className="py-2.5 px-4 text-right font-mono text-zinc-300 tabular-nums">
-                        {pos.fgPct.toFixed(1)}%
-                      </td>
-                      <td className="py-2.5 px-4 text-right font-mono text-white font-bold tabular-nums">
-                        {pos.fgaPct.toFixed(1)}%
-                      </td>
-                      <td
-                        className={cn(
-                          'py-2.5 px-4 text-right font-mono font-bold tabular-nums',
-                          pos.deviation >= 2
-                            ? 'text-red-400'
-                            : pos.deviation <= -2
-                              ? 'text-green-400'
-                              : 'text-zinc-400'
-                        )}
-                      >
-                        {pos.deviation > 0 ? '+' : ''}
-                        {pos.deviation.toFixed(1)}%
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="px-4 sm:px-6 lg:px-8 py-4 border-t border-zinc-800 text-center">
-        <p className="text-xs text-zinc-500">
-          Distribution des FGA adverses vs moyenne ligue • {data.gamesPlayed} matchs analysés
-        </p>
-      </div>
+      {/* Betting Tip Footer */}
+      {data.insights.bettingTip && (
+        <div className="px-4 py-3 border-t border-zinc-800 bg-amber-500/5">
+          <div className="flex items-start gap-2">
+            <span className="text-amber-400 text-sm">💡</span>
+            <div className="flex-1">
+              <p className="text-xs text-zinc-300 leading-relaxed">
+                {data.insights.bettingTip}
+              </p>
+            </div>
+            <span className="text-[10px] text-zinc-600">{data.gamesPlayed} matchs</span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

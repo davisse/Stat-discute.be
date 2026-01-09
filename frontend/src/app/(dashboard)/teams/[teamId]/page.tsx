@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
 import { StadiumSpotlightHero } from '@/components/hero'
-import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, ShotDistributionProfile, type TeamGameDay } from '@/components/teams'
+import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, ShotDistributionProfile, TeamShotZoneProfile, DefensiveSystemAnalysis, type TeamGameDay } from '@/components/teams'
 
 interface TeamStats {
   team_id: number
@@ -243,6 +243,7 @@ export default function TeamPage() {
                 <TeamRankingDualChart
                   data={allTeamsRanking}
                   selectedTeamId={teamStats.team_id}
+                  selectedTeamAbbreviation={teamStats.abbreviation}
                 />
               </div>
             )}
@@ -257,6 +258,22 @@ export default function TeamPage() {
             {/* Shot Distribution Profile - How defense reshapes opponent shots */}
             <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
               <ShotDistributionProfile
+                teamId={teamStats.team_id}
+                teamAbbreviation={teamStats.abbreviation}
+              />
+            </div>
+
+            {/* Team Shot Zone Profile - Offensive and Defensive zone breakdown */}
+            <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
+              <TeamShotZoneProfile
+                teamId={teamStats.team_id}
+                teamAbbreviation={teamStats.abbreviation}
+              />
+            </div>
+
+            {/* Defensive System Analysis - Combined DvP + Shot Zones */}
+            <div className="mt-6 sm:mt-8 -mx-2 sm:mx-0">
+              <DefensiveSystemAnalysis
                 teamId={teamStats.team_id}
                 teamAbbreviation={teamStats.abbreviation}
               />
