@@ -103,6 +103,35 @@ jobs:
         run: |
           ssh $VPS_USER@$VPS_HOST "cd $DEPLOY_PATH && docker compose -p stat-discute -f docker/docker-compose.yml --env-file docker/.env up -d"
 
+      - name: Run database migrations
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST << 'ENDSSH'
+            echo "Running database migrations..."
+
+            # Wait for postgres to be ready
+            for i in 1 2 3 4 5 6 7 8 9 10; do
+              if docker exec stat-discute-db pg_isready -U nba_admin -d nba_stats > /dev/null 2>&1; then
+                echo "Database is ready"
+                break
+              fi
+              echo "Waiting for database... attempt $i/10"
+              sleep 3
+            done
+
+            # Run all migration files in order (idempotent due to IF NOT EXISTS / ON CONFLICT)
+            MIGRATIONS_DIR="${DEPLOY_PATH}/1.DATABASE/migrations"
+            for migration in $(ls -1 "$MIGRATIONS_DIR"/*.sql 2>/dev/null | sort); do
+              echo "Applying migration: $(basename $migration)"
+              docker exec -i stat-discute-db psql -U nba_admin -d nba_stats < "$migration" 2>&1 | tail -5 || true
+            done
+
+            echo "Migrations complete"
+          ENDSSH
+
       - name: Wait for services to start
         run: |
           echo "Waiting 15 seconds for services to start..."
