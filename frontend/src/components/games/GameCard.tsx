@@ -8,12 +8,12 @@ interface GameCardProps {
   game: GameWithOdds
 }
 
-function formatTime(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleTimeString('fr-FR', {
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+function formatTime(gameTime: string | null): string {
+  // game_time is already in HH:MM format from the query
+  if (gameTime && gameTime.includes(':')) {
+    return gameTime
+  }
+  return 'TBD'
 }
 
 export function GameCard({ game }: GameCardProps) {
@@ -42,7 +42,7 @@ export function GameCard({ game }: GameCardProps) {
             ? 'bg-amber-500/20 text-amber-400'
             : 'bg-blue-500/20 text-blue-400'
         }`}>
-          {isCompleted ? 'Final' : formatTime(game.game_date)}
+          {isCompleted ? 'Final' : formatTime(game.game_time)}
         </span>
         <span className="text-zinc-600 group-hover:text-zinc-400 transition-colors">→</span>
       </div>

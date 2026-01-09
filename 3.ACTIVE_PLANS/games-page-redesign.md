@@ -111,9 +111,39 @@ interface GameDetail extends GameWithOdds {
 
 ---
 
+## Phase 6: Heures des matchs ✅
+
+### Problème identifié:
+- La table `games` n'avait pas de colonne pour l'heure
+- L'API `LeagueGameFinder` ne fournit que la date, pas l'heure
+- Tous les matchs affichaient "00:00"
+
+### Solution implémentée:
+1. **Migration 025**: Ajout colonnes `game_time` (TIME), `game_time_et` (VARCHAR), `arena`
+2. **ETL script**: `1.DATABASE/etl/sync_game_times.py` - Récupère les heures depuis ScoreboardV2
+3. **Conversion timezone**: UTC → CET (UTC+1) dans les requêtes SQL
+4. **Queries mises à jour**: `getGameById`, `getGamesByDate` utilisent maintenant `game_time`
+
+### Vérification heures du 2026-01-09:
+| Match | Heure CET | Heure officielle |
+|-------|-----------|------------------|
+| TOR @ BOS | 01:00 | 1:00 AM CET ✅ |
+| PHI @ ORL | 01:00 | 1:00 AM CET ✅ |
+| NOP @ WAS | 01:00 | 1:00 AM CET ✅ |
+| LAC @ BKN | 01:30 | 1:30 AM CET ✅ |
+| OKC @ MEM | 02:00 | 2:00 AM CET ✅ |
+| ATL @ DEN | 03:00 | 3:00 AM CET ✅ |
+| NYK @ PHX | 03:00 | 3:00 AM CET ✅ |
+| SAC @ GSW | 04:00 | 4:00 AM CET ✅ |
+| HOU @ POR | 04:00 | 4:00 AM CET ✅ |
+| MIL @ LAL | 04:30 | 4:30 AM CET ✅ |
+
+---
+
 ## Améliorations futures
 
 - [ ] Intégration vraies odds depuis `betting_odds` table
 - [ ] Indicateurs cover/miss pour matchs terminés
 - [ ] Contenu page détail (H2H, forme, stats, trends)
 - [ ] Animation transition entre pages
+- [ ] Intégrer `sync_game_times.py` dans le workflow ETL quotidien

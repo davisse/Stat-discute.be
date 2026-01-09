@@ -3090,7 +3090,11 @@ export async function getGameById(gameId: string): Promise<GameDetail | null> {
     SELECT
       g.game_id,
       g.game_date,
-      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      -- Convert UTC game_time to CET (UTC+1), format as HH:MM
+      CASE
+        WHEN g.game_time IS NOT NULL THEN TO_CHAR((g.game_time + INTERVAL '1 hour'), 'HH24:MI')
+        ELSE g.game_time_et
+      END as game_time,
       g.home_team_id,
       g.away_team_id,
       ht.abbreviation as home_team_abbr,
@@ -3106,7 +3110,7 @@ export async function getGameById(gameId: string): Promise<GameDetail | null> {
       COALESCE(ats.losses, 0) as away_losses,
       NULL::numeric as spread_home,
       NULL::numeric as total,
-      NULL::text as venue,
+      g.arena as venue,
       NULL::integer as attendance
     FROM games g
     JOIN teams ht ON g.home_team_id = ht.team_id
@@ -3129,7 +3133,11 @@ export async function getGamesByDate(date: string): Promise<GameWithOdds[]> {
     SELECT
       g.game_id,
       g.game_date,
-      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      -- Convert UTC game_time to CET (UTC+1), format as HH:MM
+      CASE
+        WHEN g.game_time IS NOT NULL THEN TO_CHAR((g.game_time + INTERVAL '1 hour'), 'HH24:MI')
+        ELSE g.game_time_et
+      END as game_time,
       g.home_team_id,
       g.away_team_id,
       ht.abbreviation as home_team_abbr,
@@ -3151,7 +3159,7 @@ export async function getGamesByDate(date: string): Promise<GameWithOdds[]> {
     LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id AND hts.season_id = $1
     LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id AND ats.season_id = $1
     WHERE g.season = $1 AND DATE(g.game_date) = $2::date
-    ORDER BY g.game_date ASC
+    ORDER BY g.game_time ASC NULLS LAST, g.game_id ASC
   `, [currentSeason, date])
 
   return result.rows as GameWithOdds[]
