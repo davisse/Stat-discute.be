@@ -3,6 +3,7 @@
 GitHub Actions: Calculate Player ORTG/DRTG
 Generates SQL statements to populate offensive_rating, defensive_rating, net_rating
 in player_advanced_stats table.
+Calculates team DRTG from game data to avoid team_game_stats dependency.
 
 Usage:
     python github_sync_player_ortg.py > ortg.sql
@@ -38,13 +39,46 @@ def main():
     print("-- Formula:")
     print("-- Individual ORTG = (PTS / Individual Possessions) * 100")
     print("-- Individual Possessions = FGA + (0.44 * FTA) + TOV")
-    print("-- DRTG = Team DRTG (from team_game_stats)")
+    print("-- Team DRTG = (Opponent Points / Team Possessions) * 100")
     print("-- Net Rating = ORTG - DRTG")
     print("")
 
-    # Update ORTG, DRTG, and Net Rating
+    # Update ORTG, DRTG, and Net Rating - calculate team DRTG from game scores
     print(f"""
-WITH player_calculations AS (
+WITH team_game_possessions AS (
+    -- Calculate team possessions from player stats
+    SELECT
+        pgs.game_id,
+        pgs.team_id,
+        SUM(pgs.fg_attempted) as team_fga,
+        SUM(pgs.ft_attempted) as team_fta,
+        SUM(pgs.turnovers) as team_tov
+    FROM player_game_stats pgs
+    JOIN games g ON pgs.game_id = g.game_id
+    WHERE g.season = '{SEASON}'
+    GROUP BY pgs.game_id, pgs.team_id
+),
+team_drtg AS (
+    -- Calculate team DRTG from opponent points and team possessions
+    SELECT
+        tgp.game_id,
+        tgp.team_id,
+        -- Team DRTG = (Points Allowed / Team Possessions) * 100
+        CASE
+            WHEN (tgp.team_fga + 0.44 * tgp.team_fta + tgp.team_tov) > 0
+            THEN ROUND((
+                CASE
+                    WHEN g.home_team_id = tgp.team_id THEN g.away_team_score
+                    ELSE g.home_team_score
+                END::numeric /
+                (tgp.team_fga + 0.44 * tgp.team_fta + tgp.team_tov)
+            ) * 100, 2)
+            ELSE NULL
+        END as drtg
+    FROM team_game_possessions tgp
+    JOIN games g ON tgp.game_id = g.game_id
+),
+player_calculations AS (
     SELECT
         pas.game_id,
         pas.player_id,
@@ -54,15 +88,15 @@ WITH player_calculations AS (
             THEN ROUND((pgs.points::numeric / (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers)) * 100, 2)
             ELSE NULL
         END as ortg,
-        -- Team DRTG for this game
-        tgs.defensive_rating as drtg
+        -- Team DRTG from our calculation
+        td.drtg
     FROM player_advanced_stats pas
     JOIN player_game_stats pgs
         ON pas.game_id = pgs.game_id
         AND pas.player_id = pgs.player_id
-    JOIN team_game_stats tgs
-        ON pas.game_id = tgs.game_id
-        AND pas.team_id = tgs.team_id
+    JOIN team_drtg td
+        ON pas.game_id = td.game_id
+        AND pas.team_id = td.team_id
     JOIN games g ON pas.game_id = g.game_id
     WHERE pas.offensive_rating IS NULL
       AND pgs.minutes > 0

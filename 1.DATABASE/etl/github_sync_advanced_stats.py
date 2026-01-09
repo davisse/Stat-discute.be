@@ -2,6 +2,7 @@
 """
 GitHub Actions: Calculate Advanced Player Stats
 Generates SQL statements to populate player_advanced_stats table.
+Calculates team totals from player_game_stats to avoid team_game_stats dependency.
 
 Usage:
     python github_sync_advanced_stats.py > advanced_stats.sql
@@ -40,12 +41,47 @@ def main():
     print("-- Usage Rate = 100 * ((FGA + 0.44 * FTA + TOV) * (240 / 5)) / (minutes * team_possessions)")
     print("")
 
-    # Insert advanced stats for players that don't have them yet
+    # Insert advanced stats - calculates team totals from player_game_stats
     print(f"""
 INSERT INTO player_advanced_stats (
     game_id, player_id, team_id,
     true_shooting_pct, effective_fg_pct, usage_rate,
     assist_ratio, assist_to_turnover_ratio, rebound_percentage
+)
+WITH team_totals AS (
+    -- Calculate team totals from player_game_stats
+    SELECT
+        pgs.game_id,
+        pgs.team_id,
+        SUM(pgs.fg_made) as team_fgm,
+        SUM(pgs.fg_attempted) as team_fga,
+        SUM(pgs.ft_attempted) as team_fta,
+        SUM(pgs.rebounds) as team_reb,
+        SUM(pgs.turnovers) as team_tov
+    FROM player_game_stats pgs
+    JOIN games g ON pgs.game_id = g.game_id
+    WHERE g.season = '{SEASON}'
+    GROUP BY pgs.game_id, pgs.team_id
+),
+opponent_rebounds AS (
+    -- Calculate opponent rebounds for each team per game
+    SELECT
+        g.game_id,
+        g.home_team_id as team_id,
+        COALESCE(away_tt.team_reb, 0) as opp_reb
+    FROM games g
+    LEFT JOIN team_totals away_tt ON g.game_id = away_tt.game_id
+        AND away_tt.team_id = g.away_team_id
+    WHERE g.season = '{SEASON}'
+    UNION ALL
+    SELECT
+        g.game_id,
+        g.away_team_id as team_id,
+        COALESCE(home_tt.team_reb, 0) as opp_reb
+    FROM games g
+    LEFT JOIN team_totals home_tt ON g.game_id = home_tt.game_id
+        AND home_tt.team_id = g.home_team_id
+    WHERE g.season = '{SEASON}'
 )
 SELECT
     pgs.game_id,
@@ -66,12 +102,12 @@ SELECT
     -- Usage Rate = 100 * ((FGA + 0.44 * FTA + TOV) * (Team Minutes / 5)) / (Minutes * Team Possessions)
     CASE
         WHEN pgs.minutes > 0
-            AND (tgs.field_goals_attempted + 0.44 * tgs.free_throws_attempted + tgs.turnovers) > 0
+            AND (tt.team_fga + 0.44 * tt.team_fta + tt.team_tov) > 0
         THEN ROUND(
             100 * (
                 (pgs.fg_attempted + 0.44 * pgs.ft_attempted + pgs.turnovers) * (240.0 / 5)
             ) / (
-                pgs.minutes * (tgs.field_goals_attempted + 0.44 * tgs.free_throws_attempted + tgs.turnovers)
+                pgs.minutes * (tt.team_fga + 0.44 * tt.team_fta + tt.team_tov)
             ),
             1
         )
@@ -79,9 +115,9 @@ SELECT
     END as usage_rate,
     -- Assist Ratio = 100 * AST / ((Min / (240/5)) * Team FGM)
     CASE
-        WHEN pgs.minutes > 0 AND tgs.field_goals_made > 0
+        WHEN pgs.minutes > 0 AND tt.team_fgm > 0
         THEN ROUND(
-            100 * pgs.assists::numeric / ((pgs.minutes / 48.0) * tgs.field_goals_made),
+            100 * pgs.assists::numeric / ((pgs.minutes / 48.0) * tt.team_fgm),
             1
         )
         ELSE NULL
@@ -94,19 +130,17 @@ SELECT
     END as assist_to_turnover_ratio,
     -- Rebound Percentage (simplified)
     CASE
-        WHEN pgs.minutes > 0 AND (tgs.total_rebounds + opp_tgs.total_rebounds) > 0
+        WHEN pgs.minutes > 0 AND (tt.team_reb + opp.opp_reb) > 0
         THEN ROUND(
-            100 * (pgs.rebounds * (240.0 / 5)) / (pgs.minutes * (tgs.total_rebounds + opp_tgs.total_rebounds)),
+            100 * (pgs.rebounds * (240.0 / 5)) / (pgs.minutes * (tt.team_reb + opp.opp_reb)),
             1
         )
         ELSE NULL
     END as rebound_percentage
 FROM player_game_stats pgs
 JOIN games g ON pgs.game_id = g.game_id
-JOIN team_game_stats tgs ON pgs.game_id = tgs.game_id AND pgs.team_id = tgs.team_id
--- Join opponent team stats for rebound %
-LEFT JOIN team_game_stats opp_tgs ON pgs.game_id = opp_tgs.game_id
-    AND opp_tgs.team_id != pgs.team_id
+JOIN team_totals tt ON pgs.game_id = tt.game_id AND pgs.team_id = tt.team_id
+LEFT JOIN opponent_rebounds opp ON pgs.game_id = opp.game_id AND pgs.team_id = opp.team_id
 LEFT JOIN player_advanced_stats existing ON pgs.game_id = existing.game_id
     AND pgs.player_id = existing.player_id
 WHERE g.season = '{SEASON}'
