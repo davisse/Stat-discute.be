@@ -15,6 +15,11 @@ on:
           - full
           - games-only
           - analytics-only
+          - run-migration
+      migration_number:
+        description: 'Migration number to run (e.g., 018) - only used with run-migration sync_type'
+        required: false
+        type: string
 
 env:
   SEASON: '2025-26'
@@ -135,7 +140,27 @@ jobs:
           ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/ortg.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Player ORTG/DRTG calculated successfully"
 
+      - name: Run Database Migration
+        if: ${{ github.event.inputs.sync_type == 'run-migration' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+          MIGRATION_NUM: ${{ github.event.inputs.migration_number }}
+        run: |
+          MIGRATION_FILE=$(ls -1 1.DATABASE/migrations/${MIGRATION_NUM}*.sql 2>/dev/null | head -1)
+          if [ -z "$MIGRATION_FILE" ]; then
+            echo "Error: No migration file found matching ${MIGRATION_NUM}*.sql"
+            exit 1
+          fi
+          echo "Running migration: $MIGRATION_FILE"
+          scp "$MIGRATION_FILE" $VPS_USER@$VPS_HOST:$DEPLOY_PATH/migration.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/migration.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/migration.sql" || true
+          echo "Migration complete!"
+
       - name: Verify Sync
+        if: ${{ github.event.inputs.sync_type != 'run-migration' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
@@ -161,5 +186,8 @@ jobs:
           echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **Season**: ${{ env.SEASON }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Sync Type**: ${{ github.event.inputs.sync_type || 'full' }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event.inputs.sync_type }}" = "run-migration" ]; then
+            echo "- **Migration**: ${{ github.event.inputs.migration_number }}" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "- **Triggered**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
