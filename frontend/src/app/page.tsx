@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Users, Calendar, Search, BarChart3, TrendingUp, LineChart } from 'lucide-react'
 import { PageTransitionProvider, usePageTransition } from '@/components/transitions'
 
 // ============================================================================
@@ -27,7 +26,6 @@ interface CardData {
   number: string
   category: string
   href: string
-  icon: React.ComponentType<{ className?: string }>
   title: string
   features: string[]
   badge?: string
@@ -37,17 +35,14 @@ interface CardData {
 const sectionColors = {
   equipes: {
     badge: 'bg-emerald-500/20 text-emerald-400',
-    icon: 'text-emerald-500',
     hover: 'hover:border-emerald-500/50'
   },
   joueurs: {
     badge: 'bg-blue-500/20 text-blue-400',
-    icon: 'text-blue-500',
     hover: 'hover:border-blue-500/50'
   },
   betting: {
     badge: 'bg-amber-500/20 text-amber-400',
-    icon: 'text-amber-500',
     hover: 'hover:border-amber-500/50'
   }
 } as const
@@ -60,7 +55,6 @@ const navigationCards: CardData[] = [
     number: '01',
     category: 'ÉQUIPES',
     href: '/teams',
-    icon: Users,
     title: 'Équipes',
     features: ['Standings', 'Stats off/def', 'DvP analysis']
   },
@@ -70,7 +64,6 @@ const navigationCards: CardData[] = [
     number: '01',
     category: 'ÉQUIPES',
     href: '/games',
-    icon: Calendar,
     title: 'Matchs du Jour',
     features: ['Schedule', 'Live scores', "Today's games"]
   },
@@ -81,7 +74,6 @@ const navigationCards: CardData[] = [
     number: '02',
     category: 'JOUEURS',
     href: '/players',
-    icon: Search,
     title: 'Recherche Joueur',
     features: ['Autocomplete', 'Stats avancées', 'Player detail']
   },
@@ -92,7 +84,6 @@ const navigationCards: CardData[] = [
     number: '03',
     category: 'BETTING',
     href: '/betting/totals',
-    icon: BarChart3,
     title: 'Totals O/U',
     features: ['Over/Under', 'Props analysis', 'Trends'],
     badge: 'MC',
@@ -104,7 +95,6 @@ const navigationCards: CardData[] = [
     number: '03',
     category: 'BETTING',
     href: '/betting/value-finder',
-    icon: TrendingUp,
     title: 'Value Finder',
     features: ['Best odds', 'Upside value', 'Edge finder']
   },
@@ -114,7 +104,6 @@ const navigationCards: CardData[] = [
     number: '03',
     category: 'ANALYSE',
     href: '/analysis/q1-value',
-    icon: LineChart,
     title: 'Analyse Q1',
     features: ['Q1 patterns', 'Dispersion', 'Pace analysis']
   }
@@ -334,22 +323,20 @@ function NavigationCard({ card }: { card: CardData }) {
     }
   }
 
-  const Icon = card.icon
-
   return (
     <motion.div
       ref={cardRef}
       variants={cardVariants}
       onClick={handleClick}
       className={`
-        group relative p-6 min-h-[180px]
+        group relative p-6 min-h-[160px]
         bg-zinc-900/50 border border-zinc-800 rounded-xl
         cursor-pointer transition-all duration-300
         hover:border-white hover:bg-zinc-900/70
         ${colors.hover}
       `}
     >
-      {/* Badge */}
+      {/* Badge flottant */}
       {card.badge && (
         <span className={`absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold rounded-full ${card.badgeColor} text-white`}>
           {card.badge}
@@ -357,23 +344,20 @@ function NavigationCard({ card }: { card: CardData }) {
       )}
 
       {/* Section Badge */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-4">
         <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded ${colors.badge}`}>
           {card.number} {card.category}
         </span>
       </div>
 
-      {/* Icon */}
-      <Icon className={`w-6 h-6 mb-3 ${colors.icon}`} />
-
       {/* Title */}
-      <h3 className="text-lg font-bold text-white mb-2">{card.title}</h3>
+      <h3 className="text-xl font-bold text-white mb-3">{card.title}</h3>
 
       {/* Separator */}
       <div className="w-full h-px bg-zinc-800 mb-3" />
 
       {/* Features */}
-      <ul className="space-y-1">
+      <ul className="space-y-1.5">
         {card.features.map((feature, index) => (
           <li key={index} className="text-sm text-zinc-400 flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-zinc-600" />
