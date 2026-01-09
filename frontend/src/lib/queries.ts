@@ -2503,3 +2503,543 @@ function generateDefensiveInsights(positions: ShotDistributionPosition[], abbr: 
 
   return { forcesTo, blocksFrom, bettingTip }
 }
+
+// ==========================================
+// TEAM SHOT ZONES (Offense + Defense by Zone)
+// ==========================================
+
+export interface ZoneStats {
+  fgm: number
+  fga: number
+  fgPct: number
+  freq: number
+}
+
+export interface TeamShotZoneData {
+  teamId: number
+  teamName: string
+  zoneType: 'offense' | 'defense'
+  restrictedArea: ZoneStats
+  paintNonRA: ZoneStats
+  midRange: ZoneStats
+  corner3: ZoneStats
+  aboveBreak3: ZoneStats
+  totalFgm: number
+  totalFga: number
+  totalFgPct: number
+  profile: string
+  strengths: string[] | null
+  weaknesses: string[] | null
+}
+
+export interface LeagueZoneAverages {
+  restrictedArea: { fgPct: number; freq: number }
+  paintNonRA: { fgPct: number; freq: number }
+  midRange: { fgPct: number; freq: number }
+  corner3: { fgPct: number; freq: number }
+  aboveBreak3: { fgPct: number; freq: number }
+}
+
+export interface TeamShotZonesResponse {
+  teamId: number
+  teamAbbreviation: string
+  offense: TeamShotZoneData | null
+  defense: TeamShotZoneData | null
+  leagueAvgOffense: LeagueZoneAverages | null
+  leagueAvgDefense: LeagueZoneAverages | null
+  matchupInsights: {
+    offenseProfile: string
+    defenseProfile: string
+    strengths: string[]
+    weaknesses: string[]
+    bettingTip: string
+  }
+}
+
+/**
+ * Get team shot zone data (both offensive and defensive profiles)
+ * Shows shot distribution by zone: Restricted Area, Paint, Mid-Range, Corner 3, Above Break 3
+ */
+export async function getTeamShotZones(teamId: number): Promise<TeamShotZonesResponse | null> {
+  const currentSeason = await getCurrentSeason()
+
+  // Get team abbreviation
+  const teamResult = await query(`
+    SELECT team_id, abbreviation FROM teams WHERE team_id = $1
+  `, [teamId])
+
+  if (teamResult.rows.length === 0) return null
+
+  const teamAbbreviation = teamResult.rows[0].abbreviation
+
+  // Get shot zone data for both offense and defense
+  const zonesResult = await query(`
+    SELECT
+      sz.team_id,
+      t.full_name as team_name,
+      sz.zone_type,
+      sz.ra_fgm, sz.ra_fga, sz.ra_fg_pct, sz.ra_freq,
+      sz.paint_fgm, sz.paint_fga, sz.paint_fg_pct, sz.paint_freq,
+      sz.mid_fgm, sz.mid_fga, sz.mid_fg_pct, sz.mid_freq,
+      sz.corner3_fgm, sz.corner3_fga, sz.corner3_fg_pct, sz.corner3_freq,
+      sz.ab3_fgm, sz.ab3_fga, sz.ab3_fg_pct, sz.ab3_freq,
+      sz.total_fgm, sz.total_fga, sz.total_fg_pct,
+      sz.profile,
+      sz.strengths,
+      sz.weaknesses
+    FROM team_shooting_zones sz
+    JOIN teams t ON sz.team_id = t.team_id
+    WHERE sz.team_id = $1 AND sz.season = $2
+    ORDER BY sz.zone_type
+  `, [teamId, currentSeason])
+
+  if (zonesResult.rows.length === 0) return null
+
+  // Get league averages
+  const avgResult = await query(`
+    SELECT
+      zone_type,
+      ra_fg_pct, ra_freq,
+      paint_fg_pct, paint_freq,
+      mid_fg_pct, mid_freq,
+      corner3_fg_pct, corner3_freq,
+      ab3_fg_pct, ab3_freq
+    FROM league_zone_averages
+    WHERE season = $1
+  `, [currentSeason])
+
+  // Parse team zone data
+  let offense: TeamShotZoneData | null = null
+  let defense: TeamShotZoneData | null = null
+
+  for (const row of zonesResult.rows) {
+    const zoneData: TeamShotZoneData = {
+      teamId: parseInt(row.team_id),
+      teamName: row.team_name,
+      zoneType: row.zone_type,
+      restrictedArea: {
+        fgm: parseInt(row.ra_fgm),
+        fga: parseInt(row.ra_fga),
+        fgPct: parseFloat(row.ra_fg_pct) || 0,
+        freq: parseFloat(row.ra_freq) || 0
+      },
+      paintNonRA: {
+        fgm: parseInt(row.paint_fgm),
+        fga: parseInt(row.paint_fga),
+        fgPct: parseFloat(row.paint_fg_pct) || 0,
+        freq: parseFloat(row.paint_freq) || 0
+      },
+      midRange: {
+        fgm: parseInt(row.mid_fgm),
+        fga: parseInt(row.mid_fga),
+        fgPct: parseFloat(row.mid_fg_pct) || 0,
+        freq: parseFloat(row.mid_freq) || 0
+      },
+      corner3: {
+        fgm: parseInt(row.corner3_fgm),
+        fga: parseInt(row.corner3_fga),
+        fgPct: parseFloat(row.corner3_fg_pct) || 0,
+        freq: parseFloat(row.corner3_freq) || 0
+      },
+      aboveBreak3: {
+        fgm: parseInt(row.ab3_fgm),
+        fga: parseInt(row.ab3_fga),
+        fgPct: parseFloat(row.ab3_fg_pct) || 0,
+        freq: parseFloat(row.ab3_freq) || 0
+      },
+      totalFgm: parseInt(row.total_fgm),
+      totalFga: parseInt(row.total_fga),
+      totalFgPct: parseFloat(row.total_fg_pct) || 0,
+      profile: row.profile,
+      strengths: row.strengths,
+      weaknesses: row.weaknesses
+    }
+
+    if (row.zone_type === 'offense') {
+      offense = zoneData
+    } else {
+      defense = zoneData
+    }
+  }
+
+  // Parse league averages
+  let leagueAvgOffense: LeagueZoneAverages | null = null
+  let leagueAvgDefense: LeagueZoneAverages | null = null
+
+  for (const row of avgResult.rows) {
+    const avgData: LeagueZoneAverages = {
+      restrictedArea: { fgPct: parseFloat(row.ra_fg_pct) || 0, freq: parseFloat(row.ra_freq) || 0 },
+      paintNonRA: { fgPct: parseFloat(row.paint_fg_pct) || 0, freq: parseFloat(row.paint_freq) || 0 },
+      midRange: { fgPct: parseFloat(row.mid_fg_pct) || 0, freq: parseFloat(row.mid_freq) || 0 },
+      corner3: { fgPct: parseFloat(row.corner3_fg_pct) || 0, freq: parseFloat(row.corner3_freq) || 0 },
+      aboveBreak3: { fgPct: parseFloat(row.ab3_fg_pct) || 0, freq: parseFloat(row.ab3_freq) || 0 }
+    }
+
+    if (row.zone_type === 'offense') {
+      leagueAvgOffense = avgData
+    } else {
+      leagueAvgDefense = avgData
+    }
+  }
+
+  // Generate matchup insights
+  const matchupInsights = generateZoneMatchupInsights(offense, defense, teamAbbreviation)
+
+  return {
+    teamId,
+    teamAbbreviation,
+    offense,
+    defense,
+    leagueAvgOffense,
+    leagueAvgDefense,
+    matchupInsights
+  }
+}
+
+function generateZoneMatchupInsights(
+  offense: TeamShotZoneData | null,
+  defense: TeamShotZoneData | null,
+  abbr: string
+) {
+  const offenseProfile = offense?.profile || 'unknown'
+  const defenseProfile = defense?.profile || 'unknown'
+
+  const strengths = defense?.strengths || []
+  const weaknesses = defense?.weaknesses || []
+
+  let bettingTip = ''
+
+  // Generate betting tips based on profiles
+  if (defenseProfile === 'paint_protector') {
+    bettingTip = `${abbr} protège bien le cercle. Chercher UNDER contre équipes paint-heavy.`
+  } else if (defenseProfile === 'rim_weak') {
+    bettingTip = `${abbr} vulnérable au cercle (${defense?.restrictedArea.fgPct.toFixed(1)}% RA). OVER contre paint-heavy.`
+  } else if (defenseProfile === 'perimeter_defender') {
+    bettingTip = `${abbr} limite le 3PT. UNDER contre équipes three-heavy.`
+  } else if (defenseProfile === 'perimeter_weak') {
+    bettingTip = `${abbr} expose aux 3PT. OVER contre équipes three-heavy.`
+  } else {
+    bettingTip = `Défense équilibrée, analyser le profil offensif adverse.`
+  }
+
+  // Add offensive insight
+  if (offenseProfile === 'paint_heavy') {
+    bettingTip += ` Offense paint-heavy (${((offense?.restrictedArea.freq || 0) * 100).toFixed(0)}% RA).`
+  } else if (offenseProfile === 'three_heavy') {
+    const threePct = ((offense?.corner3.freq || 0) + (offense?.aboveBreak3.freq || 0)) * 100
+    bettingTip += ` Offense 3PT-heavy (${threePct.toFixed(0)}% 3PT).`
+  }
+
+  return {
+    offenseProfile,
+    defenseProfile,
+    strengths,
+    weaknesses,
+    bettingTip
+  }
+}
+
+// ==========================================
+// DEFENSIVE SYSTEM ANALYSIS (DvP + Shot Zones Combined)
+// ==========================================
+
+export interface DvPPositionData {
+  position: string
+  pointsAllowed: number
+  leagueAvg: number
+  diff: number
+  rank: number
+  tier: 'elite' | 'good' | 'average' | 'below' | 'weak'
+}
+
+export interface DefensiveZoneData {
+  zone: string
+  zoneFr: string
+  fgPctAllowed: number
+  leagueAvg: number
+  diff: number
+  isWeakness: boolean
+  isStrength: boolean
+}
+
+export interface DefensiveSystemInsight {
+  type: 'strength' | 'weakness' | 'paradox' | 'info'
+  title: string
+  description: string
+  positions?: string[]
+  zones?: string[]
+}
+
+export interface DefensiveSystemAnalysisData {
+  teamId: number
+  teamAbbreviation: string
+  dvpByPosition: DvPPositionData[]
+  shotZoneDefense: DefensiveZoneData[]
+  insights: DefensiveSystemInsight[]
+  bettingRecommendations: {
+    vsGuardDriven: 'over' | 'under' | 'neutral'
+    vsPaintHeavy: 'over' | 'under' | 'neutral'
+    vsThreeHeavy: 'over' | 'under' | 'neutral'
+    summary: string
+  }
+  systemProfile: {
+    rimProtection: 'elite' | 'good' | 'average' | 'weak'
+    perimeterDefense: 'elite' | 'good' | 'average' | 'weak'
+    postDefense: 'elite' | 'good' | 'average' | 'weak'
+    guardContainment: 'elite' | 'good' | 'average' | 'weak'
+  }
+}
+
+/**
+ * Get comprehensive defensive system analysis combining DvP and Shot Zone data
+ * Reveals the relationship between position-based and zone-based defense
+ */
+export async function getDefensiveSystemAnalysis(teamId: number): Promise<DefensiveSystemAnalysisData | null> {
+  const currentSeason = await getCurrentSeason()
+
+  // Get team abbreviation
+  const teamResult = await query(`
+    SELECT team_id, abbreviation FROM teams WHERE team_id = $1
+  `, [teamId])
+
+  if (teamResult.rows.length === 0) return null
+  const teamAbbreviation = teamResult.rows[0].abbreviation
+
+  // Get DvP data with league averages
+  const dvpResult = await query(`
+    WITH league_avg AS (
+      SELECT
+        opponent_position,
+        AVG(points_allowed_per_game) as avg_pts
+      FROM defensive_stats_by_position
+      WHERE season = $2
+      GROUP BY opponent_position
+    )
+    SELECT
+      ds.opponent_position as position,
+      ds.points_allowed_per_game,
+      ds.points_allowed_rank,
+      la.avg_pts as league_avg
+    FROM defensive_stats_by_position ds
+    JOIN league_avg la ON ds.opponent_position = la.opponent_position
+    WHERE ds.team_id = $1 AND ds.season = $2
+    ORDER BY ds.opponent_position
+  `, [teamId, currentSeason])
+
+  // Get Shot Zone defensive data with league averages
+  const zoneResult = await query(`
+    SELECT
+      sz.ra_fg_pct, sz.paint_fg_pct, sz.mid_fg_pct, sz.corner3_fg_pct, sz.ab3_fg_pct,
+      sz.strengths, sz.weaknesses,
+      la.ra_fg_pct as la_ra, la.paint_fg_pct as la_paint,
+      la.mid_fg_pct as la_mid, la.corner3_fg_pct as la_corner3, la.ab3_fg_pct as la_ab3
+    FROM team_shooting_zones sz
+    JOIN league_zone_averages la ON sz.season = la.season AND la.zone_type = 'defense'
+    WHERE sz.team_id = $1 AND sz.season = $2 AND sz.zone_type = 'defense'
+  `, [teamId, currentSeason])
+
+  if (dvpResult.rows.length === 0 || zoneResult.rows.length === 0) {
+    return null
+  }
+
+  // Transform DvP data
+  const dvpByPosition: DvPPositionData[] = dvpResult.rows.map(row => {
+    const diff = parseFloat(row.points_allowed_per_game) - parseFloat(row.league_avg)
+    const rank = parseInt(row.points_allowed_rank)
+    let tier: DvPPositionData['tier'] = 'average'
+    if (rank <= 6) tier = 'elite'
+    else if (rank <= 12) tier = 'good'
+    else if (rank <= 18) tier = 'average'
+    else if (rank <= 24) tier = 'below'
+    else tier = 'weak'
+
+    return {
+      position: row.position,
+      pointsAllowed: parseFloat(row.points_allowed_per_game),
+      leagueAvg: parseFloat(row.league_avg),
+      diff: diff,
+      rank: rank,
+      tier: tier
+    }
+  })
+
+  // Transform Shot Zone data
+  const zoneRow = zoneResult.rows[0]
+  const strengths = zoneRow.strengths || []
+  const weaknesses = zoneRow.weaknesses || []
+
+  const shotZoneDefense: DefensiveZoneData[] = [
+    {
+      zone: 'ra',
+      zoneFr: 'Restricted Area',
+      fgPctAllowed: parseFloat(zoneRow.ra_fg_pct) || 0,
+      leagueAvg: parseFloat(zoneRow.la_ra) || 0,
+      diff: ((parseFloat(zoneRow.ra_fg_pct) || 0) - (parseFloat(zoneRow.la_ra) || 0)) * 100,
+      isWeakness: weaknesses.includes('ra'),
+      isStrength: strengths.includes('ra')
+    },
+    {
+      zone: 'paint',
+      zoneFr: 'Paint (Non-RA)',
+      fgPctAllowed: parseFloat(zoneRow.paint_fg_pct) || 0,
+      leagueAvg: parseFloat(zoneRow.la_paint) || 0,
+      diff: ((parseFloat(zoneRow.paint_fg_pct) || 0) - (parseFloat(zoneRow.la_paint) || 0)) * 100,
+      isWeakness: weaknesses.includes('paint'),
+      isStrength: strengths.includes('paint')
+    },
+    {
+      zone: 'mid',
+      zoneFr: 'Mid-Range',
+      fgPctAllowed: parseFloat(zoneRow.mid_fg_pct) || 0,
+      leagueAvg: parseFloat(zoneRow.la_mid) || 0,
+      diff: ((parseFloat(zoneRow.mid_fg_pct) || 0) - (parseFloat(zoneRow.la_mid) || 0)) * 100,
+      isWeakness: weaknesses.includes('mid'),
+      isStrength: strengths.includes('mid')
+    },
+    {
+      zone: 'corner3',
+      zoneFr: 'Corner 3',
+      fgPctAllowed: parseFloat(zoneRow.corner3_fg_pct) || 0,
+      leagueAvg: parseFloat(zoneRow.la_corner3) || 0,
+      diff: ((parseFloat(zoneRow.corner3_fg_pct) || 0) - (parseFloat(zoneRow.la_corner3) || 0)) * 100,
+      isWeakness: weaknesses.includes('corner3'),
+      isStrength: strengths.includes('corner3')
+    },
+    {
+      zone: 'ab3',
+      zoneFr: 'Above Break 3',
+      fgPctAllowed: parseFloat(zoneRow.ab3_fg_pct) || 0,
+      leagueAvg: parseFloat(zoneRow.la_ab3) || 0,
+      diff: ((parseFloat(zoneRow.ab3_fg_pct) || 0) - (parseFloat(zoneRow.la_ab3) || 0)) * 100,
+      isWeakness: weaknesses.includes('ab3'),
+      isStrength: strengths.includes('ab3')
+    }
+  ]
+
+  // Generate insights
+  const insights: DefensiveSystemInsight[] = []
+
+  // Find position-based patterns
+  const pgData = dvpByPosition.find(d => d.position === 'PG')
+  const sgData = dvpByPosition.find(d => d.position === 'SG')
+  const sfData = dvpByPosition.find(d => d.position === 'SF')
+  const pfData = dvpByPosition.find(d => d.position === 'PF')
+  const cData = dvpByPosition.find(d => d.position === 'C')
+  const raZone = shotZoneDefense.find(z => z.zone === 'ra')
+
+  // Check for the "paradox" - good vs C but weak at rim
+  if (cData && cData.tier === 'elite' && raZone && raZone.isWeakness) {
+    insights.push({
+      type: 'paradox',
+      title: 'Paradoxe Défensif',
+      description: `Excellence vs pivots (${cData.pointsAllowed.toFixed(1)} PPG, rank #${cData.rank}) mais faiblesse au cercle (${(raZone.fgPctAllowed * 100).toFixed(1)}% RA). Les guards qui pénètrent sont le problème, pas les pivots.`,
+      positions: ['C'],
+      zones: ['ra']
+    })
+  }
+
+  // Check guard containment
+  const guardAvgRank = ((pgData?.rank || 15) + (sgData?.rank || 15)) / 2
+  if (guardAvgRank >= 24) {
+    insights.push({
+      type: 'weakness',
+      title: 'Défense Périmétrique Poreuse',
+      description: `Les guards adverses dominent: PG rank #${pgData?.rank}, SG rank #${sgData?.rank}. Ils pénètrent facilement vers le cercle.`,
+      positions: ['PG', 'SG']
+    })
+  } else if (guardAvgRank <= 8) {
+    insights.push({
+      type: 'strength',
+      title: 'Confinement des Guards',
+      description: `Excellente défense sur les guards: PG rank #${pgData?.rank}, SG rank #${sgData?.rank}. Limite la pénétration.`,
+      positions: ['PG', 'SG']
+    })
+  }
+
+  // Check post defense
+  if (cData && pfData && cData.tier === 'elite' && (pfData.tier === 'elite' || pfData.tier === 'good')) {
+    insights.push({
+      type: 'strength',
+      title: 'Protection du Poste',
+      description: `Les intérieurs adverses ont du mal: C ${cData.pointsAllowed.toFixed(1)} PPG (#${cData.rank}), PF ${pfData.pointsAllowed.toFixed(1)} PPG (#${pfData.rank}).`,
+      positions: ['C', 'PF']
+    })
+  }
+
+  // Check rim protection strength
+  if (raZone && raZone.isStrength) {
+    insights.push({
+      type: 'strength',
+      title: 'Protection du Cercle',
+      description: `Force la difficulté au cercle: ${(raZone.fgPctAllowed * 100).toFixed(1)}% RA (${raZone.diff.toFixed(1)}% sous la moyenne).`,
+      zones: ['ra']
+    })
+  }
+
+  // Generate betting recommendations
+  const bettingRecommendations = {
+    vsGuardDriven: 'neutral' as 'over' | 'under' | 'neutral',
+    vsPaintHeavy: 'neutral' as 'over' | 'under' | 'neutral',
+    vsThreeHeavy: 'neutral' as 'over' | 'under' | 'neutral',
+    summary: ''
+  }
+
+  // vs Guard-driven teams
+  if (raZone?.isWeakness && guardAvgRank >= 20) {
+    bettingRecommendations.vsGuardDriven = 'over'
+  } else if (raZone?.isStrength && guardAvgRank <= 10) {
+    bettingRecommendations.vsGuardDriven = 'under'
+  }
+
+  // vs Paint-heavy teams
+  if (cData && cData.tier === 'elite' && !raZone?.isWeakness) {
+    bettingRecommendations.vsPaintHeavy = 'under'
+  } else if (raZone?.isWeakness) {
+    bettingRecommendations.vsPaintHeavy = 'over'
+  }
+
+  // vs Three-heavy teams
+  const threeZones = shotZoneDefense.filter(z => z.zone === 'corner3' || z.zone === 'ab3')
+  const hasThreeWeakness = threeZones.some(z => z.isWeakness)
+  const hasThreeStrength = threeZones.some(z => z.isStrength)
+  if (hasThreeWeakness) {
+    bettingRecommendations.vsThreeHeavy = 'over'
+  } else if (hasThreeStrength) {
+    bettingRecommendations.vsThreeHeavy = 'under'
+  }
+
+  // Generate summary
+  const summaryParts: string[] = []
+  if (bettingRecommendations.vsGuardDriven === 'over') {
+    summaryParts.push('OVER vs équipes guard-driven (Ja, SGA, Fox)')
+  }
+  if (bettingRecommendations.vsPaintHeavy === 'under') {
+    summaryParts.push('UNDER vs équipes paint-heavy')
+  } else if (bettingRecommendations.vsPaintHeavy === 'over') {
+    summaryParts.push('OVER vs équipes paint-heavy')
+  }
+  if (bettingRecommendations.vsThreeHeavy === 'over') {
+    summaryParts.push('OVER vs équipes three-heavy')
+  } else if (bettingRecommendations.vsThreeHeavy === 'under') {
+    summaryParts.push('UNDER vs équipes three-heavy')
+  }
+  bettingRecommendations.summary = summaryParts.join(' • ') || 'Analyser le profil offensif adverse au cas par cas'
+
+  // Calculate system profile
+  const systemProfile = {
+    rimProtection: raZone?.isStrength ? 'elite' as const : raZone?.isWeakness ? 'weak' as const : 'average' as const,
+    perimeterDefense: hasThreeStrength ? 'elite' as const : hasThreeWeakness ? 'weak' as const : 'average' as const,
+    postDefense: (cData?.tier === 'elite' ? 'elite' : cData?.tier === 'weak' ? 'weak' : 'average') as 'elite' | 'good' | 'average' | 'weak',
+    guardContainment: guardAvgRank <= 8 ? 'elite' as const : guardAvgRank >= 24 ? 'weak' as const : 'average' as const
+  }
+
+  return {
+    teamId,
+    teamAbbreviation,
+    dvpByPosition,
+    shotZoneDefense,
+    insights,
+    bettingRecommendations,
+    systemProfile
+  }
+}
