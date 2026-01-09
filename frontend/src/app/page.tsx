@@ -166,7 +166,9 @@ interface StickyTitleItem {
 }
 
 const stickyNavItems: StickyTitleItem[] = [
-  { id: 'navigation', number: '01', title: 'EXPLORER' },
+  { id: 'equipes', number: '01', title: 'ÉQUIPES' },
+  { id: 'joueurs', number: '02', title: 'JOUEURS' },
+  { id: 'betting', number: '03', title: 'BETTING' },
 ]
 
 // ============================================================================
@@ -389,57 +391,142 @@ function NavigationCard({ card }: { card: CardData }) {
 }
 
 // ============================================================================
-// NavigationGrid Component
+// Section Data for Cinematic Headers
 // ============================================================================
 
-function NavigationGrid() {
-  const gridRef = useRef<HTMLElement>(null)
-  const isInView = useInView(gridRef, { once: true, amount: 0.2 })
+const sectionData = {
+  equipes: {
+    number: '01',
+    title: 'ÉQUIPES',
+    subtitle: 'Standings, statistiques et performances des 30 franchises NBA',
+    accentColor: 'text-emerald-500',
+    borderColor: 'border-emerald-500/30',
+  },
+  joueurs: {
+    number: '02',
+    title: 'JOUEURS',
+    subtitle: 'Statistiques individuelles et métriques avancées',
+    accentColor: 'text-blue-500',
+    borderColor: 'border-blue-500/30',
+  },
+  betting: {
+    number: '03',
+    title: 'BETTING',
+    subtitle: 'Intelligence betting, value finder et analyses Q1',
+    accentColor: 'text-amber-500',
+    borderColor: 'border-amber-500/30',
+  },
+} as const
+
+// ============================================================================
+// NavigationSection Component (Cinematic Section with Title)
+// ============================================================================
+
+function NavigationSection({
+  sectionKey,
+  cards,
+  isFirst = false
+}: {
+  sectionKey: 'equipes' | 'joueurs' | 'betting'
+  cards: CardData[]
+  isFirst?: boolean
+}) {
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
+  const section = sectionData[sectionKey]
 
   return (
     <section
-      ref={gridRef}
-      id="navigation"
-      className="py-16 px-4 sm:px-6 lg:px-8 relative"
+      ref={sectionRef}
+      id={sectionKey}
+      className={`relative px-4 sm:px-8 lg:px-16 ${isFirst ? 'pt-8 pb-16' : 'py-16'}`}
     >
-      {/* Dot pattern background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
-        }}
-      />
+      {/* Dot pattern background - alternating */}
+      {(sectionKey === 'equipes' || sectionKey === 'betting') && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)',
+            backgroundSize: '30px 30px',
+          }}
+        />
+      )}
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-white mb-4">
-            Explorer
-          </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            Statistiques NBA, betting intelligence et analyses avancées
-          </p>
-        </motion.div>
+        {/* Cinematic Section Header */}
+        <div className="mb-10">
+          {/* Section Number with Line */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-4 mb-6"
+          >
+            <span className={`text-sm font-bold tracking-widest ${section.accentColor}`}>
+              {section.number}
+            </span>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 48 } : { width: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className={`h-px ${section.accentColor.replace('text-', 'bg-')}`}
+            />
+          </motion.div>
 
-        {/* Cards Grid */}
+          {/* Massive Title */}
+          <div className="overflow-hidden mb-4">
+            <motion.h2
+              initial={{ y: '100%' }}
+              animate={isInView ? { y: 0 } : { y: '100%' }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              className="text-[clamp(2.5rem,8vw,5rem)] font-black uppercase tracking-tighter leading-[0.9] text-white"
+            >
+              {section.title}
+            </motion.h2>
+          </div>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-lg text-zinc-400 max-w-xl"
+          >
+            {section.subtitle}
+          </motion.p>
+        </div>
+
+        {/* Cards Row */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
-          {navigationCards.map((card) => (
+          {cards.map((card) => (
             <NavigationCard key={card.id} card={card} />
           ))}
         </motion.div>
       </div>
     </section>
+  )
+}
+
+// ============================================================================
+// NavigationGrid Component (Orchestrates 3 Sections)
+// ============================================================================
+
+function NavigationGrid() {
+  const equipesCards = navigationCards.filter(c => c.section === 'equipes')
+  const joueursCards = navigationCards.filter(c => c.section === 'joueurs')
+  const bettingCards = navigationCards.filter(c => c.section === 'betting')
+
+  return (
+    <div id="navigation">
+      <NavigationSection sectionKey="equipes" cards={equipesCards} isFirst />
+      <NavigationSection sectionKey="joueurs" cards={joueursCards} />
+      <NavigationSection sectionKey="betting" cards={bettingCards} />
+    </div>
   )
 }
 
