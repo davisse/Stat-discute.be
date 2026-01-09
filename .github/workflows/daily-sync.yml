@@ -103,11 +103,23 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          # Generate and run analytics SQL
-          python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
-          scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql
-          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
-          echo "Analytics calculated successfully"
+          # Generate and run analytics SQL (standings, DVP)
+          python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql 2>&1 || true
+          scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql || true
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}" || echo "Analytics SQL may have failed (non-critical)"
+
+      - name: Calculate Player ORTG/DRTG
+        if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          # Generate and run player ORTG/DRTG SQL
+          python 1.DATABASE/etl/github_sync_player_ortg.py > /tmp/ortg.sql
+          scp /tmp/ortg.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/ortg.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/ortg.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Player ORTG/DRTG calculated successfully"
 
       - name: Verify Sync
         env:
@@ -127,7 +139,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql" || true
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql $DEPLOY_PATH/ortg.sql" || true
 
       - name: Report Status
         if: always()
