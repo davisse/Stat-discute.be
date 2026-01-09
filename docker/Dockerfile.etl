@@ -2,7 +2,12 @@
 # Stat Discute - Python ETL Dockerfile
 # =============================================================================
 # Runs scheduled ETL jobs for NBA data collection and analytics
-# Uses cron for scheduling, runs in foreground
+# Uses supercronic for scheduling (non-root compatible)
+# =============================================================================
+# SECURITY HARDENING: 2026-01-09
+# - Uses supercronic instead of cron (runs as non-root)
+# - Creates dedicated etluser (UID 1001)
+# - Removes wget/curl after setup to reduce attack surface
 # =============================================================================
 
 FROM python:3.12-slim
@@ -17,12 +22,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     # Build tools for Python packages
     gcc \
-    # Cron for scheduling
-    cron \
-    # Utilities
+    # Utilities (temporarily needed for supercronic download)
     curl \
-    wget \
     && rm -rf /var/lib/apt/lists/*
+
+# -----------------------------------------------------------------------------
+# Install supercronic (cron replacement that runs as non-root)
+# -----------------------------------------------------------------------------
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.29/supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b \
+    SUPERCRONIC=/usr/local/bin/supercronic
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+    && echo "${SUPERCRONIC_SHA1SUM}  supercronic-linux-amd64" | sha1sum -c - \
+    && chmod +x supercronic-linux-amd64 \
+    && mv supercronic-linux-amd64 "$SUPERCRONIC"
 
 # -----------------------------------------------------------------------------
 # Install Python dependencies
@@ -31,6 +45,12 @@ COPY 1.DATABASE/requirements.txt .
 
 # Install with pip, no cache to reduce image size
 RUN pip install --no-cache-dir -r requirements.txt
+
+# -----------------------------------------------------------------------------
+# Create non-root user for security
+# -----------------------------------------------------------------------------
+RUN groupadd --system --gid 1001 etlgroup \
+    && useradd --system --uid 1001 --gid etlgroup --home /app --shell /bin/bash etluser
 
 # -----------------------------------------------------------------------------
 # Copy application code
@@ -42,21 +62,24 @@ COPY 1.DATABASE/etl/ ./etl/
 COPY 1.DATABASE/config/ ./config/
 
 # -----------------------------------------------------------------------------
-# Setup cron scheduling
+# Setup supercronic scheduling
 # -----------------------------------------------------------------------------
-# Copy crontab file
-COPY docker/etl-crontab /etc/cron.d/etl-crontab
-
-# Set permissions
-RUN chmod 0644 /etc/cron.d/etl-crontab
-
-# Apply crontab
-RUN crontab /etc/cron.d/etl-crontab
+# Copy crontab file for supercronic
+COPY docker/etl-crontab /app/crontab
 
 # -----------------------------------------------------------------------------
 # Create directories and set permissions
 # -----------------------------------------------------------------------------
-RUN mkdir -p /app/logs && chmod 755 /app/logs
+RUN mkdir -p /app/logs /app/sessions \
+    && chown -R etluser:etlgroup /app \
+    && chmod 755 /app/logs /app/sessions
+
+# -----------------------------------------------------------------------------
+# Security: Remove curl after supercronic installation
+# -----------------------------------------------------------------------------
+RUN apt-get purge -y curl \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------------------------------------------------------
 # Environment setup
@@ -66,28 +89,13 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # -----------------------------------------------------------------------------
-# Entrypoint
+# Switch to non-root user
 # -----------------------------------------------------------------------------
-# Create entrypoint script that:
-# 1. Exports environment variables for cron
-# 2. Starts cron in foreground
-RUN echo '#!/bin/bash\n\
-# Export environment variables for cron jobs\n\
-printenv | grep -E "^(DB_|DATABASE_|NBA_|ENVIRONMENT)" >> /etc/environment\n\
-\n\
-echo "Starting ETL service..."\n\
-echo "Cron jobs scheduled:"\n\
-crontab -l\n\
-echo ""\n\
-echo "Logs available at /app/logs/etl.log"\n\
-\n\
-# Start cron in foreground\n\
-cron -f\n\
-' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+USER etluser
 
-# Health check - verify cron is running
+# Health check - verify supercronic is running
 HEALTHCHECK --interval=60s --timeout=10s --start-period=10s --retries=3 \
-  CMD pgrep cron > /dev/null || exit 1
+  CMD pgrep supercronic > /dev/null || exit 1
 
-# Run entrypoint
-CMD ["/app/entrypoint.sh"]
+# Run supercronic with crontab
+CMD ["supercronic", "/app/crontab"]

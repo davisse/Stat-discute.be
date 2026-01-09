@@ -38,6 +38,11 @@ services:
   # ---------------------------------------------------------------------------
   # Next.js Frontend
   # ---------------------------------------------------------------------------
+  # SECURITY HARDENING: 2026-01-09
+  # - cap_drop: ALL (drop all Linux capabilities)
+  # - no-new-privileges (prevent privilege escalation)
+  # - read_only root filesystem with tmpfs for /tmp
+  # ---------------------------------------------------------------------------
   frontend:
     build:
       context: ..
@@ -55,6 +60,14 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY:-}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-}
+    # Security hardening
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=64M,mode=1777
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,6 +91,12 @@ services:
   # ---------------------------------------------------------------------------
   # ETL Service (Cron-based data collection)
   # ---------------------------------------------------------------------------
+  # SECURITY HARDENING: 2026-01-09
+  # - cap_drop: ALL (drop all Linux capabilities)
+  # - no-new-privileges (prevent privilege escalation)
+  # - read_only root filesystem with tmpfs for /tmp
+  # - Runs as non-root user (etluser:1001)
+  # ---------------------------------------------------------------------------
   etl:
     build:
       context: ..
@@ -96,6 +115,14 @@ services:
       NBA_API_RATE_LIMIT_DELAY: ${NBA_API_RATE_LIMIT_DELAY:-1.0}
       # Pinnacle session file path
       PINNACLE_SESSION_FILE: /app/sessions/pinnacle_session.json
+    # Security hardening
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=64M,mode=1777
     volumes:
       - etl_logs:/app/logs
       - etl_sessions:/app/sessions
