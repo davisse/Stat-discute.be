@@ -47,6 +47,7 @@ def main():
     scripts = [
         'calculate_team_stats.py',
         'calculate_advanced_stats.py',
+        'populate_ortg_drtg.py',       # Player ORTG/DRTG (needs team_game_stats + player_advanced_stats)
         'calculate_standings.py',
         'calculate_period_stats.py',  # Quarter & half averages
         'generate_team_analysis.py',  # French narrative analysis (after standings)
