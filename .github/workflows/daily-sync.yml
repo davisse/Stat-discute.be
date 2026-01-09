@@ -66,6 +66,7 @@ jobs:
           echo "Player stats SQL generated: $(wc -l < /tmp/player_stats.sql) lines"
 
       - name: Copy SQL files to VPS
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
