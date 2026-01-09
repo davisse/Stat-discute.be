@@ -109,7 +109,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST << 'ENDSSH'
+          ssh $VPS_USER@$VPS_HOST << ENDSSH
             echo "Running database migrations..."
 
             # Wait for postgres to be ready
@@ -118,15 +118,16 @@ jobs:
                 echo "Database is ready"
                 break
               fi
-              echo "Waiting for database... attempt $i/10"
+              echo "Waiting for database... attempt \$i/10"
               sleep 3
             done
 
-            # Run all migration files in order (idempotent due to IF NOT EXISTS / ON CONFLICT)
+            # Run all migration files in order
             MIGRATIONS_DIR="${DEPLOY_PATH}/1.DATABASE/migrations"
-            for migration in $(ls -1 "$MIGRATIONS_DIR"/*.sql 2>/dev/null | sort); do
-              echo "Applying migration: $(basename $migration)"
-              docker exec -i stat-discute-db psql -U nba_admin -d nba_stats < "$migration" 2>&1 | tail -5 || true
+            echo "Looking for migrations in: \$MIGRATIONS_DIR"
+            for migration in \$(ls -1 "\$MIGRATIONS_DIR"/*.sql 2>/dev/null | sort); do
+              echo "Applying migration: \$(basename \$migration)"
+              docker exec -i stat-discute-db psql -U nba_admin -d nba_stats < "\$migration" 2>&1 | tail -5 || true
             done
 
             echo "Migrations complete"
