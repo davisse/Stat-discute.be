@@ -23,6 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `/sync` | Full ETL pipeline: games → player stats → analytics |
 | `/sync --games-only` | Only sync games, skip player stats and analytics |
 | `/sync --analytics-only` | Only run analytics (assumes data already synced) |
+| `/sync --quick` | Sync games and player stats, skip analytics |
 | `/odds` | Fetch Pinnacle betting odds and show summary |
 | `/odds --summary` | Show current odds without fetching new data |
 | `/run-dev` | Start Next.js dev server at localhost:3000 |
@@ -156,17 +157,19 @@ team_analysis      - Daily generated French narrative analysis per team
 3. **ID Types**: `team_id` and `player_id` are BIGINT, `game_id` is VARCHAR(10)
 4. **Indexes**: 155+ indexes optimize common query patterns (see migration 007)
 
-### Frontend Stack (Next.js 16 + React 19.2 + Tailwind v4)
+### Frontend Stack (Next.js 16.0.0 + React 19.2.0 + Tailwind v4)
 
-**React 19.2 Features in Use**:
-- Server Components (default for all pages)
-- Concurrent rendering features
-- Framer Motion integration for animations
+**Key Dependencies** (from `package.json`):
+- `next@16.0.0`, `react@19.2.0`, `tailwindcss@^4`
+- `pg@^8.16.3` (PostgreSQL client)
+- `jose@^6.1.2` (JWT), `@node-rs/argon2@^2.0.2` (password hashing)
+- `framer-motion@^12.23.26`, `recharts@^3.4.1`
 
 **Next.js 16 Features**:
 - App Router with route groups (e.g., `(dashboard)/`)
 - Turbopack for fast development builds
 - Server Actions via `'use server'` directive
+- React Server Components (default for all pages)
 
 **Data Flow**:
 ```
@@ -624,3 +627,36 @@ DB_PASSWORD=
 - Legacy Flask API (`nba-schedule-api/`) not maintained - do not use for new features
 - Tailwind v4 CSS variables require inline styles for dynamic colors
 - PostgreSQL ROUND() type casting needed in TypeScript (numeric → string)
+
+## CI/CD Pipelines (GitHub Actions)
+
+### Daily Data Sync (`.github/workflows/daily-sync.yml`)
+- **Schedule**: Runs at 12:00 UTC daily (after NBA games finish)
+- **Manual trigger**: Workflow dispatch with sync type options (full, games-only, analytics-only)
+- **Process**: Generates SQL locally → SCP to VPS → Execute via Docker → Verify counts
+
+### Deploy to VPS (`.github/workflows/deploy.yml`)
+- **Trigger**: Push to `main` branch or manual dispatch
+- **Process**: Pull code on VPS → Build containers → Run migrations → Health check
+- **Required secrets**: `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, `VPS_DEPLOY_PATH`, `DB_PASSWORD`, `JWT_PRIVATE_KEY`, `JWT_PUBLIC_KEY`
+
+## Mobile Design Principles
+
+Reference: `.claude/mobile-design-principles.md`
+
+**Core Rule**: User should NEVER have to zoom in. Every element must be visible at default zoom.
+
+**Key Patterns**:
+```tsx
+// Mobile-first: no styling, then add on larger screens
+<div className="bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg p-2 sm:p-4">
+
+// Edge-to-edge wrapper with negative margins
+<div className="-mx-2 sm:mx-0">
+```
+
+**Chart Optimization**:
+- Reduce axis padding to minimum (3-5%, not 15%)
+- Hide legends on mobile or make compact
+- Remove axis labels if they consume too much space
+- Data should fill available space, not float in padding

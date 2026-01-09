@@ -722,6 +722,8 @@ class PinnacleOddsFetcher:
 
 def main():
     """Main entry point."""
+    import os
+
     parser = argparse.ArgumentParser(description='Fetch NBA odds from Pinnacle')
     parser.add_argument('--full-run', action='store_true',
                       help='Fetch all markets for all games')
@@ -729,8 +731,11 @@ def main():
                       help='Parse and log without database writes')
     args = parser.parse_args()
 
+    # Get session file path from environment or use default
+    session_file = os.environ.get('PINNACLE_SESSION_FILE', 'pinnacle_session.json')
+
     # Create fetcher and run
-    fetcher = PinnacleOddsFetcher(DB_CONFIG, dry_run=args.dry_run)
+    fetcher = PinnacleOddsFetcher(DB_CONFIG, dry_run=args.dry_run, session_file=session_file)
 
     try:
         fetcher.run(full_run=args.full_run)
