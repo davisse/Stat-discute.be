@@ -3043,3 +3043,211 @@ export async function getDefensiveSystemAnalysis(teamId: number): Promise<Defens
     systemProfile
   }
 }
+
+// ============================================
+// GAMES PAGE REDESIGN - QUERIES
+// ============================================
+
+export interface GameWithOdds {
+  game_id: string
+  game_date: string
+  game_time: string | null
+  home_team_id: number
+  away_team_id: number
+  home_team_abbr: string
+  away_team_abbr: string
+  home_team_name: string
+  away_team_name: string
+  home_score: number | null
+  away_score: number | null
+  status: 'Scheduled' | 'In Progress' | 'Final'
+  // Team records
+  home_wins: number
+  home_losses: number
+  away_wins: number
+  away_losses: number
+  // Odds (nullable if not available)
+  spread_home: number | null
+  total: number | null
+}
+
+export interface GameDetail extends GameWithOdds {
+  venue: string | null
+  attendance: number | null
+}
+
+export interface DateGameCount {
+  date: string
+  count: number
+}
+
+/**
+ * Get a single game by ID with odds
+ */
+export async function getGameById(gameId: string): Promise<GameDetail | null> {
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date,
+      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      g.home_team_id,
+      g.away_team_id,
+      ht.abbreviation as home_team_abbr,
+      at.abbreviation as away_team_abbr,
+      ht.full_name as home_team_name,
+      at.full_name as away_team_name,
+      g.home_team_score as home_score,
+      g.away_team_score as away_score,
+      g.game_status as status,
+      COALESCE(hts.wins, 0) as home_wins,
+      COALESCE(hts.losses, 0) as home_losses,
+      COALESCE(ats.wins, 0) as away_wins,
+      COALESCE(ats.losses, 0) as away_losses,
+      NULL::numeric as spread_home,
+      NULL::numeric as total,
+      NULL::text as venue,
+      NULL::integer as attendance
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id AND hts.season_id = g.season
+    LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id AND ats.season_id = g.season
+    WHERE g.game_id = $1
+  `, [gameId])
+
+  return (result.rows[0] as GameDetail | undefined) || null
+}
+
+/**
+ * Get games for a specific date with odds
+ */
+export async function getGamesByDate(date: string): Promise<GameWithOdds[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date,
+      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      g.home_team_id,
+      g.away_team_id,
+      ht.abbreviation as home_team_abbr,
+      at.abbreviation as away_team_abbr,
+      ht.full_name as home_team_name,
+      at.full_name as away_team_name,
+      g.home_team_score as home_score,
+      g.away_team_score as away_score,
+      g.game_status as status,
+      COALESCE(hts.wins, 0) as home_wins,
+      COALESCE(hts.losses, 0) as home_losses,
+      COALESCE(ats.wins, 0) as away_wins,
+      COALESCE(ats.losses, 0) as away_losses,
+      NULL::numeric as spread_home,
+      NULL::numeric as total
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id AND hts.season_id = $1
+    LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id AND ats.season_id = $1
+    WHERE g.season = $1 AND DATE(g.game_date) = $2::date
+    ORDER BY g.game_date ASC
+  `, [currentSeason, date])
+
+  return result.rows as GameWithOdds[]
+}
+
+/**
+ * Get game counts for a date range (for date picker)
+ */
+export async function getGamesCountByDateRange(startDate: string, endDate: string): Promise<DateGameCount[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      DATE(game_date)::text as date,
+      COUNT(*)::integer as count
+    FROM games
+    WHERE season = $1
+      AND DATE(game_date) BETWEEN $2::date AND $3::date
+    GROUP BY DATE(game_date)
+    ORDER BY DATE(game_date)
+  `, [currentSeason, startDate, endDate])
+
+  return result.rows as DateGameCount[]
+}
+
+/**
+ * Get yesterday's games (for "Hier" section)
+ */
+export async function getYesterdayGames(): Promise<GameWithOdds[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date,
+      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      g.home_team_id,
+      g.away_team_id,
+      ht.abbreviation as home_team_abbr,
+      at.abbreviation as away_team_abbr,
+      ht.full_name as home_team_name,
+      at.full_name as away_team_name,
+      g.home_team_score as home_score,
+      g.away_team_score as away_score,
+      g.game_status as status,
+      COALESCE(hts.wins, 0) as home_wins,
+      COALESCE(hts.losses, 0) as home_losses,
+      COALESCE(ats.wins, 0) as away_wins,
+      COALESCE(ats.losses, 0) as away_losses,
+      NULL::numeric as spread_home,
+      NULL::numeric as total
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id
+    LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id
+    WHERE g.season = $1 AND DATE(g.game_date) = CURRENT_DATE - INTERVAL '1 day'
+    ORDER BY g.game_date ASC
+  `, [currentSeason])
+
+  return result.rows as GameWithOdds[]
+}
+
+/**
+ * Get today's games with odds (for "Ce soir" section)
+ */
+export async function getTodayGamesWithOdds(): Promise<GameWithOdds[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date,
+      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      g.home_team_id,
+      g.away_team_id,
+      ht.abbreviation as home_team_abbr,
+      at.abbreviation as away_team_abbr,
+      ht.full_name as home_team_name,
+      at.full_name as away_team_name,
+      g.home_team_score as home_score,
+      g.away_team_score as away_score,
+      g.game_status as status,
+      COALESCE(hts.wins, 0) as home_wins,
+      COALESCE(hts.losses, 0) as home_losses,
+      COALESCE(ats.wins, 0) as away_wins,
+      COALESCE(ats.losses, 0) as away_losses,
+      NULL::numeric as spread_home,
+      NULL::numeric as total
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id
+    LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id
+    WHERE g.season = $1 AND DATE(g.game_date) = CURRENT_DATE
+    ORDER BY g.game_date ASC
+  `, [currentSeason])
+
+  return result.rows as GameWithOdds[]
+}
