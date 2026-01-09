@@ -109,6 +109,19 @@ jobs:
           scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql || true
           ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}" || echo "Analytics SQL may have failed (non-critical)"
 
+      - name: Calculate Advanced Stats
+        if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          # Generate and run advanced stats SQL (TS%, eFG%, Usage Rate)
+          python 1.DATABASE/etl/github_sync_advanced_stats.py > /tmp/advanced_stats.sql
+          scp /tmp/advanced_stats.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/advanced_stats.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/advanced_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Advanced stats calculated successfully"
+
       - name: Calculate Player ORTG/DRTG
         if: ${{ github.event.inputs.sync_type != 'games-only' }}
         env:
@@ -140,7 +153,7 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql $DEPLOY_PATH/ortg.sql" || true
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql $DEPLOY_PATH/advanced_stats.sql $DEPLOY_PATH/ortg.sql" || true
 
       - name: Report Status
         if: always()
