@@ -131,6 +131,14 @@ jobs:
             done
 
             echo "Migrations complete"
+
+            # Run shooting zones data fetch (one-time data population)
+            echo "Fetching shooting zone data from NBA API..."
+            if docker exec stat-discute-etl python /app/etl/analytics/fetch_shooting_zones.py 2>&1; then
+              echo "✅ Shooting zones data fetched successfully"
+            else
+              echo "⚠️ Shooting zones fetch failed (non-critical, data may already exist)"
+            fi
           ENDSSH
 
       - name: Wait for services to start
