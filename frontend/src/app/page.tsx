@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Users, Calendar, Search, BarChart3, TrendingUp, LineChart } from 'lucide-react'
 import { PageTransitionProvider, usePageTransition } from '@/components/transitions'
 
 // ============================================================================
@@ -17,15 +17,108 @@ interface NavLinkProps {
   badgeColor?: string
 }
 
-interface SectionProps {
+// ============================================================================
+// Card Types and Data
+// ============================================================================
+
+interface CardData {
   id: string
-  number?: string
-  title: string | string[]
-  description: string
-  links: NavLinkProps[]
-  className?: string
-  showDots?: boolean
+  section: 'equipes' | 'joueurs' | 'betting'
+  number: string
+  category: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  features: string[]
+  badge?: string
+  badgeColor?: string
 }
+
+const sectionColors = {
+  equipes: {
+    badge: 'bg-emerald-500/20 text-emerald-400',
+    icon: 'text-emerald-500',
+    hover: 'hover:border-emerald-500/50'
+  },
+  joueurs: {
+    badge: 'bg-blue-500/20 text-blue-400',
+    icon: 'text-blue-500',
+    hover: 'hover:border-blue-500/50'
+  },
+  betting: {
+    badge: 'bg-amber-500/20 text-amber-400',
+    icon: 'text-amber-500',
+    hover: 'hover:border-amber-500/50'
+  }
+} as const
+
+const navigationCards: CardData[] = [
+  // Column 1 - Équipes
+  {
+    id: 'teams',
+    section: 'equipes',
+    number: '01',
+    category: 'ÉQUIPES',
+    href: '/teams',
+    icon: Users,
+    title: 'Équipes',
+    features: ['Standings', 'Stats off/def', 'DvP analysis']
+  },
+  {
+    id: 'games',
+    section: 'equipes',
+    number: '01',
+    category: 'ÉQUIPES',
+    href: '/games',
+    icon: Calendar,
+    title: 'Matchs du Jour',
+    features: ['Schedule', 'Live scores', "Today's games"]
+  },
+  // Column 2 - Joueurs
+  {
+    id: 'players',
+    section: 'joueurs',
+    number: '02',
+    category: 'JOUEURS',
+    href: '/players',
+    icon: Search,
+    title: 'Recherche Joueur',
+    features: ['Autocomplete', 'Stats avancées', 'Player detail']
+  },
+  // Column 3 - Betting & Analyse
+  {
+    id: 'totals',
+    section: 'betting',
+    number: '03',
+    category: 'BETTING',
+    href: '/betting/totals',
+    icon: BarChart3,
+    title: 'Totals O/U',
+    features: ['Over/Under', 'Props analysis', 'Trends'],
+    badge: 'MC',
+    badgeColor: 'bg-emerald-600'
+  },
+  {
+    id: 'value',
+    section: 'betting',
+    number: '03',
+    category: 'BETTING',
+    href: '/betting/value-finder',
+    icon: TrendingUp,
+    title: 'Value Finder',
+    features: ['Best odds', 'Upside value', 'Edge finder']
+  },
+  {
+    id: 'analysis',
+    section: 'betting',
+    number: '03',
+    category: 'ANALYSE',
+    href: '/analysis/q1-value',
+    icon: LineChart,
+    title: 'Analyse Q1',
+    features: ['Q1 patterns', 'Dispersion', 'Pace analysis']
+  }
+]
 
 // ============================================================================
 // NavLink Component
@@ -73,10 +166,7 @@ interface StickyTitleItem {
 }
 
 const stickyNavItems: StickyTitleItem[] = [
-  { id: 'teams', number: '01', title: 'ÉQUIPES' },
-  { id: 'players', number: '02', title: 'JOUEURS' },
-  { id: 'betting', number: '03', title: 'PARIS' },
-  { id: 'analysis', number: '04', title: 'ANALYSE' },
+  { id: 'navigation', number: '01', title: 'EXPLORER' },
 ]
 
 // ============================================================================
@@ -206,116 +296,149 @@ function FixedNav() {
 }
 
 // ============================================================================
-// AnimatedSection Component
+// Animation Variants
 // ============================================================================
 
-function AnimatedSection({ id, number, title, description, links, className = '', showDots = true }: SectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 }
+  }
+}
 
-  // Parallax effect for the section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start']
-  })
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }
+  }
+}
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100])
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3])
+// ============================================================================
+// NavigationCard Component
+// ============================================================================
 
-  const titleLines = Array.isArray(title) ? title : [title]
+function NavigationCard({ card }: { card: CardData }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const { startTransition } = usePageTransition()
+  const colors = sectionColors[card.section]
 
-  // First section (statistiques) should have less top padding
-  const isFirstSection = id === 'statistiques'
+  const handleClick = () => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect()
+      startTransition(rect, card.href, 'rgb(24, 24, 27)')
+    }
+  }
+
+  const Icon = card.icon
+
+  return (
+    <motion.div
+      ref={cardRef}
+      variants={cardVariants}
+      onClick={handleClick}
+      className={`
+        group relative p-6 min-h-[180px]
+        bg-zinc-900/50 border border-zinc-800 rounded-xl
+        cursor-pointer transition-all duration-300
+        hover:border-white hover:bg-zinc-900/70
+        ${colors.hover}
+      `}
+    >
+      {/* Badge */}
+      {card.badge && (
+        <span className={`absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold rounded-full ${card.badgeColor} text-white`}>
+          {card.badge}
+        </span>
+      )}
+
+      {/* Section Badge */}
+      <div className="flex items-center gap-2 mb-3">
+        <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded ${colors.badge}`}>
+          {card.number} {card.category}
+        </span>
+      </div>
+
+      {/* Icon */}
+      <Icon className={`w-6 h-6 mb-3 ${colors.icon}`} />
+
+      {/* Title */}
+      <h3 className="text-lg font-bold text-white mb-2">{card.title}</h3>
+
+      {/* Separator */}
+      <div className="w-full h-px bg-zinc-800 mb-3" />
+
+      {/* Features */}
+      <ul className="space-y-1">
+        {card.features.map((feature, index) => (
+          <li key={index} className="text-sm text-zinc-400 flex items-center gap-2">
+            <span className="w-1 h-1 rounded-full bg-zinc-600" />
+            {feature}
+          </li>
+        ))}
+      </ul>
+
+      {/* Arrow */}
+      <span className="absolute bottom-6 right-6 text-zinc-500 group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
+        →
+      </span>
+    </motion.div>
+  )
+}
+
+// ============================================================================
+// NavigationGrid Component
+// ============================================================================
+
+function NavigationGrid() {
+  const gridRef = useRef<HTMLElement>(null)
+  const isInView = useInView(gridRef, { once: true, amount: 0.2 })
 
   return (
     <section
-      ref={sectionRef}
-      id={id}
-      className={`min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 relative overflow-hidden ${
-        isFirstSection ? 'pt-8 pb-20' : 'py-20'
-      } ${className}`}
+      ref={gridRef}
+      id="navigation"
+      className="py-16 px-4 sm:px-6 lg:px-8 relative"
     >
-      {/* Section-specific dots pattern (alternating) */}
-      {showDots && (
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-          }}
-        />
-      )}
+      {/* Dot pattern background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+        }}
+      />
 
-      <motion.div
-        style={{ y, opacity }}
-        className="max-w-7xl mx-auto w-full relative z-10"
-      >
-        {/* Section Number */}
-        {number && (
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8"
-          >
-            <span className="text-base font-medium text-zinc-500 tracking-widest">{number}</span>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 32 } : { width: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="h-0.5 bg-zinc-700 mt-2"
-            />
-          </motion.div>
-        )}
-
-        {/* Massive Title with stagger */}
-        <div className="mb-8 overflow-hidden">
-          {titleLines.map((line, index) => (
-            <motion.div
-              key={index}
-              initial={{ y: '100%' }}
-              animate={isInView ? { y: 0 } : { y: '100%' }}
-              transition={{
-                duration: 1,
-                delay: 0.1 + index * 0.15,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-            >
-              <h2 className="text-[clamp(3rem,12vw,10rem)] font-black uppercase tracking-tighter leading-[0.9] text-white">
-                {line}
-              </h2>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Description with character reveal effect */}
-        <motion.p
-          initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-          animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 30, filter: 'blur(10px)' }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xl text-zinc-400 leading-relaxed max-w-2xl mb-12"
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12 text-center"
         >
-          {description}
-        </motion.p>
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-white mb-4">
+            Explorer
+          </h2>
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+            Statistiques NBA, betting intelligence et analyses avancées
+          </p>
+        </motion.div>
 
-        {/* Navigation Links with stagger */}
-        <div className="flex flex-wrap gap-4">
-          {links.map((link, index) => (
-            <motion.div
-              key={link.href}
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.9 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.6 + index * 0.08,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-            >
-              <NavLink {...link} />
-            </motion.div>
+        {/* Cards Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {navigationCards.map((card) => (
+            <NavigationCard key={card.id} card={card} />
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }
@@ -440,55 +563,6 @@ function FooterSection() {
 }
 
 // ============================================================================
-// Section Data
-// ============================================================================
-
-const sections: SectionProps[] = [
-  {
-    id: 'teams',
-    number: '01',
-    title: 'ÉQUIPES',
-    description: 'Explorez les statistiques des équipes NBA, les standings, et les performances avec des métriques avancées et le calendrier des matchs.',
-    showDots: true,
-    links: [
-      { href: '/teams', label: 'Toutes les Équipes' },
-      { href: '/games', label: 'Calendrier & Résultats' },
-    ],
-  },
-  {
-    id: 'players',
-    number: '02',
-    title: 'JOUEURS',
-    description: 'Analyse approfondie des statistiques individuelles, moyennes de performance, et métriques avancées pour chaque joueur NBA.',
-    showDots: false,
-    links: [
-      { href: '/players', label: 'Tous les Joueurs' },
-    ],
-  },
-  {
-    id: 'betting',
-    number: '03',
-    title: 'PARIS',
-    description: 'Outils de betting intelligence: analyse des totaux Over/Under avec simulations Monte Carlo, expected value, et identification des opportunités de value.',
-    showDots: true,
-    links: [
-      { href: '/betting/totals', label: 'Analyse Totaux', badge: 'MC', badgeColor: 'bg-emerald-600' },
-      { href: '/betting/value-finder', label: 'Value Finder' },
-    ],
-  },
-  {
-    id: 'analysis',
-    number: '04',
-    title: 'ANALYSE',
-    description: 'Analyse statistique avancée du premier quart-temps pour identifier les opportunités de value betting sur le Q1 moneyline.',
-    showDots: false,
-    links: [
-      { href: '/analysis/q1-value', label: 'Q1 Value Finder' },
-    ],
-  },
-]
-
-// ============================================================================
 // Main Home Content
 // ============================================================================
 
@@ -501,10 +575,8 @@ function HomeContent() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Content Sections - dots pattern alternates per section */}
-      {sections.map((section) => (
-        <AnimatedSection key={section.id} {...section} />
-      ))}
+      {/* Navigation Grid */}
+      <NavigationGrid />
 
       {/* Footer */}
       <FooterSection />
