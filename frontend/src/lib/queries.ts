@@ -183,11 +183,39 @@ export interface TeammatePerformanceSplit {
   player_name: string
   teammate_id: number
   teammate_name: string
+  position: string | null
   with_games: number
   without_games: number
+  // Points
   with_pts: number
   without_pts: number
   pts_boost: number
+  // Rebounds
+  with_reb: number
+  without_reb: number
+  reb_boost: number
+  // Assists
+  with_ast: number
+  without_ast: number
+  ast_boost: number
+  // Blocks
+  with_blk: number
+  without_blk: number
+  blk_boost: number
+  // Steals
+  with_stl: number
+  without_stl: number
+  stl_boost: number
+  // 3PM
+  with_3pm: number
+  without_3pm: number
+  three_pm_boost: number
+  // FG
+  with_fgm: number
+  with_fga: number
+  without_fgm: number
+  without_fga: number
+  starter_pct: number  // % of games started when absent player was out
 }
 
 export interface ImpactfulAbsence {
@@ -3158,7 +3186,7 @@ export async function getGamesByDate(date: string): Promise<GameWithOdds[]> {
     JOIN teams at ON g.away_team_id = at.team_id
     LEFT JOIN team_standings hts ON g.home_team_id = hts.team_id AND hts.season_id = $1
     LEFT JOIN team_standings ats ON g.away_team_id = ats.team_id AND ats.season_id = $1
-    WHERE g.season = $1 AND DATE(g.game_date) = $2::date
+    WHERE g.season = $1 AND g.game_date = $2::date
     ORDER BY g.game_time ASC NULLS LAST, g.game_id ASC
   `, [currentSeason, date])
 
@@ -3382,4 +3410,161 @@ export async function searchGames(searchQuery: string): Promise<GameSearchResult
     gameDate: row.formatted_date,
     isToday: row.is_today
   }))
+}
+
+/**
+ * Get teammate performance splits when a specific player is absent
+ *
+ * Returns how teammates perform when a player is OUT vs when they are playing.
+ * Useful for prop analysis and cascade effects of star absences.
+ *
+ * @param playerId - The player whose absence impact we want to measure
+ * @param minGames - Minimum games required in each scenario (with/without)
+ * @returns Array of TeammatePerformanceSplit showing boost/decline for each teammate
+ */
+export async function getTeammatesWhenPlayerAbsent(
+  playerId: number,
+  minGames = 3,
+  startersOnly = true
+): Promise<TeammatePerformanceSplit[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    WITH player_info AS (
+      -- Get the player's team from their most recent game
+      SELECT DISTINCT pgs.team_id
+      FROM player_game_stats pgs
+      JOIN games g ON pgs.game_id = g.game_id
+      WHERE pgs.player_id = $1 AND g.season = $2
+      ORDER BY pgs.team_id
+      LIMIT 1
+    ),
+    team_games AS (
+      -- All team games in the season
+      SELECT DISTINCT g.game_id
+      FROM games g
+      JOIN player_info pi ON (g.home_team_id = pi.team_id OR g.away_team_id = pi.team_id)
+      WHERE g.season = $2 AND g.game_status = 'Final'
+    ),
+    player_presence AS (
+      -- Mark which games the player was present (played any minutes)
+      SELECT
+        tg.game_id,
+        CASE WHEN pgs.minutes > 0 THEN true ELSE false END as player_played
+      FROM team_games tg
+      LEFT JOIN player_game_stats pgs ON tg.game_id = pgs.game_id AND pgs.player_id = $1
+    ),
+    teammate_stats AS (
+      -- Get teammate performance in each game with starter info
+      SELECT
+        p.player_id as teammate_id,
+        p.full_name as teammate_name,
+        pgs.game_id,
+        pgs.points,
+        pgs.rebounds,
+        pgs.assists,
+        pgs.blocks,
+        pgs.steals,
+        pgs.fg3_made,
+        pgs.fg_made,
+        pgs.fg_attempted,
+        pgs.is_starter,
+        pgs.start_position,
+        pp.player_played
+      FROM player_game_stats pgs
+      JOIN players p ON pgs.player_id = p.player_id
+      JOIN player_presence pp ON pgs.game_id = pp.game_id
+      JOIN player_info pi ON pgs.team_id = pi.team_id
+      WHERE pgs.player_id != $1
+        AND pgs.minutes > 0  -- Teammate actually played
+    ),
+    teammate_positions AS (
+      -- Get most common position for each teammate
+      SELECT
+        teammate_id,
+        start_position,
+        COUNT(*) as pos_count,
+        ROW_NUMBER() OVER (PARTITION BY teammate_id ORDER BY COUNT(*) DESC) as rn
+      FROM teammate_stats
+      WHERE is_starter = true AND start_position IS NOT NULL
+      GROUP BY teammate_id, start_position
+    )
+    SELECT
+      $1::bigint as player_id,
+      (SELECT full_name FROM players WHERE player_id = $1) as player_name,
+      ts.teammate_id,
+      ts.teammate_name,
+      tp.start_position as position,
+      COUNT(CASE WHEN ts.player_played THEN 1 END)::int as with_games,
+      COUNT(CASE WHEN NOT ts.player_played THEN 1 END)::int as without_games,
+      -- Points
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.points END), 1) as with_pts,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.points END), 1) as without_pts,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.points END) -
+        AVG(CASE WHEN ts.player_played THEN ts.points END), 1
+      ) as pts_boost,
+      -- Rebounds
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.rebounds END), 1) as with_reb,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.rebounds END), 1) as without_reb,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.rebounds END) -
+        AVG(CASE WHEN ts.player_played THEN ts.rebounds END), 1
+      ) as reb_boost,
+      -- Assists
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.assists END), 1) as with_ast,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.assists END), 1) as without_ast,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.assists END) -
+        AVG(CASE WHEN ts.player_played THEN ts.assists END), 1
+      ) as ast_boost,
+      -- Blocks
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.blocks END), 1) as with_blk,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.blocks END), 1) as without_blk,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.blocks END) -
+        AVG(CASE WHEN ts.player_played THEN ts.blocks END), 1
+      ) as blk_boost,
+      -- Steals
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.steals END), 1) as with_stl,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.steals END), 1) as without_stl,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.steals END) -
+        AVG(CASE WHEN ts.player_played THEN ts.steals END), 1
+      ) as stl_boost,
+      -- 3PM
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.fg3_made END), 1) as with_3pm,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.fg3_made END), 1) as without_3pm,
+      ROUND(
+        AVG(CASE WHEN NOT ts.player_played THEN ts.fg3_made END) -
+        AVG(CASE WHEN ts.player_played THEN ts.fg3_made END), 1
+      ) as three_pm_boost,
+      -- FG
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.fg_made END), 1) as with_fgm,
+      ROUND(AVG(CASE WHEN ts.player_played THEN ts.fg_attempted END), 1) as with_fga,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.fg_made END), 1) as without_fgm,
+      ROUND(AVG(CASE WHEN NOT ts.player_played THEN ts.fg_attempted END), 1) as without_fga,
+      -- Starter percentage
+      ROUND(
+        100.0 * COUNT(CASE WHEN NOT ts.player_played AND ts.is_starter THEN 1 END) /
+        NULLIF(COUNT(CASE WHEN NOT ts.player_played THEN 1 END), 0)
+      )::int as starter_pct
+    FROM teammate_stats ts
+    LEFT JOIN teammate_positions tp ON ts.teammate_id = tp.teammate_id AND tp.rn = 1
+    GROUP BY ts.teammate_id, ts.teammate_name, tp.start_position
+    HAVING
+      COUNT(CASE WHEN ts.player_played THEN 1 END) >= $3
+      AND COUNT(CASE WHEN NOT ts.player_played THEN 1 END) >= $3
+      AND (
+        NOT $4  -- If startersOnly is false, include everyone
+        OR (
+          -- Otherwise only include players who started in 40%+ of games when player was out
+          100.0 * COUNT(CASE WHEN NOT ts.player_played AND ts.is_starter THEN 1 END) /
+          NULLIF(COUNT(CASE WHEN NOT ts.player_played THEN 1 END), 0) >= 40
+        )
+      )
+    ORDER BY pts_boost DESC NULLS LAST
+  `, [playerId, currentSeason, minGames, startersOnly])
+
+  return result.rows as TeammatePerformanceSplit[]
 }
