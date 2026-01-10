@@ -33,8 +33,9 @@ INSERT INTO users (email, password_hash, full_name, role, email_verified, is_act
 VALUES (
     'admin@stat-discute.be',
     -- Hash verified working for password: Admin123!
-    -- Generated 2026-01-09 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
-    '$argon2id$v=19$m=65536,t=3,p=4$EY+SXQQZ3KOY0n51cUIlAQ$j64zXBTlZ0VoAwqD/VloE3QkhWuqRm2wirSxAisvmYI',
+    -- Generated 2026-01-10 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
+    -- VERIFIED WORKING in production
+    '$argon2id$v=19$m=65536,t=3,p=4$OK0myyFs2JJFFrjOBiRhTQ$9+uwuZ+yh1V+07v4BA9Lw+K11ik2ERQyEEuENlayMV4',
     'Administrator',
     'admin',
     true,
@@ -48,8 +49,9 @@ INSERT INTO users (email, password_hash, full_name, role, email_verified, is_act
 VALUES (
     'demo@stat-discute.be',
     -- Hash verified working for password: Demo123!
-    -- Generated 2026-01-09 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
-    '$argon2id$v=19$m=65536,t=3,p=4$5+2uhaKVOfAviHMsDK/kYA$qgLd7tG8c4qdFyWDaX57gCO2E9FcKV1wSvE0OxF+lYo',
+    -- Generated 2026-01-10 with @node-rs/argon2 (memoryCost:65536, timeCost:3, parallelism:4)
+    -- VERIFIED WORKING in production
+    '$argon2id$v=19$m=65536,t=3,p=4$yiroKR0BSuzujdg3+wjwmw$gxmR9e69Y5z/Mvb2+i/Flg/KpL9/QFVe2iVRzmVE3zw',
     'Demo User',
     'user',
     true,
