@@ -3160,7 +3160,7 @@ export async function getGamesByDate(date: string): Promise<GameWithOdds[]> {
   const result = await query(`
     SELECT
       g.game_id,
-      g.game_date,
+      TO_CHAR(g.game_date, 'YYYY-MM-DD') as game_date,
       -- Convert UTC game_time to CET (UTC+1), format as HH:MM
       CASE
         WHEN g.game_time IS NOT NULL THEN TO_CHAR((g.game_time + INTERVAL '1 hour'), 'HH24:MI')
@@ -3222,8 +3222,8 @@ export async function getYesterdayGames(): Promise<GameWithOdds[]> {
   const result = await query(`
     SELECT
       g.game_id,
-      g.game_date,
-      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      TO_CHAR(g.game_date, 'YYYY-MM-DD') as game_date,
+      TO_CHAR(g.game_time, 'HH24:MI') as game_time,
       g.home_team_id,
       g.away_team_id,
       ht.abbreviation as home_team_abbr,
@@ -3260,8 +3260,8 @@ export async function getTodayGamesWithOdds(): Promise<GameWithOdds[]> {
   const result = await query(`
     SELECT
       g.game_id,
-      g.game_date,
-      TO_CHAR(g.game_date, 'HH24:MI') as game_time,
+      TO_CHAR(g.game_date, 'YYYY-MM-DD') as game_date,
+      TO_CHAR(g.game_time, 'HH24:MI') as game_time,
       g.home_team_id,
       g.away_team_id,
       ht.abbreviation as home_team_abbr,
