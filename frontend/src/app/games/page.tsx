@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { AppLayout } from '@/components/layout'
 import { DatePicker, GameCard, GameSection } from '@/components/games'
 import type { GameWithOdds } from '@/lib/queries'
@@ -36,6 +36,7 @@ export default function GamesPage() {
   const [yesterdayGames, setYesterdayGames] = useState<GameWithOdds[]>([])
   const [gamesPerDay, setGamesPerDay] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
+  const hasNavigatedAway = useRef(false)
 
   // Fetch games for a specific date
   const fetchGamesForDate = useCallback(async (date: string): Promise<GameWithOdds[]> => {
@@ -85,7 +86,17 @@ export default function GamesPage() {
   // Load games when date changes
   useEffect(() => {
     async function loadGamesForSelectedDate() {
-      if (selectedDate === today) return // Already loaded
+      // Track if user navigated away from today
+      if (selectedDate !== today) {
+        hasNavigatedAway.current = true
+      }
+
+      // Skip initial load for today (handled by first useEffect)
+      // But DO reload if user navigated away and came back
+      if (selectedDate === today && !hasNavigatedAway.current) {
+        return // Initial load already handled
+      }
+
       setLoading(true)
       const data = await fetchGamesForDate(selectedDate)
       setGames(data)
