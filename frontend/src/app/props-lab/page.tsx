@@ -2,6 +2,9 @@ import { AppLayout } from '@/components/layout'
 import { getAllTeams } from '@/lib/queries'
 import { PropsLabContent } from './PropsLabContent'
 
+// Disable static prerendering - requires database connection
+export const dynamic = 'force-dynamic'
+
 export default async function PropsLabPage() {
   // Fetch teams server-side
   const teams = await getAllTeams()
