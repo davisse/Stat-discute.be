@@ -106,6 +106,37 @@ const navigationCards: CardData[] = [
     href: '/analysis/q1-value',
     title: 'Analyse Q1',
     features: ['Q1 patterns', 'Dispersion', 'Pace analysis']
+  },
+  {
+    id: 'ou-investigation',
+    section: 'betting',
+    number: '03',
+    category: 'BETTING',
+    href: '/ou-investigation',
+    title: 'O/U Investigation',
+    features: ['Analyse totaux', 'Tendances Over/Under', 'Edge finder'],
+    badge: 'NEW',
+    badgeColor: 'bg-emerald-500'
+  },
+  {
+    id: 'props-lab',
+    section: 'betting',
+    number: '03',
+    category: 'PROPS',
+    href: '/props-lab',
+    title: 'Props Lab',
+    features: ['Player props', 'Absence cascade', 'Line analysis'],
+    badge: 'NEW',
+    badgeColor: 'bg-purple-500'
+  },
+  {
+    id: 'player-props',
+    section: 'betting',
+    number: '03',
+    category: 'PROPS',
+    href: '/player-props',
+    title: 'Player Props',
+    features: ['Props individuels', 'Hit rates', 'Historique']
   }
 ]
 

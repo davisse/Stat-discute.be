@@ -279,11 +279,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 // CUSTOM HOOK FOR USING AUTH CONTEXT
 // ============================================
 
+// Default context for SSR - prevents errors during server-side rendering
+const defaultAuthContext: AuthContextType = {
+  user: null,
+  isLoading: true,
+  isAuthenticated: false,
+  login: async () => { throw new Error('AuthProvider not mounted') },
+  signup: async () => { throw new Error('AuthProvider not mounted') },
+  logout: async () => { throw new Error('AuthProvider not mounted') },
+  refreshSession: async () => { throw new Error('AuthProvider not mounted') },
+}
+
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext)
 
+  // Return default context for SSR safety (when provider hasn't mounted yet)
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    return defaultAuthContext
   }
 
   return context

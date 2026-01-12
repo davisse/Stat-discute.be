@@ -47,6 +47,9 @@ export const navSections: NavSection[] = [
     links: [
       { href: '/betting/totals', label: 'Totals Analysis' },
       { href: '/betting/value-finder', label: 'Value Finder' },
+      { href: '/ou-investigation', label: 'O/U Investigation', badge: 'NEW', badgeColor: 'bg-emerald-500' },
+      { href: '/props-lab', label: 'Props Lab', badge: 'NEW', badgeColor: 'bg-purple-500' },
+      { href: '/player-props', label: 'Player Props' },
     ]
   },
   {

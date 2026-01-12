@@ -226,6 +226,28 @@ export interface ImpactfulAbsence {
   beneficiaries: TeammatePerformanceSplit[]
 }
 
+/**
+ * Opponent vulnerability by position when a player is absent
+ * Measures how opponent positions score better/worse without the player
+ */
+export interface OpponentVulnerabilityByPosition {
+  position: string
+  games_with: number
+  games_without: number
+  // Points
+  pts_with: number
+  pts_without: number
+  pts_boost: number
+  // FGA
+  fga_with: number
+  fga_without: number
+  fga_boost: number
+  // FG%
+  fgpct_with: number
+  fgpct_without: number
+  fgpct_boost: number
+}
+
 export interface BettingValueAnalysis {
   analysis_id: number
   game_id: string
@@ -3567,4 +3589,810 @@ export async function getTeammatesWhenPlayerAbsent(
   `, [playerId, currentSeason, minGames, startersOnly])
 
   return result.rows as TeammatePerformanceSplit[]
+}
+
+// ============================================
+// O/U INVESTIGATION LAB QUERIES
+// ============================================
+
+export interface OUGameData {
+  gameId: string
+  date: string
+  opponent: string
+  isHome: boolean
+  teamScore: number
+  oppScore: number
+  total: number
+  line: number | null
+  isOver: boolean
+  pace: number | null
+  margin: number
+}
+
+export interface TeamOUStats {
+  teamId: number
+  abbreviation: string
+  fullName: string
+  gamesPlayed: number
+  avgTotal: number
+  stddevTotal: number
+  minTotal: number
+  maxTotal: number
+  overRate: number
+  avgPointsFor: number
+  avgPointsAgainst: number
+  pace: number
+  l5Total: number
+  l10Total: number
+  homeAvgTotal: number
+  awayAvgTotal: number
+  homeOverRate: number
+  awayOverRate: number
+}
+
+export interface H2HGame {
+  gameId: string
+  date: string
+  homeTeam: string
+  awayTeam: string
+  homeScore: number
+  awayScore: number
+  total: number
+  line: number | null
+  isOver: boolean
+  venue: string
+}
+
+/**
+ * Get team O/U statistics for O/U Investigation Lab
+ */
+export async function getTeamOUStats(teamId: number): Promise<TeamOUStats | null> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    WITH team_games AS (
+      SELECT
+        g.game_id,
+        g.game_date,
+        (g.home_team_id = $1) as is_home,
+        CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END as team_score,
+        CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END as opp_score,
+        (g.home_team_score + g.away_team_score) as total,
+        COALESCE(tgs.pace, 100) as pace,
+        ROW_NUMBER() OVER (ORDER BY g.game_date DESC) as rn
+      FROM games g
+      LEFT JOIN team_game_stats tgs ON g.game_id = tgs.game_id AND tgs.team_id = $1
+      WHERE (g.home_team_id = $1 OR g.away_team_id = $1)
+        AND g.season = $2
+        AND g.game_status = 'Final'
+    )
+    SELECT
+      t.team_id,
+      t.abbreviation,
+      t.full_name,
+      (SELECT COUNT(*) FROM team_games) as games_played,
+      ROUND((SELECT AVG(total) FROM team_games), 1) as avg_total,
+      ROUND((SELECT STDDEV(total) FROM team_games), 1) as stddev_total,
+      (SELECT MIN(total) FROM team_games) as min_total,
+      (SELECT MAX(total) FROM team_games) as max_total,
+      ROUND((SELECT COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM team_games), 0) FROM team_games WHERE total > 220.5), 1) as over_rate,
+      ROUND((SELECT AVG(team_score) FROM team_games), 1) as avg_points_for,
+      ROUND((SELECT AVG(opp_score) FROM team_games), 1) as avg_points_against,
+      ROUND((SELECT AVG(pace) FROM team_games), 1) as pace,
+      ROUND((SELECT AVG(total) FROM team_games WHERE rn <= 5), 1) as l5_total,
+      ROUND((SELECT AVG(total) FROM team_games WHERE rn <= 10), 1) as l10_total,
+      ROUND((SELECT AVG(total) FROM team_games WHERE is_home), 1) as home_avg_total,
+      ROUND((SELECT AVG(total) FROM team_games WHERE NOT is_home), 1) as away_avg_total,
+      ROUND((SELECT COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM team_games WHERE is_home), 0) FROM team_games WHERE is_home AND total > 220.5), 1) as home_over_rate,
+      ROUND((SELECT COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM team_games WHERE NOT is_home), 0) FROM team_games WHERE NOT is_home AND total > 220.5), 1) as away_over_rate
+    FROM teams t
+    WHERE t.team_id = $1
+  `, [teamId, currentSeason])
+
+  if (!result.rows[0]) return null
+
+  const row = result.rows[0]
+  return {
+    teamId: row.team_id,
+    abbreviation: row.abbreviation,
+    fullName: row.full_name,
+    gamesPlayed: parseInt(row.games_played) || 0,
+    avgTotal: parseFloat(row.avg_total) || 0,
+    stddevTotal: parseFloat(row.stddev_total) || 0,
+    minTotal: parseInt(row.min_total) || 0,
+    maxTotal: parseInt(row.max_total) || 0,
+    overRate: parseFloat(row.over_rate) || 0,
+    avgPointsFor: parseFloat(row.avg_points_for) || 0,
+    avgPointsAgainst: parseFloat(row.avg_points_against) || 0,
+    pace: parseFloat(row.pace) || 100,
+    l5Total: parseFloat(row.l5_total) || 0,
+    l10Total: parseFloat(row.l10_total) || 0,
+    homeAvgTotal: parseFloat(row.home_avg_total) || 0,
+    awayAvgTotal: parseFloat(row.away_avg_total) || 0,
+    homeOverRate: parseFloat(row.home_over_rate) || 0,
+    awayOverRate: parseFloat(row.away_over_rate) || 0
+  }
+}
+
+/**
+ * Get team game totals for O/U distribution chart
+ */
+export async function getTeamGameTotals(teamId: number, limit = 15): Promise<OUGameData[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date as date,
+      CASE WHEN g.home_team_id = $1 THEN at.abbreviation ELSE ht.abbreviation END as opponent,
+      (g.home_team_id = $1) as is_home,
+      CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END as team_score,
+      CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END as opp_score,
+      (g.home_team_score + g.away_team_score) as total,
+      COALESCE(tgs.pace, 100) as pace
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    LEFT JOIN team_game_stats tgs ON g.game_id = tgs.game_id AND tgs.team_id = $1
+    WHERE (g.home_team_id = $1 OR g.away_team_id = $1)
+      AND g.season = $2
+      AND g.game_status = 'Final'
+    ORDER BY g.game_date DESC
+    LIMIT $3
+  `, [teamId, currentSeason, limit])
+
+  return result.rows.map(row => ({
+    gameId: row.game_id,
+    date: row.date,
+    opponent: row.opponent,
+    isHome: row.is_home,
+    teamScore: parseInt(row.team_score) || 0,
+    oppScore: parseInt(row.opp_score) || 0,
+    total: parseInt(row.total) || 0,
+    line: null, // No betting data for now
+    isOver: parseInt(row.total) > 220.5,
+    pace: parseFloat(row.pace) || 100,
+    margin: parseInt(row.total) - 220.5
+  }))
+}
+
+/**
+ * Get H2H history between two teams
+ */
+export async function getH2HHistory(team1Id: number, team2Id: number, limit = 10): Promise<H2HGame[]> {
+  const result = await query(`
+    SELECT
+      g.game_id,
+      g.game_date as date,
+      ht.abbreviation as home_team,
+      at.abbreviation as away_team,
+      g.home_team_score,
+      g.away_team_score,
+      (g.home_team_score + g.away_team_score) as total,
+      ht.full_name || ' Arena' as venue
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    WHERE ((g.home_team_id = $1 AND g.away_team_id = $2)
+       OR (g.home_team_id = $2 AND g.away_team_id = $1))
+      AND g.game_status = 'Final'
+    ORDER BY g.game_date DESC
+    LIMIT $3
+  `, [team1Id, team2Id, limit])
+
+  return result.rows.map(row => ({
+    gameId: row.game_id,
+    date: row.date,
+    homeTeam: row.home_team,
+    awayTeam: row.away_team,
+    homeScore: parseInt(row.home_team_score) || 0,
+    awayScore: parseInt(row.away_team_score) || 0,
+    total: parseInt(row.total) || 0,
+    line: null, // No betting data for now
+    isOver: parseInt(row.total) > 220.5,
+    venue: row.venue || 'Unknown'
+  }))
+}
+
+/**
+ * Get team O/U trends by category (home, away, last5, B2B)
+ */
+export async function getTeamOUTrends(teamId: number): Promise<{
+  home: OUGameData[]
+  away: OUGameData[]
+  last5: OUGameData[]
+  b2b: OUGameData[]
+}> {
+  const currentSeason = await getCurrentSeason()
+
+  // Get all games with back-to-back detection
+  const result = await query(`
+    WITH team_games AS (
+      SELECT
+        g.game_id,
+        g.game_date as date,
+        CASE WHEN g.home_team_id = $1 THEN at.abbreviation ELSE ht.abbreviation END as opponent,
+        (g.home_team_id = $1) as is_home,
+        CASE WHEN g.home_team_id = $1 THEN g.home_team_score ELSE g.away_team_score END as team_score,
+        CASE WHEN g.home_team_id = $1 THEN g.away_team_score ELSE g.home_team_score END as opp_score,
+        (g.home_team_score + g.away_team_score) as total,
+        COALESCE(tgs.pace, 100) as pace,
+        LAG(g.game_date) OVER (ORDER BY g.game_date) as prev_game_date,
+        ROW_NUMBER() OVER (ORDER BY g.game_date DESC) as rn
+      FROM games g
+      JOIN teams ht ON g.home_team_id = ht.team_id
+      JOIN teams at ON g.away_team_id = at.team_id
+      LEFT JOIN team_game_stats tgs ON g.game_id = tgs.game_id AND tgs.team_id = $1
+      WHERE (g.home_team_id = $1 OR g.away_team_id = $1)
+        AND g.season = $2
+        AND g.game_status = 'Final'
+    )
+    SELECT
+      game_id,
+      date,
+      opponent,
+      is_home,
+      team_score,
+      opp_score,
+      total,
+      pace,
+      rn,
+      (date::date - prev_game_date::date <= 1) as is_b2b
+    FROM team_games
+    ORDER BY date DESC
+    LIMIT 20
+  `, [teamId, currentSeason])
+
+  const allGames: OUGameData[] = result.rows.map(row => ({
+    gameId: row.game_id,
+    date: row.date,
+    opponent: row.opponent,
+    isHome: row.is_home,
+    teamScore: parseInt(row.team_score) || 0,
+    oppScore: parseInt(row.opp_score) || 0,
+    total: parseInt(row.total) || 0,
+    line: 220.5,
+    isOver: parseInt(row.total) > 220.5,
+    pace: parseFloat(row.pace) || 100,
+    margin: parseInt(row.total) - 220.5
+  }))
+
+  const b2bGames = result.rows
+    .filter(row => row.is_b2b)
+    .map(row => ({
+      gameId: row.game_id,
+      date: row.date,
+      opponent: row.opponent,
+      isHome: row.is_home,
+      teamScore: parseInt(row.team_score) || 0,
+      oppScore: parseInt(row.opp_score) || 0,
+      total: parseInt(row.total) || 0,
+      line: 220.5,
+      isOver: parseInt(row.total) > 220.5,
+      pace: parseFloat(row.pace) || 100,
+      margin: parseInt(row.total) - 220.5
+    }))
+
+  return {
+    home: allGames.filter(g => g.isHome).slice(0, 8),
+    away: allGames.filter(g => !g.isHome).slice(0, 7),
+    last5: allGames.slice(0, 5),
+    b2b: b2bGames.slice(0, 4)
+  }
+}
+
+/**
+ * Get team ID by abbreviation
+ */
+export async function getTeamIdByAbbreviation(abbreviation: string): Promise<number | null> {
+  const result = await query(`
+    SELECT team_id FROM teams WHERE abbreviation = $1
+  `, [abbreviation.toUpperCase()])
+
+  return result.rows[0]?.team_id || null
+}
+
+// ============================================
+// INJURY REPORTS
+// ============================================
+
+export interface TeamInjuryReport {
+  playerName: string
+  position: string | null
+  status: 'OUT' | 'GTD' | 'DOUBTFUL' | 'PROBABLE' | 'UNKNOWN'
+  injuryType: string | null
+  updateDate: string | null
+}
+
+/**
+ * Get injury reports for specific teams (today's data)
+ */
+export async function getTeamInjuries(teamAbbreviations: string[]): Promise<Record<string, TeamInjuryReport[]>> {
+  const result = await query(`
+    SELECT
+      ir.team_abbr,
+      ir.player_name,
+      ir.injury_type,
+      ir.status,
+      ir.update_date
+    FROM injury_reports ir
+    WHERE ir.team_abbr = ANY($1)
+      AND ir.report_date = CURRENT_DATE
+    ORDER BY
+      ir.team_abbr,
+      CASE ir.status
+        WHEN 'OUT' THEN 1
+        WHEN 'DOUBTFUL' THEN 2
+        WHEN 'GTD' THEN 3
+        WHEN 'PROBABLE' THEN 4
+        ELSE 5
+      END,
+      ir.player_name
+  `, [teamAbbreviations.map(a => a.toUpperCase())])
+
+  // Group by team
+  const injuries: Record<string, TeamInjuryReport[]> = {}
+
+  for (const abbr of teamAbbreviations) {
+    injuries[abbr.toUpperCase()] = []
+  }
+
+  for (const row of result.rows) {
+    const teamAbbr = row.team_abbr as string
+    if (!injuries[teamAbbr]) {
+      injuries[teamAbbr] = []
+    }
+    injuries[teamAbbr].push({
+      playerName: row.player_name,
+      position: null, // Position not in injury_reports table yet
+      status: row.status as TeamInjuryReport['status'],
+      injuryType: row.injury_type,
+      updateDate: row.update_date
+    })
+  }
+
+  return injuries
+}
+
+/**
+ * Get H2H games between two teams for current season
+ */
+export async function getH2HGames(team1Abbr: string, team2Abbr: string): Promise<{
+  date: string
+  homeTeam: string
+  awayTeam: string
+  homeScore: number
+  awayScore: number
+  total: number
+}[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    SELECT
+      g.game_date::text as date,
+      ht.abbreviation as home_team,
+      at.abbreviation as away_team,
+      g.home_team_score,
+      g.away_team_score,
+      (g.home_team_score + g.away_team_score) as total
+    FROM games g
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    WHERE g.season = $1
+      AND g.game_status = 'Final'
+      AND (
+        (ht.abbreviation = $2 AND at.abbreviation = $3)
+        OR (ht.abbreviation = $3 AND at.abbreviation = $2)
+      )
+    ORDER BY g.game_date DESC
+  `, [currentSeason, team1Abbr.toUpperCase(), team2Abbr.toUpperCase()])
+
+  return result.rows.map(row => ({
+    date: row.date,
+    homeTeam: row.home_team,
+    awayTeam: row.away_team,
+    homeScore: parseInt(row.home_team_score) || 0,
+    awayScore: parseInt(row.away_team_score) || 0,
+    total: parseInt(row.total) || 0
+  }))
+}
+
+/**
+ * Projected lineup player
+ */
+export interface ProjectedPlayer {
+  name: string
+  position: string | null
+  status: 'CONFIRMED' | 'PROBABLE' | 'GTD' | 'DOUBTFUL' | 'OUT'
+  injury: string | null
+}
+
+/**
+ * Projected lineup for a team in a game
+ */
+export interface ProjectedLineup {
+  abbreviation: string
+  gameTime: string | null
+  starters: ProjectedPlayer[]
+  injuries: ProjectedPlayer[]
+  scrapedAt: string
+}
+
+/**
+ * Get projected lineups for a game between two teams (today's data)
+ */
+export async function getProjectedLineups(
+  awayTeamAbbr: string,
+  homeTeamAbbr: string
+): Promise<{
+  away: ProjectedLineup | null
+  home: ProjectedLineup | null
+} | null> {
+  const result = await query(`
+    SELECT
+      away_team,
+      home_team,
+      game_time,
+      away_lineup,
+      home_lineup,
+      away_injuries,
+      home_injuries,
+      scraped_at
+    FROM projected_lineups
+    WHERE game_date = CURRENT_DATE
+      AND away_team = $1
+      AND home_team = $2
+    ORDER BY scraped_at DESC
+    LIMIT 1
+  `, [awayTeamAbbr.toUpperCase(), homeTeamAbbr.toUpperCase()])
+
+  if (result.rows.length === 0) {
+    return null
+  }
+
+  const row = result.rows[0]
+
+  // Parse JSONB lineup arrays
+  const awayLineup = (row.away_lineup || []) as ProjectedPlayer[]
+  const homeLineup = (row.home_lineup || []) as ProjectedPlayer[]
+  const awayInjuries = (row.away_injuries || []) as ProjectedPlayer[]
+  const homeInjuries = (row.home_injuries || []) as ProjectedPlayer[]
+
+  return {
+    away: {
+      abbreviation: row.away_team,
+      gameTime: row.game_time,
+      starters: awayLineup.map(p => ({
+        name: p.name,
+        position: p.position,
+        status: (p.status || 'CONFIRMED') as ProjectedPlayer['status'],
+        injury: p.injury || null
+      })),
+      injuries: awayInjuries.map(p => ({
+        name: p.name,
+        position: p.position,
+        status: (p.status || 'OUT') as ProjectedPlayer['status'],
+        injury: p.injury || null
+      })),
+      scrapedAt: row.scraped_at
+    },
+    home: {
+      abbreviation: row.home_team,
+      gameTime: row.game_time,
+      starters: homeLineup.map(p => ({
+        name: p.name,
+        position: p.position,
+        status: (p.status || 'CONFIRMED') as ProjectedPlayer['status'],
+        injury: p.injury || null
+      })),
+      injuries: homeInjuries.map(p => ({
+        name: p.name,
+        position: p.position,
+        status: (p.status || 'OUT') as ProjectedPlayer['status'],
+        injury: p.injury || null
+      })),
+      scrapedAt: row.scraped_at
+    }
+  }
+}
+
+/**
+ * Get the current O/U line for a matchup between two teams
+ * Returns the most recent total line from betting_lines for today's or upcoming game
+ */
+export async function getMatchupOULine(
+  awayAbbr: string,
+  homeAbbr: string
+): Promise<{ total: number; overOdds: number | null; underOdds: number | null; bookmaker: string } | null> {
+  const result = await query(`
+    SELECT
+      bl.total,
+      bl.over_odds,
+      bl.under_odds,
+      bl.bookmaker
+    FROM betting_lines bl
+    JOIN games g ON bl.game_id = g.game_id
+    JOIN teams ht ON g.home_team_id = ht.team_id
+    JOIN teams at ON g.away_team_id = at.team_id
+    WHERE ht.abbreviation = $1
+      AND at.abbreviation = $2
+      AND g.game_date >= CURRENT_DATE
+      AND bl.total IS NOT NULL
+    ORDER BY bl.recorded_at DESC
+    LIMIT 1
+  `, [homeAbbr.toUpperCase(), awayAbbr.toUpperCase()])
+
+  if (result.rows.length === 0) {
+    return null
+  }
+
+  const row = result.rows[0]
+  return {
+    total: parseFloat(row.total),
+    overOdds: row.over_odds ? parseInt(row.over_odds) : null,
+    underOdds: row.under_odds ? parseInt(row.under_odds) : null,
+    bookmaker: row.bookmaker
+  }
+}
+
+/**
+ * Get comprehensive player prop analysis for a specific stat
+ * Returns game-by-game data, averages, and hit rates
+ */
+export interface PlayerPropGame {
+  gameId: string
+  gameDate: string
+  opponent: string
+  isHome: boolean
+  minutes: number
+  value: number
+  isOver: boolean
+}
+
+export interface PlayerPropAnalysis {
+  playerId: number
+  playerName: string
+  gamesPlayed: number
+  games: PlayerPropGame[]
+  seasonAvg: number
+  last5Avg: number
+  last10Avg: number
+  homeAvg: number
+  awayAvg: number
+  hitRate: number
+  last5HitRate: number
+  last10HitRate: number
+  homeHitRate: number
+  awayHitRate: number
+  streak: number // positive = over streak, negative = under streak
+  maxValue: number
+  minValue: number
+}
+
+export async function getPlayerPropAnalysis(
+  playerId: number,
+  propType: string,
+  line: number,
+  gamesLimit = 20
+): Promise<PlayerPropAnalysis | null> {
+  const currentSeason = await getCurrentSeason()
+
+  // Map prop type to SQL column expression
+  const propColumnMap: Record<string, string> = {
+    'pts': 'pgs.points',
+    'reb': 'pgs.rebounds',
+    'ast': 'pgs.assists',
+    '3pm': 'pgs.fg3_made',
+    'stl': 'pgs.steals',
+    'blk': 'pgs.blocks',
+    'to': 'pgs.turnovers',
+    'pts_reb': 'pgs.points + pgs.rebounds',
+    'pts_ast': 'pgs.points + pgs.assists',
+    'pts_reb_ast': 'pgs.points + pgs.rebounds + pgs.assists',
+    'reb_ast': 'pgs.rebounds + pgs.assists',
+  }
+
+  const propColumn = propColumnMap[propType]
+  if (!propColumn) {
+    return null
+  }
+
+  const result = await query(`
+    WITH player_games AS (
+      SELECT
+        pgs.game_id,
+        g.game_date,
+        CASE
+          WHEN g.home_team_id = pgs.team_id THEN opp.abbreviation
+          ELSE home.abbreviation
+        END as opponent,
+        g.home_team_id = pgs.team_id as is_home,
+        pgs.minutes,
+        (${propColumn})::int as value,
+        ROW_NUMBER() OVER (ORDER BY g.game_date DESC) as game_num
+      FROM player_game_stats pgs
+      JOIN games g ON pgs.game_id = g.game_id
+      JOIN teams home ON g.home_team_id = home.team_id
+      JOIN teams opp ON g.away_team_id = opp.team_id
+      WHERE pgs.player_id = $1
+        AND g.season = $2
+        AND g.game_status = 'Final'
+        AND pgs.minutes > 0
+      ORDER BY g.game_date DESC
+      LIMIT $3
+    ),
+    player_info AS (
+      SELECT full_name FROM players WHERE player_id = $1
+    )
+    SELECT
+      $1::bigint as player_id,
+      (SELECT full_name FROM player_info) as player_name,
+      COUNT(*) as games_played,
+      json_agg(
+        json_build_object(
+          'gameId', game_id,
+          'gameDate', game_date,
+          'opponent', opponent,
+          'isHome', is_home,
+          'minutes', minutes,
+          'value', value,
+          'isOver', value > $4::numeric
+        ) ORDER BY game_date DESC
+      ) as games,
+      ROUND(AVG(value), 1) as season_avg,
+      ROUND(AVG(CASE WHEN game_num <= 5 THEN value END), 1) as last_5_avg,
+      ROUND(AVG(CASE WHEN game_num <= 10 THEN value END), 1) as last_10_avg,
+      ROUND(AVG(CASE WHEN is_home THEN value END), 1) as home_avg,
+      ROUND(AVG(CASE WHEN NOT is_home THEN value END), 1) as away_avg,
+      ROUND(100.0 * COUNT(CASE WHEN value > $4::numeric THEN 1 END) / COUNT(*), 1) as hit_rate,
+      ROUND(100.0 * COUNT(CASE WHEN game_num <= 5 AND value > $4::numeric THEN 1 END) / NULLIF(COUNT(CASE WHEN game_num <= 5 THEN 1 END), 0), 1) as last_5_hit_rate,
+      ROUND(100.0 * COUNT(CASE WHEN game_num <= 10 AND value > $4::numeric THEN 1 END) / NULLIF(COUNT(CASE WHEN game_num <= 10 THEN 1 END), 0), 1) as last_10_hit_rate,
+      ROUND(100.0 * COUNT(CASE WHEN is_home AND value > $4::numeric THEN 1 END) / NULLIF(COUNT(CASE WHEN is_home THEN 1 END), 0), 1) as home_hit_rate,
+      ROUND(100.0 * COUNT(CASE WHEN NOT is_home AND value > $4::numeric THEN 1 END) / NULLIF(COUNT(CASE WHEN NOT is_home THEN 1 END), 0), 1) as away_hit_rate,
+      MAX(value) as max_value,
+      MIN(value) as min_value
+    FROM player_games
+  `, [playerId, currentSeason, gamesLimit, line])
+
+  if (result.rows.length === 0 || result.rows[0].games_played === 0) {
+    return null
+  }
+
+  const row = result.rows[0]
+  const games = row.games as PlayerPropGame[]
+
+  // Calculate streak
+  let streak = 0
+  if (games.length > 0) {
+    const firstIsOver = games[0].isOver
+    for (const game of games) {
+      if (game.isOver === firstIsOver) {
+        streak += firstIsOver ? 1 : -1
+      } else {
+        break
+      }
+    }
+  }
+
+  return {
+    playerId: parseInt(row.player_id),
+    playerName: row.player_name,
+    gamesPlayed: parseInt(row.games_played),
+    games,
+    seasonAvg: parseFloat(row.season_avg) || 0,
+    last5Avg: parseFloat(row.last_5_avg) || 0,
+    last10Avg: parseFloat(row.last_10_avg) || 0,
+    homeAvg: parseFloat(row.home_avg) || 0,
+    awayAvg: parseFloat(row.away_avg) || 0,
+    hitRate: parseFloat(row.hit_rate) || 0,
+    last5HitRate: parseFloat(row.last_5_hit_rate) || 0,
+    last10HitRate: parseFloat(row.last_10_hit_rate) || 0,
+    homeHitRate: parseFloat(row.home_hit_rate) || 0,
+    awayHitRate: parseFloat(row.away_hit_rate) || 0,
+    streak,
+    maxValue: parseInt(row.max_value) || 0,
+    minValue: parseInt(row.min_value) || 0,
+  }
+}
+
+// ============================================
+// OPPONENT VULNERABILITY ANALYSIS
+// ============================================
+
+/**
+ * Analyze how opponent positions perform when a player is absent
+ * Shows which opponent positions benefit from the player's absence
+ *
+ * @param playerId - The player whose absence we analyze
+ * @param minGames - Minimum games threshold (default: 3)
+ * @returns Array of OpponentVulnerabilityByPosition with performance splits
+ */
+export async function getOpponentVulnerabilityWhenPlayerAbsent(
+  playerId: number,
+  minGames = 3
+): Promise<OpponentVulnerabilityByPosition[]> {
+  const currentSeason = await getCurrentSeason()
+
+  const result = await query(`
+    WITH player_team AS (
+      -- Get the player's team from their most recent game
+      SELECT DISTINCT pgs.team_id
+      FROM player_game_stats pgs
+      JOIN games g ON pgs.game_id = g.game_id
+      WHERE pgs.player_id = $1 AND g.season = $2
+      ORDER BY pgs.team_id
+      LIMIT 1
+    ),
+    player_games AS (
+      -- Identify games where player was present or absent
+      SELECT
+        g.game_id,
+        CASE WHEN pgs.minutes > 0 THEN true ELSE false END as player_played,
+        -- Get opponent team
+        CASE
+          WHEN g.home_team_id = pt.team_id THEN g.away_team_id
+          ELSE g.home_team_id
+        END as opponent_team_id
+      FROM games g
+      CROSS JOIN player_team pt
+      LEFT JOIN player_game_stats pgs ON g.game_id = pgs.game_id AND pgs.player_id = $1
+      WHERE g.season = $2
+        AND g.game_status = 'Final'
+        AND (g.home_team_id = pt.team_id OR g.away_team_id = pt.team_id)
+    ),
+    opponent_player_stats AS (
+      -- Get opponent player performance in each game
+      SELECT
+        pg.player_played,
+        COALESCE(p.position, 'Unknown') as position,
+        ops.points,
+        ops.fg_made,
+        ops.fg_attempted,
+        ops.minutes
+      FROM player_games pg
+      JOIN player_game_stats ops ON pg.game_id = ops.game_id
+        AND ops.team_id = pg.opponent_team_id
+      JOIN players p ON ops.player_id = p.player_id
+      WHERE ops.minutes >= 15  -- Only players with significant minutes
+    )
+    SELECT
+      position,
+      -- Game counts
+      COUNT(DISTINCT CASE WHEN player_played THEN points END) as games_with,
+      COUNT(DISTINCT CASE WHEN NOT player_played THEN points END) as games_without,
+      -- Points
+      ROUND(AVG(CASE WHEN player_played THEN points END)::numeric, 1) as pts_with,
+      ROUND(AVG(CASE WHEN NOT player_played THEN points END)::numeric, 1) as pts_without,
+      -- FGA
+      ROUND(AVG(CASE WHEN player_played THEN fg_attempted END)::numeric, 1) as fga_with,
+      ROUND(AVG(CASE WHEN NOT player_played THEN fg_attempted END)::numeric, 1) as fga_without,
+      -- FG%
+      ROUND(100.0 * SUM(CASE WHEN player_played THEN fg_made END) /
+            NULLIF(SUM(CASE WHEN player_played THEN fg_attempted END), 0), 1) as fgpct_with,
+      ROUND(100.0 * SUM(CASE WHEN NOT player_played THEN fg_made END) /
+            NULLIF(SUM(CASE WHEN NOT player_played THEN fg_attempted END), 0), 1) as fgpct_without
+    FROM opponent_player_stats
+    GROUP BY position
+    HAVING
+      COUNT(CASE WHEN player_played THEN 1 END) >= $3
+      AND COUNT(CASE WHEN NOT player_played THEN 1 END) >= $3
+    ORDER BY
+      (AVG(CASE WHEN NOT player_played THEN points END) -
+       AVG(CASE WHEN player_played THEN points END)) DESC
+  `, [playerId, currentSeason, minGames])
+
+  return result.rows.map(row => ({
+    position: row.position,
+    games_with: parseInt(row.games_with) || 0,
+    games_without: parseInt(row.games_without) || 0,
+    pts_with: parseFloat(row.pts_with) || 0,
+    pts_without: parseFloat(row.pts_without) || 0,
+    pts_boost: parseFloat(row.pts_without) - parseFloat(row.pts_with) || 0,
+    fga_with: parseFloat(row.fga_with) || 0,
+    fga_without: parseFloat(row.fga_without) || 0,
+    fga_boost: parseFloat(row.fga_without) - parseFloat(row.fga_with) || 0,
+    fgpct_with: parseFloat(row.fgpct_with) || 0,
+    fgpct_without: parseFloat(row.fgpct_without) || 0,
+    fgpct_boost: parseFloat(row.fgpct_without) - parseFloat(row.fgpct_with) || 0,
+  }))
 }

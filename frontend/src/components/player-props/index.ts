@@ -16,5 +16,7 @@ export type { PlayerPerformanceWithoutTeammateProps } from './PlayerPerformanceW
 export { AbsenceCascadeView } from './AbsenceCascadeView'
 export { AbsencePlayerSelector } from './AbsencePlayerSelector'
 
+export { OpponentVulnerabilityView } from './OpponentVulnerabilityView'
+
 export { PropPerformanceBarChart } from './PropPerformanceBarChart'
 export type { PropPerformanceBarChartProps } from './PropPerformanceBarChart'

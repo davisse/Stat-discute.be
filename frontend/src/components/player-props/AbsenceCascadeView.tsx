@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { TeammatePerformanceSplit } from '@/lib/queries'
 
 interface AbsenceCascadeViewProps {
@@ -15,178 +15,333 @@ interface AbsenceCascadeViewProps {
   teammates: TeammatePerformanceSplit[]
 }
 
-type SortOption = 'boost' | 'games'
+// Helper to safely convert PostgreSQL numeric to number
+const toNum = (val: number | string | null): number => {
+  if (val === null) return 0
+  return typeof val === 'string' ? parseFloat(val) : val
+}
+
+type StatType = 'pts' | 'reb' | 'ast' | 'stl' | 'blk' | '3pm' | 'fg'
+
+const statConfig: Record<StatType, { label: string; shortLabel: string }> = {
+  pts: { label: 'Points', shortLabel: 'PTS' },
+  reb: { label: 'Rebonds', shortLabel: 'REB' },
+  ast: { label: 'Passes', shortLabel: 'AST' },
+  stl: { label: 'Interceptions', shortLabel: 'STL' },
+  blk: { label: 'Contres', shortLabel: 'BLK' },
+  '3pm': { label: '3 Points', shortLabel: '3PM' },
+  fg: { label: 'Tirs', shortLabel: 'FG' },
+}
 
 export function AbsenceCascadeView({ absentPlayer, teammates }: AbsenceCascadeViewProps) {
-  const [sortBy, setSortBy] = useState<SortOption>('boost')
-  const [minGames, setMinGames] = useState(3)
-  const [showOnlyPositive, setShowOnlyPositive] = useState(false)
+  const [activeStat, setActiveStat] = useState<StatType>('pts')
 
-  // Filter and sort teammates
-  const filteredTeammates = useMemo(() => {
-    let filtered = teammates.filter(teammate =>
-      teammate.without_games >= minGames &&
-      teammate.with_games >= minGames
-    )
+  const availability = ((absentPlayer.gamesPlayed / (absentPlayer.gamesPlayed + absentPlayer.gamesMissed)) * 100).toFixed(0)
 
-    // Apply positive boost filter
-    if (showOnlyPositive) {
-      filtered = filtered.filter(teammate => teammate.pts_boost > 0)
+  // Get stat values based on active stat type
+  const getStatValues = (teammate: TeammatePerformanceSplit) => {
+    switch (activeStat) {
+      case 'pts':
+        return {
+          with: toNum(teammate.with_pts),
+          without: toNum(teammate.without_pts),
+          boost: toNum(teammate.pts_boost),
+        }
+      case 'reb':
+        return {
+          with: toNum(teammate.with_reb),
+          without: toNum(teammate.without_reb),
+          boost: toNum(teammate.reb_boost),
+        }
+      case 'ast':
+        return {
+          with: toNum(teammate.with_ast),
+          without: toNum(teammate.without_ast),
+          boost: toNum(teammate.ast_boost),
+        }
+      case 'blk':
+        return {
+          with: toNum(teammate.with_blk),
+          without: toNum(teammate.without_blk),
+          boost: toNum(teammate.blk_boost),
+        }
+      case 'stl':
+        return {
+          with: toNum(teammate.with_stl),
+          without: toNum(teammate.without_stl),
+          boost: toNum(teammate.stl_boost),
+        }
+      case '3pm':
+        return {
+          with: toNum(teammate.with_3pm),
+          without: toNum(teammate.without_3pm),
+          boost: toNum(teammate.three_pm_boost),
+        }
+      case 'fg':
+        return {
+          with: toNum(teammate.with_fgm),
+          without: toNum(teammate.without_fgm),
+          boost: toNum(teammate.without_fgm) - toNum(teammate.with_fgm),
+          withFga: toNum(teammate.with_fga),
+          withoutFga: toNum(teammate.without_fga),
+        }
     }
+  }
 
-    // Sort
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'boost':
-          return b.pts_boost - a.pts_boost
-        case 'games':
-          return b.without_games - a.without_games
-        default:
-          return 0
-      }
-    })
+  // Get boost color class
+  const getBoostColor = (boost: number, stat: StatType) => {
+    const threshold = stat === 'blk' || stat === 'stl' || stat === '3pm' ? 1 : stat === 'fg' ? 2 : 3
+    const smallThreshold = stat === 'blk' || stat === 'stl' || stat === '3pm' ? 0.5 : stat === 'fg' ? 1 : 1.5
 
-    return filtered
-  }, [teammates, minGames, showOnlyPositive, sortBy])
+    if (boost >= threshold) return 'text-emerald-400'
+    if (boost >= smallThreshold) return 'text-emerald-500'
+    if (boost > 0) return 'text-emerald-600'
+    if (boost <= -threshold) return 'text-red-400'
+    if (boost < 0) return 'text-red-500'
+    return 'text-zinc-400'
+  }
 
-  // Helper function to get boost color
-  const getBoostColor = (boost: number) => {
-    if (boost > 5) return 'text-green-400'
-    if (boost > 2) return 'text-green-300'
-    if (boost > 0) return 'text-green-200'
-    if (boost < -5) return 'text-red-400'
-    if (boost < -2) return 'text-red-300'
-    if (boost < 0) return 'text-red-200'
-    return 'text-gray-400'
+  // Get row/card background for significant changes
+  const getRowBg = (boost: number, stat: StatType) => {
+    const threshold = stat === 'blk' || stat === 'stl' || stat === '3pm' ? 1 : stat === 'fg' ? 2 : 3
+    if (boost >= threshold) return 'bg-emerald-500/5'
+    if (boost <= -threshold) return 'bg-red-500/5'
+    return ''
+  }
+
+  // Sort teammates by current stat boost
+  const sortedTeammates = [...teammates].sort((a, b) => {
+    const aStats = getStatValues(a)
+    const bStats = getStatValues(b)
+    return bStats.boost - aStats.boost
+  })
+
+  const threshold = activeStat === 'blk' || activeStat === 'stl' || activeStat === '3pm' ? 1 : activeStat === 'fg' ? 2 : 3
+
+  if (teammates.length === 0) {
+    return (
+      <div className="bg-zinc-900/50 md:border md:border-zinc-800 md:rounded-xl p-4 md:p-8 text-center">
+        <p className="text-zinc-400 text-sm md:text-base">Données insuffisantes pour l&apos;analyse d&apos;impact</p>
+        <p className="text-xs md:text-sm text-zinc-500 mt-1">Minimum 3 matchs avec et sans le joueur requis</p>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header: Absent Player */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-white">{absentPlayer.playerName}</h2>
-            <p className="text-gray-400 mt-1">{absentPlayer.teamAbbr} • Starter</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-400">Games Missed</p>
-            <p className="text-3xl font-mono font-bold text-white">{absentPlayer.gamesMissed}</p>
-            <p className="text-xs text-gray-500 mt-1">
-              {absentPlayer.gamesPlayed} played • {((absentPlayer.gamesPlayed / (absentPlayer.gamesPlayed + absentPlayer.gamesMissed)) * 100).toFixed(1)}% availability
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Sort By */}
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Sort By</label>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="boost">Points Boost</option>
-              <option value="games">Games Without</option>
-            </select>
-          </div>
-
-          {/* Min Games */}
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Min Games: {minGames}</label>
-            <input
-              type="range"
-              min="3"
-              max="10"
-              value={minGames}
-              onChange={(e) => setMinGames(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          {/* Positive Filter */}
-          <div className="flex items-center">
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={showOnlyPositive}
-                onChange={(e) => setShowOnlyPositive(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-blue-500 focus:ring-2 focus:ring-blue-500"
-              />
-              <span className="ml-2 text-sm text-gray-400">Only Positive Boost</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {/* Results Summary */}
-      <div className="text-center">
-        <p className="text-sm text-gray-400">
-          Showing {filteredTeammates.length} teammates with meaningful stat changes
-        </p>
-      </div>
-
-      {/* Teammate Cards Grid */}
-      {filteredTeammates.length === 0 ? (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-12 text-center">
-          <p className="text-gray-400">No teammates meet the current filter criteria</p>
-          <p className="text-sm text-gray-500 mt-2">Try adjusting the minimum games or boost filter</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTeammates.map((teammate) => (
-            <div
-              key={teammate.teammate_id}
-              className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors"
-            >
-              {/* Player Name */}
-              <div className="mb-4">
-                <h3 className="text-lg font-bold text-white">{teammate.teammate_name}</h3>
-                <p className="text-sm text-gray-400">
-                  {teammate.without_games} games when {absentPlayer.playerName.split(' ').pop()} out
-                </p>
-              </div>
-
-              {/* Stats */}
-              <div className="space-y-3">
-                {/* Points Comparison */}
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-400">Points</span>
-                    <span className={`text-sm font-mono font-bold ${getBoostColor(teammate.pts_boost)}`}>
-                      {teammate.pts_boost > 0 ? '+' : ''}{teammate.pts_boost.toFixed(1)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-mono">
-                    <span className="text-gray-500">With: {teammate.with_pts.toFixed(1)}</span>
-                    <span className="text-white">→</span>
-                    <span className="text-white font-bold">Without: {teammate.without_pts.toFixed(1)}</span>
-                  </div>
-                  {teammate.pts_boost >= 3 && (
-                    <div className="mt-1 text-xs bg-green-900/30 text-green-400 px-2 py-1 rounded">
-                      💡 Prop Opportunity
-                    </div>
-                  )}
-                </div>
-
-                {/* Sample Size */}
-                <div className="pt-2 border-t border-gray-800">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500">Sample:</span>
-                    <span className="font-mono text-gray-400">
-                      {teammate.with_games} with / {teammate.without_games} without
-                    </span>
-                  </div>
-                </div>
-              </div>
+    <div className="space-y-3 md:space-y-4">
+      {/* Header - Mobile: compact, Desktop: horizontal */}
+      <div className="bg-zinc-900/50 md:border md:border-zinc-800 rounded-lg md:rounded-xl p-3 md:p-4">
+        {/* Mobile: Compact layout */}
+        <div className="md:hidden">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-white font-bold">{absentPlayer.playerName}</span>
+              <span className="text-zinc-500 text-xs ml-2">absent</span>
             </div>
+            <div className="text-right">
+              <span className="text-2xl font-mono font-bold text-white">{absentPlayer.gamesMissed}</span>
+              <span className="text-zinc-500 text-xs ml-1">MJ</span>
+            </div>
+          </div>
+          <div className="text-xs text-zinc-500 mt-1">{availability}% disponibilité</div>
+        </div>
+        {/* Desktop: Full horizontal layout */}
+        <div className="hidden md:flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-zinc-400 text-sm">Quand</span>
+            <span className="text-white font-bold">{absentPlayer.playerName}</span>
+            <span className="text-zinc-400 text-sm">est absent</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <span className="text-3xl font-mono font-bold text-white">{absentPlayer.gamesMissed}</span>
+              <span className="text-zinc-500 text-sm ml-2">matchs manqués</span>
+            </div>
+            <div className="text-xs text-zinc-500 border-l border-zinc-700 pl-4">
+              {availability}% disponibilité
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stat Tabs - Full width scrollable on mobile */}
+      <div className="-mx-4 md:mx-0 px-4 md:px-0">
+        <div className="flex gap-1 md:gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {(Object.keys(statConfig) as StatType[]).map((stat) => (
+            <button
+              key={stat}
+              onClick={() => setActiveStat(stat)}
+              className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 min-w-[44px] ${
+                activeStat === stat
+                  ? 'bg-white text-black'
+                  : 'bg-zinc-800 text-zinc-400 active:bg-zinc-700'
+              }`}
+            >
+              {statConfig[stat].shortLabel}
+            </button>
           ))}
         </div>
-      )}
+      </div>
+
+      {/* Mobile: Card layout (default) */}
+      <div className="md:hidden space-y-2">
+        {sortedTeammates.map((teammate) => {
+          const stats = getStatValues(teammate)
+          const isProp = stats.boost >= threshold
+
+          return (
+            <div
+              key={teammate.teammate_id}
+              className={`bg-zinc-900/50 rounded-lg p-3 ${getRowBg(stats.boost, activeStat)}`}
+            >
+              {/* Row 1: Name + Boost */}
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-white font-medium text-sm truncate">{teammate.teammate_name}</span>
+                  {isProp && (
+                    <span className="text-[9px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 rounded font-medium flex-shrink-0">
+                      PROP
+                    </span>
+                  )}
+                </div>
+                <span className={`font-mono font-bold text-base ml-2 ${getBoostColor(stats.boost, activeStat)}`}>
+                  {stats.boost > 0 ? '+' : ''}{stats.boost.toFixed(1)}
+                  {stats.boost >= threshold && <span className="text-xs ml-0.5">↑</span>}
+                  {stats.boost <= -threshold && <span className="text-xs ml-0.5">↓</span>}
+                </span>
+              </div>
+              {/* Row 2: Stats comparison */}
+              <div className="flex items-center gap-3 text-xs">
+                <div className="flex items-center gap-1">
+                  <span className="text-zinc-500">Sans:</span>
+                  {activeStat === 'fg' ? (
+                    <span className="text-white font-mono font-medium">
+                      {stats.without.toFixed(1)}<span className="text-zinc-500 text-[10px]">FGM</span>/{(stats as { withoutFga: number }).withoutFga?.toFixed(1)}<span className="text-zinc-500 text-[10px]">FGA</span>
+                    </span>
+                  ) : (
+                    <span className="text-white font-mono font-medium">{stats.without.toFixed(1)}</span>
+                  )}
+                </div>
+                <span className="text-zinc-700">→</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-zinc-500">Avec:</span>
+                  {activeStat === 'fg' ? (
+                    <span className="text-zinc-400 font-mono">
+                      {stats.with.toFixed(1)}<span className="text-zinc-500 text-[10px]">FGM</span>/{(stats as { withFga: number }).withFga?.toFixed(1)}<span className="text-zinc-500 text-[10px]">FGA</span>
+                    </span>
+                  ) : (
+                    <span className="text-zinc-400 font-mono">{stats.with.toFixed(1)}</span>
+                  )}
+                </div>
+                <span className="text-zinc-600 ml-auto font-mono text-[10px]">{teammate.without_games} MJ</span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Desktop: Table layout */}
+      <div className="hidden md:block bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+        {/* Header */}
+        <div className="grid grid-cols-12 gap-2 px-4 py-3 border-b border-zinc-800 bg-zinc-900/80">
+          <div className="col-span-4 text-[10px] uppercase tracking-wider text-zinc-500 font-medium">
+            Titulaire
+          </div>
+          <div className="col-span-1 text-[10px] uppercase tracking-wider text-zinc-500 font-medium text-center">
+            Pos
+          </div>
+          <div className="col-span-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium text-right">
+            Sans
+          </div>
+          <div className="col-span-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium text-right">
+            Avec
+          </div>
+          <div className="col-span-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium text-right">
+            Boost
+          </div>
+          <div className="col-span-1 text-[10px] uppercase tracking-wider text-zinc-500 font-medium text-right">
+            MJ
+          </div>
+        </div>
+
+        {/* Rows */}
+        {sortedTeammates.map((teammate) => {
+          const stats = getStatValues(teammate)
+
+          return (
+            <div
+              key={teammate.teammate_id}
+              className={`grid grid-cols-12 gap-2 px-4 py-3 items-center border-b border-zinc-800/50 last:border-b-0 hover:bg-zinc-800/30 transition-colors ${getRowBg(stats.boost, activeStat)}`}
+            >
+              {/* Nom + badge PROP */}
+              <div className="col-span-4 flex items-center gap-2">
+                <span className="text-white font-medium truncate">{teammate.teammate_name}</span>
+                {stats.boost >= threshold && (
+                  <span className="text-[9px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 rounded font-medium">
+                    PROP
+                  </span>
+                )}
+              </div>
+
+              {/* Position */}
+              <div className="col-span-1 text-center">
+                <span className="text-xs text-zinc-500 font-mono">
+                  {teammate.position || '-'}
+                </span>
+              </div>
+
+              {/* Stats sans (mis en avant) */}
+              <div className="col-span-2 text-right">
+                {activeStat === 'fg' ? (
+                  <span className="text-white font-mono font-bold">
+                    {stats.without.toFixed(1)}<span className="text-zinc-500 text-[10px] font-normal">FGM</span>/{(stats as { withoutFga: number }).withoutFga?.toFixed(1)}<span className="text-zinc-500 text-[10px] font-normal">FGA</span>
+                  </span>
+                ) : (
+                  <span className="text-white font-mono font-bold">
+                    {stats.without.toFixed(1)}
+                  </span>
+                )}
+              </div>
+
+              {/* Stats avec */}
+              <div className="col-span-2 text-right">
+                {activeStat === 'fg' ? (
+                  <span className="text-zinc-500 font-mono">
+                    {stats.with.toFixed(1)}<span className="text-[10px]">FGM</span>/{(stats as { withFga: number }).withFga?.toFixed(1)}<span className="text-[10px]">FGA</span>
+                  </span>
+                ) : (
+                  <span className="text-zinc-500 font-mono">
+                    {stats.with.toFixed(1)}
+                  </span>
+                )}
+              </div>
+
+              {/* Boost */}
+              <div className="col-span-2 text-right">
+                <span className={`font-mono font-bold ${getBoostColor(stats.boost, activeStat)}`}>
+                  {stats.boost > 0 ? '+' : ''}{stats.boost.toFixed(1)}
+                  {stats.boost >= threshold && <span className="ml-1">↑</span>}
+                  {stats.boost <= -threshold && <span className="ml-1">↓</span>}
+                </span>
+              </div>
+
+              {/* Matchs joués sans */}
+              <div className="col-span-1 text-right">
+                <span className="text-xs text-zinc-500 font-mono">
+                  {teammate.without_games}
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Footer */}
+      <div className="text-center">
+        <p className="text-[10px] text-zinc-600">
+          Titulaires uniquement • Min 3 matchs • Trié par boost {statConfig[activeStat].shortLabel}
+        </p>
+      </div>
     </div>
   )
 }

@@ -1,11 +1,11 @@
 export const dynamic = 'force-dynamic'
 
 import { query } from '@/lib/db'
-import { getCurrentSeason, getPlayerStatsWithRankings, getPlayerGamelogs } from '@/lib/queries'
+import { getCurrentSeason, getPlayerStatsWithRankings, getPlayerGamelogs, getTeammatesWhenPlayerAbsent } from '@/lib/queries'
 import { AppLayout } from '@/components/layout'
 import { PlayerPresenceCalendar, PlayerGamelogsTable, type GameDay, type GamelogEntry } from '@/components/player'
 import AdvancedStatsRadar from '@/components/player/AdvancedStatsRadar'
-import { PropPerformanceBarChart } from '@/components/player-props'
+import { PropPerformanceBarChart, AbsenceCascadeView } from '@/components/player-props'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
@@ -28,7 +28,8 @@ async function getPlayerData(playerId: number) {
     propsAvgResult,
     seasonGamesResult,
     playerStatsWithRankings,
-    playerGamelogs
+    playerGamelogs,
+    teammatesWhenAbsent
   ] = await Promise.all([
     // Player basic info
     query(`
@@ -317,7 +318,10 @@ async function getPlayerData(playerId: number) {
     getPlayerStatsWithRankings(playerId),
 
     // Player gamelogs (for detailed game log table)
-    getPlayerGamelogs(playerId)
+    getPlayerGamelogs(playerId),
+
+    // Teammate performance splits when this player is absent
+    getTeammatesWhenPlayerAbsent(playerId, 3)
   ])
 
   return {
@@ -332,6 +336,7 @@ async function getPlayerData(playerId: number) {
     seasonGames: seasonGamesResult.rows as GameDay[],
     playerStatsWithRankings,
     playerGamelogs: playerGamelogs as GamelogEntry[],
+    teammatesWhenAbsent,
     currentSeason
   }
 }
@@ -350,7 +355,7 @@ export default async function PlayerDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  const { playerInfo, seasonStats, recentGames, advancedStats, positionRanking, teammates, playerProps, propsAvg, seasonGames, playerStatsWithRankings, playerGamelogs, currentSeason } = data
+  const { playerInfo, seasonStats, recentGames, advancedStats, positionRanking, teammates, playerProps, propsAvg, seasonGames, playerStatsWithRankings, playerGamelogs, teammatesWhenAbsent, currentSeason } = data
 
   // Calculate last 10 games stats for trend
   const last10Stats = recentGames.length > 0 ? {
@@ -658,6 +663,40 @@ export default async function PlayerDetailPage({ params }: PageProps) {
             <PlayerGamelogsTable
               gamelogs={playerGamelogs}
               season={currentSeason}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 05.5: ABSENCE IMPACT (Teammate Performance When This Player Is Out) */}
+      {teammatesWhenAbsent && teammatesWhenAbsent.length > 0 && seasonGames && (
+        <section className="py-20 px-4 sm:px-8 lg:px-12">
+          <div className="w-full">
+            {/* Section identifier */}
+            <div className="mb-8 flex items-center gap-4">
+              <span className="text-sm font-medium text-zinc-500 tracking-widest font-mono">05.5</span>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </div>
+
+            <div className="flex items-baseline gap-2 mb-6">
+              <h2 className="text-2xl md:text-4xl font-black text-white uppercase" style={{ letterSpacing: '-0.05em' }}>
+                Absence
+              </h2>
+              <span className="text-2xl md:text-4xl font-light text-zinc-600 uppercase" style={{ letterSpacing: '-0.05em' }}>
+                Impact
+              </span>
+            </div>
+
+            <AbsenceCascadeView
+              absentPlayer={{
+                playerId: playerIdNum,
+                playerName: playerInfo.full_name,
+                teamId: parseInt(playerInfo.team_id) || 0,
+                teamAbbr: playerInfo.team_abbreviation || 'N/A',
+                gamesPlayed: seasonGames.filter(g => g.played).length,
+                gamesMissed: seasonGames.filter(g => !g.played).length
+              }}
+              teammates={teammatesWhenAbsent}
             />
           </div>
         </section>

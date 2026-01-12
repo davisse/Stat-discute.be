@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
   // Can be re-enabled with proper loader configuration
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.nba.com',
+        pathname: '/logos/**',
+      },
+    ],
   },
 
   // Environment variables validation (optional)

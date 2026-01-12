@@ -23,7 +23,7 @@ export function GameCard({ game }: GameCardProps) {
   const awayWon = isCompleted && (game.away_score ?? 0) > (game.home_score ?? 0)
 
   const handleClick = () => {
-    router.push(`/games/${game.game_id}`)
+    router.push(`/ou-investigation?home=${game.home_team_abbr}&away=${game.away_team_abbr}`)
   }
 
   return (
@@ -44,7 +44,10 @@ export function GameCard({ game }: GameCardProps) {
         }`}>
           {isCompleted ? 'Final' : formatTime(game.game_time)}
         </span>
-        <span className="text-zinc-600 group-hover:text-zinc-400 transition-colors">→</span>
+        <span className="text-[10px] uppercase tracking-wider text-zinc-600 group-hover:text-zinc-300 transition-colors flex items-center gap-1">
+          <span className="hidden group-hover:inline">Analyser</span>
+          <span>→</span>
+        </span>
       </div>
 
       {/* Teams */}

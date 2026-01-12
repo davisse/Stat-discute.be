@@ -90,7 +90,12 @@ export function TeamScoringTrendChart({ games, className = '' }: TeamScoringTren
   const chartData = useMemo((): EnhancedChartDataPoint[] => {
     const finishedGames = games.filter(g => g.game_status === 'Final' && g.team_pts !== null)
 
-    return finishedGames.map((g, i, arr) => {
+    // Sort chronologically: oldest games first (left), newest games last (right)
+    const chronologicalGames = [...finishedGames].sort((a, b) =>
+      new Date(a.game_date).getTime() - new Date(b.game_date).getTime()
+    )
+
+    return chronologicalGames.map((g, i, arr) => {
       const windowSize = 5
       let rollingTeam: number | null = null
       let rollingOpp: number | null = null
