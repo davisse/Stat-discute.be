@@ -6,10 +6,13 @@ const nextConfig: NextConfig = {
   // This creates a minimal production build with only necessary files
   output: "standalone",
 
-  // Disable image optimization for simpler deployment
-  // Can be re-enabled with proper loader configuration
+  // Enable Next.js image optimization
   images: {
-    unoptimized: true,
+    unoptimized: false,
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    minimumCacheTTL: 2592000, // 30 days
     remotePatterns: [
       {
         protocol: 'https',

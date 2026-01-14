@@ -1,7 +1,24 @@
 export const dynamic = 'force-dynamic'
 
+import type { Metadata } from 'next'
 import { AppLayout } from '@/components/layout'
 import { PlayerSearch } from '@/components/player-search'
+
+export const metadata: Metadata = {
+  title: 'Recherche Joueur NBA | Statistiques Avancées 2025-26 - STAT-DISCUTE',
+  description: 'Recherchez parmi tous les joueurs NBA actifs. Statistiques avancées, game logs et métriques détaillées pour la saison 2025-26.',
+  keywords: 'joueurs NBA, recherche joueur, statistiques joueurs, player stats',
+  openGraph: {
+    title: 'Recherche Joueur NBA - Stats Avancées',
+    description: 'Base de données complète des statistiques joueurs NBA 2025-26',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Recherche Joueur NBA - Stats Avancées',
+    description: 'Base de données complète des statistiques joueurs NBA 2025-26',
+  }
+}
 
 export default async function PlayersPage() {
   return (

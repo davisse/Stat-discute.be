@@ -1,11 +1,12 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { AppLayout } from '@/components/layout'
 import { StadiumSpotlightHero } from '@/components/hero'
 import { TeamRankingDualChart, TeamQuadrantChart, TeamPresenceCalendar, TeamPointDiffChart, TeamScoringTrendChart, DvPTeamProfile, TeamAnalysis, ShotDistributionProfile, TeamShotZoneProfile, DefensiveSystemAnalysis, type TeamGameDay } from '@/components/teams'
+import { getTeamDetailedStats, getAllTeamsRanking, getTeamGameHistory } from '@/lib/queries'
+
+export const dynamic = 'force-dynamic'
 
 interface TeamStats {
   team_id: number
@@ -42,6 +43,51 @@ interface TeamRankingData {
   opp_ppg: number
 }
 
+// ============================================================================
+// Generate Metadata for SEO
+// ============================================================================
+
+type Props = {
+  params: Promise<{ teamId: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { teamId } = await params
+  const teamIdNum = parseInt(teamId, 10)
+
+  try {
+    const teamData = await getTeamDetailedStats(teamIdNum)
+
+    if (!teamData) {
+      return { title: 'Équipe introuvable - STAT-DISCUTE' }
+    }
+
+    const description = `Statistiques ${teamData.full_name} 2025-26 : ${teamData.wins}V-${teamData.losses}D, ${parseFloat(teamData.ppg).toFixed(1)} pts/match. Analyse complète offensive, défensive et DvP.`
+
+    return {
+      title: `${teamData.full_name} (${teamData.abbreviation}) - Stats NBA 2025-26 | STAT-DISCUTE`,
+      description,
+      keywords: `${teamData.full_name}, ${teamData.abbreviation}, NBA stats, statistiques équipe, ${teamData.conference} Conference`,
+      openGraph: {
+        title: `${teamData.full_name} - Statistiques NBA 2025-26`,
+        description,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary',
+        title: `${teamData.full_name} - Stats NBA 2025-26`,
+        description,
+      }
+    }
+  } catch (error) {
+    return { title: 'Erreur - STAT-DISCUTE' }
+  }
+}
+
+// ============================================================================
+// Components
+// ============================================================================
+
 function StatCard({ label, value, small = false }: { label: string; value: string; small?: boolean }) {
   return (
     <div className={`${small ? 'p-2 sm:p-3' : 'p-2 sm:p-4'} bg-zinc-900/50 sm:border sm:border-zinc-800 sm:rounded-lg`}>
@@ -51,52 +97,28 @@ function StatCard({ label, value, small = false }: { label: string; value: strin
   )
 }
 
-export default function TeamPage() {
-  const params = useParams()
-  const teamId = params.teamId as string
+export default async function TeamPage({ params }: Props) {
+  const { teamId } = await params
+  const teamIdNum = parseInt(teamId, 10)
 
-  const [teamStats, setTeamStats] = useState<TeamStats | null>(null)
-  const [allTeamsRanking, setAllTeamsRanking] = useState<TeamRankingData[]>([])
-  const [teamGames, setTeamGames] = useState<TeamGameDay[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  if (isNaN(teamIdNum) || teamIdNum <= 0) {
+    notFound()
+  }
 
-  useEffect(() => {
-    async function fetchTeamStats() {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const res = await fetch(`/api/teams/${teamId}/stats`)
-        if (!res.ok) {
-          throw new Error('Équipe non trouvée')
-        }
-        const data = await res.json()
-        setTeamStats(data)
+  // Fetch all data in parallel
+  const [teamStats, allTeamsRankingRaw, teamGamesRaw] = await Promise.all([
+    getTeamDetailedStats(teamIdNum),
+    getAllTeamsRanking(),
+    getTeamGameHistory(teamIdNum),
+  ])
 
-        // Fetch all teams ranking data
-        const rankingRes = await fetch('/api/teams/ranking')
-        if (rankingRes.ok) {
-          const rankingData = await rankingRes.json()
-          setAllTeamsRanking(rankingData)
-        }
+  // Type cast for ranking data and games (queries return correct structure but no type annotations)
+  const allTeamsRanking = allTeamsRankingRaw as TeamRankingData[]
+  const teamGames = teamGamesRaw as TeamGameDay[]
 
-        // Fetch team game history for calendar
-        const gamesRes = await fetch(`/api/teams/${teamId}/games`)
-        if (gamesRes.ok) {
-          const gamesData = await gamesRes.json()
-          setTeamGames(gamesData)
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erreur de chargement')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (teamId) {
-      fetchTeamStats()
-    }
-  }, [teamId])
+  if (!teamStats) {
+    notFound()
+  }
 
   return (
     <AppLayout>
@@ -110,26 +132,8 @@ export default function TeamPage() {
           <span className="text-sm uppercase tracking-wider">Toutes les équipes</span>
         </Link>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex items-center gap-3 text-zinc-500 mt-12">
-            <div className="w-5 h-5 border-2 border-zinc-500 border-t-white rounded-full animate-spin" />
-            <span>Chargement...</span>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="mt-12 p-8 bg-zinc-900/50 border border-red-900/50 rounded-lg">
-            <p className="text-red-400">{error}</p>
-            <Link href="/teams" className="text-zinc-400 hover:text-white mt-4 inline-block">
-              ← Retour à la liste
-            </Link>
-          </div>
-        )}
-
         {/* Team Stats */}
-        {!isLoading && !error && teamStats && (
+        {teamStats && (
           <>
             {/* Stadium Spotlight Hero Section */}
             <div className="-mx-2 sm:mx-0 mb-6 sm:mb-8">

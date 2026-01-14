@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import type { Metadata } from 'next'
 import { query } from '@/lib/db'
 import { getCurrentSeason, getPlayerStatsWithRankings, getPlayerGamelogs, getTeammatesWhenPlayerAbsent } from '@/lib/queries'
 import { AppLayout } from '@/components/layout'
@@ -11,6 +12,50 @@ import Link from 'next/link'
 
 interface PageProps {
   params: Promise<{ playerId: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { playerId } = await params
+  const playerIdNum = parseInt(playerId, 10)
+
+  if (isNaN(playerIdNum)) {
+    return { title: 'Joueur introuvable - STAT-DISCUTE' }
+  }
+
+  try {
+    const data = await getPlayerData(playerIdNum)
+
+    if (!data.playerInfo || !data.seasonStats) {
+      return { title: 'Joueur introuvable - STAT-DISCUTE' }
+    }
+
+    const player = data.playerInfo
+    const seasonStats = data.seasonStats
+
+    const ppg = parseFloat(seasonStats.points_avg) || 0
+    const rpg = parseFloat(seasonStats.rebounds_avg) || 0
+    const apg = parseFloat(seasonStats.assists_avg) || 0
+
+    const description = `Statistiques complètes ${player.full_name} - ${ppg.toFixed(1)} PPG, ${rpg.toFixed(1)} RPG, ${apg.toFixed(1)} APG. Analyse détaillée et props.`
+
+    return {
+      title: `${player.full_name} | ${ppg.toFixed(1)} PPG | ${player.position} | STAT-DISCUTE`,
+      description,
+      keywords: `${player.full_name}, ${player.team_abbreviation}, NBA stats, ${player.position}`,
+      openGraph: {
+        title: `${player.full_name} - Stats NBA 2025-26`,
+        description,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary',
+        title: `${player.full_name} - Stats NBA 2025-26`,
+        description,
+      }
+    }
+  } catch (error) {
+    return { title: 'Erreur - STAT-DISCUTE' }
+  }
 }
 
 // Fetch all player data in parallel

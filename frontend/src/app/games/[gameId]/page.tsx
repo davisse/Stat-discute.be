@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getGameById } from '@/lib/queries'
@@ -8,6 +9,43 @@ export const dynamic = 'force-dynamic'
 
 interface Props {
   params: Promise<{ gameId: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { gameId } = await params
+
+  try {
+    const game = await getGameById(gameId)
+
+    if (!game) {
+      return { title: 'Match introuvable - STAT-DISCUTE' }
+    }
+
+    const score = game.status === 'Final'
+      ? `${game.home_score}-${game.away_score} (Final)`
+      : 'À venir'
+
+    const title = `${game.away_team_abbr} @ ${game.home_team_abbr} ${score} | STAT-DISCUTE`
+    const description = `Match NBA ${game.away_team_name} vs ${game.home_team_name} - ${game.game_date}. Box scores, statistiques détaillées et analyse.`
+
+    return {
+      title,
+      description,
+      keywords: `${game.away_team_abbr} ${game.home_team_abbr}, match NBA, ${game.game_date}`,
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary',
+        title,
+        description,
+      }
+    }
+  } catch (error) {
+    return { title: 'Erreur - STAT-DISCUTE' }
+  }
 }
 
 function formatDate(dateString: string): string {
