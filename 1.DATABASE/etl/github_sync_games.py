@@ -18,6 +18,31 @@ from nba_api.stats.endpoints import leaguegamefinder
 # Configuration
 SEASON = '2025-26'
 SEASON_START = datetime(2025, 10, 20)
+MAX_RETRIES = 3
+RETRY_DELAY = 10  # seconds
+
+def fetch_games_with_retry():
+    """Fetch games from NBA API with retry logic for GitHub Actions reliability"""
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            print(f"-- Attempt {attempt}/{MAX_RETRIES}: Fetching from NBA API...", file=sys.stderr)
+            gamefinder = leaguegamefinder.LeagueGameFinder(
+                season_nullable=SEASON,
+                league_id_nullable='00',  # NBA
+                season_type_nullable='Regular Season',
+                timeout=60  # Increase timeout to 60 seconds
+            )
+            games_df = gamefinder.get_data_frames()[0]
+            print(f"-- Received {len(games_df)} records from NBA API", file=sys.stderr)
+            return games_df
+        except Exception as e:
+            print(f"-- Attempt {attempt} failed: {e}", file=sys.stderr)
+            if attempt < MAX_RETRIES:
+                print(f"-- Waiting {RETRY_DELAY}s before retry...", file=sys.stderr)
+                time.sleep(RETRY_DELAY)
+            else:
+                raise e
+    return None
 
 def main():
     print("-- GitHub Actions: NBA Games Sync", file=sys.stderr)
@@ -29,13 +54,9 @@ def main():
     current_date = datetime.now() + timedelta(days=7)  # Include upcoming games
 
     try:
-        gamefinder = leaguegamefinder.LeagueGameFinder(
-            season_nullable=SEASON,
-            league_id_nullable='00',  # NBA
-            season_type_nullable='Regular Season'
-        )
-        games_df = gamefinder.get_data_frames()[0]
-        print(f"-- Received {len(games_df)} records from NBA API", file=sys.stderr)
+        games_df = fetch_games_with_retry()
+        if games_df is None:
+            raise Exception("Failed to fetch games after all retries")
     except Exception as e:
         print(f"-- ERROR: Failed to fetch from NBA API: {e}", file=sys.stderr)
         sys.exit(1)
