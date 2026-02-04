@@ -12,6 +12,7 @@ on:
           - games
           - player-stats
           - both
+          - refresh-standings
 
 env:
   DB_NAME: 'nba_stats'
@@ -63,6 +64,19 @@ jobs:
           ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/player_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Player stats imported successfully"
 
+      - name: Refresh Standings
+        if: ${{ github.event.inputs.import_type == 'refresh-standings' || github.event.inputs.import_type == 'games' || github.event.inputs.import_type == 'both' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          echo "Copying refresh_standings.sql to VPS..."
+          scp 1.DATABASE/generated_sql/refresh_standings.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/refresh_standings.sql
+          echo "Refreshing standings..."
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/refresh_standings.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Standings refreshed successfully"
+
       - name: Verify Import
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -72,6 +86,8 @@ jobs:
             SELECT 'Total Games: ' || COUNT(*) FROM games WHERE season = '2025-26';
             SELECT 'Final Games: ' || COUNT(*) FROM games WHERE season = '2025-26' AND game_status = 'Final';
             SELECT 'Last Game Date: ' || MAX(game_date) FROM games WHERE season = '2025-26';
+            SELECT 'Top 5 Standings:' as standings;
+            SELECT full_name, wins || '-' || losses as record FROM team_standings ts JOIN teams t ON ts.team_id = t.team_id WHERE ts.season = '2025-26' ORDER BY wins DESC LIMIT 5;
           \""
 
       - name: Cleanup
@@ -81,4 +97,4 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql" || true
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/refresh_standings.sql" || true
