@@ -17,22 +17,26 @@ from datetime import datetime, timedelta
 # Configuration
 SEASON = '2025-26'
 API_DELAY = 0.6  # Seconds between API calls to avoid rate limiting
+NBA_API_TIMEOUT = 120  # Increased timeout for reliability
 MAX_RETRIES = 3
-RETRY_DELAY = 5  # seconds
+RETRY_DELAY = 10  # seconds
 
 # Required headers for NBA API
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0',
     'Referer': 'https://www.nba.com/',
     'Origin': 'https://www.nba.com',
-    'Accept': 'application/json',
+    'Accept': '*/*',
     'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Host': 'stats.nba.com',
     'x-nba-stats-origin': 'stats',
     'x-nba-stats-token': 'true'
 }
 
 def fetch_box_score(game_id):
-    """Fetch box score for a single game with retry"""
+    """Fetch box score for a single game with retry logic"""
     url = f"https://stats.nba.com/stats/boxscoretraditionalv2"
     params = {
         'GameID': game_id,
@@ -45,16 +49,14 @@ def fetch_box_score(game_id):
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            response = requests.get(url, headers=HEADERS, params=params, timeout=60)
+            response = requests.get(url, headers=HEADERS, params=params, timeout=NBA_API_TIMEOUT)
             response.raise_for_status()
             return response.json()
         except Exception as e:
+            print(f"-- WARNING: Attempt {attempt}/{MAX_RETRIES} failed for {game_id}: {e}", file=sys.stderr)
             if attempt < MAX_RETRIES:
-                print(f"-- WARNING: Attempt {attempt} failed for {game_id}: {e}", file=sys.stderr)
                 time.sleep(RETRY_DELAY)
-            else:
-                print(f"-- ERROR: Failed to fetch box score for {game_id} after {MAX_RETRIES} attempts: {e}", file=sys.stderr)
-                return None
+    return None
 
 def parse_minutes(min_str):
     """Convert minutes string (e.g., '32:45') to integer minutes"""
@@ -69,10 +71,11 @@ def parse_minutes(min_str):
         return 0
 
 def fetch_recent_game_ids():
-    """Fetch game IDs for recent games that need player stats"""
+    """Fetch game IDs for recent games that need player stats with retry logic"""
     from nba_api.stats.endpoints import leaguegamefinder
     import pandas as pd
 
+    games_df = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             print(f"-- Fetching game IDs (attempt {attempt}/{MAX_RETRIES})...", file=sys.stderr)
@@ -80,20 +83,21 @@ def fetch_recent_game_ids():
                 season_nullable=SEASON,
                 league_id_nullable='00',
                 season_type_nullable='Regular Season',
-                headers=HEADERS,
-                timeout=60
+                timeout=NBA_API_TIMEOUT
             )
             games_df = gamefinder.get_data_frames()[0]
+            print(f"-- Success on attempt {attempt}", file=sys.stderr)
             break
         except Exception as e:
+            print(f"-- Attempt {attempt} failed: {e}", file=sys.stderr)
             if attempt < MAX_RETRIES:
-                print(f"-- Attempt {attempt} failed: {e}", file=sys.stderr)
+                print(f"-- Waiting {RETRY_DELAY}s before retry...", file=sys.stderr)
                 time.sleep(RETRY_DELAY)
             else:
-                print(f"-- ERROR: Failed to fetch game IDs after {MAX_RETRIES} attempts: {e}", file=sys.stderr)
+                print(f"-- ERROR: All {MAX_RETRIES} attempts failed to fetch game IDs", file=sys.stderr)
                 return []
 
-    if games_df.empty:
+    if games_df is None or games_df.empty:
         return []
 
     # Filter to last 7 days of completed games

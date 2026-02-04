@@ -15,9 +15,17 @@ on:
           - full
           - games-only
           - analytics-only
+          - run-migration
+      migration_number:
+        description: 'Migration number to run (e.g., 018) - only used with run-migration sync_type'
+        required: false
+        type: string
 
 env:
   SEASON: '2025-26'
+  DB_NAME: 'nba_stats'
+  DB_USER: 'nba_admin'
+  DB_CONTAINER: 'postgres'
 
 jobs:
   sync-nba-data:
@@ -41,10 +49,13 @@ jobs:
           pip install nba_api pandas requests python-dotenv psycopg2-binary
 
       - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known hosts
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Fetch NBA Games and Generate SQL
@@ -59,36 +70,115 @@ jobs:
           python 1.DATABASE/etl/github_sync_player_stats.py > /tmp/player_stats.sql
           echo "Player stats SQL generated: $(wc -l < /tmp/player_stats.sql) lines"
 
+      - name: Copy SQL files to VPS
+        if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          echo "Copying SQL files to VPS..."
+          scp /tmp/games.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/games.sql
+          scp /tmp/player_stats.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/player_stats.sql
+          echo "Files copied successfully"
+
       - name: Import Games to Production
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            'docker exec -i postgres sh -c "psql -U \$POSTGRES_USER -d statdiscute"' < /tmp/games.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/games.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Games imported successfully"
 
       - name: Import Player Stats to Production
         if: ${{ github.event.inputs.sync_type != 'analytics-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            'docker exec -i postgres sh -c "psql -U \$POSTGRES_USER -d statdiscute"' < /tmp/player_stats.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/player_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Player stats imported successfully"
 
       - name: Run Analytics on Production
         if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          # Generate and run analytics SQL
-          python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            'docker exec -i postgres sh -c "psql -U \$POSTGRES_USER -d statdiscute"' < /tmp/analytics.sql
-          echo "Analytics calculated successfully"
+          # Generate and run analytics SQL (standings, DVP)
+          python 1.DATABASE/etl/github_sync_analytics.py > /tmp/analytics.sql 2>&1 || true
+          scp /tmp/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql || true
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}" || echo "Analytics SQL may have failed (non-critical)"
+
+      - name: Calculate Advanced Stats
+        if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          # Generate and run advanced stats SQL (TS%, eFG%, Usage Rate)
+          python 1.DATABASE/etl/github_sync_advanced_stats.py > /tmp/advanced_stats.sql
+          scp /tmp/advanced_stats.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/advanced_stats.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/advanced_stats.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Advanced stats calculated successfully"
+
+      - name: Calculate Player ORTG/DRTG
+        if: ${{ github.event.inputs.sync_type != 'games-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          # Generate and run player ORTG/DRTG SQL
+          python 1.DATABASE/etl/github_sync_player_ortg.py > /tmp/ortg.sql
+          scp /tmp/ortg.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/ortg.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/ortg.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Player ORTG/DRTG calculated successfully"
+
+      - name: Run Database Migration
+        if: ${{ github.event.inputs.sync_type == 'run-migration' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+          MIGRATION_NUM: ${{ github.event.inputs.migration_number }}
+        run: |
+          MIGRATION_FILE=$(ls -1 1.DATABASE/migrations/${MIGRATION_NUM}*.sql 2>/dev/null | head -1)
+          if [ -z "$MIGRATION_FILE" ]; then
+            echo "Error: No migration file found matching ${MIGRATION_NUM}*.sql"
+            exit 1
+          fi
+          echo "Running migration: $MIGRATION_FILE"
+          scp "$MIGRATION_FILE" $VPS_USER@$VPS_HOST:$DEPLOY_PATH/migration.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/migration.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/migration.sql" || true
+          echo "Migration complete!"
 
       - name: Verify Sync
+        if: ${{ github.event.inputs.sync_type != 'run-migration' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
         run: |
-          echo "SELECT 'Games: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}';" > /tmp/verify.sql
-          echo "SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';" >> /tmp/verify.sql
-          echo "SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';" >> /tmp/verify.sql
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            'docker exec -i postgres sh -c "psql -U \$POSTGRES_USER -d statdiscute"' < /tmp/verify.sql
+          ssh $VPS_USER@$VPS_HOST "docker exec ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -c \"
+            SELECT 'Games: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}';
+            SELECT 'Final: ' || COUNT(*) FROM games WHERE season = '${{ env.SEASON }}' AND game_status = 'Final';
+            SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g ON pgs.game_id = g.game_id WHERE g.season = '${{ env.SEASON }}';
+          \""
+
+      - name: Cleanup SQL files on VPS
+        if: always()
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/analytics.sql $DEPLOY_PATH/advanced_stats.sql $DEPLOY_PATH/ortg.sql" || true
 
       - name: Report Status
         if: always()
@@ -96,5 +186,8 @@ jobs:
           echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **Season**: ${{ env.SEASON }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Sync Type**: ${{ github.event.inputs.sync_type || 'full' }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event.inputs.sync_type }}" = "run-migration" ]; then
+            echo "- **Migration**: ${{ github.event.inputs.migration_number }}" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "- **Triggered**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
