@@ -87,7 +87,7 @@ jobs:
             SELECT 'Final Games: ' || COUNT(*) FROM games WHERE season = '2025-26' AND game_status = 'Final';
             SELECT 'Last Game Date: ' || MAX(game_date) FROM games WHERE season = '2025-26';
             SELECT 'Top 5 Standings:' as standings;
-            SELECT full_name, wins || '-' || losses as record FROM team_standings ts JOIN teams t ON ts.team_id = t.team_id WHERE ts.season = '2025-26' ORDER BY wins DESC LIMIT 5;
+            SELECT full_name, wins || '-' || losses as record FROM team_standings ts JOIN teams t ON ts.team_id = t.team_id WHERE ts.season_id = '2025-26' ORDER BY wins DESC LIMIT 5;
           \""
 
       - name: Cleanup
