@@ -1,0 +1,6035 @@
+-- NBA Games Sync SQL
+-- Generated: 2026-02-04T20:17:28.665151
+-- Source: NBA API (LeagueGameFinder)
+-- Season: 2025-26
+-- Games: 753
+
+BEGIN;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500720', '2026-02-03', '2025-26', 1610612748, 1610612737, 115, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500718', '2026-02-03', '2025-26', 1610612764, 1610612752, 101, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500719', '2026-02-03', '2025-26', 1610612751, 1610612747, 109, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500724', '2026-02-03', '2025-26', 1610612744, 1610612755, 94, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500722', '2026-02-03', '2025-26', 1610612749, 1610612741, 131, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500725', '2026-02-03', '2025-26', 1610612757, 1610612756, 125, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500721', '2026-02-03', '2025-26', 1610612742, 1610612738, 100, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500717', '2026-02-03', '2025-26', 1610612754, 1610612762, 122, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500716', '2026-02-03', '2025-26', 1610612765, 1610612743, 124, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500723', '2026-02-03', '2025-26', 1610612760, 1610612753, 128, 92, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500713', '2026-02-02', '2025-26', 1610612754, 1610612745, 114, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500715', '2026-02-02', '2025-26', 1610612746, 1610612755, 113, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500712', '2026-02-02', '2025-26', 1610612766, 1610612740, 102, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500714', '2026-02-02', '2025-26', 1610612763, 1610612750, 137, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500705', '2026-02-01', '2025-26', 1610612748, 1610612741, 134, 91, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500707', '2026-02-01', '2025-26', 1610612764, 1610612758, 116, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500709', '2026-02-01', '2025-26', 1610612756, 1610612746, 93, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500711', '2026-02-01', '2025-26', 1610612743, 1610612760, 111, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500710', '2026-02-01', '2025-26', 1610612757, 1610612739, 111, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500704', '2026-02-01', '2025-26', 1610612765, 1610612751, 130, 77, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500708', '2026-02-01', '2025-26', 1610612752, 1610612747, 112, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500702', '2026-02-01', '2025-26', 1610612738, 1610612749, 107, 79, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500703', '2026-02-01', '2025-26', 1610612759, 1610612753, 112, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500706', '2026-02-01', '2025-26', 1610612761, 1610612762, 107, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500692', '2026-01-31', '2025-26', 1610612748, 1610612741, 118, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500701', '2026-01-31', '2025-26', 1610612745, 1610612742, 111, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500699', '2026-01-31', '2025-26', 1610612755, 1610612740, 124, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500700', '2026-01-31', '2025-26', 1610612763, 1610612750, 114, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500697', '2026-01-31', '2025-26', 1610612766, 1610612759, 111, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500698', '2026-01-31', '2025-26', 1610612754, 1610612737, 129, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500694', '2026-01-30', '2025-26', 1610612762, 1610612751, 99, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500693', '2026-01-30', '2025-26', 1610612756, 1610612739, 126, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500688', '2026-01-30', '2025-26', 1610612764, 1610612747, 111, 142, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500691', '2026-01-30', '2025-26', 1610612740, 1610612763, 114, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500687', '2026-01-30', '2025-26', 1610612753, 1610612761, 130, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500695', '2026-01-30', '2025-26', 1610612743, 1610612746, 122, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500689', '2026-01-30', '2025-26', 1610612738, 1610612758, 112, 93, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500690', '2026-01-30', '2025-26', 1610612752, 1610612757, 127, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500696', '2026-01-30', '2025-26', 1610612744, 1610612765, 124, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500529', '2026-01-29', '2025-26', 1610612741, 1610612748, 113, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500683', '2026-01-29', '2025-26', 1610612742, 1610612766, 121, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500680', '2026-01-29', '2025-26', 1610612755, 1610612758, 113, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500684', '2026-01-29', '2025-26', 1610612743, 1610612751, 107, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500686', '2026-01-29', '2025-26', 1610612750, 1610612760, 123, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500681', '2026-01-29', '2025-26', 1610612764, 1610612749, 109, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500682', '2026-01-29', '2025-26', 1610612737, 1610612745, 86, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500685', '2026-01-29', '2025-26', 1610612756, 1610612765, 114, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500679', '2026-01-28', '2025-26', 1610612745, 1610612759, 99, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500676', '2026-01-28', '2025-26', 1610612763, 1610612766, 97, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500678', '2026-01-28', '2025-26', 1610612762, 1610612744, 124, 140, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500672', '2026-01-28', '2025-26', 1610612754, 1610612741, 113, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500677', '2026-01-28', '2025-26', 1610612742, 1610612750, 105, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500675', '2026-01-28', '2025-26', 1610612761, 1610612752, 92, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500674', '2026-01-28', '2025-26', 1610612748, 1610612753, 124, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500671', '2026-01-28', '2025-26', 1610612739, 1610612747, 129, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500673', '2026-01-28', '2025-26', 1610612738, 1610612737, 106, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500667', '2026-01-27', '2025-26', 1610612760, 1610612740, 104, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500664', '2026-01-27', '2025-26', 1610612764, 1610612757, 115, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500668', '2026-01-27', '2025-26', 1610612743, 1610612765, 107, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500669', '2026-01-27', '2025-26', 1610612756, 1610612751, 106, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500666', '2026-01-27', '2025-26', 1610612755, 1610612749, 139, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500665', '2026-01-27', '2025-26', 1610612752, 1610612758, 103, 87, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500670', '2026-01-27', '2025-26', 1610612762, 1610612746, 103, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500662', '2026-01-26', '2025-26', 1610612745, 1610612763, 108, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500661', '2026-01-26', '2025-26', 1610612741, 1610612747, 118, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500658', '2026-01-26', '2025-26', 1610612739, 1610612753, 114, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500660', '2026-01-26', '2025-26', 1610612738, 1610612757, 102, 94, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500659', '2026-01-26', '2025-26', 1610612737, 1610612754, 132, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500657', '2026-01-26', '2025-26', 1610612766, 1610612755, 130, 93, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500663', '2026-01-26', '2025-26', 1610612750, 1610612744, 108, 83, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500654', '2026-01-25', '2025-26', 1610612759, 1610612740, 95, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500650', '2026-01-25', '2025-26', 1610612765, 1610612758, 139, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500644', '2026-01-25', '2025-26', 1610612750, 1610612744, 85, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500655', '2026-01-25', '2025-26', 1610612756, 1610612748, 102, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500656', '2026-01-25', '2025-26', 1610612746, 1610612751, 126, 89, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500653', '2026-01-25', '2025-26', 1610612760, 1610612761, 101, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500645', '2026-01-24', '2025-26', 1610612766, 1610612764, 119, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500648', '2026-01-24', '2025-26', 1610612742, 1610612747, 110, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500643', '2026-01-24', '2025-26', 1610612755, 1610612752, 109, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500647', '2026-01-24', '2025-26', 1610612741, 1610612738, 114, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500649', '2026-01-24', '2025-26', 1610612762, 1610612748, 116, 147, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500646', '2026-01-24', '2025-26', 1610612753, 1610612739, 105, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500642', '2026-01-23', '2025-26', 1610612757, 1610612761, 98, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500641', '2026-01-23', '2025-26', 1610612760, 1610612754, 114, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500638', '2026-01-23', '2025-26', 1610612739, 1610612758, 123, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500637', '2026-01-23', '2025-26', 1610612751, 1610612738, 126, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500636', '2026-01-23', '2025-26', 1610612737, 1610612756, 110, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500639', '2026-01-23', '2025-26', 1610612763, 1610612740, 127, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500635', '2026-01-23', '2025-26', 1610612765, 1610612745, 104, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500640', '2026-01-23', '2025-26', 1610612749, 1610612743, 100, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500633', '2026-01-22', '2025-26', 1610612746, 1610612747, 112, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500634', '2026-01-22', '2025-26', 1610612757, 1610612748, 127, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500628', '2026-01-22', '2025-26', 1610612755, 1610612745, 128, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500630', '2026-01-22', '2025-26', 1610612742, 1610612744, 123, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500632', '2026-01-22', '2025-26', 1610612762, 1610612759, 109, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500629', '2026-01-22', '2025-26', 1610612764, 1610612743, 97, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500631', '2026-01-22', '2025-26', 1610612750, 1610612741, 115, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500627', '2026-01-22', '2025-26', 1610612753, 1610612766, 97, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500625', '2026-01-21', '2025-26', 1610612749, 1610612760, 102, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500624', '2026-01-21', '2025-26', 1610612740, 1610612765, 104, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500623', '2026-01-21', '2025-26', 1610612763, 1610612737, 122, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500621', '2026-01-21', '2025-26', 1610612738, 1610612754, 119, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500626', '2026-01-21', '2025-26', 1610612758, 1610612761, 109, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500620', '2026-01-21', '2025-26', 1610612766, 1610612739, 87, 94, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500622', '2026-01-21', '2025-26', 1610612752, 1610612751, 120, 66, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500619', '2026-01-20', '2025-26', 1610612758, 1610612748, 117, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500613', '2026-01-20', '2025-26', 1610612755, 1610612756, 110, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500614', '2026-01-20', '2025-26', 1610612741, 1610612746, 138, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500616', '2026-01-20', '2025-26', 1610612762, 1610612750, 127, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500617', '2026-01-20', '2025-26', 1610612743, 1610612747, 107, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500615', '2026-01-20', '2025-26', 1610612745, 1610612759, 111, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500618', '2026-01-20', '2025-26', 1610612744, 1610612761, 127, 145, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500609', '2026-01-19', '2025-26', 1610612755, 1610612754, 113, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500017', '2026-01-19', '2025-26', 1610612765, 1610612738, 104, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500610', '2026-01-19', '2025-26', 1610612751, 1610612756, 117, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500608', '2026-01-19', '2025-26', 1610612764, 1610612746, 106, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500612', '2026-01-19', '2025-26', 1610612744, 1610612748, 135, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500016', '2026-01-19', '2025-26', 1610612752, 1610612742, 97, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500611', '2026-01-19', '2025-26', 1610612759, 1610612762, 123, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500015', '2026-01-19', '2025-26', 1610612739, 1610612760, 104, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500014', '2026-01-19', '2025-26', 1610612737, 1610612749, 110, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500602', '2026-01-18', '2025-26', 1610612737, 1610612763, 110, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500606', '2026-01-18', '2025-26', 1610612758, 1610612757, 110, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500603', '2026-01-18', '2025-26', 1610612741, 1610612751, 124, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500604', '2026-01-18', '2025-26', 1610612745, 1610612740, 119, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500605', '2026-01-18', '2025-26', 1610612743, 1610612766, 87, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500607', '2026-01-18', '2025-26', 1610612747, 1610612761, 110, 93, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500594', '2026-01-17', '2025-26', 1610612737, 1610612738, 106, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500601', '2026-01-17', '2025-26', 1610612757, 1610612747, 132, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500598', '2026-01-17', '2025-26', 1610612759, 1610612750, 126, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500595', '2026-01-17', '2025-26', 1610612765, 1610612754, 121, 78, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500596', '2026-01-17', '2025-26', 1610612752, 1610612756, 99, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500599', '2026-01-17', '2025-26', 1610612744, 1610612766, 136, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500597', '2026-01-17', '2025-26', 1610612748, 1610612760, 122, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500593', '2026-01-17', '2025-26', 1610612742, 1610612762, 138, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500600', '2026-01-17', '2025-26', 1610612743, 1610612764, 121, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500591', '2026-01-16', '2025-26', 1610612745, 1610612750, 110, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500592', '2026-01-16', '2025-26', 1610612758, 1610612764, 128, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500587', '2026-01-16', '2025-26', 1610612751, 1610612741, 112, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500590', '2026-01-16', '2025-26', 1610612761, 1610612746, 117, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500588', '2026-01-16', '2025-26', 1610612754, 1610612740, 127, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500589', '2026-01-16', '2025-26', 1610612755, 1610612739, 115, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500579', '2026-01-15', '2025-26', 1610612765, 1610612756, 108, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500586', '2026-01-15', '2025-26', 1610612747, 1610612766, 117, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500578', '2026-01-15', '2025-26', 1610612747, 1610612753, 117, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500580', '2026-01-15', '2025-26', 1610612748, 1610612738, 114, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500582', '2026-01-15', '2025-26', 1610612759, 1610612749, 119, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500581', '2026-01-15', '2025-26', 1610612745, 1610612760, 91, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500583', '2026-01-15', '2025-26', 1610612742, 1610612762, 144, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500585', '2026-01-15', '2025-26', 1610612757, 1610612737, 117, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500584', '2026-01-15', '2025-26', 1610612744, 1610612752, 126, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500571', '2026-01-14', '2025-26', 1610612754, 1610612761, 101, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500572', '2026-01-14', '2025-26', 1610612755, 1610612739, 107, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500577', '2026-01-14', '2025-26', 1610612746, 1610612764, 119, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500573', '2026-01-14', '2025-26', 1610612741, 1610612762, 128, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500574', '2026-01-14', '2025-26', 1610612740, 1610612751, 116, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500575', '2026-01-14', '2025-26', 1610612742, 1610612743, 109, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500576', '2026-01-14', '2025-26', 1610612758, 1610612752, 112, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500569', '2026-01-13', '2025-26', 1610612747, 1610612737, 141, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500565', '2026-01-13', '2025-26', 1610612745, 1610612741, 119, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500568', '2026-01-13', '2025-26', 1610612760, 1610612759, 119, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500564', '2026-01-13', '2025-26', 1610612748, 1610612756, 127, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500570', '2026-01-13', '2025-26', 1610612744, 1610612757, 119, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500567', '2026-01-13', '2025-26', 1610612740, 1610612743, 116, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500566', '2026-01-13', '2025-26', 1610612749, 1610612750, 106, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500563', '2026-01-12', '2025-26', 1610612746, 1610612766, 117, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500558', '2026-01-12', '2025-26', 1610612739, 1610612762, 112, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500561', '2026-01-12', '2025-26', 1610612742, 1610612751, 113, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500562', '2026-01-12', '2025-26', 1610612758, 1610612747, 124, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500560', '2026-01-12', '2025-26', 1610612761, 1610612755, 102, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500559', '2026-01-12', '2025-26', 1610612754, 1610612738, 98, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500548', '2026-01-11', '2025-26', 1610612753, 1610612740, 128, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500549', '2026-01-11', '2025-26', 1610612763, 1610612751, 103, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500552', '2026-01-11', '2025-26', 1610612750, 1610612759, 104, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500554', '2026-01-11', '2025-26', 1610612743, 1610612749, 108, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500556', '2026-01-11', '2025-26', 1610612744, 1610612737, 111, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500550', '2026-01-11', '2025-26', 1610612761, 1610612755, 116, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500557', '2026-01-11', '2025-26', 1610612758, 1610612745, 111, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500551', '2026-01-11', '2025-26', 1610612757, 1610612752, 114, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500553', '2026-01-11', '2025-26', 1610612760, 1610612748, 124, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500555', '2026-01-11', '2025-26', 1610612756, 1610612764, 112, 93, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500546', '2026-01-10', '2025-26', 1610612741, 1610612742, 125, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500542', '2026-01-10', '2025-26', 1610612739, 1610612750, 146, 134, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500544', '2026-01-10', '2025-26', 1610612765, 1610612746, 92, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500545', '2026-01-10', '2025-26', 1610612738, 1610612759, 95, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500547', '2026-01-10', '2025-26', 1610612762, 1610612766, 95, 150, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500543', '2026-01-10', '2025-26', 1610612754, 1610612748, 123, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500539', '2026-01-09', '2025-26', 1610612744, 1610612758, 137, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500535', '2026-01-09', '2025-26', 1610612751, 1610612746, 105, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500533', '2026-01-09', '2025-26', 1610612753, 1610612755, 91, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500540', '2026-01-09', '2025-26', 1610612757, 1610612745, 111, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500541', '2026-01-09', '2025-26', 1610612747, 1610612749, 101, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500538', '2026-01-09', '2025-26', 1610612756, 1610612752, 112, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500537', '2026-01-09', '2025-26', 1610612743, 1610612737, 87, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500534', '2026-01-09', '2025-26', 1610612764, 1610612740, 107, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500536', '2026-01-09', '2025-26', 1610612763, 1610612760, 116, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500532', '2026-01-09', '2025-26', 1610612738, 1610612761, 125, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500530', '2026-01-08', '2025-26', 1610612750, 1610612739, 131, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500531', '2026-01-08', '2025-26', 1610612762, 1610612742, 116, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500528', '2026-01-08', '2025-26', 1610612766, 1610612754, 112, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500520', '2026-01-07', '2025-26', 1610612738, 1610612743, 110, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500517', '2026-01-07', '2025-26', 1610612765, 1610612741, 108, 93, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500521', '2026-01-07', '2025-26', 1610612751, 1610612753, 103, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500519', '2026-01-07', '2025-26', 1610612737, 1610612740, 117, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500527', '2026-01-07', '2025-26', 1610612757, 1610612745, 103, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500516', '2026-01-07', '2025-26', 1610612766, 1610612761, 96, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500523', '2026-01-07', '2025-26', 1610612759, 1610612747, 107, 91, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500526', '2026-01-07', '2025-26', 1610612744, 1610612749, 120, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500524', '2026-01-07', '2025-26', 1610612763, 1610612756, 98, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500525', '2026-01-07', '2025-26', 1610612760, 1610612762, 129, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500518', '2026-01-07', '2025-26', 1610612755, 1610612764, 131, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500522', '2026-01-07', '2025-26', 1610612752, 1610612746, 123, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500510', '2026-01-06', '2025-26', 1610612754, 1610612739, 116, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500515', '2026-01-06', '2025-26', 1610612758, 1610612742, 98, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500513', '2026-01-06', '2025-26', 1610612750, 1610612748, 122, 94, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500512', '2026-01-06', '2025-26', 1610612763, 1610612759, 106, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500514', '2026-01-06', '2025-26', 1610612740, 1610612747, 103, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500511', '2026-01-06', '2025-26', 1610612764, 1610612753, 120, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500505', '2026-01-05', '2025-26', 1610612745, 1610612756, 100, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500504', '2026-01-05', '2025-26', 1610612761, 1610612737, 118, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500507', '2026-01-05', '2025-26', 1610612755, 1610612743, 124, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500506', '2026-01-05', '2025-26', 1610612760, 1610612766, 97, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500503', '2026-01-05', '2025-26', 1610612738, 1610612741, 115, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500508', '2026-01-05', '2025-26', 1610612746, 1610612744, 103, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500509', '2026-01-05', '2025-26', 1610612757, 1610612762, 137, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500502', '2026-01-05', '2025-26', 1610612765, 1610612752, 121, 90, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500494', '2026-01-04', '2025-26', 1610612739, 1610612765, 110, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500497', '2026-01-04', '2025-26', 1610612748, 1610612740, 125, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500496', '2026-01-04', '2025-26', 1610612751, 1610612743, 127, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500500', '2026-01-04', '2025-26', 1610612758, 1610612749, 98, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500501', '2026-01-04', '2025-26', 1610612747, 1610612763, 120, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500499', '2026-01-04', '2025-26', 1610612756, 1610612760, 108, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500495', '2026-01-04', '2025-26', 1610612753, 1610612754, 135, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500498', '2026-01-04', '2025-26', 1610612764, 1610612750, 115, 141, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500491', '2026-01-03', '2025-26', 1610612742, 1610612745, 110, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500490', '2026-01-03', '2025-26', 1610612759, 1610612757, 110, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500493', '2026-01-03', '2025-26', 1610612746, 1610612738, 115, 146, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500489', '2026-01-03', '2025-26', 1610612741, 1610612766, 99, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500488', '2026-01-03', '2025-26', 1610612761, 1610612737, 134, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500492', '2026-01-03', '2025-26', 1610612744, 1610612762, 123, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500487', '2026-01-03', '2025-26', 1610612752, 1610612755, 119, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500486', '2026-01-03', '2025-26', 1610612748, 1610612750, 115, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500480', '2026-01-02', '2025-26', 1610612741, 1610612753, 121, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500482', '2026-01-02', '2025-26', 1610612740, 1610612757, 109, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500477', '2026-01-02', '2025-26', 1610612764, 1610612751, 119, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500479', '2026-01-02', '2025-26', 1610612752, 1610612737, 99, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500484', '2026-01-02', '2025-26', 1610612744, 1610612760, 94, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500476', '2026-01-02', '2025-26', 1610612754, 1610612759, 113, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500483', '2026-01-02', '2025-26', 1610612756, 1610612758, 129, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500481', '2026-01-02', '2025-26', 1610612749, 1610612766, 122, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500485', '2026-01-02', '2025-26', 1610612747, 1610612763, 128, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500478', '2026-01-02', '2025-26', 1610612739, 1610612743, 113, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500472', '2026-01-01', '2025-26', 1610612765, 1610612748, 112, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500473', '2026-01-01', '2025-26', 1610612742, 1610612755, 108, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500471', '2026-01-01', '2025-26', 1610612751, 1610612745, 96, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500475', '2026-01-01', '2025-26', 1610612746, 1610612762, 118, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500474', '2026-01-01', '2025-26', 1610612758, 1610612738, 106, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500466', '2025-12-31', '2025-26', 1610612741, 1610612740, 134, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500463', '2025-12-31', '2025-26', 1610612737, 1610612750, 126, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500470', '2025-12-31', '2025-26', 1610612760, 1610612757, 124, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500464', '2025-12-31', '2025-26', 1610612754, 1610612753, 110, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500467', '2025-12-31', '2025-26', 1610612759, 1610612752, 134, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500468', '2025-12-31', '2025-26', 1610612761, 1610612743, 103, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500462', '2025-12-31', '2025-26', 1610612766, 1610612744, 125, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500465', '2025-12-31', '2025-26', 1610612739, 1610612756, 129, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500469', '2025-12-31', '2025-26', 1610612749, 1610612764, 113, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500459', '2025-12-30', '2025-26', 1610612762, 1610612738, 119, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500458', '2025-12-30', '2025-26', 1610612763, 1610612755, 136, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500460', '2025-12-30', '2025-26', 1610612747, 1610612765, 106, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500461', '2025-12-30', '2025-26', 1610612746, 1610612758, 131, 90, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500452', '2025-12-29', '2025-26', 1610612741, 1610612750, 101, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500455', '2025-12-29', '2025-26', 1610612760, 1610612737, 140, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500451', '2025-12-29', '2025-26', 1610612761, 1610612753, 107, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500454', '2025-12-29', '2025-26', 1610612740, 1610612752, 125, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500448', '2025-12-29', '2025-26', 1610612764, 1610612756, 101, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500456', '2025-12-29', '2025-26', 1610612759, 1610612739, 101, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500447', '2025-12-29', '2025-26', 1610612766, 1610612749, 113, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500449', '2025-12-29', '2025-26', 1610612751, 1610612744, 107, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500453', '2025-12-29', '2025-26', 1610612745, 1610612754, 126, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500450', '2025-12-29', '2025-26', 1610612748, 1610612743, 147, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500457', '2025-12-29', '2025-26', 1610612757, 1610612742, 125, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500445', '2025-12-28', '2025-26', 1610612746, 1610612765, 112, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500444', '2025-12-28', '2025-26', 1610612757, 1610612738, 114, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500446', '2025-12-28', '2025-26', 1610612747, 1610612758, 125, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500441', '2025-12-28', '2025-26', 1610612761, 1610612744, 141, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500442', '2025-12-28', '2025-26', 1610612760, 1610612755, 129, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500443', '2025-12-28', '2025-26', 1610612764, 1610612763, 116, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500435', '2025-12-27', '2025-26', 1610612737, 1610612752, 125, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500438', '2025-12-27', '2025-26', 1610612745, 1610612739, 117, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500437', '2025-12-27', '2025-26', 1610612741, 1610612749, 103, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500440', '2025-12-27', '2025-26', 1610612759, 1610612762, 114, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500439', '2025-12-27', '2025-26', 1610612750, 1610612751, 107, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500436', '2025-12-27', '2025-26', 1610612748, 1610612754, 142, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500433', '2025-12-27', '2025-26', 1610612753, 1610612743, 127, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500432', '2025-12-27', '2025-26', 1610612758, 1610612742, 113, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500434', '2025-12-27', '2025-26', 1610612740, 1610612756, 114, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500426', '2025-12-26', '2025-26', 1610612754, 1610612738, 122, 140, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500427', '2025-12-26', '2025-26', 1610612741, 1610612755, 109, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500425', '2025-12-26', '2025-26', 1610612764, 1610612761, 138, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500428', '2025-12-26', '2025-26', 1610612763, 1610612749, 125, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500424', '2025-12-26', '2025-26', 1610612753, 1610612766, 105, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500423', '2025-12-26', '2025-26', 1610612737, 1610612748, 111, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500430', '2025-12-26', '2025-26', 1610612762, 1610612765, 131, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500431', '2025-12-26', '2025-26', 1610612757, 1610612746, 103, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500429', '2025-12-26', '2025-26', 1610612740, 1610612756, 108, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500012', '2025-12-25', '2025-26', 1610612747, 1610612745, 96, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500013', '2025-12-25', '2025-26', 1610612743, 1610612750, 142, 138, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500010', '2025-12-25', '2025-26', 1610612760, 1610612759, 102, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500009', '2025-12-25', '2025-26', 1610612752, 1610612739, 126, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500011', '2025-12-25', '2025-26', 1610612744, 1610612742, 126, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500419', '2025-12-23', '2025-26', 1610612762, 1610612763, 128, 137, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500420', '2025-12-23', '2025-26', 1610612757, 1610612753, 106, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500413', '2025-12-23', '2025-26', 1610612754, 1610612749, 94, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500411', '2025-12-23', '2025-26', 1610612737, 1610612741, 123, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500417', '2025-12-23', '2025-26', 1610612759, 1610612760, 130, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500410', '2025-12-23', '2025-26', 1610612755, 1610612751, 106, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500418', '2025-12-23', '2025-26', 1610612756, 1610612747, 132, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500421', '2025-12-23', '2025-26', 1610612758, 1610612765, 127, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500422', '2025-12-23', '2025-26', 1610612746, 1610612745, 128, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500414', '2025-12-23', '2025-26', 1610612748, 1610612761, 91, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500416', '2025-12-23', '2025-26', 1610612750, 1610612752, 115, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500409', '2025-12-23', '2025-26', 1610612766, 1610612764, 126, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500412', '2025-12-23', '2025-26', 1610612739, 1610612740, 141, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500415', '2025-12-23', '2025-26', 1610612742, 1610612743, 131, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500405', '2025-12-22', '2025-26', 1610612743, 1610612762, 135, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500408', '2025-12-22', '2025-26', 1610612757, 1610612765, 102, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500402', '2025-12-22', '2025-26', 1610612739, 1610612766, 139, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500407', '2025-12-22', '2025-26', 1610612744, 1610612753, 120, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500404', '2025-12-22', '2025-26', 1610612740, 1610612742, 119, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500403', '2025-12-22', '2025-26', 1610612738, 1610612754, 103, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500406', '2025-12-22', '2025-26', 1610612760, 1610612763, 119, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500400', '2025-12-21', '2025-26', 1610612750, 1610612749, 103, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500397', '2025-12-21', '2025-26', 1610612751, 1610612761, 96, 81, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500396', '2025-12-21', '2025-26', 1610612737, 1610612741, 150, 152, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500401', '2025-12-21', '2025-26', 1610612758, 1610612745, 125, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500399', '2025-12-21', '2025-26', 1610612764, 1610612759, 113, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500398', '2025-12-21', '2025-26', 1610612752, 1610612748, 132, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500394', '2025-12-20', '2025-26', 1610612758, 1610612757, 93, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500391', '2025-12-20', '2025-26', 1610612763, 1610612764, 122, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500393', '2025-12-20', '2025-26', 1610612762, 1610612753, 127, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500390', '2025-12-20', '2025-26', 1610612765, 1610612766, 112, 86, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500392', '2025-12-20', '2025-26', 1610612744, 1610612756, 119, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500395', '2025-12-20', '2025-26', 1610612746, 1610612747, 103, 88, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500388', '2025-12-20', '2025-26', 1610612761, 1610612738, 96, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500389', '2025-12-20', '2025-26', 1610612740, 1610612754, 128, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500386', '2025-12-20', '2025-26', 1610612743, 1610612745, 101, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500387', '2025-12-20', '2025-26', 1610612755, 1610612742, 121, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500383', '2025-12-19', '2025-26', 1610612737, 1610612759, 98, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500385', '2025-12-19', '2025-26', 1610612750, 1610612760, 112, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500384', '2025-12-19', '2025-26', 1610612739, 1610612741, 125, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500381', '2025-12-19', '2025-26', 1610612738, 1610612748, 129, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500382', '2025-12-19', '2025-26', 1610612752, 1610612755, 107, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500370', '2025-12-18', '2025-26', 1610612759, 1610612764, 119, 94, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500376', '2025-12-18', '2025-26', 1610612742, 1610612765, 116, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500374', '2025-12-18', '2025-26', 1610612749, 1610612761, 105, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500371', '2025-12-18', '2025-26', 1610612766, 1610612737, 133, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500372', '2025-12-18', '2025-26', 1610612754, 1610612752, 113, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500378', '2025-12-18', '2025-26', 1610612756, 1610612744, 99, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500380', '2025-12-18', '2025-26', 1610612757, 1610612758, 134, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500375', '2025-12-18', '2025-26', 1610612740, 1610612745, 133, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500377', '2025-12-18', '2025-26', 1610612743, 1610612753, 126, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500379', '2025-12-18', '2025-26', 1610612762, 1610612747, 135, 143, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500373', '2025-12-18', '2025-26', 1610612751, 1610612748, 95, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500369', '2025-12-18', '2025-26', 1610612760, 1610612746, 122, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500368', '2025-12-17', '2025-26', 1610612750, 1610612763, 110, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500367', '2025-12-17', '2025-26', 1610612741, 1610612739, 127, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501226', '2025-12-15', '2025-26', 1610612746, 1610612763, 103, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501227', '2025-12-15', '2025-26', 1610612748, 1610612761, 96, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501222', '2025-12-15', '2025-26', 1610612738, 1610612765, 105, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501225', '2025-12-15', '2025-26', 1610612743, 1610612745, 128, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501224', '2025-12-15', '2025-26', 1610612762, 1610612742, 140, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501218', '2025-12-14', '2025-26', 1610612739, 1610612766, 111, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501220', '2025-12-14', '2025-26', 1610612750, 1610612758, 117, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501223', '2025-12-14', '2025-26', 1610612741, 1610612740, 104, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501221', '2025-12-14', '2025-26', 1610612757, 1610612744, 136, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501217', '2025-12-14', '2025-26', 1610612737, 1610612755, 120, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501219', '2025-12-14', '2025-26', 1610612751, 1610612749, 127, 82, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501216', '2025-12-14', '2025-26', 1610612754, 1610612764, 89, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501228', '2025-12-14', '2025-26', 1610612756, 1610612747, 114, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501229', '2025-12-13', '2025-26', 1610612756, 1610612752, 114, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501230', '2025-12-13', '2025-26', 1610612756, 1610612760, 114, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501214', '2025-12-12', '2025-26', 1610612742, 1610612751, 119, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501215', '2025-12-12', '2025-26', 1610612744, 1610612750, 120, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501211', '2025-12-12', '2025-26', 1610612755, 1610612754, 115, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501212', '2025-12-12', '2025-26', 1610612764, 1610612739, 126, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501210', '2025-12-12', '2025-26', 1610612765, 1610612737, 142, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501209', '2025-12-12', '2025-26', 1610612766, 1610612741, 126, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501213', '2025-12-12', '2025-26', 1610612763, 1610612762, 126, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501206', '2025-12-11', '2025-26', 1610612749, 1610612738, 116, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501205', '2025-12-11', '2025-26', 1610612745, 1610612746, 115, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501207', '2025-12-11', '2025-26', 1610612740, 1610612757, 143, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501208', '2025-12-11', '2025-26', 1610612758, 1610612743, 105, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501203', '2025-12-10', '2025-26', 1610612760, 1610612756, 138, 89, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501204', '2025-12-10', '2025-26', 1610612747, 1610612759, 119, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501202', '2025-12-09', '2025-26', 1610612761, 1610612752, 101, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022501201', '2025-12-09', '2025-26', 1610612753, 1610612748, 117, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500364', '2025-12-08', '2025-26', 1610612754, 1610612758, 116, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500366', '2025-12-08', '2025-26', 1610612740, 1610612759, 132, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500365', '2025-12-08', '2025-26', 1610612750, 1610612756, 105, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500362', '2025-12-07', '2025-26', 1610612755, 1610612747, 108, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500359', '2025-12-07', '2025-26', 1610612766, 1610612743, 106, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500361', '2025-12-07', '2025-26', 1610612741, 1610612744, 91, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500357', '2025-12-07', '2025-26', 1610612752, 1610612753, 106, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500358', '2025-12-07', '2025-26', 1610612761, 1610612738, 113, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500360', '2025-12-07', '2025-26', 1610612763, 1610612757, 119, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500363', '2025-12-07', '2025-26', 1610612762, 1610612760, 101, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500356', '2025-12-06', '2025-26', 1610612742, 1610612745, 122, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500355', '2025-12-06', '2025-26', 1610612750, 1610612746, 109, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500352', '2025-12-06', '2025-26', 1610612739, 1610612744, 94, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500354', '2025-12-06', '2025-26', 1610612748, 1610612758, 111, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500353', '2025-12-06', '2025-26', 1610612765, 1610612749, 124, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500350', '2025-12-06', '2025-26', 1610612751, 1610612740, 119, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500351', '2025-12-06', '2025-26', 1610612764, 1610612737, 116, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500340', '2025-12-05', '2025-26', 1610612737, 1610612743, 133, 134, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500348', '2025-12-05', '2025-26', 1610612749, 1610612755, 101, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500347', '2025-12-05', '2025-26', 1610612763, 1610612746, 107, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500342', '2025-12-05', '2025-26', 1610612765, 1610612757, 122, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500338', '2025-12-05', '2025-26', 1610612738, 1610612747, 126, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500339', '2025-12-05', '2025-26', 1610612753, 1610612748, 106, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500341', '2025-12-05', '2025-26', 1610612739, 1610612759, 130, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500344', '2025-12-05', '2025-26', 1610612761, 1610612766, 86, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500346', '2025-12-05', '2025-26', 1610612745, 1610612756, 117, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500343', '2025-12-05', '2025-26', 1610612752, 1610612762, 146, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500345', '2025-12-05', '2025-26', 1610612741, 1610612754, 105, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500349', '2025-12-05', '2025-26', 1610612760, 1610612742, 132, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500335', '2025-12-04', '2025-26', 1610612751, 1610612762, 110, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500337', '2025-12-04', '2025-26', 1610612740, 1610612750, 116, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500334', '2025-12-04', '2025-26', 1610612764, 1610612738, 101, 146, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500333', '2025-12-04', '2025-26', 1610612755, 1610612744, 99, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500336', '2025-12-04', '2025-26', 1610612761, 1610612747, 120, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500331', '2025-12-03', '2025-26', 1610612749, 1610612765, 113, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500329', '2025-12-03', '2025-26', 1610612741, 1610612751, 103, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500325', '2025-12-03', '2025-26', 1610612754, 1610612743, 120, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500327', '2025-12-03', '2025-26', 1610612737, 1610612746, 92, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500330', '2025-12-03', '2025-26', 1610612745, 1610612758, 121, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500328', '2025-12-03', '2025-26', 1610612752, 1610612766, 119, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500324', '2025-12-03', '2025-26', 1610612739, 1610612757, 110, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500326', '2025-12-03', '2025-26', 1610612753, 1610612759, 112, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500332', '2025-12-03', '2025-26', 1610612742, 1610612748, 118, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500323', '2025-12-02', '2025-26', 1610612744, 1610612760, 112, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500322', '2025-12-02', '2025-26', 1610612759, 1610612763, 126, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500318', '2025-12-02', '2025-26', 1610612755, 1610612764, 121, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500321', '2025-12-02', '2025-26', 1610612740, 1610612750, 142, 149, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500320', '2025-12-02', '2025-26', 1610612738, 1610612752, 123, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500319', '2025-12-02', '2025-26', 1610612761, 1610612757, 121, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500314', '2025-12-01', '2025-26', 1610612753, 1610612741, 125, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500315', '2025-12-01', '2025-26', 1610612743, 1610612742, 121, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500310', '2025-12-01', '2025-26', 1610612754, 1610612739, 119, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500311', '2025-12-01', '2025-26', 1610612764, 1610612749, 129, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500313', '2025-12-01', '2025-26', 1610612748, 1610612746, 140, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500317', '2025-12-01', '2025-26', 1610612747, 1610612756, 108, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500312', '2025-12-01', '2025-26', 1610612751, 1610612766, 116, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500309', '2025-12-01', '2025-26', 1610612765, 1610612737, 99, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500316', '2025-12-01', '2025-26', 1610612762, 1610612745, 133, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500304', '2025-11-30', '2025-26', 1610612755, 1610612737, 134, 142, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500305', '2025-11-30', '2025-26', 1610612757, 1610612760, 115, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500306', '2025-11-30', '2025-26', 1610612750, 1610612759, 125, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500301', '2025-11-30', '2025-26', 1610612762, 1610612745, 101, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500302', '2025-11-30', '2025-26', 1610612739, 1610612738, 115, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500303', '2025-11-30', '2025-26', 1610612752, 1610612761, 116, 94, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500308', '2025-11-30', '2025-26', 1610612747, 1610612740, 133, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500307', '2025-11-30', '2025-26', 1610612758, 1610612763, 107, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500294', '2025-11-29', '2025-26', 1610612766, 1610612761, 118, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500297', '2025-11-29', '2025-26', 1610612749, 1610612751, 116, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500300', '2025-11-29', '2025-26', 1610612746, 1610612742, 110, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500293', '2025-11-29', '2025-26', 1610612750, 1610612738, 119, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500295', '2025-11-29', '2025-26', 1610612754, 1610612741, 103, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500296', '2025-11-29', '2025-26', 1610612748, 1610612765, 135, 138, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500299', '2025-11-29', '2025-26', 1610612756, 1610612743, 112, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500298', '2025-11-29', '2025-26', 1610612744, 1610612740, 104, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500069', '2025-11-28', '2025-26', 1610612737, 1610612739, 130, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500079', '2025-11-28', '2025-26', 1610612746, 1610612763, 107, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500070', '2025-11-28', '2025-26', 1610612751, 1610612755, 103, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500077', '2025-11-28', '2025-26', 1610612762, 1610612758, 128, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500071', '2025-11-28', '2025-26', 1610612766, 1610612741, 123, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500078', '2025-11-28', '2025-26', 1610612747, 1610612742, 129, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500074', '2025-11-28', '2025-26', 1610612752, 1610612749, 118, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500076', '2025-11-28', '2025-26', 1610612743, 1610612759, 136, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500073', '2025-11-28', '2025-26', 1610612754, 1610612764, 119, 86, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500075', '2025-11-28', '2025-26', 1610612760, 1610612756, 123, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500072', '2025-11-28', '2025-26', 1610612765, 1610612753, 109, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500065', '2025-11-26', '2025-26', 1610612740, 1610612763, 128, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500060', '2025-11-26', '2025-26', 1610612738, 1610612765, 117, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500062', '2025-11-26', '2025-26', 1610612748, 1610612749, 106, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500061', '2025-11-26', '2025-26', 1610612766, 1610612752, 101, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500064', '2025-11-26', '2025-26', 1610612760, 1610612750, 113, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500067', '2025-11-26', '2025-26', 1610612757, 1610612759, 102, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500063', '2025-11-26', '2025-26', 1610612761, 1610612754, 97, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500068', '2025-11-26', '2025-26', 1610612758, 1610612756, 100, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500066', '2025-11-26', '2025-26', 1610612744, 1610612745, 100, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500059', '2025-11-25', '2025-26', 1610612747, 1610612746, 135, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500058', '2025-11-25', '2025-26', 1610612755, 1610612753, 103, 144, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500057', '2025-11-25', '2025-26', 1610612764, 1610612737, 132, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500291', '2025-11-24', '2025-26', 1610612744, 1610612762, 134, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500292', '2025-11-24', '2025-26', 1610612758, 1610612750, 117, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500290', '2025-11-24', '2025-26', 1610612756, 1610612745, 92, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500287', '2025-11-24', '2025-26', 1610612763, 1610612743, 115, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500289', '2025-11-24', '2025-26', 1610612740, 1610612741, 143, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500283', '2025-11-24', '2025-26', 1610612754, 1610612765, 117, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500284', '2025-11-24', '2025-26', 1610612761, 1610612739, 110, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500286', '2025-11-24', '2025-26', 1610612748, 1610612742, 106, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500288', '2025-11-24', '2025-26', 1610612749, 1610612757, 103, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500285', '2025-11-24', '2025-26', 1610612751, 1610612752, 100, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500281', '2025-11-23', '2025-26', 1610612756, 1610612759, 111, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500276', '2025-11-23', '2025-26', 1610612737, 1610612766, 113, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500277', '2025-11-23', '2025-26', 1610612738, 1610612753, 138, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500275', '2025-11-23', '2025-26', 1610612755, 1610612748, 117, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500280', '2025-11-23', '2025-26', 1610612760, 1610612757, 122, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500279', '2025-11-23', '2025-26', 1610612761, 1610612751, 119, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500278', '2025-11-23', '2025-26', 1610612739, 1610612746, 120, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500282', '2025-11-23', '2025-26', 1610612762, 1610612747, 106, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500271', '2025-11-22', '2025-26', 1610612741, 1610612764, 121, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500273', '2025-11-22', '2025-26', 1610612742, 1610612763, 96, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500268', '2025-11-22', '2025-26', 1610612766, 1610612746, 116, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500270', '2025-11-22', '2025-26', 1610612740, 1610612737, 98, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500274', '2025-11-22', '2025-26', 1610612743, 1610612758, 123, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500272', '2025-11-22', '2025-26', 1610612749, 1610612765, 116, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500269', '2025-11-22', '2025-26', 1610612753, 1610612752, 133, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500052', '2025-11-21', '2025-26', 1610612742, 1610612740, 118, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500056', '2025-11-21', '2025-26', 1610612744, 1610612757, 123, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500050', '2025-11-21', '2025-26', 1610612761, 1610612764, 140, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500048', '2025-11-21', '2025-26', 1610612739, 1610612754, 120, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500049', '2025-11-21', '2025-26', 1610612738, 1610612751, 105, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500054', '2025-11-21', '2025-26', 1610612745, 1610612743, 109, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500051', '2025-11-21', '2025-26', 1610612741, 1610612748, 107, 143, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500055', '2025-11-21', '2025-26', 1610612762, 1610612760, 112, 144, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500053', '2025-11-21', '2025-26', 1610612756, 1610612750, 114, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500266', '2025-11-20', '2025-26', 1610612749, 1610612755, 114, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500265', '2025-11-20', '2025-26', 1610612763, 1610612758, 137, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500264', '2025-11-20', '2025-26', 1610612753, 1610612746, 129, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500267', '2025-11-20', '2025-26', 1610612759, 1610612737, 135, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500255', '2025-11-19', '2025-26', 1610612739, 1610612745, 104, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500259', '2025-11-19', '2025-26', 1610612750, 1610612764, 120, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500260', '2025-11-19', '2025-26', 1610612740, 1610612743, 118, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500258', '2025-11-19', '2025-26', 1610612755, 1610612761, 112, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500261', '2025-11-19', '2025-26', 1610612760, 1610612758, 113, 99, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500262', '2025-11-19', '2025-26', 1610612742, 1610612752, 111, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500263', '2025-11-19', '2025-26', 1610612757, 1610612741, 121, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500257', '2025-11-19', '2025-26', 1610612748, 1610612744, 110, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500256', '2025-11-19', '2025-26', 1610612754, 1610612766, 127, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500252', '2025-11-18', '2025-26', 1610612759, 1610612763, 111, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500249', '2025-11-18', '2025-26', 1610612753, 1610612744, 121, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500250', '2025-11-18', '2025-26', 1610612751, 1610612738, 99, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500253', '2025-11-18', '2025-26', 1610612747, 1610612762, 140, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500251', '2025-11-18', '2025-26', 1610612737, 1610612765, 112, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500254', '2025-11-18', '2025-26', 1610612757, 1610612756, 110, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500241', '2025-11-17', '2025-26', 1610612739, 1610612749, 118, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500248', '2025-11-17', '2025-26', 1610612743, 1610612741, 127, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500244', '2025-11-17', '2025-26', 1610612748, 1610612752, 115, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500243', '2025-11-17', '2025-26', 1610612755, 1610612746, 110, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500242', '2025-11-17', '2025-26', 1610612765, 1610612754, 127, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500246', '2025-11-17', '2025-26', 1610612750, 1610612742, 120, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500247', '2025-11-17', '2025-26', 1610612740, 1610612760, 109, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500245', '2025-11-17', '2025-26', 1610612761, 1610612766, 110, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500240', '2025-11-16', '2025-26', 1610612762, 1610612741, 150, 147, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500233', '2025-11-16', '2025-26', 1610612738, 1610612746, 121, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500239', '2025-11-16', '2025-26', 1610612756, 1610612737, 122, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500234', '2025-11-16', '2025-26', 1610612759, 1610612758, 123, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500237', '2025-11-16', '2025-26', 1610612740, 1610612744, 106, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500236', '2025-11-16', '2025-26', 1610612745, 1610612753, 117, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500235', '2025-11-16', '2025-26', 1610612764, 1610612751, 106, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500238', '2025-11-16', '2025-26', 1610612742, 1610612757, 138, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500230', '2025-11-15', '2025-26', 1610612754, 1610612761, 111, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500232', '2025-11-15', '2025-26', 1610612750, 1610612743, 112, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500229', '2025-11-15', '2025-26', 1610612766, 1610612760, 96, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500231', '2025-11-15', '2025-26', 1610612749, 1610612747, 95, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500228', '2025-11-15', '2025-26', 1610612739, 1610612763, 108, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500042', '2025-11-14', '2025-26', 1610612745, 1610612757, 140, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500044', '2025-11-14', '2025-26', 1610612750, 1610612758, 124, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500047', '2025-11-14', '2025-26', 1610612759, 1610612744, 108, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500040', '2025-11-14', '2025-26', 1610612753, 1610612751, 105, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500045', '2025-11-14', '2025-26', 1610612740, 1610612747, 104, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500046', '2025-11-14', '2025-26', 1610612742, 1610612746, 127, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500043', '2025-11-14', '2025-26', 1610612749, 1610612766, 147, 134, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500039', '2025-11-14', '2025-26', 1610612752, 1610612748, 140, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500041', '2025-11-14', '2025-26', 1610612765, 1610612755, 114, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500226', '2025-11-13', '2025-26', 1610612756, 1610612754, 133, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500225', '2025-11-13', '2025-26', 1610612739, 1610612761, 113, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500227', '2025-11-13', '2025-26', 1610612762, 1610612737, 122, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500217', '2025-11-12', '2025-26', 1610612748, 1610612739, 116, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500214', '2025-11-12', '2025-26', 1610612765, 1610612741, 124, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500224', '2025-11-12', '2025-26', 1610612746, 1610612743, 116, 130, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500216', '2025-11-12', '2025-26', 1610612738, 1610612763, 131, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500220', '2025-11-12', '2025-26', 1610612759, 1610612744, 120, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500221', '2025-11-12', '2025-26', 1610612742, 1610612756, 114, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500219', '2025-11-12', '2025-26', 1610612740, 1610612757, 117, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500213', '2025-11-12', '2025-26', 1610612766, 1610612749, 111, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500218', '2025-11-12', '2025-26', 1610612745, 1610612764, 135, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500215', '2025-11-12', '2025-26', 1610612752, 1610612753, 107, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500223', '2025-11-12', '2025-26', 1610612758, 1610612737, 100, 133, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500222', '2025-11-12', '2025-26', 1610612760, 1610612747, 121, 92, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500208', '2025-11-11', '2025-26', 1610612752, 1610612763, 133, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500211', '2025-11-11', '2025-26', 1610612762, 1610612754, 152, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500212', '2025-11-11', '2025-26', 1610612758, 1610612743, 108, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500210', '2025-11-11', '2025-26', 1610612760, 1610612744, 126, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500207', '2025-11-11', '2025-26', 1610612751, 1610612761, 109, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500209', '2025-11-11', '2025-26', 1610612755, 1610612738, 102, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500201', '2025-11-10', '2025-26', 1610612748, 1610612739, 140, 138, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500202', '2025-11-10', '2025-26', 1610612741, 1610612759, 117, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500204', '2025-11-10', '2025-26', 1610612756, 1610612740, 121, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500206', '2025-11-10', '2025-26', 1610612746, 1610612737, 102, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500205', '2025-11-10', '2025-26', 1610612762, 1610612750, 113, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500198', '2025-11-10', '2025-26', 1610612766, 1610612747, 111, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500203', '2025-11-10', '2025-26', 1610612742, 1610612749, 114, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500200', '2025-11-10', '2025-26', 1610612753, 1610612757, 115, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500199', '2025-11-10', '2025-26', 1610612765, 1610612764, 137, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500194', '2025-11-09', '2025-26', 1610612763, 1610612760, 100, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500193', '2025-11-09', '2025-26', 1610612753, 1610612738, 107, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500196', '2025-11-09', '2025-26', 1610612744, 1610612754, 114, 83, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500197', '2025-11-09', '2025-26', 1610612758, 1610612750, 117, 144, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500192', '2025-11-09', '2025-26', 1610612752, 1610612751, 134, 98, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500195', '2025-11-09', '2025-26', 1610612755, 1610612765, 108, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500191', '2025-11-09', '2025-26', 1610612749, 1610612745, 115, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500185', '2025-11-08', '2025-26', 1610612737, 1610612747, 122, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500190', '2025-11-08', '2025-26', 1610612746, 1610612756, 103, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500186', '2025-11-08', '2025-26', 1610612739, 1610612741, 128, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500188', '2025-11-08', '2025-26', 1610612759, 1610612740, 126, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500183', '2025-11-08', '2025-26', 1610612764, 1610612742, 105, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500189', '2025-11-08', '2025-26', 1610612743, 1610612754, 117, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500187', '2025-11-08', '2025-26', 1610612748, 1610612757, 136, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500184', '2025-11-08', '2025-26', 1610612755, 1610612761, 130, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500029', '2025-11-07', '2025-26', 1610612764, 1610612739, 115, 148, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500031', '2025-11-07', '2025-26', 1610612751, 1610612765, 107, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500028', '2025-11-07', '2025-26', 1610612753, 1610612738, 123, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500036', '2025-11-07', '2025-26', 1610612750, 1610612762, 137, 97, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500030', '2025-11-07', '2025-26', 1610612737, 1610612761, 97, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500037', '2025-11-07', '2025-26', 1610612743, 1610612744, 129, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500032', '2025-11-07', '2025-26', 1610612759, 1610612745, 121, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500038', '2025-11-07', '2025-26', 1610612758, 1610612760, 101, 132, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500035', '2025-11-07', '2025-26', 1610612749, 1610612741, 126, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500034', '2025-11-07', '2025-26', 1610612763, 1610612742, 118, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500033', '2025-11-07', '2025-26', 1610612748, 1610612766, 126, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500182', '2025-11-06', '2025-26', 1610612756, 1610612746, 115, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500178', '2025-11-05', '2025-26', 1610612743, 1610612748, 122, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500171', '2025-11-05', '2025-26', 1610612739, 1610612755, 132, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500180', '2025-11-05', '2025-26', 1610612757, 1610612760, 121, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500174', '2025-11-05', '2025-26', 1610612738, 1610612764, 136, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500176', '2025-11-05', '2025-26', 1610612763, 1610612745, 109, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500175', '2025-11-05', '2025-26', 1610612752, 1610612750, 137, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500173', '2025-11-05', '2025-26', 1610612754, 1610612751, 103, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500172', '2025-11-05', '2025-26', 1610612765, 1610612762, 114, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500181', '2025-11-05', '2025-26', 1610612758, 1610612744, 121, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500179', '2025-11-05', '2025-26', 1610612747, 1610612759, 118, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500177', '2025-11-05', '2025-26', 1610612742, 1610612740, 99, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500167', '2025-11-04', '2025-26', 1610612741, 1610612755, 113, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500166', '2025-11-04', '2025-26', 1610612737, 1610612753, 127, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500168', '2025-11-04', '2025-26', 1610612740, 1610612766, 116, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500170', '2025-11-04', '2025-26', 1610612746, 1610612760, 107, 126, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500165', '2025-11-04', '2025-26', 1610612761, 1610612749, 128, 100, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500169', '2025-11-04', '2025-26', 1610612744, 1610612756, 118, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500156', '2025-11-03', '2025-26', 1610612751, 1610612750, 109, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500161', '2025-11-03', '2025-26', 1610612763, 1610612765, 106, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500157', '2025-11-03', '2025-26', 1610612754, 1610612749, 115, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500163', '2025-11-03', '2025-26', 1610612757, 1610612747, 115, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500158', '2025-11-03', '2025-26', 1610612738, 1610612762, 103, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500162', '2025-11-03', '2025-26', 1610612743, 1610612758, 130, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500164', '2025-11-03', '2025-26', 1610612746, 1610612748, 119, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500160', '2025-11-03', '2025-26', 1610612745, 1610612742, 110, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500159', '2025-11-03', '2025-26', 1610612752, 1610612764, 119, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500149', '2025-11-02', '2025-26', 1610612751, 1610612755, 105, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500152', '2025-11-02', '2025-26', 1610612761, 1610612763, 117, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500151', '2025-11-02', '2025-26', 1610612739, 1610612737, 117, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500150', '2025-11-02', '2025-26', 1610612766, 1610612762, 126, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500148', '2025-11-02', '2025-26', 1610612760, 1610612740, 137, 106, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500155', '2025-11-02', '2025-26', 1610612747, 1610612748, 130, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500153', '2025-11-02', '2025-26', 1610612752, 1610612741, 128, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500154', '2025-11-02', '2025-26', 1610612756, 1610612759, 130, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500145', '2025-11-01', '2025-26', 1610612764, 1610612753, 94, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500143', '2025-11-01', '2025-26', 1610612766, 1610612750, 105, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500147', '2025-11-01', '2025-26', 1610612766, 1610612765, 105, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500144', '2025-11-01', '2025-26', 1610612754, 1610612744, 114, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500146', '2025-11-01', '2025-26', 1610612738, 1610612745, 101, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500142', '2025-11-01', '2025-26', 1610612749, 1610612758, 133, 135, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500023', '2025-10-31', '2025-26', 1610612741, 1610612752, 135, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500027', '2025-10-31', '2025-26', 1610612746, 1610612740, 126, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500020', '2025-10-31', '2025-26', 1610612754, 1610612737, 108, 128, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500025', '2025-10-31', '2025-26', 1610612756, 1610612762, 118, 96, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500022', '2025-10-31', '2025-26', 1610612739, 1610612761, 101, 112, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500021', '2025-10-31', '2025-26', 1610612755, 1610612738, 108, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500024', '2025-10-31', '2025-26', 1610612763, 1610612747, 112, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500026', '2025-10-31', '2025-26', 1610612757, 1610612743, 109, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500141', '2025-10-30', '2025-26', 1610612759, 1610612748, 107, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500140', '2025-10-30', '2025-26', 1610612760, 1610612764, 127, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500139', '2025-10-30', '2025-26', 1610612749, 1610612744, 120, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500138', '2025-10-30', '2025-26', 1610612766, 1610612753, 107, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500133', '2025-10-29', '2025-26', 1610612742, 1610612754, 107, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500129', '2025-10-29', '2025-26', 1610612765, 1610612753, 135, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500128', '2025-10-29', '2025-26', 1610612738, 1610612739, 125, 105, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500130', '2025-10-29', '2025-26', 1610612751, 1610612737, 112, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500134', '2025-10-29', '2025-26', 1610612743, 1610612740, 122, 88, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500131', '2025-10-29', '2025-26', 1610612761, 1610612745, 121, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500135', '2025-10-29', '2025-26', 1610612762, 1610612757, 134, 136, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500137', '2025-10-29', '2025-26', 1610612756, 1610612763, 113, 114, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500136', '2025-10-29', '2025-26', 1610612750, 1610612747, 115, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500132', '2025-10-29', '2025-26', 1610612741, 1610612758, 126, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500124', '2025-10-28', '2025-26', 1610612748, 1610612766, 144, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500127', '2025-10-28', '2025-26', 1610612744, 1610612746, 98, 79, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500125', '2025-10-28', '2025-26', 1610612749, 1610612752, 121, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500123', '2025-10-28', '2025-26', 1610612764, 1610612755, 134, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500126', '2025-10-28', '2025-26', 1610612760, 1610612758, 107, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500007', '2025-10-27', '2025-26', 1610612765, 1610612739, 95, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500008', '2025-10-27', '2025-26', 1610612750, 1610612743, 114, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500117', '2025-10-27', '2025-26', 1610612740, 1610612738, 90, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500115', '2025-10-27', '2025-26', 1610612741, 1610612737, 128, 123, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500122', '2025-10-27', '2025-26', 1610612747, 1610612757, 108, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500114', '2025-10-27', '2025-26', 1610612755, 1610612753, 136, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500118', '2025-10-27', '2025-26', 1610612759, 1610612761, 121, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500119', '2025-10-27', '2025-26', 1610612742, 1610612760, 94, 101, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500121', '2025-10-27', '2025-26', 1610612744, 1610612763, 131, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500120', '2025-10-27', '2025-26', 1610612762, 1610612756, 138, 134, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500116', '2025-10-27', '2025-26', 1610612745, 1610612751, 137, 109, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500108', '2025-10-26', '2025-26', 1610612748, 1610612752, 115, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500110', '2025-10-26', '2025-26', 1610612750, 1610612754, 114, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500112', '2025-10-26', '2025-26', 1610612746, 1610612757, 114, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500106', '2025-10-26', '2025-26', 1610612765, 1610612738, 119, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500111', '2025-10-26', '2025-26', 1610612742, 1610612761, 139, 129, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500107', '2025-10-26', '2025-26', 1610612739, 1610612749, 118, 113, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500109', '2025-10-26', '2025-26', 1610612764, 1610612766, 113, 139, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500105', '2025-10-26', '2025-26', 1610612759, 1610612751, 118, 107, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500113', '2025-10-26', '2025-26', 1610612758, 1610612747, 120, 127, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500101', '2025-10-25', '2025-26', 1610612737, 1610612760, 100, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500102', '2025-10-25', '2025-26', 1610612755, 1610612766, 125, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500104', '2025-10-25', '2025-26', 1610612743, 1610612756, 133, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500100', '2025-10-25', '2025-26', 1610612753, 1610612741, 98, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500103', '2025-10-25', '2025-26', 1610612763, 1610612754, 128, 103, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500093', '2025-10-24', '2025-26', 1610612745, 1610612765, 111, 115, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500095', '2025-10-24', '2025-26', 1610612740, 1610612759, 116, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500090', '2025-10-24', '2025-26', 1610612753, 1610612737, 107, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500018', '2025-10-24', '2025-26', 1610612752, 1610612738, 105, 95, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500019', '2025-10-24', '2025-26', 1610612747, 1610612750, 128, 110, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500098', '2025-10-24', '2025-26', 1610612758, 1610612762, 105, 104, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500099', '2025-10-24', '2025-26', 1610612746, 1610612756, 129, 102, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500096', '2025-10-24', '2025-26', 1610612742, 1610612764, 107, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500092', '2025-10-24', '2025-26', 1610612761, 1610612749, 116, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500097', '2025-10-24', '2025-26', 1610612757, 1610612744, 139, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500091', '2025-10-24', '2025-26', 1610612751, 1610612739, 124, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500094', '2025-10-24', '2025-26', 1610612763, 1610612748, 114, 146, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500005', '2025-10-23', '2025-26', 1610612754, 1610612760, 135, 141, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500006', '2025-10-23', '2025-26', 1610612744, 1610612743, 137, 131, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500082', '2025-10-22', '2025-26', 1610612737, 1610612761, 118, 138, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500083', '2025-10-22', '2025-26', 1610612738, 1610612755, 116, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500086', '2025-10-22', '2025-26', 1610612749, 1610612764, 133, 120, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500004', '2025-10-22', '2025-26', 1610612742, 1610612759, 92, 125, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500003', '2025-10-22', '2025-26', 1610612752, 1610612739, 119, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500081', '2025-10-22', '2025-26', 1610612753, 1610612748, 125, 121, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500088', '2025-10-22', '2025-26', 1610612756, 1610612758, 120, 116, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500087', '2025-10-22', '2025-26', 1610612762, 1610612746, 129, 108, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500080', '2025-10-22', '2025-26', 1610612766, 1610612751, 136, 117, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500085', '2025-10-22', '2025-26', 1610612763, 1610612740, 128, 122, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500089', '2025-10-22', '2025-26', 1610612757, 1610612750, 114, 118, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500084', '2025-10-22', '2025-26', 1610612741, 1610612765, 115, 111, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500001', '2025-10-21', '2025-26', 1610612760, 1610612745, 125, 124, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+INSERT INTO games (game_id, game_date, season, home_team_id, away_team_id, home_team_score, away_team_score, game_status, updated_at)
+VALUES ('0022500002', '2025-10-21', '2025-26', 1610612747, 1610612744, 109, 119, 'Final', NOW())
+ON CONFLICT (game_id) DO UPDATE SET
+    home_team_score = EXCLUDED.home_team_score,
+    away_team_score = EXCLUDED.away_team_score,
+    game_status = EXCLUDED.game_status,
+    updated_at = EXCLUDED.updated_at;
+
+COMMIT;
+
+-- Processed 753 games
