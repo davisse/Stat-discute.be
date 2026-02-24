@@ -1,8 +1,35 @@
--- NBA Analytics: Defense vs Position (DVP)
--- Season: 2025-26
+-- NBA Analytics: Defense vs Position (DVP) - production compatible
+
+-- Schema Migration: defensive_stats_by_position
+CREATE TABLE IF NOT EXISTS defensive_stats_by_position (
+    id SERIAL PRIMARY KEY,
+    season VARCHAR(7) NOT NULL,
+    team_id BIGINT NOT NULL,
+    opponent_position VARCHAR(10) NOT NULL,
+    games_played INTEGER NOT NULL DEFAULT 0,
+    points_allowed NUMERIC(10,2) DEFAULT 0,
+    points_allowed_per_game NUMERIC(10,2) DEFAULT 0,
+    fg_pct_allowed NUMERIC(5,2),
+    fg3_pct_allowed NUMERIC(5,2),
+    ft_pct_allowed NUMERIC(5,2),
+    rebounds_allowed NUMERIC(10,2) DEFAULT 0,
+    assists_allowed NUMERIC(10,2) DEFAULT 0,
+    steals_allowed NUMERIC(10,2) DEFAULT 0,
+    blocks_allowed NUMERIC(10,2) DEFAULT 0,
+    turnovers_forced NUMERIC(10,2) DEFAULT 0,
+    rebounds_allowed_per_game NUMERIC(5,2),
+    assists_allowed_per_game NUMERIC(5,2),
+    points_allowed_rank INTEGER,
+    fg_pct_allowed_rank INTEGER,
+    calculated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(season, team_id, opponent_position)
+);
+
+CREATE INDEX IF NOT EXISTS idx_defensive_stats_season_team ON defensive_stats_by_position(season, team_id);
+CREATE INDEX IF NOT EXISTS idx_defensive_stats_position ON defensive_stats_by_position(opponent_position);
+CREATE INDEX IF NOT EXISTS idx_defensive_stats_rank ON defensive_stats_by_position(season, opponent_position, points_allowed_rank);
 
 BEGIN;
-
 DELETE FROM defensive_stats_by_position WHERE season = '2025-26';
 
 -- 90 DVP records
@@ -98,5 +125,4 @@ INSERT INTO defensive_stats_by_position (season, team_id, opponent_position, gam
 INSERT INTO defensive_stats_by_position (season, team_id, opponent_position, games_played, points_allowed, points_allowed_per_game, fg_pct_allowed, fg3_pct_allowed, ft_pct_allowed, rebounds_allowed, assists_allowed, steals_allowed, blocks_allowed, turnovers_forced, rebounds_allowed_per_game, assists_allowed_per_game, points_allowed_rank, fg_pct_allowed_rank, calculated_at) VALUES ('2025-26', 1610612766, 'G', 49, 1674.00, 17.08, 45.73, 35.78, 81.92, 384.00, 459.00, 101.00, 30.00, 161.00, 3.92, 4.68, 15, 16, NOW());
 
 COMMIT;
-
 -- DVP analytics complete
