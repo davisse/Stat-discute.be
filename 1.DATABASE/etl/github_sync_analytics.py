@@ -41,6 +41,7 @@ def main():
     print("")
 
     # Insert calculated standings
+    # Note: teams table has no conference/division columns, so we get them from previous season standings
     print(f"""
 INSERT INTO team_standings (
     team_id, season_id, wins, losses, win_pct, games_behind,
@@ -49,29 +50,34 @@ INSERT INTO team_standings (
     streak, last_10, points_for, points_against, point_differential,
     last_updated
 )
-WITH team_games AS (
+WITH conf_div AS (
+    SELECT team_id, conference, division
+    FROM team_standings
+    WHERE season_id = '2024-25'
+),
+team_games AS (
     SELECT
-        t.team_id,
-        t.conference,
-        t.division,
+        cd.team_id,
+        cd.conference,
+        cd.division,
         COUNT(*) FILTER (WHERE
-            (g.home_team_id = t.team_id AND g.home_team_score > g.away_team_score) OR
-            (g.away_team_id = t.team_id AND g.away_team_score > g.home_team_score)
+            (g.home_team_id = cd.team_id AND g.home_team_score > g.away_team_score) OR
+            (g.away_team_id = cd.team_id AND g.away_team_score > g.home_team_score)
         ) as wins,
         COUNT(*) FILTER (WHERE
-            (g.home_team_id = t.team_id AND g.home_team_score < g.away_team_score) OR
-            (g.away_team_id = t.team_id AND g.away_team_score < g.home_team_score)
+            (g.home_team_id = cd.team_id AND g.home_team_score < g.away_team_score) OR
+            (g.away_team_id = cd.team_id AND g.away_team_score < g.home_team_score)
         ) as losses,
-        COUNT(*) FILTER (WHERE g.home_team_id = t.team_id AND g.home_team_score > g.away_team_score) as home_wins,
-        COUNT(*) FILTER (WHERE g.home_team_id = t.team_id AND g.home_team_score < g.away_team_score) as home_losses,
-        COUNT(*) FILTER (WHERE g.away_team_id = t.team_id AND g.away_team_score > g.home_team_score) as away_wins,
-        COUNT(*) FILTER (WHERE g.away_team_id = t.team_id AND g.away_team_score < g.home_team_score) as away_losses,
-        AVG(CASE WHEN g.home_team_id = t.team_id THEN g.home_team_score ELSE g.away_team_score END) as points_for,
-        AVG(CASE WHEN g.home_team_id = t.team_id THEN g.away_team_score ELSE g.home_team_score END) as points_against
-    FROM teams t
-    JOIN games g ON (g.home_team_id = t.team_id OR g.away_team_id = t.team_id)
+        COUNT(*) FILTER (WHERE g.home_team_id = cd.team_id AND g.home_team_score > g.away_team_score) as home_wins,
+        COUNT(*) FILTER (WHERE g.home_team_id = cd.team_id AND g.home_team_score < g.away_team_score) as home_losses,
+        COUNT(*) FILTER (WHERE g.away_team_id = cd.team_id AND g.away_team_score > g.home_team_score) as away_wins,
+        COUNT(*) FILTER (WHERE g.away_team_id = cd.team_id AND g.away_team_score < g.home_team_score) as away_losses,
+        AVG(CASE WHEN g.home_team_id = cd.team_id THEN g.home_team_score ELSE g.away_team_score END) as points_for,
+        AVG(CASE WHEN g.home_team_id = cd.team_id THEN g.away_team_score ELSE g.home_team_score END) as points_against
+    FROM conf_div cd
+    JOIN games g ON (g.home_team_id = cd.team_id OR g.away_team_id = cd.team_id)
     WHERE g.season = '{SEASON}' AND g.game_status = 'Final'
-    GROUP BY t.team_id, t.conference, t.division
+    GROUP BY cd.team_id, cd.conference, cd.division
 ),
 standings_ranked AS (
     SELECT
