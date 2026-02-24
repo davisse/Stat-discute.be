@@ -93,6 +93,23 @@ jobs:
           ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Analytics imported successfully"
 
+      - name: Restart Next.js App (clear cache)
+        if: ${{ github.event.inputs.import_type != 'verify-only' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          echo "Finding and restarting Next.js container..."
+          NEXTJS_CONTAINER=$(ssh $VPS_USER@$VPS_HOST "docker ps --format '{{.Names}}' | grep -i -E 'next|frontend|app|web' | head -1")
+          if [ -n "$NEXTJS_CONTAINER" ]; then
+            echo "Restarting container: $NEXTJS_CONTAINER"
+            ssh $VPS_USER@$VPS_HOST "docker restart $NEXTJS_CONTAINER"
+            echo "Container restarted successfully"
+          else
+            echo "No Next.js container found. Listing all containers:"
+            ssh $VPS_USER@$VPS_HOST "docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'"
+          fi
+
       - name: Verify Import
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
