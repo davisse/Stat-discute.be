@@ -20,7 +20,7 @@ on:
 env:
   DB_NAME: 'nba_stats'
   DB_USER: 'nba_admin'
-  DB_CONTAINER: 'postgres'
+  DB_CONTAINER: 'stat-discute-db'
 
 jobs:
   import-sql:
