@@ -117,14 +117,18 @@ jobs:
             echo "WARNING: No NBA stats container found by name pattern. Try manual restart."
           fi
 
-      - name: Verify Import
+      - name: Verify Import (both databases)
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          scp 1.DATABASE/generated_sql/verify.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/verify.sql
-          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/verify.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          scp 1.DATABASE/generated_sql/verify_both.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/verify_both.sql
+          echo "=== postgres container (postgres:17) ==="
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/verify_both.sql | docker exec -i postgres psql -U nba_admin -d nba_stats" || echo "Failed to connect to postgres container"
+          echo ""
+          echo "=== stat-discute-db container (postgres:16) ==="
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/verify_both.sql | docker exec -i stat-discute-db psql -U nba_admin -d nba_stats" || echo "Failed to connect to stat-discute-db container"
 
       - name: Cleanup
         if: always()
