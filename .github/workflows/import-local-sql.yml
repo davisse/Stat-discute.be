@@ -15,6 +15,7 @@ on:
           - both
           - refresh-standings
           - analytics
+          - verify-only
 
 env:
   DB_NAME: 'nba_stats'
@@ -96,16 +97,10 @@ jobs:
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "docker exec ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -c \"
-            SELECT 'Total Games: ' || COUNT(*) FROM games WHERE season = '2025-26';
-            SELECT 'Final Games: ' || COUNT(*) FROM games WHERE season = '2025-26' AND game_status = 'Final';
-            SELECT 'Last Game Date: ' || MAX(game_date) FROM games WHERE season = '2025-26';
-            SELECT 'Top 5 Standings:' as standings;
-            SELECT full_name, wins || '-' || losses as record FROM team_standings ts JOIN teams t ON ts.team_id = t.team_id WHERE ts.season_id = '2025-26' ORDER BY wins DESC LIMIT 5;
-            SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g USING(game_id) WHERE g.season = '2025-26';
-            SELECT 'DVP Records: ' || COUNT(*) FROM defensive_stats_by_position WHERE season = '2025-26';
-          \""
+          scp 1.DATABASE/generated_sql/verify.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/verify.sql
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/verify.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
 
       - name: Cleanup
         if: always()
