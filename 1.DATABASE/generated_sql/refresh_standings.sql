@@ -91,6 +91,47 @@ conference_leader AS (
     SELECT conference, MAX(wins) as max_wins
     FROM standings_ranked
     GROUP BY conference
+),
+-- Calculate current streak for each team
+team_recent_games AS (
+    SELECT
+        cd.team_id,
+        g.game_date,
+        CASE
+            WHEN (g.home_team_id = cd.team_id AND g.home_team_score > g.away_team_score) OR
+                 (g.away_team_id = cd.team_id AND g.away_team_score > g.home_team_score)
+            THEN 'W' ELSE 'L'
+        END as result,
+        ROW_NUMBER() OVER (PARTITION BY cd.team_id ORDER BY g.game_date DESC) as rn
+    FROM team_conf_div cd
+    JOIN games g ON (g.home_team_id = cd.team_id OR g.away_team_id = cd.team_id)
+    WHERE g.season = '2025-26' AND g.game_status = 'Final'
+),
+-- Find streak: count consecutive results from most recent game
+streak_calc AS (
+    SELECT
+        team_id,
+        (SELECT result FROM team_recent_games t2 WHERE t2.team_id = trg.team_id AND t2.rn = 1) as last_result,
+        COUNT(*) as streak_len
+    FROM team_recent_games trg
+    WHERE result = (SELECT result FROM team_recent_games t2 WHERE t2.team_id = trg.team_id AND t2.rn = 1)
+      AND rn <= (
+          SELECT COALESCE(MIN(rn) - 1, (SELECT MAX(rn) FROM team_recent_games t4 WHERE t4.team_id = trg.team_id))
+          FROM team_recent_games t3
+          WHERE t3.team_id = trg.team_id
+            AND t3.result != (SELECT result FROM team_recent_games t5 WHERE t5.team_id = trg.team_id AND t5.rn = 1)
+      )
+    GROUP BY team_id
+),
+-- Calculate last 10 record
+last_10_calc AS (
+    SELECT
+        team_id,
+        COUNT(*) FILTER (WHERE result = 'W') as l10_wins,
+        COUNT(*) FILTER (WHERE result = 'L') as l10_losses
+    FROM team_recent_games
+    WHERE rn <= 10
+    GROUP BY team_id
 )
 SELECT
     sr.team_id,
@@ -107,14 +148,16 @@ SELECT
     sr.division,
     sr.conference_rank,
     sr.division_rank,
-    'W1' as streak,
-    '5-5' as last_10,
+    COALESCE(sc.last_result || sc.streak_len::text, 'W0') as streak,
+    COALESCE(l10.l10_wins || '-' || l10.l10_losses, '0-0') as last_10,
     ROUND(sr.points_for, 1) as points_for,
     ROUND(sr.points_against, 1) as points_against,
     sr.point_differential,
     NOW() as last_updated
 FROM standings_ranked sr
-JOIN conference_leader cl ON sr.conference = cl.conference;
+JOIN conference_leader cl ON sr.conference = cl.conference
+LEFT JOIN streak_calc sc ON sr.team_id = sc.team_id
+LEFT JOIN last_10_calc l10 ON sr.team_id = l10.team_id;
 
 -- Verification
 SELECT 'Standings refreshed: ' || COUNT(*) || ' teams' FROM team_standings WHERE season_id = '2025-26';
