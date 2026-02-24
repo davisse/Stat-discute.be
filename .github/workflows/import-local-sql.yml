@@ -9,10 +9,12 @@ on:
         default: 'games'
         type: choice
         options:
+          - full
           - games
           - player-stats
           - both
           - refresh-standings
+          - analytics
 
 env:
   DB_NAME: 'nba_stats'
@@ -39,7 +41,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Import Games SQL
-        if: ${{ github.event.inputs.import_type == 'games' || github.event.inputs.import_type == 'both' }}
+        if: ${{ github.event.inputs.import_type == 'games' || github.event.inputs.import_type == 'both' || github.event.inputs.import_type == 'full' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
@@ -52,7 +54,7 @@ jobs:
           echo "Games imported successfully"
 
       - name: Import Player Stats SQL
-        if: ${{ github.event.inputs.import_type == 'player-stats' || github.event.inputs.import_type == 'both' }}
+        if: ${{ github.event.inputs.import_type == 'player-stats' || github.event.inputs.import_type == 'both' || github.event.inputs.import_type == 'full' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
@@ -65,7 +67,7 @@ jobs:
           echo "Player stats imported successfully"
 
       - name: Refresh Standings
-        if: ${{ github.event.inputs.import_type == 'refresh-standings' || github.event.inputs.import_type == 'games' || github.event.inputs.import_type == 'both' }}
+        if: ${{ github.event.inputs.import_type == 'refresh-standings' || github.event.inputs.import_type == 'games' || github.event.inputs.import_type == 'both' || github.event.inputs.import_type == 'full' }}
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
@@ -76,6 +78,19 @@ jobs:
           echo "Refreshing standings..."
           ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/refresh_standings.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
           echo "Standings refreshed successfully"
+
+      - name: Import Analytics SQL
+        if: ${{ github.event.inputs.import_type == 'analytics' || github.event.inputs.import_type == 'full' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          echo "Copying analytics.sql to VPS..."
+          scp 1.DATABASE/generated_sql/analytics.sql $VPS_USER@$VPS_HOST:$DEPLOY_PATH/analytics.sql
+          echo "Importing analytics to database..."
+          ssh $VPS_USER@$VPS_HOST "cat $DEPLOY_PATH/analytics.sql | docker exec -i ${{ env.DB_CONTAINER }} psql -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}"
+          echo "Analytics imported successfully"
 
       - name: Verify Import
         env:
@@ -88,6 +103,8 @@ jobs:
             SELECT 'Last Game Date: ' || MAX(game_date) FROM games WHERE season = '2025-26';
             SELECT 'Top 5 Standings:' as standings;
             SELECT full_name, wins || '-' || losses as record FROM team_standings ts JOIN teams t ON ts.team_id = t.team_id WHERE ts.season_id = '2025-26' ORDER BY wins DESC LIMIT 5;
+            SELECT 'Player Stats: ' || COUNT(*) FROM player_game_stats pgs JOIN games g USING(game_id) WHERE g.season = '2025-26';
+            SELECT 'DVP Records: ' || COUNT(*) FROM defensive_stats_by_position WHERE season = '2025-26';
           \""
 
       - name: Cleanup
@@ -97,4 +114,4 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
         run: |
-          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/refresh_standings.sql" || true
+          ssh $VPS_USER@$VPS_HOST "rm -f $DEPLOY_PATH/games.sql $DEPLOY_PATH/player_stats.sql $DEPLOY_PATH/refresh_standings.sql $DEPLOY_PATH/analytics.sql" || true
